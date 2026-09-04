@@ -64,18 +64,14 @@ if (file_exists($componentMailPath)) {
 
 <head>
 	<meta charset="UTF-8">
-	<!-- scripts modal connect+fh -->
-	<script src="/local/templates/rs2023/js/fh.js"></script>
-	<script src="/local/templates/rs2023/js/modal.js"></script>
-	<!-- end -->
-
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>FAVORIT-STROY-SNAB - Поставка строительных материалов</title>
-	<meta name="description"
-		content="FAVORIT-STROY-SNAB — Поставка строительных материалов и оборудования. Качественные материалы для строительства.">
+	<title>Поставка строительных материалов | ФАВОРИТ-СТРОЙ-СНАБ</title>
+	<meta name="description" content="Поставка стройматериалов, металлопроката, сэндвич-панелей.">
+	<meta name="theme-color" content="#22c55e">
+	<link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+	<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 	<meta name="robots" content="index, follow">
 	<meta name="keywords" content="строительные материалы, поставка, оборудование, строительство, FAVORIT-STROY-SNAB">
 	<meta name="author" content="TimQwees">
@@ -84,37 +80,29 @@ if (file_exists($componentMailPath)) {
 	<link rel="apple-touch-icon" sizes="180x180" href="/assets/image/favicon/apple-touch-icon.png">
 	<link rel="manifest" href="/assets/image/favicon/site.webmanifest">
 	<!-- Open Graph / Facebook -->
-	<meta property="og:title" content="FAVORIT-STROY-SNAB - Современное домостроение">
-	<meta property="og:description" content="Качественные строительные услуги и материалы.">
+	<meta property="og:title" content="Поставка строительных материалов">
+	<meta property="og:description" content="Поставка стройматериалов, металлопроката, сэндвич-панелей.">
 	<meta property="og:image" content="/assets/image/icon/2.PNG">
 	<meta property="og:type" content="website">
-	<meta property="og:url" content="https://фсс.рус/">
+	<meta property="og:url" content="https://www.xn--h1aafj.xn--p1ai/pages/services/postavka/">
 	<!-- Twitter -->
 	<meta name="twitter:card" content="summary_large_image">
-	<meta name="twitter:title" content="FAVORIT-STROY-SNAB - Современное домостроение">
-	<meta name="twitter:description" content="Качественные строительные услуги и материалы.">
+	<meta name="twitter:title" content="Поставка строительных материалов">
+	<meta name="twitter:description" content="Поставка стройматериалов, металлопроката, сэндвич-панелей.">
 	<meta name="twitter:image" content="/assets/image/icon/2.PNG">
-	<meta name="twitter:card" content="summary_large_image">
-	<meta property="og:description" content="Качественные строительные услуги и материалы.">
 	<link rel="icon" type="image/png" sizes="32x32" href="/assets/image/favicon/favicon-32x32.png">
-	<meta name="author" content="TimQwees">
 
 	<script src="https://cdn.tailwindcss.com"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 	<link rel="stylesheet" href="/assets/distCSS/style.css">
-	<script src="/assets/distJS/main.js"></script>
+	<script defer src="/assets/distJS/main.js"></script>
 	<link rel="stylesheet" href="tailwind.css">
-
-	<!-- favicon -->
-	<link rel="apple-touch-icon" sizes="180x180" href="assets/image/favicon/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="/assets/image/favicon/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="/assets/image/favicon/favicon-16x16.png">
-	<link rel="manifest" href="/assets/image/favicon/site.webmanifest">
 
 	<!-- Swiper Slider for Banner -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 	<script defer="true" src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
+	<?php include_once dirname(__DIR__,3) . '/assets/PHP/sheoma.php'; ?>
 </head>
 
 <body class="font-sans text-gray-800">
@@ -179,8 +167,9 @@ if (file_exists($componentMailPath)) {
 
 
 				<div class="relative w-full p-6">
-					<form action="#" method="post" class="space-y-4">
+					<form action="#" method="post" class="space-y-4" novalidate novalidate>
 						<input type="hidden" name="content_form">
+						<?php $abPath = dirname(__DIR__,3) . '/assets/componets/antibot_fields.php'; if(file_exists($abPath)) include_once $abPath; else { $alt=dirname(__DIR__,3).'/assets/PHP/Antibot.php'; if(file_exists($alt)){require_once $alt; echo Antibot::generateFields();}} ?>
 						<input type="hidden" name="email" value="поле без почты!">
 						<div class="relative">
 							<h3
@@ -195,19 +184,17 @@ if (file_exists($componentMailPath)) {
 						</div>
 						<div>
 							<label for="phone" class="block text-sm font-medium text-gray-700">Телефон</label>
-							<input type="tel" id="phone" name="phone"
-								class="mt-1 block w-full border border-gray-300 rounded-md p-2  focus:outline-none focus:ring-2 focus:ring-green-600"
+							<input type="tel" id="phone" name="phone" pattern="^\+?[0-9\s\-\(\)]{10,20}$" autocomplete="tel" inputmode="tel" class="mt-1 block w-full border border-gray-300 rounded-md p-2  focus:outline-none focus:ring-2 focus:ring-green-600"
 								required>
 						</div>
 						<div>
 							<label for="message" class="block text-sm font-medium text-gray-700">Сообщение</label>
-							<textarea id="message" name="message" rows="3"
-								class="mt-1 block w-full border border-gray-300 rounded-md p-2 h-[30vh]  focus:outline-none focus:ring-2 focus:ring-green-600"></textarea>
+							<textarea id="message" name="message" rows="3" required minlength="10" maxlength="2000" class="mt-1 block w-full border border-gray-300 rounded-md p-2 h-[30vh]  focus:outline-none focus:ring-2 focus:ring-green-600"></textarea>
 						</div>
 						<div class="flex items-center">
-							<input type="checkbox" id="checkbox" name="checkbox" class="mr-2">
+							<input type="checkbox" id="checkbox" name="checkbox" class="mr-2" required>
 							<label for="checkbox" class="text-sm text-gray-700 select-none cursor-pointer">
-								Я согласен(а) с <a href="/privacy-policy"
+								Я согласен(а) с <a href="/pages/politic/index.php"
 									class="text-green-600 underline hover:text-green-800">политикой
 									конфиденциальности</a>
 							</label>
