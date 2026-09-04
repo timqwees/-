@@ -10,8 +10,8 @@
 	<div class="container py-10 flex">
 
 		<!-- Абсолютное фото вне контейнера, с левого края страницы -->
-		<img src="https://xhaus.ru/design/xhaus/images/k8q17cyxzedtj2i9wqolzs9ha5tpx2aq.jpg" alt="Здание СК Приоритет"
-			class="rounded-2xl shadow-2xl w-[900px] min-h-[600px] h-[600px] max-w-none object-cover border-8 border-white/40 viewleft">
+		<img src="/assets/image/services/капстроение/1.JPG" alt="Здание СК Приоритет"
+			class="rounded-2xl shadow-2xl w-[900px] min-h-[600px] h-[600px] max-w-none object-cover border-8 border-white/40 viewleft" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" >
 
 		<!-- Контейнер с контентом -->
 		<div class="relative max-w-[600px] mx-auto z-10 viewright">

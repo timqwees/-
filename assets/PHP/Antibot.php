@@ -33,8 +33,17 @@ class Antibot {
     ];
 
     public static function generateFields(): string {
-        // Генерируем токены для формы
-        if (session_status() === PHP_SESSION_NONE) session_start();
+        // Генерируем токены для формы — безопасно, даже если заголовки уже отправлены
+        if (session_status() === PHP_SESSION_NONE) {
+            if (!headers_sent()) {
+                @session_start();
+            } else {
+                @session_start();
+                if (session_status() === PHP_SESSION_NONE && !isset($_SESSION)) {
+                    $_SESSION = [];
+                }
+            }
+        }
         $time = time();
         $csrf = bin2hex(random_bytes(16));
         $_SESSION['antibot_csrf'] = $csrf;
@@ -56,7 +65,16 @@ class Antibot {
     }
 
     public static function validate(array $data, &$error = null): bool {
-        if (session_status() === PHP_SESSION_NONE) session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            if (!headers_sent()) {
+                @session_start();
+            } else {
+                @session_start();
+                if (session_status() === PHP_SESSION_NONE && !isset($_SESSION)) {
+                    $_SESSION = [];
+                }
+            }
+        }
 
         // 1. Honeypot
         $hp = ANTIBOT_HONEYPOT_FIELD;

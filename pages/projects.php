@@ -58,16 +58,27 @@
 	<link rel="canonical" href="https://www.xn--h1aafj.xn--p1ai/pages/projects.php" />
 	<link rel="alternate" hreflang="ru" href="https://www.xn--h1aafj.xn--p1ai/pages/projects.php" />
 	<link rel="alternate" hreflang="x-default" href="https://www.xn--h1aafj.xn--p1ai/pages/projects.php" />
-	<?php include_once dirname(__DIR__,1) . '/assets/PHP/sheoma.php'; ?>
+	<?php
+// Last-Modified для SEO
+if (!headers_sent()) header("Last-Modified: " . gmdate("D, d M Y H:i:s", filemtime(__FILE__)) . " GMT"); include_once dirname(__DIR__,1) . '/assets/PHP/sheoma.php'; ?>
 </head>
 
 <body class="bg-gray-50 font-sans text-gray-800">
-	<? include_once dirname(__DIR__, 1) . '/assets/componets/header.php'; ?>
+	<?php include_once dirname(__DIR__, 1) . '/assets/componets/header.php'; ?>
+	<section class="bg-[#f0fdf4] border-b border-emerald-100">
+		<div class="mx-auto max-w-[1280px] px-4 py-10 md:py-14">
+			<div class="inline-flex items-center gap-2 bg-white border border-emerald-200 rounded-full px-3 py-1 text-xs font-bold tracking-widest uppercase text-emerald-700">Каталог • Фото и видео</div>
+			<h1 class="mt-3 text-3xl md:text-4xl font-black tracking-tight text-gray-900">Каталог <span class="text-emerald-600">объектов</span></h1>
+			<p class="mt-2 text-[15px] leading-relaxed text-gray-600 max-w-2xl">Школы, склады, навесы, компрессорные, общежития — с фото и видео. Выберите категорию — покажем смету за 15 минут.</p>
+		</div>
+	</section>
+	<nav class="w-full px-6 md:px-10 py-3 bg-[#f0fdf4]/30 border-b border-emerald-100 text-xs text-gray-500 flex items-center gap-1.5"><a href="/index.php" class="hover:text-emerald-700">Главная</a><span class="opacity-40">/</span><span class="text-gray-900 font-medium">Каталог проектов</span></nav>
+	<nav class="w-full px-6 md:px-10 py-3 bg-[#f0fdf4]/30 border-b border-emerald-100 text-xs text-gray-500 flex items-center gap-1.5"><a href="/index.php" class="hover:text-emerald-700">Главная</a><span class="opacity-40">/</span><span class="text-gray-900 font-medium">Каталог проектов</span></nav>
 
 	<section class="my-20"></section>
 	<main class="container mx-auto px-4 py-12">
-		<h1 class="text-4xl font-bold mb-6 text-center viewleft">Каталог <span
-				class="viewright inline-block">обьектов</span></h1>
+		<h2 class="text-4xl font-bold mb-6 text-center viewleft">Каталог <span
+				class="viewright inline-block">обьектов</span></h2>
 		<p class="text-lg text-gray-600 text-center mb-10 view">
 			Здесь вы найдёте <span class="viewleft font-semibold">фото</span> и <span
 				class="viewright font-semibold">видео</span> реализованных объектов
@@ -94,7 +105,7 @@
 			<div class="project-card viewleft" data-category="Школа фото">
 				<span class="category viewright z-20">Школа</span>
 				<img class="view" src="/assets/image/services/Школа фото/WhatsApp Image 2025-07-06 at 13.40.00.jpeg"
-					alt="Школа 1" loading="lazy">
+					alt="Школа 1" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" >
 			</div>
 			<div class="project-card viewright" data-category="Мусор БАК">
 				<span class="category viewLight z-20">Мусорные баки</span>
@@ -105,48 +116,48 @@
 				<span class="category viewRight z-20">МТЗ</span>
 				<img class="view"
 					src="/assets/image/services/МТЗ/n_pdc5b2tgyjydxTAt_7ev1rBBFN26bwbq4796VCT5BHICCidmF-CnC59nv7sETn82ryDyaC4PqRG_nijl-iaTBU.jpg"
-					alt="МТЗ 1" loading="lazy">
+					alt="МТЗ 1" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" >
 			</div>
 			<div class="project-card viewright" data-category="Общежитие">
 				<span class="category viewLight z-20">Общежитие</span>
 				<img class="view" src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.50.01.jpeg"
-					alt="Общежитие 1" loading="lazy">
+					alt="Общежитие 1" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" >
 			</div>
 			<div class="project-card viewleft" data-category="Навесы">
 				<span class="category viewRight z-20">Навесы</span>
 				<img class="view" src="/assets/image/services/Навесы/WhatsApp Image 2025-07-01 at 11.50.05.jpeg"
-					alt="Навесы 1" loading="lazy">
+					alt="Навесы 1" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" >
 			</div>
 			<div class="project-card viewright" data-category="Компрессоры газовые">
 				<span class="category viewLight z-20">Компрессоры газовые</span>
 				<img class="view" src="/assets/image/services/Компрессоры газовые/PHOTO-2023-02-17-17-20-45.jpg"
-					alt="Газ компрессор 1" loading="lazy">
+					alt="Газ компрессор 1" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" >
 			</div>
 			<div class="project-card viewleft" data-category="Компрессоры воздушные">
 				<span class="category viewRight z-20">Компрессоры воздушные</span>
 				<img class="view"
 					src="/assets/image/services/Компрессоры воздушные/6E6BD4AB-6EC1-425D-A012-BE82A0D36F6F (1).JPG"
-					alt="Воздушный компрессор 1" loading="lazy">
+					alt="Воздушный компрессор 1" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" >
 			</div>
 			<div class="project-card viewright" data-category="Склады">
 				<span class="category viewLight z-20">Склады</span>
 				<img class="view" src="/assets/image/services/Склады/WhatsApp Image 2025-07-01 at 12.15.39 (1).jpeg"
-					alt="Склады 1" loading="lazy">
+					alt="Склады 1" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" >
 			</div>
 			<div class="project-card viewleft" data-category="Генераторные">
 				<span class="category viewRight z-20">Генераторные</span>
 				<img class="view" src="/assets/image/services/Генераторные/PHOTO-2022-08-08-18-14-09 (1).jpg"
-					alt="Генераторные 1" loading="lazy">
+					alt="Генераторные 1" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" >
 			</div>
 			<div class="project-card viewright" data-category="АБК">
 				<span class="category viewLight z-20">АБК</span>
 				<img class="view" src="/assets/image/services/АБК/826af4bb-a922-49e9-8399-31e13493e24e.JPG" alt="АБК 1"
-					loading="lazy">
+					loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" >
 			</div>
 			<!-- Добавьте остальные карточки по аналогии -->
 		</div>
 	</main>
-	<? include_once dirname(__DIR__, 1) . '/assets/componets/footer.php'; ?>
+	<?php include_once dirname(__DIR__, 1) . '/assets/componets/footer.php'; ?>
 
 	<script defer src="/assets/distJS/main.js"></script>
 	<script>
@@ -200,7 +211,7 @@
 	</script>
 
 	<!-- форма обратной связи -->
-	<? include_once dirname(__DIR__, 1) . '/assets/componets/forma.php'; ?>
+	<?php include_once dirname(__DIR__, 1) . '/assets/componets/forma.php'; ?>
 </body>
 
 </html>

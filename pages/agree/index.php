@@ -1,4 +1,6 @@
 <?php
+// Last-Modified
+if (!headers_sent()) header("Last-Modified: " . gmdate("D, d M Y H:i:s", filemtime(__FILE__)) . " GMT");
 /**
 	* Страница правил обработки персональных данных
 	* FAVORIT-STROY-SNAB
@@ -9,9 +11,20 @@
 
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Правила обработки персональных данных | FAVORIT-STROY-SNAB</title>
 	<meta name="description" content="Правила обработки персональных данных на сайте FAVORIT-STROY-SNAB.">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="robots" content="noindex, follow">
+	<meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
+	<link rel="canonical" href="https://www.xn--h1aafj.xn--p1ai/pages/agree/" />
+	<link rel="alternate" hreflang="ru" href="https://www.xn--h1aafj.xn--p1ai/pages/agree/" />
+	<meta property="og:locale" content="ru_RU">
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="Правила обработки персональных данных | FAVORIT-STROY-SNAB">
+	<meta property="og:description" content="Правила обработки персональных данных на сайте.">
+	<meta property="og:url" content="https://www.xn--h1aafj.xn--p1ai/pages/agree/">
+	<meta property="og:image" content="https://www.xn--h1aafj.xn--p1ai/assets/image/logo/logo.svg">
 	<link rel="icon" type="image/png" sizes="32x32" href="/assets/image/favicon/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="/assets/image/favicon/favicon-16x16.png">
 	<link rel="apple-touch-icon" sizes="180x180" href="/assets/image/favicon/apple-touch-icon.png">
@@ -24,6 +37,7 @@
 
 <body class="font-sans text-gray-800 bg-gray-50">
 	<?php include_once dirname(__DIR__, 2) . '/assets/componets/header.php'; ?>
+	<nav class="w-full px-6 md:px-10 py-3 bg-[#f0fdf4]/30 border-b border-emerald-100 text-xs text-gray-500 flex items-center gap-1.5"><a href="/index.php" class="hover:text-emerald-700">Главная</a><span class="opacity-40">/</span><span class="text-gray-900 font-medium">Правила обработки данных</span></nav>
 
 	<section class="py-16 px-4 lg:px-20">
 		<div class="container mx-auto bg-white rounded-lg shadow-lg p-8">

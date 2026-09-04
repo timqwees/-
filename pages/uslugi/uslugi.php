@@ -1,3 +1,7 @@
+<?php
+// Last-Modified для SEO
+if (!headers_sent()) header("Last-Modified: " . gmdate("D, d M Y H:i:s", filemtime(__FILE__)) . " GMT");
+?>
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -76,20 +80,36 @@
 			z-index: 10;
 		}
 	</style>
+	<?php include_once dirname(__DIR__,2) . '/assets/PHP/sheoma.php'; ?>
+</head>
 
 	<!-- Main Content -->
 	<main class="bg-gray-50 pb-16">
 
 
 		<!-- footer content -->
-		<? include_once dirname(__DIR__, 2) . '/assets/componets/header.php'; ?>
+		<?php
+// Last-Modified для SEO
+if (!headers_sent()) header("Last-Modified: " . gmdate("D, d M Y H:i:s", filemtime(__FILE__)) . " GMT"); include_once dirname(__DIR__, 2) . '/assets/componets/header.php'; ?>
+	<section class="bg-[#f0fdf4] border-b border-emerald-100">
+		<div class="mx-auto max-w-[1280px] px-4 py-10 md:py-14">
+			<div class="inline-flex items-center gap-2 bg-white border border-emerald-200 rounded-full px-3 py-1 text-xs font-bold tracking-widest uppercase text-emerald-700">Услуги • Полный цикл</div>
+			<h1 class="mt-3 text-3xl md:text-4xl font-black tracking-tight text-gray-900">Строим, ремонтируем, поставляем</h1>
+			<p class="mt-2 text-[15px] leading-relaxed text-gray-600 max-w-2xl">От быстровозводимых зданий до мебели и спецтехники — всё с гарантией и технадзором. Выберите направление.</p>
+			<div class="mt-4 flex gap-2">
+				<a href="#services-list" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full px-5 py-2.5 font-semibold text-sm">Выбрать услугу <i class="fa-solid fa-arrow-down text-xs"></i></a>
+				<a href="/#contact" class="inline-flex items-center gap-2 bg-white border border-emerald-200 text-emerald-800 rounded-full px-5 py-2.5 font-semibold text-sm">Получить консультацию</a>
+			</div>
+		</div>
+	</section>
+	<nav class="w-full px-6 md:px-10 py-3 bg-[#f0fdf4]/30 border-b border-emerald-100 text-xs text-gray-500 flex items-center gap-1.5"><a href="/index.php" class="hover:text-emerald-700">Главная</a><span class="opacity-40">/</span><span class="text-gray-900 font-medium">Услуги</span></nav>
 
 		<section class="my-10"></section>
 
 		<!-- SEO-оптимизированные услуги компании -->
-		<section class="container mx-auto px-4 py-12 flex flex-col md:flex-row items-center gap-8">
+		<section id="services-list" class="container mx-auto px-4 py-12 flex flex-col md:flex-row items-center gap-8">
 			<div class="md:w-1/2">
-				<h1 class="text-3xl md:text-4xl font-bold mb-4 viewleft">Строительство модульных зданий </h1>
+				<h2 class="text-3xl md:text-4xl font-bold mb-4 viewleft">Строительство модульных зданий </h2>
 				<p class="mb-6 text-gray-700 font-medium view">Компания <span
 						class="text-green-500 font-semibold">Фаворит-Строй-Снаб</span> осуществляет <strong
 						class="text-green-500">строительство модульных зданий под ключ</strong> с применением
@@ -193,7 +213,7 @@
 			<div class="md:w-1/2 flex justify-center"><img
 					src="/assets/image/services/МТЗ/TBiT7i6PKC59P2fly3WALvJkWWYPWJbSXWj13AyXfSRvSB2btvao6G4HxpIzQMtWxlCM_ZzG5sFpdzqKpkFVVUjP.jpg"
 					alt="Изготовление мебели"
-					class="rounded-xl shadow-lg max-w-md w-full object-cover viewRight bx-green transition-all duration-500">
+					class="rounded-xl shadow-lg max-w-md w-full object-cover viewRight bx-green transition-all duration-500" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" >
 			</div>
 			<div class="md:w-1/2">
 				<h2 class="text-3xl md:text-4xl font-bold mb-4 view">Изготовление мебели</h2>
@@ -226,7 +246,8 @@
 	</main>
 
 	<!-- footer content -->
-	<? include_once dirname(__DIR__, 2) . '/assets/componets/footer.php'; ?>
+	<?php include_once dirname(__DIR__, 2) . '/assets/componets/footer.php'; ?>
+	<?php include_once dirname(__DIR__, 1) . '/assets/componets/forma.php'; ?>
 	</body>
 
 </html>

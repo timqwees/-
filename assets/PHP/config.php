@@ -3,8 +3,20 @@
  * Central config - FAVORIT-STROY-SNAB
  * Secrets вынесены сюда. В проде вынести в .env / env переменные.
  */
+// Включаем буферизацию чтобы session_start работал даже после небольшого вывода
+if (!ob_get_level() && !headers_sent()) {
+    ob_start();
+}
 if (session_status() === PHP_SESSION_NONE) {
-    @session_start();
+    if (!headers_sent()) {
+        @session_start();
+    } else {
+        // fallback если заголовки уже отправлены — пробуем с буфером
+        @session_start();
+        if (session_status() === PHP_SESSION_NONE && !isset($_SESSION)) {
+            $_SESSION = [];
+        }
+    }
 }
 
 // Site canonical domain - IDN and punycode

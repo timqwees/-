@@ -67,15 +67,29 @@
 			background: rgba(255, 255, 255, 0.5) !important;
 		}
 	</style>
-	<?php include_once dirname(__DIR__,1) . '/assets/PHP/sheoma.php'; ?>
+	<?php
+// Last-Modified для SEO
+if (!headers_sent()) header("Last-Modified: " . gmdate("D, d M Y H:i:s", filemtime(__FILE__)) . " GMT"); include_once dirname(__DIR__,1) . '/assets/PHP/sheoma.php'; ?>
 </head>
 
 <body class="bg-gray-50 font-sans text-gray-800">
-	<? include_once dirname(__DIR__, 1) . '/assets/componets/header.php'; ?>
+	<?php include_once dirname(__DIR__, 1) . '/assets/componets/header.php'; ?>
+	<nav class="w-full px-6 md:px-10 py-3 bg-[#f0fdf4]/30 border-b border-emerald-100 text-xs text-gray-500 flex items-center gap-1.5"><a href="/index.php" class="hover:text-emerald-700">Главная</a><span class="opacity-40">/</span><span class="text-gray-900 font-medium">Портфолио</span></nav>
 
-	<section class="my-20"></section>
+	<section class="bg-[#f0fdf4] border-b border-emerald-100">
+		<div class="mx-auto max-w-[1280px] px-4 py-10 md:py-14">
+			<div class="inline-flex items-center gap-2 bg-white border border-emerald-200 rounded-full px-3 py-1 text-xs font-bold tracking-widest uppercase text-emerald-700">Портфолио • 50+ объектов</div>
+			<h1 class="mt-3 text-3xl md:text-4xl font-black tracking-tight text-gray-900">Наши работы — <span class="text-emerald-600">фото и видео</span></h1>
+			<p class="mt-2 text-[15px] leading-relaxed text-gray-600 max-w-2xl">Склады, школы, АБК, общежития — смотрите реальные объекты. Карточки ниже не трогали, добавили только этот блок.</p>
+			<div class="mt-4 flex gap-2">
+				<a href="#portfolio-cards" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full px-5 py-2.5 font-semibold text-sm">Смотреть портфолио <i class="fa-solid fa-arrow-down text-xs"></i></a>
+				<a href="/#contact" class="inline-flex items-center gap-2 bg-white border border-emerald-200 text-emerald-800 rounded-full px-5 py-2.5 font-semibold text-sm">Заказать такой же</a>
+			</div>
+		</div>
+	</section>
+	<section class="my-6"></section>
 	<main class="container mx-auto px-4 py-12">
-		<h1 class="text-4xl font-bold mb-10 text-center">Портфолио работ</h1>
+		<h2 class="text-4xl font-bold mb-10 text-center">Портфолио работ</h2>
 		<!-- Разделы по категориям -->
 
 		<!-- Школа фото -->
@@ -86,39 +100,39 @@
 
 					<!-- Слайды с фото и фото -->
 					<div class="swiper-slide view">
-						<img src="/assets/image/services/Школа фото/1.jpeg"><span
+						<img src="/assets/image/services/Школа фото/1.jpeg" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" ><span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded" />фото
 						1</span>
 					</div>
-					<div class="swiper-slide view"><img src="/assets/image/services/Школа фото/2.jpeg" /><span
+					<div class="swiper-slide view"><img src="/assets/image/services/Школа фото/2.jpeg"  onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" /><span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							2</span></div>
-					<div class="swiper-slide view"><img src="/assets/image/services/Школа фото/3.jpeg" /><span
+					<div class="swiper-slide view"><img src="/assets/image/services/Школа фото/3.jpeg"  onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" /><span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							3</span></div>
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Школа фото/WhatsApp Image 2025-07-06 at 13.40.00.jpeg"
-							alt="Школа 1" loading="lazy"> <span
+							alt="Школа 1" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							4</span></div>
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Школа фото/WhatsApp Image 2025-07-06 at 13.39.59-4.jpeg"
-							alt="Школа 2" loading="lazy"> <span
+							alt="Школа 2" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							5</span></div>
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Школа фото/WhatsApp Image 2025-07-06 at 13.39.59-3.jpeg"
-							alt="Школа 3" loading="lazy"> <span
+							alt="Школа 3" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							6</span></div>
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Школа фото/WhatsApp Image 2025-07-06 at 13.39.59-2.jpeg"
-							alt="Школа 4" loading="lazy"> <span
+							alt="Школа 4" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							7</span></div>
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Школа фото/WhatsApp Image 2025-07-06 at 13.39.59.jpeg"
-							alt="Школа 5" loading="lazy"> <span
+							alt="Школа 5" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							8</span></div>
 					<div class="swiper-slide view"><video
@@ -145,17 +159,17 @@
 				<div class="swiper-wrapper">
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Мусор БАК/WhatsApp Image 2025-07-07 at 17.38.45.jpeg"
-							alt="Мусор БАК 1" loading="lazy"> <span
+							alt="Мусор БАК 1" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							1</span></div>
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Мусор БАК/WhatsApp Image 2025-07-07 at 17.38.28-2.jpeg"
-							alt="Мусор БАК 2" loading="lazy"> <span
+							alt="Мусор БАК 2" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							2</span></div>
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Мусор БАК/WhatsApp Image 2025-07-07 at 17.38.28.jpeg"
-							alt="Мусор БАК 3" loading="lazy"> <span
+							alt="Мусор БАК 3" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							3</span></div>
 					<div class="swiper-slide view"><video
@@ -188,275 +202,275 @@
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.50.01.jpeg"
-							alt="Общежитие 1" loading="lazy"> <span
+							alt="Общежитие 1" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							1</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 11.44.37.jpeg"
-							alt="Общежитие 2" loading="lazy"> <span
+							alt="Общежитие 2" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							2</span>
 					</div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.52.58 (2).jpeg"
-							alt="Общежитие 3" loading="lazy"> <span
+							alt="Общежитие 3" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							3</span>
 					</div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.52.58.jpeg"
-							alt="Общежитие 4" loading="lazy"> <span
+							alt="Общежитие 4" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							4</span>
 					</div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.52.58 (1).jpeg"
-							alt="Общежитие 5" loading="lazy"> <span
+							alt="Общежитие 5" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							5</span>
 					</div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.53.02 (3).jpeg"
-							alt="Общежитие 45" loading="lazy"> <span
+							alt="Общежитие 45" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							6</span>
 					</div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.53.04 (4).jpeg"
-							alt="Общежитие 46" loading="lazy"> <span
+							alt="Общежитие 46" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							7</span>
 					</div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.51.50 (2).jpeg"
-							alt="Общежитие 8" loading="lazy"> <span
+							alt="Общежитие 8" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							8</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.53.04 (4).jpeg"
-							alt="Общежитие 9" loading="lazy"> <span
+							alt="Общежитие 9" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							9</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.50.02 (1).jpeg"
-							alt="Общежитие 10" loading="lazy"> <span
+							alt="Общежитие 10" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							10</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.50.02 (3).jpeg"
-							alt="Общежитие 11" loading="lazy"> <span
+							alt="Общежитие 11" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							11</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.50.02.jpeg"
-							alt="Общежитие 12" loading="lazy"> <span
+							alt="Общежитие 12" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							12</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.50.03 (1).jpeg"
-							alt="Общежитие 13" loading="lazy"> <span
+							alt="Общежитие 13" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							13</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.50.03 (2).jpeg"
-							alt="Общежитие 14" loading="lazy"> <span
+							alt="Общежитие 14" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							14</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.50.03 (3).jpeg"
-							alt="Общежитие 15" loading="lazy"> <span
+							alt="Общежитие 15" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							15</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.50.03 (4).jpeg"
-							alt="Общежитие 16" loading="lazy"> <span
+							alt="Общежитие 16" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							16</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.50.03 (5).jpeg"
-							alt="Общежитие 17" loading="lazy"> <span
+							alt="Общежитие 17" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							17</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.50.04 (1).jpeg"
-							alt="Общежитие 18" loading="lazy"> <span
+							alt="Общежитие 18" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							18</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.50.04.jpeg"
-							alt="Общежитие 19" loading="lazy"> <span
+							alt="Общежитие 19" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							19</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.50.47.jpeg"
-							alt="Общежитие 20" loading="lazy"> <span
+							alt="Общежитие 20" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							20</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.50.48 (1).jpeg"
-							alt="Общежитие 21" loading="lazy"> <span
+							alt="Общежитие 21" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							21</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.50.48 (2).jpeg"
-							alt="Общежитие 22" loading="lazy"> <span
+							alt="Общежитие 22" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							22</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.50.48 (4).jpeg"
-							alt="Общежитие 23" loading="lazy"> <span
+							alt="Общежитие 23" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							23</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.50.49 (1).jpeg"
-							alt="Общежитие 24" loading="lazy"> <span
+							alt="Общежитие 24" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							24</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.50.49 (2).jpeg"
-							alt="Общежитие 25" loading="lazy"> <span
+							alt="Общежитие 25" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							25</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.50.49 (3).jpeg"
-							alt="Общежитие 26" loading="lazy"> <span
+							alt="Общежитие 26" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							26</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.50.49 (4).jpeg"
-							alt="Общежитие 27" loading="lazy"> <span
+							alt="Общежитие 27" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							27</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.50.49 (5).jpeg"
-							alt="Общежитие 28" loading="lazy"> <span
+							alt="Общежитие 28" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							28</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.50.50 (3).jpeg"
-							alt="Общежитие 29" loading="lazy"> <span
+							alt="Общежитие 29" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							29</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.50.50.jpeg"
-							alt="Общежитие 30" loading="lazy"> <span
+							alt="Общежитие 30" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							30</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.50.51 (1).jpeg"
-							alt="Общежитие 31" loading="lazy"> <span
+							alt="Общежитие 31" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							31</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.50.51 (2).jpeg"
-							alt="Общежитие 32" loading="lazy"> <span
+							alt="Общежитие 32" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							32</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.50.51 (3).jpeg"
-							alt="Общежитие 33" loading="lazy"> <span
+							alt="Общежитие 33" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							33</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.50.52 (2).jpeg"
-							alt="Общежитие 34" loading="lazy"> <span
+							alt="Общежитие 34" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							34</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.51.51 (1).jpeg"
-							alt="Общежитие 35" loading="lazy"> <span
+							alt="Общежитие 35" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							35</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.51.51 (3).jpeg"
-							alt="Общежитие 36" loading="lazy"> <span
+							alt="Общежитие 36" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							36</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.51.54 (1).jpeg"
-							alt="Общежитие 37" loading="lazy"> <span
+							alt="Общежитие 37" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							37</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.51.54 (4).jpeg"
-							alt="Общежитие 38" loading="lazy"> <span
+							alt="Общежитие 38" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							38</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.51.55 (3).jpeg"
-							alt="Общежитие 39" loading="lazy"> <span
+							alt="Общежитие 39" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							39</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.51.55.jpeg"
-							alt="Общежитие 40" loading="lazy"> <span
+							alt="Общежитие 40" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							40</span>
 					</div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.52.57 (1).jpeg"
-							alt="Общежитие 41" loading="lazy"> <span
+							alt="Общежитие 41" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							41</span>
 					</div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.53.00 (1).jpeg"
-							alt="Общежитие 42" loading="lazy"> <span
+							alt="Общежитие 42" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							42</span>
 					</div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.53.02 (1).jpeg"
-							alt="Общежитие 43" loading="lazy"> <span
+							alt="Общежитие 43" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							43</span>
 					</div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 09.53.02 (2).jpeg"
-							alt="Общежитие 44" loading="lazy"> <span
+							alt="Общежитие 44" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							44</span>
 					</div>
@@ -477,21 +491,21 @@
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 11.44.37.jpeg"
-							alt="Общежитие 1" loading="lazy"> <span
+							alt="Общежитие 1" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							1</span></div>
 
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Склады/WhatsApp Image 2025-07-01 at 12.15.39 (1).jpeg"
-							alt="Склады 1" loading="lazy"> <span
+							alt="Склады 1" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							2</span>
 					</div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Склады/WhatsApp Image 2025-07-01 at 12.15.39 (2).jpeg"
-							alt="Склады 1" loading="lazy"> <span
+							alt="Склады 1" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							3</span>
 					</div>
@@ -499,7 +513,7 @@
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Склады/WhatsApp Image 2025-07-01 at 12.15.39 (3).jpeg"
-							alt="Склады 1" loading="lazy"> <span
+							alt="Склады 1" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							4</span>
 					</div>
@@ -507,7 +521,7 @@
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Склады/WhatsApp Image 2025-07-01 at 12.15.39 (4).jpeg"
-							alt="Склады 1" loading="lazy"> <span
+							alt="Склады 1" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							5</span>
 					</div>
@@ -515,7 +529,7 @@
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Склады/WhatsApp Image 2025-07-01 at 12.15.39 (5).jpeg"
-							alt="Склады 1" loading="lazy"> <span
+							alt="Склады 1" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							6</span>
 					</div>
@@ -523,14 +537,14 @@
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Склады/WhatsApp Image 2025-07-01 at 12.15.39.jpeg"
-							alt="Склады 1" loading="lazy"> <span
+							alt="Склады 1" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							7</span>
 					</div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Склады/WhatsApp Image 2025-07-01 at 12.15.40 (1).jpeg"
-							alt="Склады 1" loading="lazy"> <span
+							alt="Склады 1" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							8</span>
 					</div>
@@ -538,7 +552,7 @@
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Склады/WhatsApp Image 2025-07-01 at 12.15.40 (2).jpeg"
-							alt="Склады 1" loading="lazy"> <span
+							alt="Склады 1" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							9</span>
 					</div>
@@ -546,21 +560,21 @@
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Склады/WhatsApp Image 2025-07-01 at 12.15.40.jpeg"
-							alt="Склады 1" loading="lazy"> <span
+							alt="Склады 1" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							10</span>
 					</div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 11.44.37-2.jpeg"
-							alt="Общежитие 6" loading="lazy"> <span
+							alt="Общежитие 6" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							11</span>
 					</div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Общежитие/WhatsApp Image 2025-07-01 at 11.44.37-3.jpeg"
-							alt="Общежитие 7" loading="lazy"> <span
+							alt="Общежитие 7" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							12</span>
 					</div>
@@ -580,65 +594,65 @@
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Генераторные/017C294C-9AF3-4638-ADC2-476CD4C3A7ED.JPG"
-							alt="Генераторные 1" loading="lazy"> <span
+							alt="Генераторные 1" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							1</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Генераторные/02C32373-C168-4E51-AE88-79C9C0001058.JPG"
-							alt="Генераторные 1" loading="lazy"> <span
+							alt="Генераторные 1" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							2</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Генераторные/0463AE7A-8A91-44AB-9099-EF2ED8919223.JPG"
-							alt="Генераторные 1" loading="lazy"> <span
+							alt="Генераторные 1" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							3</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/Генераторные/2BE1E005-3A0F-4D63-88CB-A369955A6A2A.JPG"
-							alt="Генераторные 1" loading="lazy"> <span
+							alt="Генераторные 1" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							4</span></div>
 
 					<div class="swiper-slide view"><img src="/assets/image/services/Генераторные/" alt="Генераторные 1"
-							loading="lazy"> <span
+							loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							5</span></div>
 
 					<div class="swiper-slide view"><img src="/assets/image/services/Генераторные/" alt="Генераторные 1"
-							loading="lazy"> <span
+							loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							6</span></div>
 
 					<div class="swiper-slide view"><img src="/assets/image/services/Генераторные/" alt="Генераторные 1"
-							loading="lazy"> <span
+							loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							7</span></div>
 
 					<div class="swiper-slide view"><img src="/assets/image/services/Генераторные/" alt="Генераторные 1"
-							loading="lazy"> <span
+							loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							8</span></div>
 
 					<div class="swiper-slide view"><img src="/assets/image/services/Генераторные/" alt="Генераторные 1"
-							loading="lazy"> <span
+							loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							9</span></div>
 
 					<div class="swiper-slide view"><img src="/assets/image/services/Генераторные/" alt="Генераторные 1"
-							loading="lazy"> <span
+							loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							10</span></div>
 
 					<div class="swiper-slide view"><img src="/assets/image/services/Генераторные/" alt="Генераторные 1"
-							loading="lazy"> <span
+							loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							11</span></div>
 
 					<div class="swiper-slide view"><img src="/assets/image/services/Генераторные/" alt="Генераторные 1"
-							loading="lazy"> <span
+							loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							12</span></div>
 
@@ -657,72 +671,72 @@
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/АБК/04d8caee-f083-42f8-8be2-64e7e461cace.JPG" alt="АБК 1"
-							loading="lazy"> <span
+							loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							1</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/АБК/05fcff5c-1d8e-4767-be29-a2e6b2bca7ab.JPG" alt="АБК 2"
-							loading="lazy"> <span
+							loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							2</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/АБК/10fd99d6-066e-4962-8ce3-4e49f690dd4c.JPG" alt="АБК 3"
-							loading="lazy"> <span
+							loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							3</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/АБК/2011-09-29 09.52.43 13.45.17.jpg" alt="АБК 4"
-							loading="lazy"> <span
+							loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							4</span></div>
 
 					<div class="swiper-slide view"><img src="/assets/image/services/АБК/2012-10-24 13.27.40.jpg"
-							alt="АБК 5" loading="lazy"> <span
+							alt="АБК 5" loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							5</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/АБК/412f4b10-4e04-4e24-a809-f4b98c451f9e.JPG" alt="АБК 6"
-							loading="lazy"> <span
+							loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							6</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/АБК/4eb40ff7-527a-4f7e-9a20-d1bfeb6601b2.JPG" alt="АБК 7"
-							loading="lazy"> <span
+							loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							7</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/АБК/59f1ad99-f1e5-4640-807e-ca4326725fc4.JPG" alt="АБК 8"
-							loading="lazy"> <span
+							loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							8</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/АБК/5de688c3-9bf7-4e3b-b818-48b8b4f9b31a.JPG" alt="АБК 9"
-							loading="lazy"> <span
+							loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							9</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/АБК/6363b4d2-80ef-4af5-afad-60838f329be3.JPG" alt="АБК 10"
-							loading="lazy"> <span
+							loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							10</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/АБК/6c7d6515-85d3-4a04-b35e-8d6376122ca0.JPG" alt="АБК 11"
-							loading="lazy"> <span
+							loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							11</span></div>
 
 					<div class="swiper-slide view"><img
 							src="/assets/image/services/АБК/826af4bb-a922-49e9-8399-31e13493e24e.JPG" alt="АБК 12"
-							loading="lazy"> <span
+							loading="lazy" onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" > <span
 							class="absolute bottom-2 right-4 text-xs text-white bg-black/50 px-2 py-1 rounded">фото
 							12</span></div>
 
@@ -735,7 +749,22 @@
 
 	</main>
 	<!--форма обратной связи-->
-	<? include_once dirname(__DIR__, 1) . '/assets/componets/footer.php'; ?>
+	
+	<section class="mx-auto max-w-[1280px] px-4 py-8">
+		<div class="bg-emerald-600 rounded-[24px] p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-4 text-white">
+			<div>
+				<div class="text-lg font-bold">Понравились объекты?</div>
+				<div class="text-sm opacity-90">Сделаем такой же за 14 дней • Смета за 15 минут</div>
+			</div>
+			<a href="/#contact" class="inline-flex items-center gap-2 bg-white text-emerald-700 rounded-full px-6 py-3 font-bold hover:bg-emerald-50 transition">Рассчитать мой объект <i class="fa-solid fa-arrow-right text-xs"></i></a>
+		</div>
+		<div class="mt-4 grid grid-cols-3 gap-3 text-center">
+			<div class="bg-white border border-emerald-100 rounded-2xl p-4"><div class="text-2xl font-black text-emerald-600">180+</div><div class="text-xs text-gray-500">объектов сдано</div></div>
+			<div class="bg-white border border-emerald-100 rounded-2xl p-4"><div class="text-2xl font-black text-emerald-600">14</div><div class="text-xs text-gray-500">дней от старта</div></div>
+			<div class="bg-white border border-emerald-100 rounded-2xl p-4"><div class="text-2xl font-black text-emerald-600">50+</div><div class="text-xs text-gray-500">лет службы</div></div>
+		</div>
+	</section>
+	<?php include_once dirname(__DIR__, 1) . '/assets/componets/footer.php'; ?>
 
 	<!-- Swiper JS -->
 	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
@@ -795,7 +824,7 @@
 	</script>
 
 	<!--форма обратной связи-->
-	<? include_once dirname(__DIR__, 1) . '/assets/componets/forma.php'; ?>
+	<?php include_once dirname(__DIR__, 1) . '/assets/componets/forma.php'; ?>
 
 </body>
 
