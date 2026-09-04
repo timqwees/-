@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 	<channel>
-		<atom:link href="https://www.xn--h1aafj.xn--p1ai/rss.xml" rel="self" type="application/rss+xml" />
+		<atom:link href="https://www.фсс.рус/rss.xml" rel="self" type="application/rss+xml" />
 		<title>ФАВОРИТ-СТРОЙ-СНАБ — Быстровозводимые здания, капитальный ремонт, грузоперевозки</title>
-		<link>https://www.xn--h1aafj.xn--p1ai</link>
+		<link>https://www.фсс.рус</link>
 		<description>Быстровозводимые модульные здания под ключ, капитальный ремонт, поставка мебели, грузоперевозки и спецтехника в Москве. От 2 недель, гарантия 50+ лет.</description>
 		<language>ru</language>
 		<category>Строительство</category>
@@ -11,149 +11,149 @@
 		<lastBuildDate>Thu, 04 Sep 2026 12:00:00 +0300</lastBuildDate>
 		<ttl>60</ttl>
 		<image>
-			<url>https://www.xn--h1aafj.xn--p1ai/assets/image/logo/logo.svg</url>
-			<link>https://www.xn--h1aafj.xn--p1ai</link>
+			<url>https://www.фсс.рус/assets/image/logo/logo.svg</url>
+			<link>https://www.фсс.рус</link>
 			<title>ФАВОРИТ-СТРОЙ-СНАБ</title>
 			<width>300</width>
 			<height>100</height>
 		</image>
 		<item>
 			<title>Главная — Быстровозводимые здания под ключ</title>
-			<link>https://www.xn--h1aafj.xn--p1ai/</link>
-			<guid isPermaLink="true">https://www.xn--h1aafj.xn--p1ai/</guid>
+			<link>https://www.фсс.рус/</link>
+			<guid isPermaLink="true">https://www.фсс.рус/</guid>
 			<description><![CDATA[ФАВОРИТ-СТРОЙ-СНАБ — быстровозводимые модульные здания, капитальный ремонт, грузоперевозки. Собственное производство, монтаж от 2 недель, гарантия 50 лет.]]></description>
 			<pubDate>Thu, 04 Sep 2026 12:00:00 +0300</pubDate>
 		</item>
 		<item>
 			<title>Услуги — весь каталог</title>
-			<link>https://www.xn--h1aafj.xn--p1ai/pages/uslugi/uslugi.php</link>
-			<guid>https://www.xn--h1aafj.xn--p1ai/pages/uslugi/uslugi.php</guid>
+			<link>https://www.фсс.рус/pages/uslugi/uslugi.php</link>
+			<guid>https://www.фсс.рус/pages/uslugi/uslugi.php</guid>
 			<description><![CDATA[Полный каталог услуг: БВЗ, склады, ангары, общежития, ДГУ, компрессоры, навесы, мебель, капремонт.]]></description>
 			<pubDate>Thu, 04 Sep 2026 12:00:00 +0300</pubDate>
 		</item>
 		<item>
 			<title>Портфолио — выполненные объекты</title>
-			<link>https://www.xn--h1aafj.xn--p1ai/pages/portfolio.php</link>
-			<guid>https://www.xn--h1aafj.xn--p1ai/pages/portfolio.php</guid>
+			<link>https://www.фсс.рус/pages/portfolio.php</link>
+			<guid>https://www.фсс.рус/pages/portfolio.php</guid>
 			<description><![CDATA[Фото и видео реализованных модульных зданий: школы, склады, АБК, общежития.]]></description>
 			<pubDate>Thu, 04 Sep 2026 12:00:00 +0300</pubDate>
 		</item>
 		<item>
 			<title>Каталог проектов</title>
-			<link>https://www.xn--h1aafj.xn--p1ai/pages/projects.php</link>
-			<guid>https://www.xn--h1aafj.xn--p1ai/pages/projects.php</guid>
+			<link>https://www.фсс.рус/pages/projects.php</link>
+			<guid>https://www.фсс.рус/pages/projects.php</guid>
 			<description><![CDATA[Типовые проекты быстровозводимых зданий: размеры, комплектации, цены.]]></description>
 			<pubDate>Thu, 04 Sep 2026 12:00:00 +0300</pubDate>
 		</item>
 		<item>
 			<title>Капитальное строение под ключ</title>
-			<link>https://www.xn--h1aafj.xn--p1ai/pages/services/kapstroenie/</link>
-			<guid>https://www.xn--h1aafj.xn--p1ai/pages/services/kapstroenie/</guid>
+			<link>https://www.фсс.рус/pages/services/kapstroenie/</link>
+			<guid>https://www.фсс.рус/pages/services/kapstroenie/</guid>
 			<description><![CDATA[Строительство капитальных зданий и сооружений: монолит, кирпич, металлокаркас. Под ключ с гарантией.]]></description>
 			<pubDate>Thu, 04 Sep 2026 12:00:00 +0300</pubDate>
 		</item>
 		<item>
 			<title>Капитальный ремонт зданий</title>
-			<link>https://www.xn--h1aafj.xn--p1ai/pages/services/kapital/</link>
-			<guid>https://www.xn--h1aafj.xn--p1ai/pages/services/kapital/</guid>
+			<link>https://www.фсс.рус/pages/services/kapital/</link>
+			<guid>https://www.фсс.рус/pages/services/kapital/</guid>
 			<description><![CDATA[Капитальный ремонт школ, АБК, промзданий: фасады, кровля, инженерные сети.]]></description>
 			<pubDate>Thu, 04 Sep 2026 12:00:00 +0300</pubDate>
 		</item>
 		<item>
 			<title>Производство модульных зданий</title>
-			<link>https://www.xn--h1aafj.xn--p1ai/pages/services/proizvodim_modul/</link>
-			<guid>https://www.xn--h1aafj.xn--p1ai/pages/services/proizvodim_modul/</guid>
+			<link>https://www.фсс.рус/pages/services/proizvodim_modul/</link>
+			<guid>https://www.фсс.рус/pages/services/proizvodim_modul/</guid>
 			<description><![CDATA[Завод модульных зданий: блок-контейнеры, быстровозводимые здания БВЗ.]]></description>
 			<pubDate>Thu, 04 Sep 2026 12:00:00 +0300</pubDate>
 		</item>
 		<item>
 			<title>Склады и логистические центры</title>
-			<link>https://www.xn--h1aafj.xn--p1ai/pages/services/sclad/</link>
-			<guid>https://www.xn--h1aafj.xn--p1ai/pages/services/sclad/</guid>
+			<link>https://www.фсс.рус/pages/services/sclad/</link>
+			<guid>https://www.фсс.рус/pages/services/sclad/</guid>
 			<description><![CDATA[Склады, логистические центры, ангары под ключ из сэндвич-панелей.]]></description>
 			<pubDate>Thu, 04 Sep 2026 12:00:00 +0300</pubDate>
 		</item>
 		<item>
 			<title>Грузоперевозки</title>
-			<link>https://www.xn--h1aafj.xn--p1ai/pages/services/gruzoperevozki/</link>
-			<guid>https://www.xn--h1aafj.xn--p1ai/pages/services/gruzoperevozki/</guid>
+			<link>https://www.фсс.рус/pages/services/gruzoperevozki/</link>
+			<guid>https://www.фсс.рус/pages/services/gruzoperevozki/</guid>
 			<description><![CDATA[Авто и ЖД грузоперевозки по России: стройматериалы, техника, негабарит.]]></description>
 			<pubDate>Thu, 04 Sep 2026 12:00:00 +0300</pubDate>
 		</item>
 		<item>
 			<title>Спецтехника в аренду</title>
-			<link>https://www.xn--h1aafj.xn--p1ai/pages/services/spectehnika/</link>
-			<guid>https://www.xn--h1aafj.xn--p1ai/pages/services/spectehnika/</guid>
+			<link>https://www.фсс.рус/pages/services/spectehnika/</link>
+			<guid>https://www.фсс.рус/pages/services/spectehnika/</guid>
 			<description><![CDATA[Аренда бульдозеров, тракторов, грузовиков Шакман, экскаваторов.]]></description>
 			<pubDate>Thu, 04 Sep 2026 12:00:00 +0300</pubDate>
 		</item>
 		<item>
 			<title>Мусорные контейнеры и баки</title>
-			<link>https://www.xn--h1aafj.xn--p1ai/pages/services/musorbak/</link>
-			<guid>https://www.xn--h1aafj.xn--p1ai/pages/services/musorbak/</guid>
+			<link>https://www.фсс.рус/pages/services/musorbak/</link>
+			<guid>https://www.фсс.рус/pages/services/musorbak/</guid>
 			<description><![CDATA[Производство оцинкованных мусорных баков и контейнеров.]]></description>
 			<pubDate>Thu, 04 Sep 2026 12:00:00 +0300</pubDate>
 		</item>
 		<item>
 			<title>Навесы и козырьки</title>
-			<link>https://www.xn--h1aafj.xn--p1ai/pages/services/naves/</link>
-			<guid>https://www.xn--h1aafj.xn--p1ai/pages/services/naves/</guid>
+			<link>https://www.фсс.рус/pages/services/naves/</link>
+			<guid>https://www.фсс.рус/pages/services/naves/</guid>
 			<description><![CDATA[Металлические навесы для авто, складов, промплощадок.]]></description>
 			<pubDate>Thu, 04 Sep 2026 12:00:00 +0300</pubDate>
 		</item>
 		<item>
 			<title>Общежития и жилые комплексы</title>
-			<link>https://www.xn--h1aafj.xn--p1ai/pages/services/obchegitia/</link>
-			<guid>https://www.xn--h1aafj.xn--p1ai/pages/services/obchegitia/</guid>
+			<link>https://www.фсс.рус/pages/services/obchegitia/</link>
+			<guid>https://www.фсс.рус/pages/services/obchegitia/</guid>
 			<description><![CDATA[Модульные общежития, вахтовые посёлки, жилые комплексы.]]></description>
 			<pubDate>Thu, 04 Sep 2026 12:00:00 +0300</pubDate>
 		</item>
 		<item>
 			<title>Административные здания и АБК</title>
-			<link>https://www.xn--h1aafj.xn--p1ai/pages/services/administrativnoe/</link>
-			<guid>https://www.xn--h1aafj.xn--p1ai/pages/services/administrativnoe/</guid>
+			<link>https://www.фсс.рус/pages/services/administrativnoe/</link>
+			<guid>https://www.фсс.рус/pages/services/administrativnoe/</guid>
 			<description><![CDATA[Административно-бытовые комплексы и офисы из модулей.]]></description>
 			<pubDate>Thu, 04 Sep 2026 12:00:00 +0300</pubDate>
 		</item>
 		<item>
 			<title>Генераторные установки ДГУ</title>
-			<link>https://www.xn--h1aafj.xn--p1ai/pages/services/generatornae/</link>
-			<guid>https://www.xn--h1aafj.xn--p1ai/pages/services/generatornae/</guid>
+			<link>https://www.фсс.рус/pages/services/generatornae/</link>
+			<guid>https://www.фсс.рус/pages/services/generatornae/</guid>
 			<description><![CDATA[Дизель-генераторные установки, ДГУ, энергокомплексы.]]></description>
 			<pubDate>Thu, 04 Sep 2026 12:00:00 +0300</pubDate>
 		</item>
 		<item>
 			<title>Газовые компрессоры</title>
-			<link>https://www.xn--h1aafj.xn--p1ai/pages/services/compressor/</link>
-			<guid>https://www.xn--h1aafj.xn--p1ai/pages/services/compressor/</guid>
+			<link>https://www.фсс.рус/pages/services/compressor/</link>
+			<guid>https://www.фсс.рус/pages/services/compressor/</guid>
 			<description><![CDATA[Газовые компрессорные станции, поставка и монтаж.]]></description>
 			<pubDate>Thu, 04 Sep 2026 12:00:00 +0300</pubDate>
 		</item>
 		<item>
 			<title>Воздушные компрессоры</title>
-			<link>https://www.xn--h1aafj.xn--p1ai/pages/services/compressor_air/</link>
-			<guid>https://www.xn--h1aafj.xn--p1ai/pages/services/compressor_air/</guid>
+			<link>https://www.фсс.рус/pages/services/compressor_air/</link>
+			<guid>https://www.фсс.рус/pages/services/compressor_air/</guid>
 			<description><![CDATA[Воздушные компрессоры промышленные, винтовые и поршневые.]]></description>
 			<pubDate>Thu, 04 Sep 2026 12:00:00 +0300</pubDate>
 		</item>
 		<item>
 			<title>Монтаж инженерных систем</title>
-			<link>https://www.xn--h1aafj.xn--p1ai/pages/services/montach/</link>
-			<guid>https://www.xn--h1aafj.xn--p1ai/pages/services/montach/</guid>
+			<link>https://www.фсс.рус/pages/services/montach/</link>
+			<guid>https://www.фсс.рус/pages/services/montach/</guid>
 			<description><![CDATA[Монтаж отопления, водоснабжения, вентиляции, электрики.]]></description>
 			<pubDate>Thu, 04 Sep 2026 12:00:00 +0300</pubDate>
 		</item>
 		<item>
 			<title>Проектирование зданий</title>
-			<link>https://www.xn--h1aafj.xn--p1ai/pages/services/proektirovanie/</link>
-			<guid>https://www.xn--h1aafj.xn--p1ai/pages/services/proektirovanie/</guid>
+			<link>https://www.фсс.рус/pages/services/proektirovanie/</link>
+			<guid>https://www.фсс.рус/pages/services/proektirovanie/</guid>
 			<description><![CDATA[Проектирование БВЗ и капитальных объектов: чертежи, расчёты, согласования.]]></description>
 			<pubDate>Thu, 04 Sep 2026 12:00:00 +0300</pubDate>
 		</item>
 		<item>
 			<title>Модульная мебель</title>
-			<link>https://www.xn--h1aafj.xn--p1ai/pages/services/modultebel/</link>
-			<guid>https://www.xn--h1aafj.xn--p1ai/pages/services/modultebel/</guid>
+			<link>https://www.фсс.рус/pages/services/modultebel/</link>
+			<guid>https://www.фсс.рус/pages/services/modultebel/</guid>
 			<description><![CDATA[Изготовление и поставка модульной мебели для общежитий, офисов, школ.]]></description>
 			<pubDate>Thu, 04 Sep 2026 12:00:00 +0300</pubDate>
 		</item>
