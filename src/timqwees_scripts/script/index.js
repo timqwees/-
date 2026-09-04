@@ -1,0 +1,14 @@
+import { faq_toggel } from './file.js';
+import { openFAQ } from './faq_open.js';
+import './header_footer.js';
+import { ModalWindow } from './modal.js';
+import { viewElements } from './view.js';
+import { initYandexMapKavstal } from './map.js';
+import { initModalHandlers } from './modal.js';
+ModalWindow();
+faq_toggel();
+openFAQ();
+initViewElements();
+initYandexMapKavstal();
+initModalHandlers();
+// contentHTML();
