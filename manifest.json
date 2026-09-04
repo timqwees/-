@@ -1,0 +1,36 @@
+{
+  "name": "FAVORIT-STROY-SNAB - Современное домостроение",
+  "short_name": "FAVORIT-STROY-SNAB - Современное домостроение",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#fff",
+  "description": "Быстровозводимые модульные здания, фото и видео выполненных работ. Строительство, поставка, монтаж, капитальный ремонт, изготовление мебели и металлоконструкций.",
+  "lang": "ru",
+  "icons": [
+    {
+      "src": "/assets/image/favicon/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/image/favicon/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/image/favicon/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/image/favicon/favicon.ico",
+      "sizes": "32x32 16x16",
+      "type": "image/x-icon",
+      "purpose": "any"
+    }
+  ],
+  "scope": "/",
+  "orientation": "portrait"
+}

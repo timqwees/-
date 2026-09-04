@@ -1,0 +1,134 @@
+.swiper {
+	width: 100%;
+	height: 100%;
+}
+
+.swiper-slide img,
+.swiper-slide video {
+	object-fit: cover;
+	width: 100%;
+	height: 250px;
+	border-radius: 1rem;
+	box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+	background-color: #22c55e;
+	color: white;
+	transition: .25s ease all;
+}
+
+.swiper-button-next:focus,
+.swiper-button-prev:focus {
+	background-color: #000000;
+	color: white;
+	transition: .25s ease all;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+	color: #22c55e;
+	background: #fff;
+	border-radius: 50%;
+	width: 3.5rem;
+	height: 3.5rem;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.5rem;
+	/* стрелка 50% от 3.5rem */
+	top: 50%;
+	transform: translateY(-50%);
+	transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+	z-index: 10;
+	aspect-ratio: 1;
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+	font-size: 1.5rem !important;
+	/* 50% от 3.5rem */
+}
+
+@media (max-width: 640px) {
+
+	.swiper-button-next,
+	.swiper-button-prev {
+		width: 2.5rem;
+		height: 2.5rem;
+		font-size: 1.25rem;
+	}
+
+	.swiper-button-next:after,
+	.swiper-button-prev:after {
+		font-size: 1.25rem !important;
+	}
+
+	.swiper-button-next {
+		right: -0.5rem;
+	}
+
+	.swiper-button-prev {
+		left: -0.5rem;
+	}
+}
+
+.swiper-pagination {
+	margin-top: 1rem;
+	position: static;
+	text-align: center;
+}
+
+.swiper-pagination-bullet-active {
+	background: #22c55e;
+}
+
+.modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.8);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1000;
+}
+
+.modal-content {
+	max-width: 90vw;
+	max-height: 90vh;
+	border-radius: 1rem;
+	background: #fff;
+	padding: 0;
+	overflow: hidden;
+	position: relative;
+}
+
+.modal-close {
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+	background: #fff;
+	border-radius: 50%;
+	width: 2.5rem;
+	height: 2.5rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 2rem;
+	color: #22c55e;
+	cursor: pointer;
+	z-index: 10;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	border: 2px solid #22c55e;
+	transition: background 0.2s;
+}
+
+.modal-close:hover {
+	background: #22c55e;
+	color: #fff;
+}

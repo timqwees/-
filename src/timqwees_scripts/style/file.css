@@ -1,0 +1,253 @@
+.view,
+.viewLeft,
+.viewRight {
+	transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::selection {
+	background-color: #b6f5c173;
+	color: rgb(79, 79, 79);
+}
+
+html,
+body {
+	scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #16a34a !important;
+	border-radius: 30px;
+}
+
+::-webkit-scrollbar {
+	width: 5px;
+}
+
+html[data-theme="dark"] {
+	background: #1a1a1a !important;
+	color: #fff !important;
+}
+
+html[data-theme="dark"] body {
+	background: #1a1a1a !important;
+	color: #fff !important;
+}
+
+html[data-theme="dark"] section {
+	background-color: #1a1a1a !important;
+}
+
+html[data-theme="dark"] .bg-white,
+html[data-theme="dark"] .bg-gray-50,
+html[data-theme="dark"] .bg-gray-100,
+html[data-theme="dark"] .bg-gray-200,
+html[data-theme="dark"] .bg-gray-300,
+html[data-theme="dark"] .bg-gray-400,
+html[data-theme="dark"] .bg-gray-500,
+html[data-theme="dark"] .bg-gray-600,
+html[data-theme="dark"] .bg-gray-700,
+html[data-theme="dark"] .bg-gray-800,
+html[data-theme="dark"] .bg-gray-900 {
+	background-color: #262626 !important;
+}
+
+html[data-theme="dark"] .bg-white\/70,
+html[data-theme="dark"] .bg-gray-50\/70,
+html[data-theme="dark"] .bg-gray-100\/70,
+html[data-theme="dark"] .bg-gray-200\/70,
+html[data-theme="dark"] .bg-gray-300\/70,
+html[data-theme="dark"] .bg-gray-400\/70,
+html[data-theme="dark"] .bg-gray-500\/70,
+html[data-theme="dark"] .bg-gray-600\/70,
+html[data-theme="dark"] .bg-gray-700\/70,
+html[data-theme="dark"] .bg-gray-800\/70,
+html[data-theme="dark"] .bg-gray-900\/70 {
+	background-color: rgba(38, 38, 38, 0.7) !important;
+}
+
+html[data-theme="dark"] .text-gray-50 {
+	color: #f5f5f5 !important;
+}
+
+html[data-theme="dark"] .text-gray-100 {
+	color: #f0f0f0 !important;
+}
+
+html[data-theme="dark"] .text-gray-200 {
+	color: #e5e5e5 !important;
+}
+
+html[data-theme="dark"] .text-gray-300 {
+	color: #d1d1d1 !important;
+}
+
+html[data-theme="dark"] .text-gray-400 {
+	color: #bdbdbd !important;
+}
+
+html[data-theme="dark"] .text-gray-500 {
+	color: #a3a3a3 !important;
+}
+
+html[data-theme="dark"] .text-gray-600 {
+	color: #d1d1d1 !important;
+}
+
+html[data-theme="dark"] .text-gray-700 {
+	color: rgba(255, 255, 255, 0.7) !important;
+}
+
+html[data-theme="dark"] .text-gray-800 {
+	color: #e5e5e5 !important;
+}
+
+html[data-theme="dark"] .text-gray-900 {
+	color: #fff !important;
+}
+
+html[data-theme="dark"] .border-gray-50,
+html[data-theme="dark"] .border-gray-100,
+html[data-theme="dark"] .border-gray-200,
+html[data-theme="dark"] .border-gray-300,
+html[data-theme="dark"] .border-gray-400,
+html[data-theme="dark"] .border-gray-500,
+html[data-theme="dark"] .border-gray-600,
+html[data-theme="dark"] .border-gray-700,
+html[data-theme="dark"] .border-gray-800,
+html[data-theme="dark"] .border-gray-900 {
+	border-color: #404040 !important;
+}
+
+html[data-theme="dark"] .bg-gray-50 {
+	background-color: rgba(38, 38, 38, 0.7) !important;
+}
+
+html[data-theme="dark"] .text-gray-700 {
+	color: rgba(255, 255, 255, 0.7) !important;
+}
+
+html[data-theme="dark"] table {
+	background-color: #1a1a1a !important;
+	color: #e5e5e5 !important;
+}
+
+html[data-theme="dark"] .feature-card {
+	background-color: #1a1a1a !important;
+	border-color: #404040 !important;
+}
+
+#content_menu {
+	transition: .4s ease-in-out all;
+	transform: translateY(-99rem);
+	opacity: 0;
+}
+
+#content_menu.active {
+	transform: translateY(0);
+	opacity: 1;
+}
+
+header {
+	background: rgba(255, 255, 255, 0.15);
+	backdrop-filter: blur(20px) saturate(180%);
+	-webkit-backdrop-filter: blur(20px) saturate(180%);
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+	border-radius: 0 0 12px 12px;
+	transition: all 0.3s ease;
+}
+
+#content_menu {
+	background: rgba(255, 255, 255);
+	backdrop-filter: blur(20px) saturate(180%);
+	-webkit-backdrop-filter: blur(20px) saturate(180%);
+	border: 1px solid rgba(255, 255, 255, 0.3);
+	border-radius: 0 0 20px 20px;
+}
+
+[data-theme='dark'] header {
+	background: rgba(0, 0, 0, 0.3);
+	box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+	border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+[data-theme='dark'] #content_menu {
+	background: rgba(0, 0, 0, 0.3);
+	border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+[data-theme='dark'] .hanburger_line,
+[data-theme='dark'] .close_line_menu_one,
+[data-theme='dark'] .close_line_menu_two,
+[data-theme='dark'] .underblock_line::after,
+[data-theme='dark'] .swiper-pagination-bullet {
+	background-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.close_line_menu_one {
+	position: absolute;
+	width: 28px;
+	height: 2px;
+	display: flex;
+	background-color: black;
+	transform: rotate(45deg);
+}
+
+.close_line_menu_two {
+	position: absolute;
+	width: 28px;
+	height: 2px;
+	display: flex;
+	background-color: black;
+	transform: rotate(-45deg);
+}
+
+.point-footer-phone {
+	transition: all 0.3s ease;
+	background-color: #374151 !important;
+}
+
+.point-footer-phone:hover {
+	transform: scale(1.05);
+	background-color: #16a34a !important;
+}
+
+/* Стилизация чекбоксов при нажатии */
+input[type="checkbox"]:checked {
+	accent-color: #16a34a;
+	color: #16a34a;
+	background-color: #16a34a;
+	border-color: #16a34a;
+}
+
+/* Добавляем галочку внутри чекбокса для кроссбраузерности */
+input[type="checkbox"] {
+	position: relative;
+	cursor: pointer;
+	transition: all ease .5s;
+}
+
+/* Добавляем animation */
+input[type="checkbox"]:hover {
+	transform: scale(1.2);
+}
+
+/* Добавляем галочку внутри чекбокса для кроссбраузерности */
+input[type="checkbox"]:checked:hover {
+	transform: rotate(360deg);
+}
+
+/* Стилизация галочки для нестилизованных чекбоксов */
+[data-theme='dark'] input[type="checkbox"]:checked::after {
+	content: '';
+	position: absolute;
+	left: 65.5%;
+	top: 60%;
+	width: 8px;
+	height: 14px;
+	border-color: #16a34a;
+	border-width: 0 3px 3px 0;
+	transform: translate(-80%, -70%) rotate(45deg) scale(.55);
+	pointer-events: none;
+	display: block;
+}

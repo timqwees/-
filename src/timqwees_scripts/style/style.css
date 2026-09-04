@@ -1,0 +1,14 @@
+@import './file.css';
+@import './projects.css';
+@import './swiper.css';
+@import './menu.css';
+
+section,
+main {
+	overflow-x: hidden !important;
+}
+
+input,
+textarea {
+	background: transparent !important;
+}
