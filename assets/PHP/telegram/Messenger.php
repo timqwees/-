@@ -27,7 +27,9 @@ class Messenger
 		}
 		$message .= "⏰ Время: " . date('d.m.Y H:i:s');
 
-		$hasError = false; // Флаг наличия ошибки
+		$successCount = 0;
+		$failCount = 0;
+		$errors = [];
 
 		// Отправляем сообщение каждому chat_id
 		foreach ($chat_ids as $chat_id) {
@@ -44,28 +46,47 @@ class Messenger
 			]);
 
 			$response = curl_exec($ch);
+			$ok = false;
+			$err = null;
 
 			if (curl_errno($ch)) {
-				$hasError = true;
-				$errorText = 'Ошибка cURL: ' . curl_error($ch);
+				$err = 'cURL: ' . curl_error($ch);
 			} else {
 				$response_data = json_decode($response, true);
-				if (!isset($response_data['ok']) || $response_data['ok'] !== true) {
-					$hasError = true;
-					$errorText = 'Ошибка Telegram API: ' . $response;
+				if (isset($response_data['ok']) && $response_data['ok'] === true) {
+					$ok = true;
+				} else {
+					$err = $response;
+					// Частая причина — пользователь заблокировал бота, не показываем это клиенту
+					if (strpos($response, 'blocked') !== false || strpos($response, 'Forbidden') !== false) {
+						$err = "chat $chat_id blocked bot";
+					}
 				}
 			}
-
 			curl_close($ch);
+
+			if ($ok) {
+				$successCount++;
+			} else {
+				$failCount++;
+				$errors[] = "chat $chat_id: $err";
+				// Логируем, но не показываем клиенту детали
+				@file_put_contents(ANTIBOT_STORAGE_DIR . '/telegram_errors.log', date('Y-m-d H:i:s') . " | chat $chat_id | $err | " . json_encode($arr, JSON_UNESCAPED_UNICODE) . PHP_EOL, FILE_APPEND | LOCK_EX);
+			}
 		}
 
-		// Показываем уведомление в интерфейсе - используем Security helper
-		if ($hasError) {
-			Security::showAlert('error', 'Ошибка при отправке сообщения в Telegram. ' . ($errorText ?? ''));
-		} else {
+		// Показываем уведомление — успех если хотя бы одному доставлено
+		if ($successCount > 0) {
 			Security::showAlert('success', 'Вы успешно оставили заявление, ожидайте ответа!');
-			// Для SEO: пушим событие в dataLayer если есть
 			echo '<script>if(window.dataLayer) dataLayer.push({event:"form_success", form_type:"'.htmlspecialchars($arr['type'] ?? 'unknown').'"});</script>';
+			// Если были частичные ошибки (например, 1 из 3 заблокировал), логируем тихо
+			if ($failCount > 0) {
+				error_log("Telegram partial fail: success $successCount fail $failCount " . implode('; ', $errors));
+			}
+		} else {
+			// Все доставки провалились — показываем общую ошибку без деталей API
+			Security::showAlert('error', 'Не удалось отправить заявку. Пожалуйста, позвоните нам +7 938 018-00-06 или попробуйте позже.');
+			error_log("Telegram all fail: " . implode('; ', $errors));
 		}
 	}
 }

@@ -46,7 +46,7 @@ $to_mail = MAIL_TO;
 $subject = "Заказ с сайта ФСС.РУС © " . date('Y');
 
 // Общий обработчик POST с антиботом
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['mailer']) || isset($_POST['mini-forma']) || isset($_POST['content_form']))) {
+if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['mailer']) || isset($_POST['mini-forma']) || isset($_POST['content_form']))) {
 
 	// 1. Антибот проверка - первая линия защиты
 	$antibotError = null;

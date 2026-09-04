@@ -47,7 +47,7 @@ namespace {
 		{
 
 			############### STYLE DESFING ##############
-			$logoUrl = 'https://i.postimg.cc/V636sYGd/2.png'; // Можно заменить на свой логотип
+			$logoUrl = 'https://www.xn--h1aafj.xn--p1ai/assets/image/logo/logo.svg'; // Можно заменить на свой логотип
 			$mainColor = '#22c55e'; // Зеленый оттенок
 			$bgColor = '#ffffff';
 			$borderColor = '#e5e7eb';

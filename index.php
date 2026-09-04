@@ -1,4 +1,7 @@
-<?/**
+<?php
+// Last-Modified для SEO
+if (!headers_sent()) header("Last-Modified: " . gmdate("D, d M Y H:i:s", filemtime(__FILE__)) . " GMT");
+/**
 *
 * _____ _____
 * ( ___ ) ( ___ )
@@ -89,6 +92,10 @@ if (file_exists($componentMailPath)) {
 	<meta name="twitter:description" content="Быстровозводимые здания, капремонт, грузоперевозки, мебель, склады и ангары. Москва и МО.">
 	<meta name="twitter:image" content="https://www.xn--h1aafj.xn--p1ai/assets/image/icon/2.PNG">
 	<meta name="twitter:site" content="@fss_rus">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+	<style> body { font-family: Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
 	<!-- Preload critical -->
 	<link rel="preload" href="/assets/distCSS/style.css" as="style">
 	<link rel="preload" href="/assets/distJS/main.js" as="script">
@@ -143,16 +150,16 @@ if (file_exists($componentMailPath)) {
 			overflow: hidden;
 		}
 	</style>
-	<? include_once __DIR__ . '/assets/PHP/sheoma.php'; ?>
+	<?php include_once __DIR__ . '/assets/PHP/sheoma.php'; ?>
 </head>
 
 <body class="font-sans text-gray-800">
 
-	<? include_once __DIR__ . '/assets/componets/header.php'; ?>
+	<?php include_once __DIR__ . '/assets/componets/header.php'; ?>
 
 	<!-- VIDEO BANNER -->
 	<section class="relative w-full min-h-[100dvh] flex items-center justify-start overflow-hidden view">
-		<!-- <img src="/assets/image/banner.jpeg" alt="banner" class="absolute inset-0 w-full h-full object-cover z-0" /> -->
+		<!-- <img src="/assets/image/banner.jpeg" alt="banner" class="absolute inset-0 w-full h-full object-cover z-0"  onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" /> -->
 
 		<!-- swiper -->
 		<div class="absolute inset-0 w-full h-full z-0">
@@ -177,47 +184,47 @@ if (file_exists($componentMailPath)) {
 					<div class="bg-black w-full h-full opacity-50 z-10 absolute"></div>
 
 					<div class="swiper-slide">
-						<img src="https://www.фсс.рус/assets/image/services/капстроение/1.JPG" alt="Капитальное строительство — ФАВОРИТ-СТРОЙ-СНАБ" loading="eager" fetchpriority="high" decoding="async"
-							class="w-full h-full object-cover" />
+						<img src="/assets/image/services/капстроение/1.JPG" alt="Капитальное строительство — ФАВОРИТ-СТРОЙ-СНАБ" loading="eager" fetchpriority="high" decoding="async"
+							class="w-full h-full object-cover"  onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" />
 					</div>
 
 					<div class="swiper-slide">
-						<img src="https://www.фсс.рус/assets/image/services/капстроение/5.JPG" alt="Быстровозводимые здания — производство" loading="lazy" decoding="async"
-							class="w-full h-full object-cover" />
+						<img src="/assets/image/services/капстроение/5.JPG" alt="Быстровозводимые здания — производство" loading="lazy" decoding="async"
+							class="w-full h-full object-cover"  onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" />
 					</div>
 
 					<div class="swiper-slide">
-						<img src="https://www.фсс.рус/assets/image/services/Грузоперевозки/1.jpg" alt="Грузоперевозки — автотранспорт" loading="lazy" decoding="async"
-							class="w-full h-full object-cover" />
+						<img src="/assets/image/services/Грузоперевозки/1.jpg" alt="Грузоперевозки — автотранспорт" loading="lazy" decoding="async"
+							class="w-full h-full object-cover"  onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" />
 					</div>
 
 					<div class="swiper-slide">
-						<img src="https://img.freepik.com/free-photo/view-heavy-machinery-used-construction-industry_23-2151307694.jpg" alt="Строительная техника — спецтехника" loading="lazy" decoding="async" referrerpolicy="no-referrer" class="w-full h-full object-cover" style="transform: scaleX(-1);" />
+						<img src="/assets/image/services/Грузоперевозки/2.jpg" alt="Строительная техника — спецтехника" loading="lazy" decoding="async" referrerpolicy="no-referrer" class="w-full h-full object-cover" style="transform: scaleX(-1);"  onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" />
 					</div>
 
 					<div class="swiper-slide">
-						<img src="https://truckscenter.ru/shacman/img/8x4.jpg" alt="Грузовик Шакман — доставка" loading="lazy" decoding="async" referrerpolicy="no-referrer"
-							class="w-full h-full object-cover" />
+						<img src="/assets/image/banner.jpeg" alt="Грузовик Шакман — доставка" loading="lazy" decoding="async" referrerpolicy="no-referrer"
+							class="w-full h-full object-cover"  onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" />
 					</div>
 
 					<div class="swiper-slide">
-						<img src="https://www.фсс.рус/assets/image/swiper/1.jpeg" alt="Модульные здания — портфолио" loading="lazy" decoding="async"
-							class="w-full h-full object-cover" />
+						<img src="/assets/image/swiper/1.jpeg" alt="Модульные здания — портфолио" loading="lazy" decoding="async"
+							class="w-full h-full object-cover"  onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" />
 					</div>
 
 					<div class="swiper-slide">
-						<img src="https://www.фсс.рус/assets/image/swiper/2.jpg" alt="Складские комплексы — БВЗ" loading="lazy" decoding="async"
-							class="w-full h-full object-cover" />
+						<img src="/assets/image/swiper/2.jpg" alt="Складские комплексы — БВЗ" loading="lazy" decoding="async"
+							class="w-full h-full object-cover"  onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" />
 					</div>
 
 					<div class="swiper-slide">
-						<img src="https://www.фсс.рус/assets/image/swiper/3.jpeg" alt="Монтаж быстровозводимых зданий" loading="lazy" decoding="async"
-							class="w-full h-full object-cover" />
+						<img src="/assets/image/swiper/3.jpeg" alt="Монтаж быстровозводимых зданий" loading="lazy" decoding="async"
+							class="w-full h-full object-cover"  onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" />
 					</div>
 
 					<div class="swiper-slide">
-						<img src="https://www.фсс.рус/assets/image/services/Школа фото/2.jpeg" alt="Капитальный ремонт школ — до и после" loading="lazy" decoding="async"
-							class="w-full h-full object-cover" />
+						<img src="/assets/image/services/Школа фото/2.jpeg" alt="Капитальный ремонт школ — до и после" loading="lazy" decoding="async"
+							class="w-full h-full object-cover"  onerror="this.onerror=null;this.src='/assets/image/logo/logo.svg'" />
 					</div>
 
 
@@ -247,34 +254,103 @@ if (file_exists($componentMailPath)) {
 			<div class="absolute inset-0 bg-black/10 z-10 pointer-events-none"></div>
 		</div>
 
-		<span class="absolute bottom-10 left-1/2 -translate-x-1/2 text-white">FAVORIT-STROY-SNAB</span>
+		<!-- modern hero overlay gradient -->
+		<div class="absolute inset-0 z-10 bg-gradient-to-r from-black/70 via-black/45 to-black/10 pointer-events-none"></div>
+		<div class="absolute inset-0 z-10 bg-gradient-to-t from-black/30 to-transparent pointer-events-none"></div>
 
-
-		<div class="relative z-30 container mx-auto px-6 flex flex-col items-start min-h-[600px]">
-			<div class="max-w-2xl viewLeft media_content_left">
-				<h1 class="text-[1.5rem] md:text-4xl font-extrabold text-white mb-6 mt-10 md:mt-0 leading-tight">
-					<span class="viewLeft">
-						<span class="text-white">Капитальное строение</span><br>
-						<span class="text-green-400">Грузоперевозки</span><br>
-						<span class="text-white">Быстровозводимые здания под ключ</span><br>
-						<span class="text-green-400">Поставка и сборка мебели</span><br>
-						<span class="text-white">Капитальный ремонт</span>
-					</span>
-				</h1>
-				<p class="text-white text-base md:text-lg mb-8"><span class="viewLeft">
-						Индивидуальный
-						подход к каждому
-						клиенту.</span><br>
-
-					<span class="view">Гарантия
-						на все виды работ и материалов.</span><br>
-
-					<span class="viewRight">Сопровождение
-						на
-						всех этапах
-						строительства.</span>
-
-				</p>
+		<div class="relative z-20 w-full min-h-[100dvh] flex items-center">
+			<div class="mx-auto w-full max-w-[1280px] px-4 py-10 md:py-14 grid lg:grid-cols-[1.15fr_.85fr] gap-8 items-center">
+				<!-- left -->
+				<div class="text-white">
+					<div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/15 rounded-full px-3 py-1.5 text-xs font-medium">
+						<span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+						<span>С 2011 года • 180+ объектов • Допуск СРО</span>
+						<span class="hidden sm:inline-flex items-center gap-1 ml-1 bg-emerald-500 text-white rounded-full px-2 py-0.5 text-[11px] font-bold">3 слота на июнь</span>
+					</div>
+					<h1 class="mt-5 text-[32px] sm:text-[42px] lg:text-[48px] font-black leading-[0.95] tracking-tight">
+						Быстровозводимые<br>
+						<span class="text-emerald-400">здания под ключ</span><br>
+						от 14 дней
+					</h1>
+					<p class="mt-4 text-[16px] sm:text-[18px] leading-relaxed text-white/85 max-w-[560px]">
+						Склады, ангары, АБК, общежития, капремонт и грузоперевозки. Смету рассчитаем за 15 минут, выезд инженера — бесплатно. Фиксируем цену в договоре.
+					</p>
+					<div class="mt-7 flex flex-col sm:flex-row gap-3">
+						<a href="#contact" class="inline-flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full px-7 py-3.5 font-semibold text-[15px] shadow-[0_12px_28px_rgba(16,185,129,.35)] transition">
+							Рассчитать стоимость за 15 минут <i class="fa-solid fa-arrow-right text-xs"></i>
+						</a>
+						<a href="/pages/portfolio.php" class="inline-flex items-center justify-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white hover:text-gray-900 text-white rounded-full px-6 py-3.5 font-semibold text-[15px] transition">
+							<i class="fa-solid fa-images"></i> Показать объекты
+						</a>
+					</div>
+					<div class="mt-3 flex items-center gap-2 text-xs text-white/70">
+						<i class="fa-solid fa-lock text-emerald-400"></i> Без предоплаты • Цена фиксируется • Оплата по этапам
+					</div>
+					<div class="mt-8 grid grid-cols-3 gap-3 max-w-[520px]">
+						<div class="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-3">
+							<div class="text-[11px] uppercase tracking-widest text-white/60">Срок</div>
+							<div class="text-lg font-extrabold">от 14 дней</div>
+							<div class="text-xs text-white/70">вместо 3–6 мес.</div>
+						</div>
+						<div class="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-3">
+							<div class="text-[11px] uppercase tracking-widest text-white/60">Экономия</div>
+							<div class="text-lg font-extrabold">до −30%</div>
+							<div class="text-xs text-white/70">к классике</div>
+						</div>
+						<div class="bg-white/10 backdrop-blur-md border border-white/15 rounded-2xl p-3">
+							<div class="text-[11px] uppercase tracking-widest text-white/60">Гарантия</div>
+							<div class="text-lg font-extrabold">50+ лет</div>
+							<div class="text-xs text-white/70">службы</div>
+						</div>
+					</div>
+					<div class="mt-6 flex flex-wrap items-center gap-3 text-xs">
+						<span class="inline-flex items-center gap-1.5 bg-white text-gray-900 rounded-full px-3 py-1.5 font-medium"><i class="fa-solid fa-check text-emerald-600"></i> Технадзор на каждом этапе</span>
+						<span class="inline-flex items-center gap-1.5 bg-white text-gray-900 rounded-full px-3 py-1.5 font-medium"><i class="fa-solid fa-check text-emerald-600"></i> Фотоотчет каждую неделю</span>
+						<span class="inline-flex items-center gap-1.5 bg-white text-gray-900 rounded-full px-3 py-1.5 font-medium"><i class="fa-solid fa-check text-emerald-600"></i> Персональный менеджер</span>
+					</div>
+				</div>
+				<!-- right mock card - lead magnet -->
+				<div class="hidden lg:block">
+					<div class="bg-white rounded-[28px] p-6 shadow-[0_24px_64px_rgba(0,0,0,.28)] border border-black/5">
+						<div class="flex items-center justify-between">
+							<div class="text-xs font-semibold tracking-widest uppercase text-gray-500">Онлайн-расчет</div>
+							<div class="text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full px-2.5 py-1 font-medium">Ответим за 7 минут</div>
+						</div>
+						<div class="mt-4">
+							<div class="text-xl font-extrabold tracking-tight text-gray-900 leading-tight">Узнайте стоимость<br>вашего здания сегодня</div>
+							<div class="text-sm text-gray-500 mt-1">Оставьте контакты — пришлем смету + 3 типовых проекта в WhatsApp</div>
+						</div>
+						<form method="POST" class="mt-5 space-y-3" novalidate>
+							<input type="hidden" name="mini-forma">
+							<?php include_once __DIR__ . '/assets/componets/antibot_fields.php'; ?>
+							<input name="name" type="text" placeholder="Ваше имя" required minlength="2" maxlength="100" class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-gray-50">
+							<input name="phone" type="tel" maxlength="18" placeholder="+7 (___) ___-__-__" required pattern="^\+?[0-9\s\-\(\)]{10,20}$" class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-gray-50">
+							<button type="submit" class="w-full bg-gray-900 hover:bg-black text-white rounded-full py-3.5 font-semibold transition flex items-center justify-center gap-2">Получить расчет и проекты <i class="fa-solid fa-arrow-right text-xs"></i></button>
+							<div class="text-[11px] leading-tight text-gray-500 text-center">Нажимая, вы соглашаетесь с <a href="/pages/politic/index.php" class="underline">политикой</a>. Защита от спама. Реклама не принимается.</div>
+						</form>
+						<div class="mt-4 grid grid-cols-3 gap-2 text-center">
+							<div class="bg-gray-50 rounded-2xl p-2.5 border border-gray-100">
+								<div class="text-[11px] text-gray-500">Звонок</div>
+								<div class="text-sm font-bold">7 минут</div>
+							</div>
+							<div class="bg-gray-50 rounded-2xl p-2.5 border border-gray-100">
+								<div class="text-[11px] text-gray-500">Смета</div>
+								<div class="text-sm font-bold">15 минут</div>
+							</div>
+							<div class="bg-gray-50 rounded-2xl p-2.5 border border-gray-100">
+								<div class="text-[11px] text-gray-500">Выезд</div>
+								<div class="text-sm font-bold">Бесплатно</div>
+							</div>
+						</div>
+						<div class="mt-4 flex items-center gap-2 text-xs text-gray-500">
+							<img src="/assets/image/logo/logo.svg" alt="logo" class="w-6 h-6" onerror="this.style.display='none'">
+							<span>Работаем по договору • Без скрытых платежей</span>
+						</div>
+					</div>
+					<div class="mt-3 flex items-center justify-center gap-2 text-xs text-white/80">
+						<i class="fa-solid fa-shield-halved text-emerald-400"></i> Данные защищены • 256-bit
+					</div>
+				</div>
 			</div>
 		</div>
 
@@ -411,155 +487,155 @@ if (file_exists($componentMailPath)) {
 			<div class="marquee-wrapper">
 				<div class="marquee-track-ltr">
 					<div class="marquee-content">
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 fa fa-home"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-home"
 							title="Дом"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-700 rounded-lg shadow-sm p-1 fa fa-cube"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-cube"
 							title="Кирпичи"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-500 rounded-lg shadow-sm p-1 fa fa-building"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-building"
 							title="Здание"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-800 rounded-lg shadow-sm p-1 fa fa-road"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-road"
 							title="Дороги"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 fa fa-bolt"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-bolt"
 							title="Электрика"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-700 rounded-lg shadow-sm p-1 fa fa-truck"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-truck"
 							title="Грузовик"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-500 rounded-lg shadow-sm p-1 fa fa-tools"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-tools"
 							title="Инструменты"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-800 rounded-lg shadow-sm p-1 fa fa-hard-hat"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-hard-hat"
 							title="Строитель"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 fa fa-shield"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-shield"
 							title="Безопасность"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-700 rounded-lg shadow-sm p-1 fa fa-warehouse"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-warehouse"
 							title="Склад"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-500 rounded-lg shadow-sm p-1 fa fa-stairs"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-stairs"
 							title="Лестница"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-800 rounded-lg shadow-sm p-1 fa fa-paint-brush"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-paint-brush"
 							title="Отделка"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 fa fa-door-closed"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-door-closed"
 							title="Дверь"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-700 rounded-lg shadow-sm p-1 fa fa-drafting-compass"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-drafting-compass"
 							title="Чертежи"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-500 rounded-lg shadow-sm p-1 fa fa-truck"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-truck"
 							title="Пикап"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-800 rounded-lg shadow-sm p-1 fa fa-hard-hat"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-hard-hat"
 							title="Строитель"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 fa fa-shield"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-shield"
 							title="Безопасность"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-700 rounded-lg shadow-sm p-1 fa fa-warehouse"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-warehouse"
 							title="Склад"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-500 rounded-lg shadow-sm p-1 fa fa-stairs"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-stairs"
 							title="Лестница"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-800 rounded-lg shadow-sm p-1 fa fa-paint-brush"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-paint-brush"
 							title="Отделка"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 fa fa-door-closed"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-door-closed"
 							title="Дверь"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-700 rounded-lg shadow-sm p-1 fa fa-drafting-compass"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-drafting-compass"
 							title="Чертежи"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-500 rounded-lg shadow-sm p-1 fa fa-truck"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-truck"
 							title="Пикап"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 fa fa-home"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-home"
 							title="Дом"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-700 rounded-lg shadow-sm p-1 fa fa-cube"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-cube"
 							title="Кирпичи"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-500 rounded-lg shadow-sm p-1 fa fa-building"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-building"
 							title="Здание"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-800 rounded-lg shadow-sm p-1 fa fa-road"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-road"
 							title="Дороги"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 fa fa-bolt"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-bolt"
 							title="Электрика"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-700 rounded-lg shadow-sm p-1 fa fa-truck"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-truck"
 							title="Грузовик"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-500 rounded-lg shadow-sm p-1 fa fa-tools"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-tools"
 							title="Инструменты"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-800 rounded-lg shadow-sm p-1 fa fa-hard-hat"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-hard-hat"
 							title="Строитель"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 fa fa-shield"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-shield"
 							title="Безопасность"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-700 rounded-lg shadow-sm p-1 fa fa-warehouse"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-warehouse"
 							title="Склад"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-500 rounded-lg shadow-sm p-1 fa fa-stairs"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-stairs"
 							title="Лестница"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-800 rounded-lg shadow-sm p-1 fa fa-paint-brush"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-paint-brush"
 							title="Отделка"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 fa fa-door-closed"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-door-closed"
 							title="Дверь"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-700 rounded-lg shadow-sm p-1 fa fa-drafting-compass"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-drafting-compass"
 							title="Чертежи"></i>
 					</div>
 					<div class="marquee-content">
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 fa fa-home"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-home"
 							title="Дом"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-700 rounded-lg shadow-sm p-1 fa fa-cube"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-cube"
 							title="Кирпичи"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-500 rounded-lg shadow-sm p-1 fa fa-building"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-building"
 							title="Здание"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-800 rounded-lg shadow-sm p-1 fa fa-road"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-road"
 							title="Дороги"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 fa fa-bolt"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-bolt"
 							title="Электрика"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-700 rounded-lg shadow-sm p-1 fa fa-truck"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-truck"
 							title="Грузовик"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-500 rounded-lg shadow-sm p-1 fa fa-tools"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-tools"
 							title="Инструменты"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-800 rounded-lg shadow-sm p-1 fa fa-hard-hat"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-hard-hat"
 							title="Строитель"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 fa fa-shield"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-shield"
 							title="Безопасность"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-700 rounded-lg shadow-sm p-1 fa fa-warehouse"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-warehouse"
 							title="Склад"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-500 rounded-lg shadow-sm p-1 fa fa-stairs"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-stairs"
 							title="Лестница"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-800 rounded-lg shadow-sm p-1 fa fa-paint-brush"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-paint-brush"
 							title="Отделка"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 fa fa-door-closed"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-door-closed"
 							title="Дверь"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-700 rounded-lg shadow-sm p-1 fa fa-drafting-compass"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-drafting-compass"
 							title="Чертежи"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-500 rounded-lg shadow-sm p-1 fa fa-truck"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-truck"
 							title="Пикап"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-800 rounded-lg shadow-sm p-1 fa fa-hard-hat"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-hard-hat"
 							title="Строитель"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 fa fa-shield"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-shield"
 							title="Безопасность"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-700 rounded-lg shadow-sm p-1 fa fa-warehouse"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-warehouse"
 							title="Склад"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-500 rounded-lg shadow-sm p-1 fa fa-stairs"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-stairs"
 							title="Лестница"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-800 rounded-lg shadow-sm p-1 fa fa-paint-brush"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-paint-brush"
 							title="Отделка"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 fa fa-door-closed"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-door-closed"
 							title="Дверь"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-700 rounded-lg shadow-sm p-1 fa fa-drafting-compass"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-drafting-compass"
 							title="Чертежи"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-500 rounded-lg shadow-sm p-1 fa fa-truck"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-truck"
 							title="Пикап"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 fa fa-home"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-home"
 							title="Дом"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-700 rounded-lg shadow-sm p-1 fa fa-cube"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-cube"
 							title="Кирпичи"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-500 rounded-lg shadow-sm p-1 fa fa-building"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-building"
 							title="Здание"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-800 rounded-lg shadow-sm p-1 fa fa-road"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-road"
 							title="Дороги"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 fa fa-bolt"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-bolt"
 							title="Электрика"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-700 rounded-lg shadow-sm p-1 fa fa-truck"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-truck"
 							title="Грузовик"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-500 rounded-lg shadow-sm p-1 fa fa-tools"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-tools"
 							title="Инструменты"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-800 rounded-lg shadow-sm p-1 fa fa-hard-hat"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-hard-hat"
 							title="Строитель"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 fa fa-shield"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-shield"
 							title="Безопасность"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-700 rounded-lg shadow-sm p-1 fa fa-warehouse"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-warehouse"
 							title="Склад"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-500 rounded-lg shadow-sm p-1 fa fa-stairs"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-stairs"
 							title="Лестница"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-800 rounded-lg shadow-sm p-1 fa fa-paint-brush"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-paint-brush"
 							title="Отделка"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 fa fa-door-closed"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-door-closed"
 							title="Дверь"></i>
-						<i class="inline-block opacity-90 hover:opacity-100 transition text-green-700 rounded-lg shadow-sm p-1 fa fa-drafting-compass"
+						<i class="inline-block opacity-90 hover:opacity-100 transition text-emerald-600 rounded-lg shadow-sm p-1 fa fa-drafting-compass"
 							title="Чертежи"></i>
 					</div>
 				</div>
@@ -617,87 +693,87 @@ if (file_exists($componentMailPath)) {
 		</style>
 	</section> -->
 
-	<!-- Линейка брендов -->
-	<section class="py-4 bg-[#deffbc]">
+	<!-- Линейка — зелёная как было, но современнее -->
+	<section class="py-3 bg-[#deffbc] border-y border-[#bbf7d0]">
 		<div class="overflow-x-hidden relative">
 			<div class="marquee-wrapper">
 				<div class="marquee-track">
 					<!-- Повторим 2 раза, чтобы бесконечно двигалось -->
 					<div class="marquee-content">
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Капитальный ремонт">Капитальный ремонт</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-700 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Поставка мебели">Поставка мебели</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-500 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Быстровозводимые здания">Быстровозводимые здания</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-800 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Склады">Склады</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Ангары">Ангары</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-500 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Навесы">Навесы</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-700 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Дизель генераторные">Дизель генераторные</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-800 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Компрессорные станции">Компрессорные станции</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Блочно-модульные конструкции">Блочно-модульные конструкции</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-500 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Монтаж инженерных систем">Монтаж инженерных систем</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-700 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Проектирование объектов">Проектирование объектов</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-800 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Техническое обслуживание">Техническое обслуживание</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Ремонт кровли">Ремонт кровли</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-500 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Внутренняя отделка">Внутренняя отделка</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-700 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Промышленные полы">Промышленные полы</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-800 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Фасадные работы">Фасадные работы</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Пожарная безопасность">Пожарная безопасность</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-500 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Ландшафтные работы">Ландшафтные работы</p>
 					</div>
 					<!-- Дублируем для бесконечной прокрутки -->
 					<div class="marquee-content">
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Капитальный ремонт">Капитальный ремонт</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-700 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Поставка мебели">Поставка мебели</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-500 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Быстровозводимые здания">Быстровозводимые здания</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-800 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Склады">Склады</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Ангары">Ангары</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-500 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Навесы">Навесы</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-700 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Дизель генераторные">Дизель генераторные</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-800 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Компрессорные станции">Компрессорные станции</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Блочно-модульные конструкции">Блочно-модульные конструкции</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-500 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Монтаж инженерных систем">Монтаж инженерных систем</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-700 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Проектирование объектов">Проектирование объектов</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-800 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Техническое обслуживание">Техническое обслуживание</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Ремонт кровли">Ремонт кровли</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-500 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Внутренняя отделка">Внутренняя отделка</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-700 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Промышленные полы">Промышленные полы</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-800 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Фасадные работы">Фасадные работы</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-600 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Пожарная безопасность">Пожарная безопасность</p>
-						<p class="inline-block opacity-90 hover:opacity-100 transition text-green-500 rounded-lg shadow-sm p-1 viewLeft"
+						<p class="inline-block opacity-90 hover:opacity-100 transition text-emerald-800 rounded-lg shadow-sm p-1 viewLeft"
 							title="Ландшафтные работы">Ландшафтные работы</p>
 					</div>
 				</div>
@@ -758,32 +834,25 @@ if (file_exists($componentMailPath)) {
 			}
 		</style>
 	</section>
-
-
-	</section>
 	<!-- Process Section -->
-	<section id="process" class="py-20 bg-white view">
+	<section id="process" class="py-16 md:py-20 bg-[#f0fdf4]/60 view">
 		<div class="container mx-auto px-4">
-			<div class="text-center mb-16 ">
-				<h2 class="text-3xl font-bold mb-4 viewLeft">Этапы строительства БВЗ </h2>
-				<p class="text-xl text-gray-600 max-w-2xl mx-auto flex items-center justify-center gap-3 ">
-					<span>
-						<i class="fa-solid fa-building-shield text-green-500 text-2xl"></i>
-					</span>
-					<span class="viewRight">Мы возводим надежные здания!</span>
-				</p>
+					<div class="text-center mb-12 max-w-3xl mx-auto">
+				<div class="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-full px-3 py-1 text-xs font-semibold tracking-widest uppercase text-emerald-700">Процесс • Прозрачно</div>
+				<h2 class="mt-4 text-3xl md:text-4xl font-black tracking-tight text-gray-900">Этапы строительства БВЗ</h2>
+				<p class="mt-3 text-[15px] leading-relaxed text-gray-600">От идеи до сдачи — 7 понятных шагов. Каждый этап — под технадзором, с фотоотчетом и фиксированной ценой.</p>
 			</div>
 
 			<div class="relative">
-				<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
 					<!-- Step 1 -->
-					<div class="timeline-item relative bg-gray-50 p-8 rounded-lg text-center openWindow viewLeft">
-						<div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 ">
-							<i class="fa-solid fa-pencil-ruler text-green-500 text-4xl"></i>
+					<div class="timeline-item relative bg-white rounded-[24px] border border-gray-100 p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition text-left openWindow viewLeft">
+						<div class="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center mb-5">
+							<i class="fa-solid fa-pencil-ruler text-emerald-600 text-xl"></i>
 						</div>
-						<h3 class="text-xl font-bold mb-3 openWindow_title view">Проектирование</h3>
-						<p class="text-gray-600 viewLeft">Первый и самый важный этап — создание проекта.
+						<h3 class="text-[17px] font-bold leading-tight text-gray-900 mb-2 openWindow_title">Проектирование</h3>
+						<p class="text-sm leading-relaxed text-gray-600">Первый и самый важный этап — создание проекта.
 						</p>
 
 						<input class="openWindow_description hidden" value="Первый и самый важный этап — создание проекта. На
@@ -798,22 +867,20 @@ if (file_exists($componentMailPath)) {
 						разработку
 						чертежей, расчёты несущих конструкций и подбор материалов." />
 
-						<span
-							class="openWindow_button mx-auto text-white w-10 h-10 flex items-center justify-center font-bold bg-green-300 px-10 rounded-lg my-2 viewRight">Читать</span>
+						<span class="openWindow_button inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-700 hover:text-emerald-800 mt-4">Подробнее <i class="fa-solid fa-arrow-right text-xs"></i></span>
 
-						<span
-							class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">1</span>
+						<span class="absolute -top-3 left-6 bg-gray-900 text-white rounded-full w-8 h-8 flex items-center justify-center text-xs font-bold border-4 border-white">1</span>
 					</div>
 
 					<!-- Step 2 -->
-					<div class="timeline-item relative bg-gray-50 p-8 rounded-lg text-center openWindow view">
-						<div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-							<i class="fa-solid fa-drafting-compass text-green-500 text-4xl"></i>
+					<div class="timeline-item relative bg-white rounded-[24px] border border-gray-100 p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition text-left openWindow view">
+						<div class="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center mb-5">
+							<i class="fa-solid fa-drafting-compass text-emerald-600 text-xl"></i>
 						</div>
-						<h3 class="text-xl font-bold mb-3 openWindow_title viewRight">Подготовка участка и
+						<h3 class="text-[17px] font-bold leading-tight text-gray-900 mb-2 openWindow_title">Подготовка участка и
 							фундамент
 						</h3>
-						<p class="text-gray-600 view">Перед началом строительства проводят:</p>
+						<p class="text-sm leading-relaxed text-gray-600">Перед началом строительства проводят:</p>
 
 						<input class="openWindow_description hidden" value="
 						Перед началом строительства проводят:<br>
@@ -828,42 +895,36 @@ if (file_exists($componentMailPath)) {
 						Для БВЗ часто используют
 						облегчённые фундаменты, что сокращает сроки и стоимость работ." />
 
-						<span
-							class="openWindow_button mx-auto text-white w-10 h-10 flex items-center justify-center font-bold bg-green-300 px-10 rounded-lg my-2 viewLeft">Читать</span>
+						<span class="openWindow_button inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-700 hover:text-emerald-800 mt-4">Подробнее <i class="fa-solid fa-arrow-right text-xs"></i></span>
 
-						<span
-							class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">2</span>
+						<span class="absolute -top-3 left-6 bg-gray-900 text-white rounded-full w-8 h-8 flex items-center justify-center text-xs font-bold border-4 border-white">2</span>
 					</div>
 
 					<!-- Step 3 -->
-					<div class="timeline-item relative bg-gray-50 p-8 rounded-lg text-center openWindow viewRight">
-						<div
-							class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 viewRight">
-							<i class="fa-solid fa-industry text-green-500 text-4xl"></i>
+					<div class="timeline-item relative bg-white rounded-[24px] border border-gray-100 p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition text-left openWindow viewRight">
+						<div class="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center mb-5">
+							<i class="fa-solid fa-industry text-emerald-600 text-xl"></i>
 						</div>
-						<h3 class="text-xl font-bold mb-3 openWindow_title view">Изготовление
+						<h3 class="text-[17px] font-bold leading-tight text-gray-900 mb-2 openWindow_title">Изготовление
 							металлоконструкций</h3>
-						<p class="text-gray-600 viewRight">Основные элементы (колонны, фермы)</p>
+						<p class="text-sm leading-relaxed text-gray-600">Основные элементы (колонны, фермы)</p>
 
 						<input class="openWindow_description hidden"
 							value="
 												Основные элементы (колонны, фермы, стеновые панели) производятся на заводе по готовым чертежам. Это гарантирует точность размеров и качество материалов." />
 
-						<span
-							class="openWindow_button mx-auto text-white w-10 h-10 flex items-center justify-center font-bold bg-green-300 px-10 rounded-lg my-2 viewLeft">Читать</span>
+						<span class="openWindow_button inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-700 hover:text-emerald-800 mt-4">Подробнее <i class="fa-solid fa-arrow-right text-xs"></i></span>
 
-						<span
-							class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">3</span>
+						<span class="absolute -top-3 left-6 bg-gray-900 text-white rounded-full w-8 h-8 flex items-center justify-center text-xs font-bold border-4 border-white">3</span>
 					</div>
 
 					<!-- Step 4 -->
-					<div class="timeline-item relative bg-gray-50 p-8 rounded-lg text-center openWindow viewLeft">
-						<div
-							class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 viewLeft">
-							<i class="fa-solid fa-screwdriver-wrench text-green-500 text-4xl"></i>
+					<div class="timeline-item relative bg-white rounded-[24px] border border-gray-100 p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition text-left openWindow viewLeft">
+						<div class="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center mb-5">
+							<i class="fa-solid fa-screwdriver-wrench text-emerald-600 text-xl"></i>
 						</div>
-						<h3 class="text-xl font-bold mb-3 openWindow_title view">Монтаж каркаса</h3>
-						<p class="text-gray-600 viewLeft">После доставки конструкций на объект начинается
+						<h3 class="text-[17px] font-bold leading-tight text-gray-900 mb-2 openWindow_title">Монтаж каркаса</h3>
+						<p class="text-sm leading-relaxed text-gray-600">После доставки конструкций на объект начинается
 							сборка:</p>
 
 						<input class="openWindow_description hidden" value="
@@ -877,21 +938,18 @@ if (file_exists($componentMailPath)) {
 <br>
 Каркас собирается с помощью болтовых соединений или сварки." />
 
-						<span
-							class="openWindow_button mx-auto text-white w-10 h-10 flex items-center justify-center font-bold bg-green-300 px-10 rounded-lg my-2 viewRight">Читать</span>
-						<span
-							class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">4</span>
+						<span class="openWindow_button inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-700 hover:text-emerald-800 mt-4">Подробнее <i class="fa-solid fa-arrow-right text-xs"></i></span>
+						<span class="absolute -top-3 left-6 bg-gray-900 text-white rounded-full w-8 h-8 flex items-center justify-center text-xs font-bold border-4 border-white">4</span>
 					</div>
 
 					<!-- Step 5 -->
-					<div class="timeline-item relative bg-gray-50 p-8 rounded-lg text-center openWindow view">
-						<div
-							class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 view">
-							<i class="fa-solid fa-layer-group text-green-500 text-4xl"></i>
+					<div class="timeline-item relative bg-white rounded-[24px] border border-gray-100 p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition text-left openWindow view">
+						<div class="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center mb-5">
+							<i class="fa-solid fa-layer-group text-emerald-600 text-xl"></i>
 						</div>
-						<h3 class="text-xl font-bold mb-3 openWindow_title viewRight">Утепление и обшивка
+						<h3 class="text-[17px] font-bold leading-tight text-gray-900 mb-2 openWindow_title">Утепление и обшивка
 						</h3>
-						<p class="text-gray-600 view">Стены и кровля обшиваются сэндвич-панелями или
+						<p class="text-sm leading-relaxed text-gray-600">Стены и кровля обшиваются сэндвич-панелями или
 							профлистом с
 							утеплителем. Это обеспечивает:</p>
 
@@ -904,21 +962,18 @@ if (file_exists($componentMailPath)) {
 <br>
 · Эстетичный внешний вид." />
 
-						<span
-							class="openWindow_button mx-auto text-white w-10 h-10 flex items-center justify-center font-bold bg-green-300 px-10 rounded-lg my-2 viewLeft">Читать</span>
-						<span
-							class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">5</span>
+						<span class="openWindow_button inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-700 hover:text-emerald-800 mt-4">Подробнее <i class="fa-solid fa-arrow-right text-xs"></i></span>
+						<span class="absolute -top-3 left-6 bg-gray-900 text-white rounded-full w-8 h-8 flex items-center justify-center text-xs font-bold border-4 border-white">5</span>
 					</div>
 
 					<!-- Step 6 -->
-					<div class="timeline-item relative bg-gray-50 p-8 rounded-lg text-center openWindow viewRight">
-						<div
-							class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 viewRight">
-							<i class="fa-solid fa-plug text-green-500 text-4xl"></i>
+					<div class="timeline-item relative bg-white rounded-[24px] border border-gray-100 p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition text-left openWindow viewRight">
+						<div class="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center mb-5">
+							<i class="fa-solid fa-plug text-emerald-600 text-xl"></i>
 						</div>
-						<h3 class="text-xl font-bold mb-3 openWindow_title view">Инженерные коммуникации
+						<h3 class="text-[17px] font-bold leading-tight text-gray-900 mb-2 openWindow_title">Инженерные коммуникации
 						</h3>
-						<p class="text-gray-600 viewRight">Проводится монтаж систем отопления,
+						<p class="text-sm leading-relaxed text-gray-600">Проводится монтаж систем отопления,
 							водоснабжения, вентиляции
 							и
 							электрики.</p>
@@ -932,22 +987,19 @@ if (file_exists($componentMailPath)) {
 <br>
 · Прокладка водоснабжения и канализации (при необходимости)." />
 
-						<span
-							class="openWindow_button mx-auto text-white w-10 h-10 flex items-center justify-center font-bold bg-green-300 px-10 rounded-lg my-2 viewLeft">Читать</span>
-						<span
-							class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">6</span>
+						<span class="openWindow_button inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-700 hover:text-emerald-800 mt-4">Подробнее <i class="fa-solid fa-arrow-right text-xs"></i></span>
+						<span class="absolute -top-3 left-6 bg-gray-900 text-white rounded-full w-8 h-8 flex items-center justify-center text-xs font-bold border-4 border-white">6</span>
 					</div>
 
 					<!-- Step 7 -->
-					<div class="timeline-item relative bg-gray-50 p-8 rounded-lg text-center openWindow view">
-						<div
-							class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 viewRight">
-							<i class="fa-solid fa-paint-roller text-green-500 text-4xl"></i>
+					<div class="timeline-item relative bg-white rounded-[24px] border border-gray-100 p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition text-left openWindow view">
+						<div class="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center mb-5">
+							<i class="fa-solid fa-paint-roller text-emerald-600 text-xl"></i>
 						</div>
-						<h3 class="text-xl font-bold mb-3 openWindow_title viewRight">Внутренняя отделка и
+						<h3 class="text-[17px] font-bold leading-tight text-gray-900 mb-2 openWindow_title">Внутренняя отделка и
 							сдача объекта
 						</h3>
-						<p class="text-gray-600 view">Выполняется отделка, уборка, проверка систем и сдача
+						<p class="text-sm leading-relaxed text-gray-600">Выполняется отделка, уборка, проверка систем и сдача
 							заказчику.
 						</p>
 
@@ -970,96 +1022,94 @@ if (file_exists($componentMailPath)) {
 						<br>
 						✅ Гибкость – возможность расширения и модернизации." />
 
-						<span
-							class="openWindow_button mx-auto text-white w-10 h-10 flex items-center justify-center font-bold bg-green-300 px-10 rounded-lg my-2 viewLeft">Читать</span>
-						<span
-							class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">7</span>
+						<span class="openWindow_button inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-700 hover:text-emerald-800 mt-4">Подробнее <i class="fa-solid fa-arrow-right text-xs"></i></span>
+						<span class="absolute -top-3 left-6 bg-gray-900 text-white rounded-full w-8 h-8 flex items-center justify-center text-xs font-bold border-4 border-white">7</span>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
-	<!-- Contact Section -->
-	<section id="contact" class="py-20 bg-green-600 text-white view">
-		<div class="container mx-auto px-4">
-			<div class="max-w-4xl mx-auto">
-				<div class="text-center mb-12">
-					<h2 class="text-3xl font-bold mb-4 viewLeft">Есть вопросы?</h2>
-					<p class="text-xl view">Не копите их в себе. Просто спросите наших специалистов — они
-						расскажут все
-						просто и понятно!</p>
-				</div>
-
-				<div class="bg-white rounded-lg shadow-xl overflow-hidden view">
-					<div class="md:flex">
-						<div class="md:w-1/2 p-8 viewLeft">
-							<h3 class="text-2xl font-bold text-gray-800 mb-6 view">Расчет стоимости
-								коттеджей</h3>
-							<form method="POST" novalidate>
-								<input type="hidden" name="mailer">
-								<? include_once __DIR__ . '/assets/componets/antibot_fields.php'; ?>
-								<div class="mb-4">
-									<label for="contact_name" class="sr-only">Ваше имя</label>
-									<input id="contact_name" name="name" type="text" placeholder="Ваше имя *" required autocomplete="name" minlength="2" maxlength="100" pattern="^[A-Za-zА-Яа-яЁё\s\-\.']+$"
-										class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-800">
-								</div>
-								<div class="mb-4">
-									<label for="contact_phone" class="sr-only">Телефон</label>
-									<input id="contact_phone" name="phone" type="tel" placeholder="Телефон * +7 (___) ___-__-__" required autocomplete="tel" inputmode="tel" pattern="^\+?[0-9\s\-\(\)]{10,20}$"
-										class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-800">
-								</div>
-								<div class="mb-4">
-									<label for="contact_email" class="sr-only">Email</label>
-									<input id="contact_email" name="email" type="email" placeholder="Email *" required autocomplete="email" maxlength="254"
-										class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-800">
-								</div>
-								<div class="mb-6">
-									<label for="contact_message" class="sr-only">Ваш вопрос</label>
-									<textarea id="contact_message" name="message" placeholder="Ваш вопрос *" required minlength="10" maxlength="2000"
-										class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-800 h-24"></textarea>
-								</div>
-								<div class="mb-4">
-									<label class="flex items-center text-gray-600 text-sm cursor-pointer">
-										<input type="checkbox" class="mr-2" name="checkbox" required>
-										<span class="view">Я согласен(а) с <a href="/pages/politic/index.php" class="underline text-green-600 hover:text-green-700">Политикой конфиденциальности</a> и
-											<a href="/pages/agree/index.php" class="underline text-green-600 hover:text-green-700">Правилами обработки персональных данных</a></span>
-									</label>
-								</div>
-								<button type="submit"
-									class="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg font-medium transition viewRight">Отправить
-									заявку</button>
-								<p class="text-xs text-gray-500 mt-2 text-center">Защита от спама включена. Реклама не принимается.</p>
-							</form>
+	<!-- Contact — High converting -->
+	<section id="contact" class="py-16 md:py-20 bg-[#f0fdf4]/40 relative overflow-hidden">
+		<div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(600px 400px at 20% 10%, rgba(16,185,129,.08), transparent 60%), radial-gradient(800px 600px at 90% 90%, rgba(15,23,42,.04), transparent 60%);"></div>
+		<div class="container mx-auto px-4 relative">
+			<div class="max-w-[1120px] mx-auto">
+				<div class="grid lg:grid-cols-[1.05fr_.95fr] gap-8 items-start">
+					<!-- left: benefits -->
+					<div class="lg:sticky lg:top-24">
+						<div class="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-3 py-1 text-xs font-semibold tracking-widest uppercase text-gray-600">
+							<span class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span> Свяжитесь с нами
 						</div>
-						<div class="md:w-1/2 bg-gray-50 p-8 flex flex-col justify-center viewRight">
-							<div class="mb-8">
-								<h4 class="text-xl font-bold text-gray-800 mb-4 view">Наши гарантии</h4>
-								<ul class="space-y-3">
-									<li class="flex items-start">
-										<i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
-										<span class="text-gray-700 viewLeft">Технадзор на каждом
-											этапе</span>
-									</li>
-									<li class="flex items-start">
-										<i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
-										<span class="text-gray-700 view">Еженедельный фотоотчет</span>
-									</li>
-									<li class="flex items-start">
-										<i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
-										<span class="text-gray-700 viewRight">269 лет срок
-											эксплуатации</span>
-									</li>
-									<li class="flex items-start">
-										<i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
-										<span class="text-gray-700 view">Персональный менеджер</span>
-									</li>
-								</ul>
+						<h2 class="mt-4 text-3xl md:text-[40px] font-black tracking-tight leading-[0.95] text-gray-900">Рассчитаем стоимость<br><span class="text-emerald-600">за 15 минут</span></h2>
+						<p class="mt-3 text-[16px] leading-relaxed text-gray-600 max-w-[520px]">Оставьте контакты — инженер перезвонит, уточнит задачу и пришлет смету с фиксированной ценой. Выезд на объект — бесплатно.</p>
+						<div class="mt-6 grid sm:grid-cols-2 gap-3">
+							<div class="bg-white rounded-2xl border border-gray-100 p-4 flex gap-3">
+								<div class="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-100 grid place-items-center text-emerald-600 shrink-0"><i class="fa-solid fa-stopwatch"></i></div>
+								<div><div class="text-sm font-bold text-gray-900">Ответ за 7 минут</div><div class="text-xs text-gray-500">в рабочее время</div></div>
+							</div>
+							<div class="bg-white rounded-2xl border border-gray-100 p-4 flex gap-3">
+								<div class="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-100 grid place-items-center text-emerald-600 shrink-0"><i class="fa-solid fa-file-invoice"></i></div>
+								<div><div class="text-sm font-bold text-gray-900">Смета за 15 минут</div><div class="text-xs text-gray-500">с фиксацией цены</div></div>
+							</div>
+							<div class="bg-white rounded-2xl border border-gray-100 p-4 flex gap-3">
+								<div class="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-100 grid place-items-center text-emerald-600 shrink-0"><i class="fa-solid fa-truck-fast"></i></div>
+								<div><div class="text-sm font-bold text-gray-900">Выезд бесплатно</div><div class="text-xs text-gray-500">по Москве и МО</div></div>
+							</div>
+							<div class="bg-white rounded-2xl border border-gray-100 p-4 flex gap-3">
+								<div class="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-100 grid place-items-center text-emerald-600 shrink-0"><i class="fa-solid fa-shield-halved"></i></div>
+								<div><div class="text-sm font-bold text-gray-900">Без предоплаты</div><div class="text-xs text-gray-500">оплата по этапам</div></div>
+							</div>
+						</div>
+						<div class="mt-6 bg-white rounded-2xl border border-gray-100 p-4">
+							<div class="text-xs font-semibold tracking-widest uppercase text-gray-500">Наши гарантии</div>
+							<ul class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+								<li class="flex gap-2"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i> Технадзор на каждом этапе</li>
+								<li class="flex gap-2"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i> Фотоотчет каждую неделю</li>
+								<li class="flex gap-2"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i> Срок службы 50+ лет</li>
+								<li class="flex gap-2"><i class="fa-solid fa-check text-emerald-600 mt-0.5"></i> Персональный менеджер</li>
+							</ul>
+						</div>
+						<div class="mt-4 flex items-center gap-3 text-sm">
+							<a href="tel:+79380180006" class="inline-flex items-center gap-2 bg-gray-900 text-white rounded-full px-5 py-2.5 font-semibold"><i class="fa-solid fa-phone"></i> +7 938 018-00-06</a>
+							<span class="text-gray-500">или напишите на <a href="mailto:fss@фсс.рус" class="underline decoration-emerald-300">fss@фсс.рус</a></span>
+						</div>
+					</div>
+					<!-- right: form card -->
+					<div class="bg-white rounded-[28px] border border-gray-100 shadow-[0_16px_48px_rgba(15,23,42,.08)] p-6 md:p-7">
+						<div class="flex items-center justify-between gap-3">
+							<h3 class="text-xl font-extrabold tracking-tight text-gray-900">Бесплатный расчет</h3>
+							<span class="text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full px-2.5 py-1 font-medium">Без спама</span>
+						</div>
+						<p class="text-sm text-gray-500 mt-1">Заполните — пришлем смету + 3 проекта в WhatsApp</p>
+						<form method="POST" novalidate class="mt-6 space-y-3">
+							<input type="hidden" name="mailer">
+							<?php include_once __DIR__ . '/assets/componets/antibot_fields.php'; ?>
+							<div>
+								<label for="contact_name" class="text-xs font-semibold text-gray-700">Ваше имя *</label>
+								<input id="contact_name" name="name" type="text" placeholder="Иван Петров" required autocomplete="name" minlength="2" maxlength="100" pattern="^[A-Za-zА-Яа-яЁё\s\-\.\']+$" class="mt-1 w-full px-4 py-3 rounded-2xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-gray-900 placeholder:text-gray-500">
 							</div>
 							<div>
-								<img src="https://xhaus.ru/design/xhaus/img/managers.png" alt="Managers"
-									class="rounded-lg">
+								<label for="contact_phone" class="text-xs font-semibold text-gray-700">Телефон *</label>
+								<input id="contact_phone" name="phone" type="tel" maxlength="18" placeholder="+7 (___) ___-__-__" required autocomplete="tel" inputmode="tel" pattern="^\+?[0-9\s\-\(\)]{10,20}$" class="mt-1 w-full px-4 py-3 rounded-2xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-gray-900 placeholder:text-gray-500">
 							</div>
-						</div>
+							<div>
+								<label for="contact_email" class="text-xs font-semibold text-gray-700">Email *</label>
+								<input id="contact_email" name="email" type="email" placeholder="name@company.ru" required autocomplete="email" maxlength="254" class="mt-1 w-full px-4 py-3 rounded-2xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-gray-900 placeholder:text-gray-500">
+							</div>
+							<div>
+								<label for="contact_message" class="text-xs font-semibold text-gray-700">Задача *</label>
+								<textarea id="contact_message" name="message" placeholder="Опишите объект: назначение, размеры, адрес, сроки" required minlength="10" maxlength="2000" rows="4" class="mt-1 w-full px-4 py-3 rounded-2xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-gray-900 placeholder:text-gray-500"></textarea>
+							</div>
+							<label class="flex gap-2.5 items-start text-xs leading-tight text-gray-600 cursor-pointer">
+								<input type="checkbox" name="checkbox" required class="mt-0.5 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500">
+								<span>Я согласен(а) с <a href="/pages/politic/index.php" class="underline decoration-gray-300 hover:decoration-emerald-400">Политикой конфиденциальности</a> и <a href="/pages/agree/index.php" class="underline decoration-gray-300 hover:decoration-emerald-400">Правилами</a></span>
+							</label>
+							<button type="submit" class="w-full bg-gray-900 hover:bg-black text-white rounded-full py-3.5 font-semibold transition flex items-center justify-center gap-2 shadow-[0_10px_24px_rgba(15,23,42,.18)]">Получить расчет за 15 минут <i class="fa-solid fa-arrow-right text-xs"></i></button>
+							<div class="text-center">
+								<a href="tel:+79380180006" class="text-sm font-medium text-gray-700 hover:text-gray-900">Или позвоните: +7 938 018-00-06</a>
+							</div>
+							<p class="text-[11px] leading-tight text-gray-500 text-center">Защита от спама. Реклама не принимается. Данные защищены 256-bit.</p>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -1127,13 +1177,12 @@ if (file_exists($componentMailPath)) {
 		}
 	</style>
 	<!-- About Section -->
-	<section id="process" class="py-20 bg-white view">
+	<section id="portfolio" class="py-16 md:py-20 bg-white view">
 		<div class="container mx-auto px-4">
-			<div class="text-center mb-10 view">
-				<h2 class="text-3xl font-bold mb-4 viewLeft">Портфолио работ</h2>
-				<p class="text-xl text-gray-600 max-w-2xl mx-auto view">Посмотрите примеры наших
-					реализованных модульных
-					зданий. <span class="viewRight">Больше фото и видео — в полном каталоге!</span></p>
+			<div class="text-center mb-8 max-w-3xl mx-auto">
+				<div class="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-3 py-1 text-xs font-semibold tracking-widest uppercase text-gray-600">Портфолио • 50+ объектов</div>
+				<h2 class="mt-3 text-3xl md:text-4xl font-black tracking-tight text-gray-900">Реализованные объекты</h2>
+				<p class="mt-2 text-[15px] leading-relaxed text-gray-600">Склады, школы, АБК, общежития, навесы — с фото, видео и сроками. Нажмите, чтобы увидеть детали.</p>
 			</div>
 			<div class="swipers overflow-hidden">
 				<div class="swiper-wrapper" style="height: 500px">
@@ -1150,12 +1199,12 @@ if (file_exists($componentMailPath)) {
 							<div class="viewLeft flex slide-had-content justify-center items-center gap-2 font-bold">
 								<div
 									class="viewLeft  w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-									<i class="viewLeft fas fa-bolt text-green-500 text-xl"></i>
+									<i class="viewLeft fas fa-bolt text-emerald-600 text-xl"></i>
 								</div>
 								<h3>ФСС - услуги</h3>
 							</div>
 							<div class="viewLeft items-center">
-								<h3> <i class="viewLeft fas fa-trash-alt text-green-500 text-xl mr-2"></i>»
+								<h3> <i class="viewLeft fas fa-trash-alt text-emerald-600 text-xl mr-2"></i>»
 									<b>Мусорные
 										баки</b>
 								</h3>
@@ -1176,12 +1225,12 @@ if (file_exists($componentMailPath)) {
 							<div class="viewLeft flex slide-had-content justify-center items-center gap-2 font-bold">
 								<div
 									class="viewLeft  w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-									<i class="viewLeft fas fa-bolt text-green-500 text-xl"></i>
+									<i class="viewLeft fas fa-bolt text-emerald-600 text-xl"></i>
 								</div>
 								<h3>ФСС - услуги</h3>
 							</div>
 							<div class="viewLeft items-center">
-								<h3> <i class="viewLeft fas fa-trash-alt text-green-500 text-xl mr-2"></i>»
+								<h3> <i class="viewLeft fas fa-trash-alt text-emerald-600 text-xl mr-2"></i>»
 									<b>Мусорные
 										баки</b>
 								</h3>
@@ -1201,12 +1250,12 @@ if (file_exists($componentMailPath)) {
 							<div class="viewLeft flex slide-had-content justify-center items-center gap-2 font-bold">
 								<div
 									class="viewLeft  w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-									<i class="viewLeft fas fa-bolt text-green-500 text-xl"></i>
+									<i class="viewLeft fas fa-bolt text-emerald-600 text-xl"></i>
 								</div>
 								<h3>ФСС - услуги</h3>
 							</div>
 							<div class="viewLeft items-center">
-								<h3> <i class="viewLeft fas fa-trash-alt text-green-500 text-xl mr-2"></i>» <b>Мусорные
+								<h3> <i class="viewLeft fas fa-trash-alt text-emerald-600 text-xl mr-2"></i>» <b>Мусорные
 										баки</b></h3>
 							</div>
 						</div>
@@ -1224,12 +1273,12 @@ if (file_exists($componentMailPath)) {
 							<div class="viewLeft flex slide-had-content justify-center items-center gap-2 font-bold">
 								<div
 									class="viewLeft  w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-									<i class="viewLeft fas fa-bolt text-green-500 text-xl"></i>
+									<i class="viewLeft fas fa-bolt text-emerald-600 text-xl"></i>
 								</div>
 								<h3>ФСС - услуги</h3>
 							</div>
 							<div class="viewLeft items-center">
-								<h3> <i class="viewLeft fas fa-school text-green-500 text-xl mr-2"></i>» <b>Капитальный
+								<h3> <i class="viewLeft fas fa-school text-emerald-600 text-xl mr-2"></i>» <b>Капитальный
 										ремонт школ</b>
 								</h3>
 							</div>
@@ -1248,12 +1297,12 @@ if (file_exists($componentMailPath)) {
 							<div class="viewLeft flex slide-had-content justify-center items-center gap-2 font-bold">
 								<div
 									class="viewLeft  w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-									<i class="viewLeft fas fa-bolt text-green-500 text-xl"></i>
+									<i class="viewLeft fas fa-bolt text-emerald-600 text-xl"></i>
 								</div>
 								<h3>ФСС - услуги</h3>
 							</div>
 							<div class="viewLeft items-center">
-								<h3> <i class="viewLeft fas fa-school text-green-500 text-xl mr-2"></i>» <b>Капитальный
+								<h3> <i class="viewLeft fas fa-school text-emerald-600 text-xl mr-2"></i>» <b>Капитальный
 										ремонт школ</b></h3>
 							</div>
 						</div>
@@ -1271,12 +1320,12 @@ if (file_exists($componentMailPath)) {
 							<div class="viewLeft flex slide-had-content justify-center items-center gap-2 font-bold">
 								<div
 									class="viewLeft  w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-									<i class="viewLeft fas fa-bolt text-green-500 text-xl"></i>
+									<i class="viewLeft fas fa-bolt text-emerald-600 text-xl"></i>
 								</div>
 								<h3>ФСС - услуги</h3>
 							</div>
 							<div class="viewLeft items-center">
-								<h3> <i class="viewLeft fas fa-school text-green-500 text-xl mr-2"></i>» <b>Капитальный
+								<h3> <i class="viewLeft fas fa-school text-emerald-600 text-xl mr-2"></i>» <b>Капитальный
 										ремонт школ</b></h3>
 							</div>
 						</div>
@@ -1294,12 +1343,12 @@ if (file_exists($componentMailPath)) {
 							<div class="viewLeft flex slide-had-content justify-center items-center gap-2 font-bold">
 								<div
 									class="viewLeft  w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-									<i class="viewLeft fas fa-bolt text-green-500 text-xl"></i>
+									<i class="viewLeft fas fa-bolt text-emerald-600 text-xl"></i>
 								</div>
 								<h3>ФСС - услуги</h3>
 							</div>
 							<div class="viewLeft items-center">
-								<h3> <i class="viewLeft fas fa-chair text-green-500 text-xl mr-2"></i>» <b>Производство
+								<h3> <i class="viewLeft fas fa-chair text-emerald-600 text-xl mr-2"></i>» <b>Производство
 										мебели</b></h3>
 							</div>
 						</div>
@@ -1317,12 +1366,12 @@ if (file_exists($componentMailPath)) {
 							<div class="viewLeft flex slide-had-content justify-center items-center gap-2 font-bold">
 								<div
 									class="viewLeft  w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-									<i class="viewLeft fas fa-bolt text-green-500 text-xl"></i>
+									<i class="viewLeft fas fa-bolt text-emerald-600 text-xl"></i>
 								</div>
 								<h3>ФСС - услуги</h3>
 							</div>
 							<div class="viewLeft items-center">
-								<h3> <i class="viewLeft fas fa-bus text-green-500 text-xl mr-2"></i>»
+								<h3> <i class="viewLeft fas fa-bus text-emerald-600 text-xl mr-2"></i>»
 									<b>Автотранспортные доставки</b>
 								</h3>
 							</div>
@@ -1342,12 +1391,12 @@ if (file_exists($componentMailPath)) {
 							<div class="viewLeft flex slide-had-content justify-center items-center gap-2 font-bold">
 								<div
 									class="viewLeft  w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-									<i class="viewLeft fas fa-bolt text-green-500 text-xl"></i>
+									<i class="viewLeft fas fa-bolt text-emerald-600 text-xl"></i>
 								</div>
 								<h3>ФСС - услуги</h3>
 							</div>
 							<div class="viewLeft items-center">
-								<h3> <i class="viewLeft fas fa-train text-green-500 text-xl mr-2"></i>»
+								<h3> <i class="viewLeft fas fa-train text-emerald-600 text-xl mr-2"></i>»
 									<b>Железнодорожные доставки</b>
 								</h3>
 							</div>
@@ -1367,12 +1416,12 @@ if (file_exists($componentMailPath)) {
 							<div class="viewLeft flex slide-had-content justify-center items-center gap-2 font-bold">
 								<div
 									class="viewLeft  w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-									<i class="viewLeft fas fa-bolt text-green-500 text-xl"></i>
+									<i class="viewLeft fas fa-bolt text-emerald-600 text-xl"></i>
 								</div>
 								<h3>ФСС - услуги</h3>
 							</div>
 							<div class="viewLeft items-center">
-								<h3> <i class="viewLeft fas fa-dumpster text-green-500 text-xl mr-2"></i>»
+								<h3> <i class="viewLeft fas fa-dumpster text-emerald-600 text-xl mr-2"></i>»
 									<b>Спецтехника - Бульдозер</b>
 								</h3>
 							</div>
@@ -1392,12 +1441,12 @@ if (file_exists($componentMailPath)) {
 							<div class="viewLeft flex slide-had-content justify-center items-center gap-2 font-bold">
 								<div
 									class="viewLeft  w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-									<i class="viewLeft fas fa-bolt text-green-500 text-xl"></i>
+									<i class="viewLeft fas fa-bolt text-emerald-600 text-xl"></i>
 								</div>
 								<h3>ФСС - услуги</h3>
 							</div>
 							<div class="viewLeft items-center">
-								<h3> <i class="viewLeft fas fa-tractor text-green-500 text-xl mr-2"></i>»
+								<h3> <i class="viewLeft fas fa-tractor text-emerald-600 text-xl mr-2"></i>»
 									<b>Спецтехника - Трактор</b>
 								</h3>
 							</div>
@@ -1416,12 +1465,12 @@ if (file_exists($componentMailPath)) {
 							<div class="viewLeft flex slide-had-content justify-center items-center gap-2 font-bold">
 								<div
 									class="viewLeft  w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-									<i class="viewLeft fas fa-bolt text-green-500 text-xl"></i>
+									<i class="viewLeft fas fa-bolt text-emerald-600 text-xl"></i>
 								</div>
 								<h3>ФСС - услуги</h3>
 							</div>
 							<div class="viewLeft items-center">
-								<h3> <i class="viewLeft fas fa-truck text-green-500 text-xl mr-2"></i>»
+								<h3> <i class="viewLeft fas fa-truck text-emerald-600 text-xl mr-2"></i>»
 									<b>Спецтехника - Шакман</b>
 								</h3>
 							</div>
@@ -1437,7 +1486,7 @@ if (file_exists($componentMailPath)) {
 				</div>
 				<div class="relative w-full flex items-center justify-between mt-6">
 					<a href="pages/portfolio.php"
-						class="inline-block bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-medium text-lg shadow viewLeft mx-auto">Посмотреть
+						class="inline-flex items-center gap-2 bg-gray-900 hover:bg-black text-white px-7 py-3 rounded-full font-semibold shadow viewLeft mx-auto">Посмотреть
 						все проекты</a>
 				</div>
 			</div>
@@ -1480,142 +1529,117 @@ if (file_exists($componentMailPath)) {
 			});
 		</script>
 	</section>
-	<!-- uslugi -->
-
-	<section id="advantages" class="my-24 relative mt-auto view">
-		<div class="text-center my-20 view">
-			<h2 class="text-3xl font-bold mb-4 viewLeft">Мы выполняем</h2>
-			<p class="text-xl text-gray-600 max-w-2xl mx-auto view">
-				Услуги по производству, ремонту и оснащению модульных зданий. <span class="viewRight">Подробнее — в
-					каталоге!</span>
-			</p>
+	<!-- uslugi — modern bento -->
+	<section id="advantages" class="py-16 md:py-20 bg-white view">
+		<div class="mx-auto max-w-[1280px] px-4">
+			<div class="max-w-3xl mx-auto text-center">
+				<div class="inline-flex items-center gap-2 bg-slate-900 text-white rounded-full px-3 py-1 text-xs font-semibold tracking-widest uppercase">Направления • 17 услуг</div>
+				<h2 class="mt-4 text-3xl md:text-4xl font-black tracking-tight text-gray-900">Мы выполняем</h2>
+				<p class="mt-3 text-[15px] leading-relaxed text-gray-600">Полный цикл — от проектирования и производства на заводе до монтажа, отделки и сервиса. Выберите направление — покажем смету и сроки за 15 минут.</p>
+			</div>
+			<div class="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+				<a href="/pages/services/kapital/index.php" class="group bg-white rounded-[20px] border border-gray-100 p-5 hover:shadow-[0_12px_32px_rgba(15,23,42,.08)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+					<div class="w-11 h-11 rounded-xl bg-emerald-50 border border-emerald-100 grid place-items-center text-emerald-600"><i class="fa-solid fa-hammer"></i></div>
+					<div class="mt-3 text-[15px] font-bold leading-tight text-gray-900">Капитальный ремонт</div>
+					<div class="text-xs text-gray-500 mt-1">Школы, АБК, фасады, кровля</div>
+					<div class="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-emerald-700">Подробнее <i class="fa-solid fa-arrow-right text-[10px]"></i></div>
+				</a>
+				<a href="/pages/services/obchegitia/index.php" class="group bg-white rounded-[20px] border border-gray-100 p-5 hover:shadow-[0_12px_32px_rgba(15,23,42,.08)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+					<div class="w-11 h-11 rounded-xl bg-emerald-50 border border-emerald-100 grid place-items-center text-emerald-600"><i class="fa-solid fa-bed"></i></div>
+					<div class="mt-3 text-[15px] font-bold leading-tight text-gray-900">Общежития</div>
+					<div class="text-xs text-gray-500 mt-1">Жилые комплексы, вахтовые</div>
+					<div class="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-emerald-700">Подробнее <i class="fa-solid fa-arrow-right text-[10px]"></i></div>
+				</a>
+				<a href="/pages/services/proizvodim_modul/index.php" class="group bg-white rounded-[20px] border border-gray-100 p-5 hover:shadow-[0_12px_32px_rgba(15,23,42,.08)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+					<div class="w-11 h-11 rounded-xl bg-emerald-50 border border-emerald-100 grid place-items-center text-emerald-600"><i class="fa-solid fa-cube"></i></div>
+					<div class="mt-3 text-[15px] font-bold leading-tight text-gray-900">Производство модульных зданий</div>
+					<div class="text-xs text-gray-500 mt-1">Завод БВЗ, блок-контейнеры</div>
+					<div class="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-emerald-700">Подробнее <i class="fa-solid fa-arrow-right text-[10px]"></i></div>
+				</a>
+				<a href="/pages/services/modultebel/index.php" class="group bg-white rounded-[20px] border border-gray-100 p-5 hover:shadow-[0_12px_32px_rgba(15,23,42,.08)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+					<div class="w-11 h-11 rounded-xl bg-emerald-50 border border-emerald-100 grid place-items-center text-emerald-600"><i class="fa-solid fa-couch"></i></div>
+					<div class="mt-3 text-[15px] font-bold leading-tight text-gray-900">Поставка и сборка мебели</div>
+					<div class="text-xs text-gray-500 mt-1">Для офисов, школ, общежитий</div>
+					<div class="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-emerald-700">Подробнее <i class="fa-solid fa-arrow-right text-[10px]"></i></div>
+				</a>
+				<div class="group bg-slate-50 rounded-[20px] border border-dashed border-gray-200 p-5 text-left opacity-80">
+					<div class="w-11 h-11 rounded-xl bg-white border border-gray-200 grid place-items-center text-gray-500"><i class="fa-solid fa-compass-drafting"></i></div>
+					<div class="mt-3 text-[15px] font-bold leading-tight text-gray-900">Проектирование</div>
+					<div class="text-xs text-gray-500 mt-1">Скоро — оставите заявку</div>
+					<div class="mt-3 text-xs font-semibold text-gray-400">Чертежи • Расчеты • Согл.</div>
+				</div>
+				<div class="group bg-slate-50 rounded-[20px] border border-dashed border-gray-200 p-5 text-left opacity-80">
+					<div class="w-11 h-11 rounded-xl bg-white border border-gray-200 grid place-items-center text-gray-500"><i class="fa-solid fa-plug"></i></div>
+					<div class="mt-3 text-[15px] font-bold leading-tight text-gray-900">Монтаж инженерных сетей</div>
+					<div class="text-xs text-gray-500 mt-1">Скоро</div>
+					<div class="mt-3 text-xs font-semibold text-gray-400">Отопление • Электрика</div>
+				</div>
+				<a href="/pages/services/administrativnoe/index.php" class="group bg-white rounded-[20px] border border-gray-100 p-5 hover:shadow-[0_12px_32px_rgba(15,23,42,.08)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+					<div class="w-11 h-11 rounded-xl bg-emerald-50 border border-emerald-100 grid place-items-center text-emerald-600"><i class="fa-solid fa-building"></i></div>
+					<div class="mt-3 text-[15px] font-bold leading-tight text-gray-900">АБК и офисы</div>
+					<div class="text-xs text-gray-500 mt-1">Административные здания</div>
+					<div class="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-emerald-700">Подробнее <i class="fa-solid fa-arrow-right text-[10px]"></i></div>
+				</a>
+				<a href="/pages/services/generatornae/index.php" class="group bg-white rounded-[20px] border border-gray-100 p-5 hover:shadow-[0_12px_32px_rgba(15,23,42,.08)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+					<div class="w-11 h-11 rounded-xl bg-emerald-50 border border-emerald-100 grid place-items-center text-emerald-600"><i class="fa-solid fa-bolt"></i></div>
+					<div class="mt-3 text-[15px] font-bold leading-tight text-gray-900">Генераторные</div>
+					<div class="text-xs text-gray-500 mt-1">ДГУ, энергокомплексы</div>
+					<div class="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-emerald-700">Подробнее <i class="fa-solid fa-arrow-right text-[10px]"></i></div>
+				</a>
+				<a href="/pages/services/naves/index.php" class="group bg-white rounded-[20px] border border-gray-100 p-5 hover:shadow-[0_12px_32px_rgba(15,23,42,.08)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+					<div class="w-11 h-11 rounded-xl bg-emerald-50 border border-emerald-100 grid place-items-center text-emerald-600"><i class="fa-solid fa-umbrella"></i></div>
+					<div class="mt-3 text-[15px] font-bold leading-tight text-gray-900">Навесы</div>
+					<div class="text-xs text-gray-500 mt-1">Металлоконструкции</div>
+					<div class="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-emerald-700">Подробнее <i class="fa-solid fa-arrow-right text-[10px]"></i></div>
+				</a>
+				<a href="/pages/services/compressor/index.php" class="group bg-white rounded-[20px] border border-gray-100 p-5 hover:shadow-[0_12px_32px_rgba(15,23,42,.08)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+					<div class="w-11 h-11 rounded-xl bg-emerald-50 border border-emerald-100 grid place-items-center text-emerald-600"><i class="fa-solid fa-gauge-high"></i></div>
+					<div class="mt-3 text-[15px] font-bold leading-tight text-gray-900">Газовые компрессоры</div>
+					<div class="text-xs text-gray-500 mt-1">Поставка и монтаж</div>
+					<div class="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-emerald-700">Подробнее <i class="fa-solid fa-arrow-right text-[10px]"></i></div>
+				</a>
+				<a href="/pages/services/compressor_air/index.php" class="group bg-white rounded-[20px] border border-gray-100 p-5 hover:shadow-[0_12px_32px_rgba(15,23,42,.08)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+					<div class="w-11 h-11 rounded-xl bg-emerald-50 border border-emerald-100 grid place-items-center text-emerald-600"><i class="fa-solid fa-wind"></i></div>
+					<div class="mt-3 text-[15px] font-bold leading-tight text-gray-900">Воздушные компрессоры</div>
+					<div class="text-xs text-gray-500 mt-1">Винтовые, поршневые</div>
+					<div class="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-emerald-700">Подробнее <i class="fa-solid fa-arrow-right text-[10px]"></i></div>
+				</a>
+				<a href="/pages/services/sclad/index.php" class="group bg-white rounded-[20px] border border-gray-100 p-5 hover:shadow-[0_12px_32px_rgba(15,23,42,.08)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+					<div class="w-11 h-11 rounded-xl bg-emerald-50 border border-emerald-100 grid place-items-center text-emerald-600"><i class="fa-solid fa-warehouse"></i></div>
+					<div class="mt-3 text-[15px] font-bold leading-tight text-gray-900">Склады</div>
+					<div class="text-xs text-gray-500 mt-1">Логистические центры</div>
+					<div class="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-emerald-700">Подробнее <i class="fa-solid fa-arrow-right text-[10px]"></i></div>
+				</a>
+				<a href="/pages/services/musorbak/index.php" class="group bg-white rounded-[20px] border border-gray-100 p-5 hover:shadow-[0_12px_32px_rgba(15,23,42,.08)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+					<div class="w-11 h-11 rounded-xl bg-emerald-50 border border-emerald-100 grid place-items-center text-emerald-600"><i class="fa-solid fa-trash-can"></i></div>
+					<div class="mt-3 text-[15px] font-bold leading-tight text-gray-900">Мусорные баки</div>
+					<div class="text-xs text-gray-500 mt-1">Контейнеры, оцинковка</div>
+					<div class="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-emerald-700">Подробнее <i class="fa-solid fa-arrow-right text-[10px]"></i></div>
+				</a>
+				<a href="/pages/services/gruzoperevozki/index.php" class="group bg-white rounded-[20px] border border-gray-100 p-5 hover:shadow-[0_12px_32px_rgba(15,23,42,.08)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+					<div class="w-11 h-11 rounded-xl bg-emerald-50 border border-emerald-100 grid place-items-center text-emerald-600"><i class="fa-solid fa-truck"></i></div>
+					<div class="mt-3 text-[15px] font-bold leading-tight text-gray-900">Грузоперевозки</div>
+					<div class="text-xs text-gray-500 mt-1">Авто и ЖД</div>
+					<div class="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-emerald-700">Подробнее <i class="fa-solid fa-arrow-right text-[10px]"></i></div>
+				</a>
+				<a href="/pages/services/spectehnika/index.php" class="group bg-white rounded-[20px] border border-gray-100 p-5 hover:shadow-[0_12px_32px_rgba(15,23,42,.08)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+					<div class="w-11 h-11 rounded-xl bg-emerald-50 border border-emerald-100 grid place-items-center text-emerald-600"><i class="fa-solid fa-tractor"></i></div>
+					<div class="mt-3 text-[15px] font-bold leading-tight text-gray-900">Спецтехника</div>
+					<div class="text-xs text-gray-500 mt-1">Аренда, услуги</div>
+					<div class="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-emerald-700">Подробнее <i class="fa-solid fa-arrow-right text-[10px]"></i></div>
+				</a>
+				<a href="/pages/services/kapstroenie/index.php" class="group bg-white rounded-[20px] border border-gray-100 p-5 hover:shadow-[0_12px_32px_rgba(15,23,42,.08)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+					<div class="w-11 h-11 rounded-xl bg-emerald-50 border border-emerald-100 grid place-items-center text-emerald-600"><i class="fa-solid fa-city"></i></div>
+					<div class="mt-3 text-[15px] font-bold leading-tight text-gray-900">Капитальное строение</div>
+					<div class="text-xs text-gray-500 mt-1">Здания и сооружения</div>
+					<div class="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-emerald-700">Подробнее <i class="fa-solid fa-arrow-right text-[10px]"></i></div>
+				</a>
+			</div>
+			<div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+				<a href="#contact" class="inline-flex items-center justify-center gap-2 bg-gray-900 text-white rounded-full px-7 py-3 font-semibold hover:bg-black transition">Получить смету за 15 минут <i class="fa-solid fa-arrow-right text-xs"></i></a>
+				<a href="/pages/uslugi/uslugi.php" class="inline-flex items-center justify-center gap-2 bg-white border border-gray-200 text-gray-900 rounded-full px-7 py-3 font-semibold hover:bg-gray-50 transition">Все услуги</a>
+			</div>
 		</div>
-		<div
-			class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10 lg:gap-20  mx-auto lg:w-[85%] transition-all duration-300">
-
-			<a href="/pages/services/kapital/index.php" class="flex flex-col items-center group hover:scale-105 view">
-				<div class="mb-4">
-					<i class="fa fa-tools text-green-600 text-6xl"></i>
-				</div>
-				<span class="text-lg font-semibold text-center group-hover:text-green-600">1. Капитальный ремонт</span>
-			</a>
-			<a href="/pages/services/obchegitia/index.php"
-				class="flex flex-col items-center group hover:scale-105 viewRight">
-				<div class="mb-4">
-					<i class="fa fa-bed text-green-600 text-6xl"></i>
-				</div>
-				<span class="text-lg font-semibold text-center group-hover:text-green-600">2. Общежитие</span>
-			</a>
-			<a href="/pages/services/proizvodim_modul/index.php"
-				class="flex flex-col items-center group hover:scale-105 viewLeft">
-				<div class="mb-4">
-					<i class="fa fa-cube text-green-600 text-6xl"></i>
-				</div>
-				<span class="text-lg font-semibold text-center group-hover:text-green-600">3. Производство модульных
-					зданий</span>
-			</a>
-			<a href="/pages/services/modultebel/index.php"
-				class="flex flex-col items-center group hover:scale-105 viewRight">
-				<div class="mb-4">
-					<i class="fa fa-couch text-green-600 text-6xl"></i>
-				</div>
-				<span class="text-lg font-semibold text-center group-hover:text-green-600">4. Поставка и сборка
-					мебели</span>
-			</a>
-			<div class="flex flex-col items-center group hover:scale-105 view cursor-no-drop">
-				<div class="mb-4">
-					<i class="fa fa-drafting-compass text-green-600 text-6xl"></i>
-				</div>
-				<span class="text-lg font-semibold text-center group-hover:text-green-600">5. Проектирование</span>
-			</div>
-			<div class="flex flex-col items-center group hover:scale-105 viewRight cursor-no-drop">
-				<div class="mb-4">
-					<i class="fa fa-plug text-green-600 text-6xl"></i>
-				</div>
-				<span class="text-lg font-semibold text-center group-hover:text-green-600">6. Монтаж инженерных
-					сетей</span>
-			</div>
-			<a href="/pages/services/administrativnoe/index.php"
-				class="flex flex-col items-center group hover:scale-105 viewLeft">
-				<div class="mb-4">
-					<i class="fa fa-users-cog text-green-600 text-6xl"></i>
-				</div>
-				<span class="text-lg font-semibold text-center group-hover:text-green-600">7. Административно бытовой
-					комплекс</span>
-			</a>
-			<a href="/pages/services/generatornae/index.php"
-				class="flex flex-col items-center group hover:scale-105 view">
-				<div class="mb-4">
-					<i class="fa fa-bolt text-green-600 text-6xl"></i>
-				</div>
-				<span class="text-lg font-semibold text-center group-hover:text-green-600">8. Генераторная</span>
-			</a>
-			<a href="/pages/services/modultebel/index.php"
-				class="flex flex-col items-center group hover:scale-105 viewLeft">
-				<div class="mb-4">
-					<i class="fa fa-building text-green-600 text-6xl"></i>
-				</div>
-				<span class="text-lg font-semibold text-center group-hover:text-green-600">9. Модульные табельные
-					здания</span>
-			</a>
-			<a href="/pages/services/naves/index.php" class="flex flex-col items-center group hover:scale-105 view">
-				<div class="mb-4">
-					<i class="fa fa-umbrella text-green-600 text-6xl"></i>
-				</div>
-				<span class="text-lg font-semibold text-center group-hover:text-green-600">10. Навесы</span>
-			</a>
-			<a href="/pages/services/compressor/index.php"
-				class="flex flex-col items-center group hover:scale-105 viewRight">
-				<div class="mb-4">
-					<i class="fa fa-gas-pump text-green-600 text-6xl"></i>
-				</div>
-				<span class="text-lg font-semibold text-center group-hover:text-green-600">11. Компрессоры
-					газовые</span>
-			</a>
-			<a href="/pages/services/compressor_air/index.php"
-				class="flex flex-col items-center group hover:scale-105 viewLeft">
-				<div class="mb-4">
-					<i class="fa fa-wind text-green-600 text-6xl"></i>
-				</div>
-				<span class="text-lg font-semibold text-center group-hover:text-green-600">12. Компрессоры
-					воздушные</span>
-			</a>
-			<a href="/pages/services/sclad/index.php" class="flex flex-col items-center group hover:scale-105 view">
-				<div class="mb-4">
-					<i class="fa fa-warehouse text-green-600 text-6xl"></i>
-				</div>
-				<span class="text-lg font-semibold text-center group-hover:text-green-600">13. Склады</span>
-			</a>
-			<a href="/pages/services/musorbak/index.php"
-				class="flex flex-col items-center group hover:scale-105 viewLeft">
-				<div class="mb-4">
-					<i class="fa fa-trash-alt text-green-600 text-6xl"></i>
-				</div>
-				<span class="text-lg font-semibold text-center group-hover:text-green-600">14. Производство мусорных
-					баков</span>
-			</a>
-			<a href="/pages/services/gruzoperevozki/index.php"
-				class="flex flex-col items-center group hover:scale-105 viewLeft">
-				<div class="mb-4">
-					<i class="fa fa-truck-moving text-green-600 text-6xl"></i>
-				</div>
-				<span class="text-lg font-semibold text-center group-hover:text-green-600">15. Грузоперевозки</span>
-			</a>
-			<a href="/pages/services/spectehnika/index.php"
-				class="flex flex-col items-center group hover:scale-105 viewLeft">
-				<div class="mb-4">
-					<i class="fa fa-dumpster text-green-600 text-6xl"></i>
-				</div>
-				<span class="text-lg font-semibold text-center group-hover:text-green-600">16. Спецтехника</span>
-			</a>
-			<a href="/pages/services/kapstroenie/index.php"
-				class="flex flex-col items-center group hover:scale-105 viewLeft">
-				<div class="mb-4">
-					<i class="fa fa-city text-green-600 text-6xl"></i>
-				</div>
-				<span class="text-lg font-semibold text-center group-hover:text-green-600">17. Капитальное
-					строение</span>
-			</a>
 	</section>
 
 
@@ -1640,10 +1664,20 @@ if (file_exists($componentMailPath)) {
 		</div>
 	</dialog>
 
+	<!-- sticky lead bar (mobile) -->
+	<div id="sticky-cta" class="fixed bottom-0 inset-x-0 z-40 md:hidden bg-white/95 backdrop-blur-md border-t border-gray-200 px-3 py-2 safe-pb">
+		<div class="flex gap-2">
+			<a href="tel:+79380180006" class="flex-1 inline-flex items-center justify-center gap-2 bg-white border border-gray-200 text-gray-900 rounded-full py-3 font-semibold"><i class="fa-solid fa-phone text-emerald-600"></i> Позвонить</a>
+			<a href="#contact" class="flex-1 inline-flex items-center justify-center gap-2 bg-emerald-600 text-white rounded-full py-3 font-semibold shadow">Рассчитать <i class="fa-solid fa-arrow-right text-xs"></i></a>
+		</div>
+		<div class="text-center text-[11px] text-gray-500 mt-1">Отвечаем за 7 минут • Без спама</div>
+	</div>
+	<script> (function(){ var bar=document.getElementById('sticky-cta'); var showAt=700; function onScroll(){ if(window.scrollY>showAt) bar.classList.add('show'); else bar.classList.remove('show'); } window.addEventListener('scroll', onScroll, {passive:true}); onScroll(); })(); </script>
+
 	<!-- footer content -->
-	<? include_once __DIR__ . '/assets/componets/footer.php'; ?>
+	<?php include_once __DIR__ . '/assets/componets/footer.php'; ?>
 	<!-- форма обратной связи -->
-	<? include_once __DIR__ . '/assets/componets/forma.php'; ?>
+	<?php include_once __DIR__ . '/assets/componets/forma.php'; ?>
 	<!-- Подключение Яндекс.Карт и инициализация карты -->
 	<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU"></script>
 	<!-- /Яндекс.Карта -->
