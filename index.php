@@ -44,64 +44,61 @@ if (file_exists($componentMailPath)) {
 
 <head>
 	<meta charset="UTF-8">
-	<!-- scripts modal connect+fh -->
-	<script src="/local/templates/rs2023/js/fh.js"></script>
-	<script src="/local/templates/rs2023/js/modal.js"></script>
-	<!-- end -->
-
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>FAVORIT-STROY-SNAB - Современное домостроение</title>
-	<meta name="description"
-		content="FAVORIT-STROY-SNAB — Современное домостроение. Качественные строительные услуги и материалы.">
-	<meta name="robots" content="index, follow">
-	<meta name="keywords" content="строительство, домостроение, FAVORIT-STROY-SNAB, строительные услуги, материалы">
-	<meta name="author" content="TimQwees">
+	<title>ФАВОРИТ-СТРОЙ-СНАБ — Быстровозводимые здания, капитальный ремонт, грузоперевозки | Москва</title>
+	<meta name="description" content="ФАВОРИТ-СТРОЙ-СНАБ — быстровозводимые модульные здания под ключ, капитальный ремонт, поставка мебели, грузоперевозки и спецтехника в Москве. От 2 недель, гарантия 50 лет. Звоните +7 938 018-00-06">
+	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+	<meta name="keywords" content="быстровозводимые здания БВЗ, модульные здания, капитальный ремонт зданий, грузоперевозки Москва, аренда спецтехники, производство мусорных баков, навесы, склады, общежития, Фаворит-Строй-Снаб">
+	<meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
+	<meta name="theme-color" content="#22c55e">
+	<meta name="format-detection" content="telephone=yes">
+	<meta name="yandex-verification" content="27e0ba9980498150" />
+	<!-- Preconnect for performance -->
+	<link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+	<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+	<link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
+	<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+	<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+	<link rel="dns-prefetch" href="https://api-maps.yandex.ru">
+	<!-- Favicon unified -->
 	<link rel="icon" type="image/png" sizes="32x32" href="/assets/image/favicon/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="/assets/image/favicon/favicon-16x16.png">
 	<link rel="apple-touch-icon" sizes="180x180" href="/assets/image/favicon/apple-touch-icon.png">
 	<link rel="manifest" href="/assets/image/favicon/site.webmanifest">
-
-	<!-- Open Graph / Facebook -->
-	<meta property="og:title" content="FAVORIT-STROY-SNAB - Современное домостроение">
-	<meta property="og:description" content="Качественные строительные услуги и материалы.">
-	<meta property="og:image" content="/assets/image/logo.svg">
+	<link rel="mask-icon" href="/assets/image/favicon/favicon-32x32.png" color="#22c55e">
+	<!-- Canonical - punycode for SEO compatibility, IDN for humans -->
+	<link rel="canonical" href="https://www.xn--h1aafj.xn--p1ai/" />
+	<!-- Open Graph -->
+	<meta property="og:locale" content="ru_RU">
+	<meta property="og:site_name" content="ФАВОРИТ-СТРОЙ-СНАБ">
+	<meta property="og:title" content="ФАВОРИТ-СТРОЙ-СНАБ — Быстровозводимые здания под ключ в Москве">
+	<meta property="og:description" content="Строительство БВЗ от 2 недель, капитальный ремонт, грузоперевозки, поставка мебели и металлоконструкций. Гарантия, технадзор, фотоотчёты.">
+	<meta property="og:image" content="https://www.xn--h1aafj.xn--p1ai/assets/image/logo/logo.svg">
+	<meta property="og:image:width" content="1200">
+	<meta property="og:image:height" content="630">
+	<meta property="og:image:alt" content="ФАВОРИТ-СТРОЙ-СНАБ логотип">
 	<meta property="og:type" content="website">
-	<meta property="og:url" content="https://www.фсс.рус/">
+	<meta property="og:url" content="https://www.xn--h1aafj.xn--p1ai/">
 	<!-- Twitter -->
-
 	<meta name="twitter:card" content="summary_large_image">
-	<meta name="twitter:title" content="FAVORIT-STROY-SNAB - Современное домостроение">
-	<meta name="twitter:description" content="Качественные строительные услуги и материалы.">
-	<meta name="twitter:image" content="/assets/image/icon/2.PNG">
-	<meta name="twitter:card" content="summary_large_image">
-	<meta property="og:description" content="Качественные строительные услуги и материалы.">
-	<link rel="icon" type="image/png" sizes="32x32" href="/assets/image/favicon/favicon-32x32.png">
-	<meta name="author" content="TimQwees">
-
+	<meta name="twitter:title" content="ФАВОРИТ-СТРОЙ-СНАБ — Быстровозводимые здания под ключ">
+	<meta name="twitter:description" content="Быстровозводимые здания, капремонт, грузоперевозки, мебель, склады и ангары. Москва и МО.">
+	<meta name="twitter:image" content="https://www.xn--h1aafj.xn--p1ai/assets/image/icon/2.PNG">
+	<meta name="twitter:site" content="@fss_rus">
+	<!-- Preload critical -->
+	<link rel="preload" href="/assets/distCSS/style.css" as="style">
+	<link rel="preload" href="/assets/distJS/main.js" as="script">
+	<!-- Styles -->
 	<script src="https://cdn.tailwindcss.com"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+	<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
 	<link rel="stylesheet" href="/assets/distCSS/style.css">
-	<script src="/assets/distJS/main.js"></script>
-	<link rel="stylesheet" href="tailwind.css">
-
-	<!-- favicon -->
-	<link rel="apple-touch-icon" sizes="180x180" href="assets/image/favicon/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="/assets/image/favicon/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="/assets/image/favicon/favicon-16x16.png">
-	<link rel="manifest" href="/assets/image/favicon/site.webmanifest">
-
-	<!-- canonical -->
-	<link rel="canonical" href="https://www.kavstal.ru/index.php" />
-
-	<!-- Swiper Slider for Banner -->
+	<!-- Swiper -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-	<script defer="true" src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
-	<!-- meta yandex -->
-	<meta name="yandex-verification" content="27e0ba9980498150" />
+	<script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+	<script defer src="/assets/distJS/main.js"></script>
 
 	<style>
 		@keyframes floatRightIcon {
@@ -144,6 +141,7 @@ if (file_exists($componentMailPath)) {
 			overflow: hidden;
 		}
 	</style>
+	<? include_once __DIR__ . '/assets/PHP/sheoma.php'; ?>
 </head>
 
 <body class="font-sans text-gray-800">
@@ -995,36 +993,40 @@ if (file_exists($componentMailPath)) {
 						<div class="md:w-1/2 p-8 viewLeft">
 							<h3 class="text-2xl font-bold text-gray-800 mb-6 view">Расчет стоимости
 								коттеджей</h3>
-							<form method="POST">
+							<form method="POST" novalidate>
+								<input type="hidden" name="mailer">
+								<? include_once __DIR__ . '/assets/componets/antibot_fields.php'; ?>
 								<div class="mb-4">
-									<input type="hidden" name="mailer">
-									<input name="name" type="text" placeholder="Ваше имя"
+									<label for="contact_name" class="sr-only">Ваше имя</label>
+									<input id="contact_name" name="name" type="text" placeholder="Ваше имя *" required autocomplete="name" minlength="2" maxlength="100" pattern="^[A-Za-zА-Яа-яЁё\s\-\.']+$"
 										class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-800">
 								</div>
 								<div class="mb-4">
-									<input name="phone" type="tel" placeholder="Телефон"
+									<label for="contact_phone" class="sr-only">Телефон</label>
+									<input id="contact_phone" name="phone" type="tel" placeholder="Телефон * +7 (___) ___-__-__" required autocomplete="tel" inputmode="tel" pattern="^\+?[0-9\s\-\(\)]{10,20}$"
 										class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-800">
 								</div>
 								<div class="mb-4">
-									<input name="email" type="email" placeholder="Email"
+									<label for="contact_email" class="sr-only">Email</label>
+									<input id="contact_email" name="email" type="email" placeholder="Email *" required autocomplete="email" maxlength="254"
 										class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-800">
 								</div>
 								<div class="mb-6">
-									<textarea name="message" placeholder=" Ваш вопрос"
+									<label for="contact_message" class="sr-only">Ваш вопрос</label>
+									<textarea id="contact_message" name="message" placeholder="Ваш вопрос *" required minlength="10" maxlength="2000"
 										class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-gray-800 h-24"></textarea>
 								</div>
 								<div class="mb-4">
-									<label class="flex items-center text-gray-600 text-sm">
-										<input type="checkbox" class="mr-2" name="checkbox">
-										<span class="view">Я согласен(а) с Политикой конфиденциальности и
-											Правилами
-											обработки персональных
-											данных</span>
+									<label class="flex items-center text-gray-600 text-sm cursor-pointer">
+										<input type="checkbox" class="mr-2" name="checkbox" required>
+										<span class="view">Я согласен(а) с <a href="/pages/politic/index.php" class="underline text-green-600 hover:text-green-700">Политикой конфиденциальности</a> и
+											<a href="/pages/agree/index.php" class="underline text-green-600 hover:text-green-700">Правилами обработки персональных данных</a></span>
 									</label>
 								</div>
 								<button type="submit"
 									class="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-lg font-medium transition viewRight">Отправить
 									заявку</button>
+								<p class="text-xs text-gray-500 mt-2 text-center">Защита от спама включена. Реклама не принимается.</p>
 							</form>
 						</div>
 						<div class="md:w-1/2 bg-gray-50 p-8 flex flex-col justify-center viewRight">

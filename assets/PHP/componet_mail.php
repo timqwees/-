@@ -36,96 +36,87 @@
 	*/
 
 require_once dirname(__DIR__, 1) . '/../vendor/autoload.php';
+require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/Security.php';
+require_once __DIR__ . '/Antibot.php';
 require_once __DIR__ . '/mailer/Maller.php';
 require_once __DIR__ . '/telegram/Messenger.php';
 
-$to_mail = 'artemnersisyan777@gmail.com';
+$to_mail = MAIL_TO;
 $subject = "Заказ с сайта ФСС.РУС © " . date('Y');
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['mailer'])) {
+// Общий обработчик POST с антиботом
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['mailer']) || isset($_POST['mini-forma']) || isset($_POST['content_form']))) {
 
-	$name = isset($_POST['name']) ? trim($_POST['name']) : '';
-	$phone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
-	$message = isset($_POST['message']) ? trim($_POST['message']) : '';
-	$email = isset($_POST['email']) ? trim($_POST['email']) : '';
-	$checkbox = isset($_POST['checkbox']) && $_POST['checkbox'] === 'on';
-
-	$array = [
-		'name' => $name,
-		'phone' => $phone,
-		'message' => $message,
-		'email' => $email,
-		'type' => 'modal',
-	];
-
-	// Проверка обязательных полей
-	if (empty($name) || empty($phone) || empty($message) || empty($email) || !$checkbox) {
-		echo '<div id="error-alert" class="z-20 p-4 mb-4 text-red-700 bg-red-100 rounded-lg flex items-center shadow-lg bg-white"
-                style="position:fixed; top:20px; right:20px; z-index:9999; max-width:100vw; width: auto; box-shadow:0 4px 16px rgba(138, 138, 138, 0.53);" role="alert">
-                <span class="font-semibold mr-4" style="padding-right: 1rem">Пожалуйста, заполните все обязательные поля корректно!</span>
-                <button type="button" onclick="document.getElementById(\'error-alert\').style.display=\'none\'"
-                    style="position:absolute; top:13.5px; right:12px; background:none; border:none; font-size:1.5rem; color:#b91c1c; cursor:pointer; line-height:1;">&times;</button>
-            </div>';
-	} else {
-		// $mailer = new Mailler();
-		// $mailer->onMail($to_mail, $subject, $array);
-		$messenger = new Messenger();
-		$messenger->sendToTelegram($array);
+	// 1. Антибот проверка - первая линия защиты
+	$antibotError = null;
+	if (!Antibot::validate($_POST, $antibotError)) {
+		Security::showAlert('error', $antibotError);
+		// Логируем попытку, но не отправляем дальше
+		return;
 	}
-} elseif ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['mini-forma'])) {
 
-	$name = isset($_POST['name']) ? trim($_POST['name']) : '';
-	$phone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
+	// Определяем тип формы
+	$isMailer = isset($_POST['mailer']);
+	$isMini = isset($_POST['mini-forma']);
+	$isContent = isset($_POST['content_form']);
 
-	$array = [
-		'name' => $name,
-		'phone' => $phone,
-		'type' => 'mini-forma',
-	];
+	if ($isMailer) {
+		// Валидация
+		$err = '';
+		$nameV = Security::validateName($_POST['name'] ?? '', $err);
+		if ($nameV === false) { Security::showAlert('error', $err); return; }
+		$phoneV = Security::validatePhone($_POST['phone'] ?? '', $err);
+		if ($phoneV === false) { Security::showAlert('error', $err); return; }
+		$emailV = Security::validateEmail($_POST['email'] ?? '', $err, true);
+		if ($emailV === false) { Security::showAlert('error', $err); return; }
+		$msgV = Security::validateMessage($_POST['message'] ?? '', $err, true, 10);
+		if ($msgV === false) { Security::showAlert('error', $err); return; }
+		$checkbox = isset($_POST['checkbox']) && $_POST['checkbox'] === 'on';
+		if (!$checkbox) { Security::showAlert('error', 'Необходимо согласие на обработку персональных данных.'); return; }
 
-	// Проверка обязательных полей
-	if (empty($name) || empty($phone)) {
-		echo '<div id="error-alert" class="z-20 p-4 mb-4 text-red-700 bg-red-100 rounded-lg flex items-center shadow-lg bg-white"
-                style="position:fixed; top:20px; right:20px; z-index:9999; max-width:100vw; width: auto; box-shadow:0 4px 16px rgba(138, 138, 138, 0.53);" role="alert">
-                <span class="font-semibold mr-4" style="padding-right: 1rem">Пожалуйста, заполните все обязательные поля корректно!</span>
-                <button type="button" onclick="document.getElementById(\'error-alert\').style.display=\'none\'"
-                    style="position:absolute; top:13.5px; right:12px; background:none; border:none; font-size:1.5rem; color:#b91c1c; cursor:pointer; line-height:1;">&times;</button>
-            </div>';
-	} else {
-		// $mailer = new Mailler();
-		// $mailer->onMail($to_mail, $subject, $array);
+		$array = [
+			'name' => $nameV,
+			'phone' => $phoneV,
+			'message' => $msgV,
+			'email' => $emailV,
+			'type' => 'modal',
+		];
 		$messenger = new Messenger();
 		$messenger->sendToTelegram($array);
 
-	}
-} elseif ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['content_form'])) {
-
-	$name = isset($_POST['name']) ? trim($_POST['name']) : '';
-	$phone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
-	$message = isset($_POST['message']) ? trim($_POST['message']) : '';
-	$checkbox = isset($_POST['checkbox']) && $_POST['checkbox'] === 'on';
-
-	$array = [
-		'name' => $name,
-		'phone' => $phone,
-		'message' => $message,
-		'type' => 'content_form',
-	];
-
-	// Проверка обязательных полей
-	if (empty($name) || empty($phone) || empty($message) || !$checkbox) {
-		echo '<div id="error-alert" class="z-20 p-4 mb-4 text-red-700 bg-red-100 rounded-lg flex items-center shadow-lg bg-white"
-                style="position:fixed; top:20px; right:20px; z-index:9999; max-width:100vw; width: auto; box-shadow:0 4px 16px rgba(138, 138, 138, 0.53);" role="alert">
-                <span class="font-semibold mr-4" style="padding-right: 1rem">Пожалуйста, заполните все обязательные поля корректно!</span>
-                <button type="button" onclick="document.getElementById(\'error-alert\').style.display=\'none\'"
-                    style="position:absolute; top:13.5px; right:12px; background:none; border:none; font-size:1.5rem; color:#b91c1c; cursor:pointer; line-height:1;">&times;</button>
-            </div>';
-	} else {
-		// $mailer = new Mailler();
-		// $mailer->onMail($to_mail, $subject, $array);
+	} elseif ($isMini) {
+		$err = '';
+		$nameV = Security::validateName($_POST['name'] ?? '', $err);
+		if ($nameV === false) { Security::showAlert('error', $err); return; }
+		$phoneV = Security::validatePhone($_POST['phone'] ?? '', $err);
+		if ($phoneV === false) { Security::showAlert('error', $err); return; }
+		$array = [
+			'name' => $nameV,
+			'phone' => $phoneV,
+			'type' => 'mini-forma',
+		];
 		$messenger = new Messenger();
 		$messenger->sendToTelegram($array);
 
+	} elseif ($isContent) {
+		$err = '';
+		$nameV = Security::validateName($_POST['name'] ?? '', $err);
+		if ($nameV === false) { Security::showAlert('error', $err); return; }
+		$phoneV = Security::validatePhone($_POST['phone'] ?? '', $err);
+		if ($phoneV === false) { Security::showAlert('error', $err); return; }
+		$msgV = Security::validateMessage($_POST['message'] ?? '', $err, true, 10);
+		if ($msgV === false) { Security::showAlert('error', $err); return; }
+		$checkbox = isset($_POST['checkbox']) && $_POST['checkbox'] === 'on';
+		if (!$checkbox) { Security::showAlert('error', 'Необходимо согласие на обработку персональных данных.'); return; }
+		$array = [
+			'name' => $nameV,
+			'phone' => $phoneV,
+			'message' => $msgV,
+			'type' => 'content_form',
+		];
+		$messenger = new Messenger();
+		$messenger->sendToTelegram($array);
 	}
 }
 ?>
