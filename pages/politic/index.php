@@ -20,6 +20,7 @@
 	<script src="https://cdn.tailwindcss.com"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 	<link rel="stylesheet" href="/assets/distCSS/style.css">
+	<?php include_once dirname(__DIR__,2) . '/assets/PHP/sheoma.php'; ?>
 </head>
 
 <body class="font-sans text-gray-800 bg-gray-50">

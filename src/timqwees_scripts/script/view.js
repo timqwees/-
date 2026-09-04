@@ -48,7 +48,17 @@ export function initViewElements() {
 
 	checkBlocksVisibility();
 
-	window.addEventListener('scroll', checkBlocksVisibility);
+	// Throttle scroll via rAF for performance
+	let ticking = false;
+	window.addEventListener('scroll', function() {
+		if (!ticking) {
+			window.requestAnimationFrame(function() {
+				checkBlocksVisibility();
+				ticking = false;
+			});
+			ticking = true;
+		}
+	}, { passive: true });
 }
 
 window.initViewElements = initViewElements;

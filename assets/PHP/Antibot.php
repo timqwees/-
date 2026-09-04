@@ -50,10 +50,8 @@ class Antibot {
         $html .= '<input type="hidden" name="render_time" value="'.$time.'">';
         $html .= '<input type="hidden" name="csrf_token" value="'.$csrf.'">';
         $html .= '<input type="hidden" name="js_token" id="js_token_'.substr($csrf,0,6).'" value="">';
-        // Инлайн JS для заполнения js_token через 1 сек + time trap proof
-        $html .= '<script>(function(){var t=document.currentScript.previousElementSibling;setTimeout(function(){var e=document.querySelector(\'input[name="js_token"]\');if(e)e.value="js_"+Date.now()+"_'.substr($csrf,0,8).'";},1100);})();</script>';
-        // Дополнительный JS: запрет автозаполнения honeypot
-        $html .= '<script>document.addEventListener("DOMContentLoaded",function(){var h=document.getElementById("'.$honeypot.'");if(h)h.value="";});</script>';
+        // Инлайн JS для заполнения js_token через 1 сек + time trap proof + блокировка кнопки на 3 сек
+        $html .= '<script>(function(){var csrf="'.substr($csrf,0,8).'";setTimeout(function(){var e=document.querySelector(\'input[name="js_token"]\');if(e)e.value="js_"+Date.now()+"_"+csrf;},1100);document.addEventListener("DOMContentLoaded",function(){var h=document.getElementById("'.$honeypot.'");if(h)h.value="";var forms=document.querySelectorAll("form");forms.forEach(function(form){if(!form.querySelector(\'input[name="js_token"]\'))return;var btn=form.querySelector(\'button[type="submit"]\');if(!btn)return;var orig=btn.innerHTML;btn.disabled=true;btn.style.opacity="0.6";var t=setInterval(function(){var rt=form.querySelector(\'input[name="render_time"]\');if(!rt)return;var elapsed=Math.floor(Date.now()/1000 - parseInt(rt.value));if(elapsed>=3){btn.disabled=false;btn.style.opacity="1";clearInterval(t);}else{btn.innerHTML="Подождите "+(3-elapsed)+"с...";}},300);setTimeout(function(){btn.innerHTML=orig;btn.disabled=false;btn.style.opacity="1";clearInterval(t);},4000);});});})();</script>';
         return $html;
     }
 

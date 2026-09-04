@@ -1,3 +1,59 @@
+<?php
+// Динамический breadcrumb для SEO
+$requestUri = $_SERVER['REQUEST_URI'] ?? '/';
+$requestUri = strtok($requestUri, '?');
+$requestUri = rtrim($requestUri, '/');
+if ($requestUri === '') $requestUri = '/';
+$baseUrl = 'https://www.xn--h1aafj.xn--p1ai';
+$breadcrumbItems = [];
+$breadcrumbItems[] = ['name' => 'Главная', 'url' => $baseUrl . '/'];
+// Маппинг путей -> названия
+$map = [
+  '/pages/uslugi' => 'Услуги',
+  '/pages/uslugi/uslugi.php' => 'Услуги',
+  '/pages/portfolio.php' => 'Портфолио',
+  '/pages/portfolio' => 'Портфолио',
+  '/pages/projects.php' => 'Проекты',
+  '/pages/projects' => 'Проекты',
+  '/pages/politic' => 'Политика конфиденциальности',
+  '/pages/agree' => 'Правила обработки данных',
+  '/pages/services/kapstroenie' => 'Капитальное строение',
+  '/pages/services/kapital' => 'Капитальный ремонт',
+  '/pages/services/proizvodim_modul' => 'Производство модульных зданий',
+  '/pages/services/modultebel' => 'Модульная мебель',
+  '/pages/services/gruzoperevozki' => 'Грузоперевозки',
+  '/pages/services/spectehnika' => 'Спецтехника',
+  '/pages/services/sclad' => 'Склады',
+  '/pages/services/musorbak' => 'Мусорные баки',
+  '/pages/services/naves' => 'Навесы',
+  '/pages/services/administrativnoe' => 'Административные здания',
+  '/pages/services/obchegitia' => 'Общежития',
+  '/pages/services/generatornae' => 'Генераторные',
+  '/pages/services/compressor' => 'Газовые компрессоры',
+  '/pages/services/compressor_air' => 'Воздушные компрессоры',
+  '/pages/services/montach' => 'Монтаж инженерных систем',
+  '/pages/services/postavka' => 'Поставка материалов',
+  '/pages/services/proektirovanie' => 'Проектирование',
+];
+$matched = null;
+foreach ($map as $path => $name) {
+  if (strpos($requestUri, $path) !== false || $requestUri === $path) {
+    if ($path === '/pages/uslugi' && $requestUri !== '/pages/uslugi/uslugi.php' && $requestUri !== '/pages/uslugi') continue;
+    $matched = $path;
+    break;
+  }
+}
+// Для вложенных услуг добавляем промежуточный уровень
+if (strpos($requestUri, '/pages/services/') !== false) {
+  $breadcrumbItems[] = ['name' => 'Услуги', 'url' => $baseUrl . '/pages/uslugi/uslugi.php'];
+  if ($matched && isset($map[$matched])) {
+    $breadcrumbItems[] = ['name' => $map[$matched], 'url' => $baseUrl . $matched . '/'];
+  }
+} elseif ($matched) {
+  $breadcrumbItems[] = ['name' => $map[$matched], 'url' => $baseUrl . $matched . (str_ends_with($matched, '.php') ? '' : '/')];
+}
+$hasBreadcrumb = count($breadcrumbItems) > 1;
+?>
 <!-- Schema.org JSON-LD — Professional SEO -->
 <script type="application/ld+json">
 {
@@ -146,7 +202,29 @@
       "provider": { "@id": "https://www.xn--h1aafj.xn--p1ai/#organization" },
       "areaServed": "Москва и Московская область",
       "url": "https://www.xn--h1aafj.xn--p1ai/pages/services/proektirovanie/"
+    }<?php if ($hasBreadcrumb): ?>,
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+<?php foreach ($breadcrumbItems as $i => $bc): ?>
+        {
+          "@type": "ListItem",
+          "position": <?= $i+1 ?>,
+          "name": <?= json_encode($bc['name'], JSON_UNESCAPED_UNICODE) ?>,
+          "item": <?= json_encode($bc['url'], JSON_UNESCAPED_UNICODE) ?>
+        }<?= $i < count($breadcrumbItems)-1 ? ',' : '' ?>
+
+<?php endforeach; ?>
+      ]
     }
+<?php endif; ?>
   ]
 }
 </script>
+<?php if ($hasBreadcrumb): ?>
+<nav aria-label="breadcrumb" style="display:none;">
+  <ol>
+    <?php foreach ($breadcrumbItems as $bc): ?><li><a href="<?= htmlspecialchars($bc['url']) ?>"><?= htmlspecialchars($bc['name']) ?></a></li><?php endforeach; ?>
+  </ol>
+</nav>
+<?php endif; ?>

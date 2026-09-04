@@ -78,7 +78,7 @@
 				style="margin-left: 15px !important"></button>
 			<button
 				class="relative cursor-pointer visible-1100 flex flex-col justify-center items-center max-w-[40px] gap-[5px]"
-				id="toggleMenu" aria-label="Открыть меню">
+				id="toggleMenu" aria-label="Открыть меню" aria-expanded="false" aria-controls="content_menu">
 				<span class="hanburger_line"></span>
 				<span class="hanburger_line"></span>
 				<span class="hanburger_line"></span>
@@ -163,14 +163,20 @@
 			const content_menu = document.getElementById('content_menu');
 			const btn_close = document.getElementById('btn_close_menu');
 
+			function setMenuExpanded(expanded) {
+				togglemenu.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+				content_menu.setAttribute('aria-hidden', expanded ? 'false' : 'true');
+			}
 			togglemenu.addEventListener('click', () => {
 				content_menu.classList.toggle('active');
+				setMenuExpanded(content_menu.classList.contains('active'));
 			});
 
 			document.addEventListener('keydown', (e) => {
 				if (e.key === 'Escape') {
 					if (content_menu.classList.contains('active')) {
 						content_menu.classList.remove('active');
+						setMenuExpanded(false);
 					}
 				}
 			});
@@ -178,12 +184,14 @@
 			document.addEventListener('cancel', () => {
 				if (content_menu.classList.contains('active')) {
 					content_menu.classList.remove('active');
+					setMenuExpanded(false);
 				}
 			});
 
 			btn_close.addEventListener('click', () => {
 				if (content_menu.classList.contains('active')) {
 					content_menu.classList.remove('active');
+					setMenuExpanded(false);
 				}
 			});
 
