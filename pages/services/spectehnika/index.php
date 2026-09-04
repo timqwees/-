@@ -68,7 +68,12 @@ if (file_exists($componentMailPath)) {
 	<link rel="icon" type="image/png" sizes="16x16" href="/assets/image/favicon/favicon-16x16.png">
 	<link rel="apple-touch-icon" sizes="180x180" href="/assets/image/favicon/apple-touch-icon.png">
 	<link rel="manifest" href="/assets/image/favicon/site.webmanifest">
+	<link rel="canonical" href="https://www.xn--h1aafj.xn--p1ai/pages/services/spectehnika/" />
+	<link rel="alternate" hreflang="ru" href="https://www.xn--h1aafj.xn--p1ai/pages/services/spectehnika/" />
+	<link rel="alternate" hreflang="x-default" href="https://www.xn--h1aafj.xn--p1ai/pages/services/spectehnika/" />
 	<!-- Open Graph / Facebook -->
+	<meta property="og:locale" content="ru_RU">
+	<meta property="og:site_name" content="ФАВОРИТ-СТРОЙ-СНАБ">
 	<meta property="og:title" content="Аренда спецтехники — бульдозер, трактор, Шакман">
 	<meta property="og:description" content="Аренда спецтехники: бульдозеры, тракторы, грузовики Шакман, доставка. Москва и МО.">
 	<meta property="og:image" content="/assets/image/services/Спецтехника/excavator.jpg">
@@ -157,6 +162,7 @@ if (file_exists($componentMailPath)) {
 				<div class="relative w-full p-6">
 					<form action="#" method="post" class="space-y-4" novalidate novalidate>
 						<input type="hidden" name="content_form" value="Аренда спецтехники">
+						<?php $abPath = dirname(__DIR__,3) . '/assets/componets/antibot_fields.php'; if(file_exists($abPath)) include_once $abPath; else { $alt=dirname(__DIR__,3).'/assets/PHP/Antibot.php'; if(file_exists($alt)){require_once $alt; echo Antibot::generateFields();}} ?>
 						<input type="hidden" name="email" value="поле без почты!">
 						<div class="relative">
 							<h3

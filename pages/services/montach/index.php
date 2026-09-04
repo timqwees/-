@@ -67,17 +67,25 @@ if (file_exists($componentMailPath)) {
 	<link rel="icon" type="image/png" sizes="16x16" href="/assets/image/favicon/favicon-16x16.png">
 	<link rel="apple-touch-icon" sizes="180x180" href="/assets/image/favicon/apple-touch-icon.png">
 	<link rel="manifest" href="/assets/image/favicon/site.webmanifest">
+	<link rel="canonical" href="https://www.xn--h1aafj.xn--p1ai/pages/services/montach/" />
+	<link rel="alternate" hreflang="ru" href="https://www.xn--h1aafj.xn--p1ai/pages/services/montach/" />
+	<link rel="alternate" hreflang="x-default" href="https://www.xn--h1aafj.xn--p1ai/pages/services/montach/" />
 	<!-- Open Graph / Facebook -->
+	<meta property="og:locale" content="ru_RU">
+	<meta property="og:site_name" content="ФАВОРИТ-СТРОЙ-СНАБ">
 	<meta property="og:title" content="Монтаж инженерных систем — отопление, электрика">
 	<meta property="og:description" content="Монтаж инженерных систем: отопление, водоснабжение, вентиляция, электрика.">
-	<meta property="og:image" content="/assets/image/icon/2.PNG">
+	<meta property="og:image" content="https://www.xn--h1aafj.xn--p1ai/assets/image/icon/2.PNG">
+	<meta property="og:image:width" content="1200">
+	<meta property="og:image:height" content="630">
+	<meta property="og:image:alt" content="ФАВОРИТ-СТРОЙ-СНАБ">
 	<meta property="og:type" content="website">
 	<meta property="og:url" content="https://www.xn--h1aafj.xn--p1ai/pages/services/montach/">
 	<!-- Twitter -->
 	<meta name="twitter:card" content="summary_large_image">
 	<meta name="twitter:title" content="Монтаж инженерных систем — отопление, электрика">
 	<meta name="twitter:description" content="Монтаж инженерных систем: отопление, водоснабжение, вентиляция, электрика.">
-	<meta name="twitter:image" content="/assets/image/icon/2.PNG">
+	<meta name="twitter:image" content="https://www.xn--h1aafj.xn--p1ai/assets/image/icon/2.PNG">
 	<link rel="icon" type="image/png" sizes="32x32" href="/assets/image/favicon/favicon-32x32.png">
 
 	<script src="https://cdn.tailwindcss.com"></script>
@@ -155,7 +163,7 @@ if (file_exists($componentMailPath)) {
 
 
 				<div class="relative w-full p-6">
-					<form action="#" method="post" class="space-y-4" novalidate novalidate>
+					<form action="#" method="post" class="space-y-4" novalidate>
 						<input type="hidden" name="content_form">
 						<?php $abPath = dirname(__DIR__,3) . '/assets/componets/antibot_fields.php'; if(file_exists($abPath)) include_once $abPath; else { $alt=dirname(__DIR__,3).'/assets/PHP/Antibot.php'; if(file_exists($alt)){require_once $alt; echo Antibot::generateFields();}} ?>
 						<input type="hidden" name="email" value="поле без почты!">

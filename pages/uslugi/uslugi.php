@@ -4,11 +4,14 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Изготовление и обработка металла — Услуги</title>
-	<meta name="description"
-		content="Профессиональные услуги по изготовлению и обработке металла. Качественно, быстро, под ключ.">
+	<title>Услуги — Производство, ремонт, доставка | ФАВОРИТ-СТРОЙ-СНАБ</title>
+	<meta name="description" content="Все услуги ФАВОРИТ-СТРОЙ-СНАБ: БВЗ под ключ, капитальный ремонт, грузоперевозки, спецтехника, мебель, склады, навесы.">
 	<meta name="keywords" content="металл, изготовление, обработка, услуги, строительство, модульные здания">
 	<meta name="author" content="Фаворит-Строй-Снаб">
+	<meta name="theme-color" content="#22c55e">
+	<link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+	<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 	<meta name="robots" content="index, follow">
 	<link rel="icon" type="image/png" sizes="32x32" href="/assets/image/favicon/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="/assets/image/favicon/favicon-16x16.png">
@@ -18,30 +21,36 @@
 	<script src="https://cdn.tailwindcss.com"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 	<link rel="stylesheet" href="/assets/distCSS/style.css">
-	<script src="/assets/distJS/main.js"></script>
-	<link rel="stylesheet" href="tailwind.css">
+	<script defer src="/assets/distJS/main.js"></script>
+	<!-- tailwind built into distCSS -->
 
 	<!-- canonical -->
-	<link rel="canonical" href="https://www.kavstal.ru/pages/uslugi/uslugi.php" />
+	<link rel="canonical" href="https://www.xn--h1aafj.xn--p1ai/pages/uslugi/uslugi.php" />
+	<link rel="alternate" hreflang="ru" href="https://www.xn--h1aafj.xn--p1ai/pages/uslugi/uslugi.php" />
+	<link rel="alternate" hreflang="x-default" href="https://www.xn--h1aafj.xn--p1ai/pages/uslugi/uslugi.php" />
 
 	<!-- scripts modal connect+fh -->
-	<script src="/local/templates/rs2023/js/fh.js"></script>
-	<script src="/local/templates/rs2023/js/modal.js"></script>
-	<!-- end -->
+
+<!-- end -->
 
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 	<!-- Open Graph / Facebook -->
-	<meta property="og:title" content="FAVORIT-STROY-SNAB - Современное домостроение">
+	<meta property="og:locale" content="ru_RU">
+	<meta property="og:site_name" content="ФАВОРИТ-СТРОЙ-СНАБ">
+	<meta property="og:title" content="Услуги — ФАВОРИТ-СТРОЙ-СНАБ">
 	<meta property="og:description" content="Качественные строительные услуги и материалы.">
-	<meta property="og:image" content="/assets/image/icon/2.PNG">
+	<meta property="og:image" content="https://www.xn--h1aafj.xn--p1ai/assets/image/icon/2.PNG">
+	<meta property="og:image:width" content="1200">
+	<meta property="og:image:height" content="630">
+	<meta property="og:image:alt" content="ФАВОРИТ-СТРОЙ-СНАБ">
 	<meta property="og:type" content="website">
-	<meta property="og:url" content="https://www.фсс.рус/">
+	<meta property="og:url" content="https://www.xn--h1aafj.xn--p1ai/pages/uslugi/uslugi.php">
 	<!-- Twitter -->
 	<meta name="twitter:card" content="summary_large_image">
 	<meta name="twitter:title" content="FAVORIT-STROY-SNAB - Современное домостроение">
 	<meta name="twitter:description" content="Качественные строительные услуги и материалы.">
-	<meta name="twitter:image" content="/assets/image/icon/2.PNG">
+	<meta name="twitter:image" content="https://www.xn--h1aafj.xn--p1ai/assets/image/icon/2.PNG">
 
 	<!-- Swiper Slider for Banner -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />

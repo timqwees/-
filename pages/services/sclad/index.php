@@ -59,8 +59,8 @@ if (file_exists($componentMailPath)) {
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Склады под ключ | ФАВОРИТ-СТРОЙ-СНАБ</title>
-	<meta name="description" content="Строительство складов">
+	<title>Склады и логистические центры — строительство | ФАВОРИТ-СТРОЙ-СНАБ</title>
+	<meta name="description" content="Строительство складов и логистических центров под ключ: ангары, склады, быстровозводимые здания от 2 недель с гарантией.">
 	<meta name="theme-color" content="#22c55e">
 	<link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
 	<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
@@ -73,17 +73,25 @@ if (file_exists($componentMailPath)) {
 	<link rel="icon" type="image/png" sizes="16x16" href="/assets/image/favicon/favicon-16x16.png">
 	<link rel="apple-touch-icon" sizes="180x180" href="/assets/image/favicon/apple-touch-icon.png">
 	<link rel="manifest" href="/assets/image/favicon/site.webmanifest">
+	<link rel="canonical" href="https://www.xn--h1aafj.xn--p1ai/pages/services/sclad/" />
+	<link rel="alternate" hreflang="ru" href="https://www.xn--h1aafj.xn--p1ai/pages/services/sclad/" />
+	<link rel="alternate" hreflang="x-default" href="https://www.xn--h1aafj.xn--p1ai/pages/services/sclad/" />
 	<!-- Open Graph / Facebook -->
+	<meta property="og:locale" content="ru_RU">
+	<meta property="og:site_name" content="ФАВОРИТ-СТРОЙ-СНАБ">
 	<meta property="og:title" content="Склады под ключ">
-	<meta property="og:description" content="Строительство складов">
-	<meta property="og:image" content="/assets/image/icon/2.PNG">
+	<meta property="og:description" content="Строительство складов и логистических центров под ключ: ангары, склады, быстровозводимые здания от 2 недель с гарантией.">
+	<meta property="og:image" content="https://www.xn--h1aafj.xn--p1ai/assets/image/icon/2.PNG">
+	<meta property="og:image:width" content="1200">
+	<meta property="og:image:height" content="630">
+	<meta property="og:image:alt" content="ФАВОРИТ-СТРОЙ-СНАБ">
 	<meta property="og:type" content="website">
 	<meta property="og:url" content="https://www.xn--h1aafj.xn--p1ai/pages/services/sclad/">
 	<!-- Twitter -->
 	<meta name="twitter:card" content="summary_large_image">
 	<meta name="twitter:title" content="Склады под ключ">
-	<meta name="twitter:description" content="Строительство складов">
-	<meta name="twitter:image" content="/assets/image/icon/2.PNG">
+	<meta name="twitter:description" content="Строительство складов и логистических центров под ключ: ангары, склады, быстровозводимые здания от 2 недель с гарантией.">
+	<meta name="twitter:image" content="https://www.xn--h1aafj.xn--p1ai/assets/image/icon/2.PNG">
 	<link rel="icon" type="image/png" sizes="32x32" href="/assets/image/favicon/favicon-32x32.png">
 
 	<script src="https://cdn.tailwindcss.com"></script>
@@ -161,7 +169,7 @@ if (file_exists($componentMailPath)) {
 
 
 				<div class="relative w-full p-6">
-					<form action="#" method="post" class="space-y-4" novalidate novalidate>
+					<form action="#" method="post" class="space-y-4" novalidate>
 						<input type="hidden" name="content_form">
 						<?php $abPath = dirname(__DIR__,3) . '/assets/componets/antibot_fields.php'; if(file_exists($abPath)) include_once $abPath; else { $alt=dirname(__DIR__,3).'/assets/PHP/Antibot.php'; if(file_exists($alt)){require_once $alt; echo Antibot::generateFields();}} ?>
 						<input type="hidden" name="email" value="поле без почты!">

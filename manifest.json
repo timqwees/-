@@ -1,12 +1,13 @@
 {
-  "name": "FAVORIT-STROY-SNAB - Современное домостроение",
-  "short_name": "FAVORIT-STROY-SNAB - Современное домостроение",
-  "start_url": "/",
+  "name": "ФАВОРИТ-СТРОЙ-СНАБ — Быстровозводимые здания под ключ",
+  "short_name": "ФАВОРИТ-СТРОЙ-СНАБ",
+  "start_url": "/?utm_source=pwa",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#fff",
-  "description": "Быстровозводимые модульные здания, фото и видео выполненных работ. Строительство, поставка, монтаж, капитальный ремонт, изготовление мебели и металлоконструкций.",
+  "theme_color": "#22c55e",
+  "description": "Быстровозводимые модульные здания под ключ, капитальный ремонт, поставка мебели, грузоперевозки и спецтехника в Москве. От 2 недель, гарантия 50+ лет.",
   "lang": "ru",
+  "categories": ["business", "construction"],
   "icons": [
     {
       "src": "/assets/image/favicon/android-chrome-192x192.png",

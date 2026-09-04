@@ -46,8 +46,8 @@ if (file_exists($componentMailPath)) {
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>ФАВОРИТ-СТРОЙ-СНАБ — Быстровозводимые здания, капитальный ремонт, грузоперевозки | Москва</title>
-	<meta name="description" content="ФАВОРИТ-СТРОЙ-СНАБ — быстровозводимые модульные здания под ключ, капитальный ремонт, поставка мебели, грузоперевозки и спецтехника в Москве. От 2 недель, гарантия 50 лет. Звоните +7 938 018-00-06">
+	<title>ФАВОРИТ-СТРОЙ-СНАБ — Быстровозводимые здания под ключ | Москва</title>
+	<meta name="description" content="Быстровозводимые здания под ключ в Москве: склады, ангары, АБК, общежития. Капремонт, грузоперевозки, спецтехника. От 2 недель, гарантия 50 лет. ☎ +7 938 018-00-06">
 	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 	<meta name="keywords" content="быстровозводимые здания БВЗ, модульные здания, капитальный ремонт зданий, грузоперевозки Москва, аренда спецтехники, производство мусорных баков, навесы, склады, общежития, Фаворит-Строй-Снаб">
 	<meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
@@ -70,6 +70,8 @@ if (file_exists($componentMailPath)) {
 	<link rel="mask-icon" href="/assets/image/favicon/favicon-32x32.png" color="#22c55e">
 	<!-- Canonical - punycode for SEO compatibility, IDN for humans -->
 	<link rel="canonical" href="https://www.xn--h1aafj.xn--p1ai/" />
+	<link rel="alternate" hreflang="ru" href="https://www.xn--h1aafj.xn--p1ai/" />
+	<link rel="alternate" hreflang="x-default" href="https://www.xn--h1aafj.xn--p1ai/" />
 	<!-- Open Graph -->
 	<meta property="og:locale" content="ru_RU">
 	<meta property="og:site_name" content="ФАВОРИТ-СТРОЙ-СНАБ">
@@ -175,47 +177,46 @@ if (file_exists($componentMailPath)) {
 					<div class="bg-black w-full h-full opacity-50 z-10 absolute"></div>
 
 					<div class="swiper-slide">
-						<img src="https://www.фсс.рус/assets/image/services/капстроение/1.JPG" alt="Banner 1"
+						<img src="https://www.фсс.рус/assets/image/services/капстроение/1.JPG" alt="Капитальное строительство — ФАВОРИТ-СТРОЙ-СНАБ" loading="eager" fetchpriority="high" decoding="async"
 							class="w-full h-full object-cover" />
 					</div>
 
 					<div class="swiper-slide">
-						<img src="https://www.фсс.рус/assets/image/services/капстроение/5.JPG" alt="Banner 2"
+						<img src="https://www.фсс.рус/assets/image/services/капстроение/5.JPG" alt="Быстровозводимые здания — производство" loading="lazy" decoding="async"
 							class="w-full h-full object-cover" />
 					</div>
 
 					<div class="swiper-slide">
-						<img src="https://www.фсс.рус/assets/image/services/Грузоперевозки/1.jpg" alt="Banner 3"
+						<img src="https://www.фсс.рус/assets/image/services/Грузоперевозки/1.jpg" alt="Грузоперевозки — автотранспорт" loading="lazy" decoding="async"
 							class="w-full h-full object-cover" />
 					</div>
 
 					<div class="swiper-slide">
-						<img src="https://img.freepik.com/free-photo/view-heavy-machinery-used-construction-industry_23-2151307694.jpg?uid=R32996255&ga=GA1.1.364390413.1754642881&semt=ais_hybrid&w=740&q=80"
-							alt="Banner 3" class="w-full h-full object-cover" style="transform: scaleX(-1);" />
+						<img src="https://img.freepik.com/free-photo/view-heavy-machinery-used-construction-industry_23-2151307694.jpg" alt="Строительная техника — спецтехника" loading="lazy" decoding="async" referrerpolicy="no-referrer" class="w-full h-full object-cover" style="transform: scaleX(-1);" />
 					</div>
 
 					<div class="swiper-slide">
-						<img src="https://truckscenter.ru/shacman/img/8x4.jpg" alt="Banner 4"
+						<img src="https://truckscenter.ru/shacman/img/8x4.jpg" alt="Грузовик Шакман — доставка" loading="lazy" decoding="async" referrerpolicy="no-referrer"
 							class="w-full h-full object-cover" />
 					</div>
 
 					<div class="swiper-slide">
-						<img src="https://www.фсс.рус//assets/image/swiper/1.jpeg" alt=" Banner 5"
+						<img src="https://www.фсс.рус/assets/image/swiper/1.jpeg" alt="Модульные здания — портфолио" loading="lazy" decoding="async"
 							class="w-full h-full object-cover" />
 					</div>
 
 					<div class="swiper-slide">
-						<img src="https://www.фсс.рус//assets/image/swiper/2.jpg" alt="Banner 6"
+						<img src="https://www.фсс.рус/assets/image/swiper/2.jpg" alt="Складские комплексы — БВЗ" loading="lazy" decoding="async"
 							class="w-full h-full object-cover" />
 					</div>
 
 					<div class="swiper-slide">
-						<img src="https://www.фсс.рус//assets/image/swiper/3.jpeg" alt="Banner 7"
+						<img src="https://www.фсс.рус/assets/image/swiper/3.jpeg" alt="Монтаж быстровозводимых зданий" loading="lazy" decoding="async"
 							class="w-full h-full object-cover" />
 					</div>
 
 					<div class="swiper-slide">
-						<img src="https://www.фсс.рус/assets/image/services/Школа фото/2.jpeg" alt="Banner 8"
+						<img src="https://www.фсс.рус/assets/image/services/Школа фото/2.jpeg" alt="Капитальный ремонт школ — до и после" loading="lazy" decoding="async"
 							class="w-full h-full object-cover" />
 					</div>
 
@@ -251,15 +252,16 @@ if (file_exists($componentMailPath)) {
 
 		<div class="relative z-30 container mx-auto px-6 flex flex-col items-start min-h-[600px]">
 			<div class="max-w-2xl viewLeft media_content_left">
-				<div class="text-[1.5rem] md:text-4xl font-extrabold text-white mb-6 mt-10 md:mt-0 leading-tight">
+				<h1 class="text-[1.5rem] md:text-4xl font-extrabold text-white mb-6 mt-10 md:mt-0 leading-tight">
 					<span class="viewLeft">
-						<span class="text-wgite">Капитальное строение</span><br>
+						<span class="text-white">Капитальное строение</span><br>
 						<span class="text-green-400">Грузоперевозки</span><br>
-						<span class="text-wgite">Быстровозводимые здания под ключ</span><br>
+						<span class="text-white">Быстровозводимые здания под ключ</span><br>
 						<span class="text-green-400">Поставка и сборка мебели</span><br>
-						<span class="text-wgite">Капитальный ремонт</span>
-				</div>
-				<div class="text-white text-base md:text-lg mb-8"><span class="viewLeft">
+						<span class="text-white">Капитальный ремонт</span>
+					</span>
+				</h1>
+				<p class="text-white text-base md:text-lg mb-8"><span class="viewLeft">
 						Индивидуальный
 						подход к каждому
 						клиенту.</span><br>
@@ -272,7 +274,7 @@ if (file_exists($componentMailPath)) {
 						всех этапах
 						строительства.</span>
 
-				</div>
+				</p>
 			</div>
 		</div>
 
