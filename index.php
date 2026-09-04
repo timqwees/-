@@ -109,6 +109,9 @@ if (file_exists($componentMailPath)) {
 	<script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 	<script defer src="/assets/distJS/main.js"></script>
 
+	<!--verefy-->
+	<meta name="yandex-verification" content="27e0ba9980498150" />
+
 	<style>
 		@keyframes floatRightIcon {
 			0% {
