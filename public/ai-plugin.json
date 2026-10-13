@@ -1,0 +1,12 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "ФАВОРИТ-СТРОЙ-СНАБ",
+  "name_for_model": "favorit_stroy_snab_bvz",
+  "description_for_human": "Быстровозводимые здания под ключ от 14 дней, капремонт, грузоперевозки, спецтехника. Москва и МО.",
+  "description_for_model": "Каталог услуг производства и монтажа БВЗ (склады, ангары, АБК, общежития), капитального ремонта, грузоперевозок и аренды спецтехники. Контакты, цены-ориентиры, FAQ, критерии выбора подрядчика.",
+  "auth": { "type": "none" },
+  "api": { "type": "openapi", "url": "https://www.фсс.рус/openapi.yaml" },
+  "logo_url": "https://www.фсс.рус/public/assets/image/og/og-home-1200x630.jpg",
+  "contact_email": "fss@фсс.рус",
+  "legal_info_url": "https://www.фсс.рус/politika"
+}
