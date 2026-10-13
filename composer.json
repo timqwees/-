@@ -1,5 +1,16 @@
 {
+    "name": "timqwees/fss",
+    "description": "ФАВОРИТ-СТРОЙ-СНАБ — быстровозводимые здания под ключ. Ядро вне webroot: app/ + setting/, контент в public/.",
+    "type": "project",
+    "license": "GPL-3.0-or-later",
     "require": {
+        "php": ">=8.1",
         "phpmailer/phpmailer": "^6.10"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Setting\\": "setting/"
+        }
     }
 }

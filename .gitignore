@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+.DS_Store?
+._*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+error_log
+
+# Temp
+*.tmp

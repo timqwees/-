@@ -1,98 +1,113 @@
-# .htaccess — FAVORIT-STROY-SNAB Professional
-# Security + Performance + SEO
+# .htaccess — ФАВОРИТ-СТРОЙ-СНАБ (nginx-эквивалент: tools/nginx.conf)
+# Ядро (app/, setting/) вне прямых URL; контент в public/; вход — index.php (роутер).
 
-# --- Security Headers ---
-<IfModule mod_headers.c>
-  Header set X-Content-Type-Options "nosniff"
-  Header set X-Frame-Options "SAMEORIGIN"
-  Header set X-XSS-Protection "1; mode=block"
-  Header set Referrer-Policy "strict-origin-when-cross-origin"
-  Header set Permissions-Policy "camera=(), microphone=(), geolocation=()"
-  # HSTS (enable after SSL check)
-  # Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-  # CSP — мягкий, разрешаем CDN
-  Header set Content-Security-Policy "default-src 'self' https: data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://api-maps.yandex.ru; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://cdn.tailwindcss.com; img-src 'self' data: https: blob:; font-src 'self' https://cdnjs.cloudflare.com data:; connect-src 'self' https:; frame-src 'self' https://yandex.ru https://api-maps.yandex.ru;"
-</IfModule>
-
-# --- Prevent access to sensitive files ---
-<FilesMatch "^(composer\.(json|lock)|package\.json|webpack\.config\.js|site_pages\.conf|\.htaccess|\.env)$">
-  Require all denied
-</FilesMatch>
-<FilesMatch "\.(log|ini|conf)$">
-  Require all denied
-</FilesMatch>
-
-# Block direct access to PHP internals
-RedirectMatch 403 ^/(vendor|node_modules|src)/.*$
-RedirectMatch 403 ^/assets/PHP/(config|Antibot|Security|sheoma).*\.php$
-
-# Hide PHP errors from users (SEO: no leaks)
-php_flag display_errors off
-php_flag log_errors on
-
-# --- Compression ---
-<IfModule mod_deflate.c>
-  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json application/xml image/svg+xml
-</IfModule>
-
-# --- Browser Caching (Performance) ---
-<IfModule mod_expires.c>
-  ExpiresActive On
-  ExpiresByType image/jpg "access plus 1 year"
-  ExpiresByType image/jpeg "access plus 1 year"
-  ExpiresByType image/png "access plus 1 year"
-  ExpiresByType image/webp "access plus 1 year"
-  ExpiresByType image/svg+xml "access plus 1 year"
-  ExpiresByType video/mp4 "access plus 1 year"
-  ExpiresByType text/css "access plus 1 month"
-  ExpiresByType application/javascript "access plus 1 month"
-  ExpiresByType application/x-javascript "access plus 1 month"
-  ExpiresByType font/woff2 "access plus 1 year"
-  ExpiresDefault "access plus 1 week"
-</IfModule>
-
-<IfModule mod_headers.c>
-  <FilesMatch "\.(jpg|jpeg|png|webp|svg|mp4|css|js|woff2)$">
-    Header set Cache-Control "public, max-age=2592000, immutable"
-  </FilesMatch>
-  <FilesMatch "\.(html|php)$">
-    Header set Cache-Control "public, max-age=3600, must-revalidate"
-  </FilesMatch>
-</IfModule>
-
-# --- SEO: Force HTTPS and www unification (choose one) ---
-# Uncomment if domain is punycode and SSL ready
-# <IfModule mod_rewrite.c>
-#   RewriteEngine On
-#   # Force HTTPS
-#   RewriteCond %{HTTPS} off
-#   RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-#   # Optional: redirect фсс.рус -> www.фсс.рус
-#   # RewriteCond %{HTTP_HOST} ^фсс\.рус$ [NC]
-#   # RewriteRule ^(.*)$ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-# </IfModule>
-
-# --- Anti-bot: Block empty UA and known bad bots via rewrite ---
+# --- 1. Редиректы и ЧПУ (фронт-контроллер index.php) ---
 <IfModule mod_rewrite.c>
-  RewriteEngine On
-  # Block no User-Agent (often spam bots)
-  RewriteCond %{HTTP_USER_AGENT} ^$ [OR]
-  # Block common spam bots/crawlers that abuse forms
-  RewriteCond %{HTTP_USER_AGENT} (curl|wget|python|libwww|httpclient|masscan|nmap|sqlmap|nikto) [NC]
-  RewriteRule ^.* - [F,L]
+	RewriteEngine On
+	RewriteBase /
 
-  # Limit POST floods: optional rate via mod_ratelimit if available
+	# HTTPS + единый хост www.xn--h1aafj.xn--p1ai
+	RewriteCond %{HTTPS} !=on
+	RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+	RewriteCond %{HTTP_HOST} !^www\.xn--h1aafj\.xn--p1ai$ [NC]
+	RewriteRule ^(.*)$ https://www.xn--h1aafj.xn--p1ai/$1 [R=301,L]
+
+	# SEO-фиды и AI-файлы — всегда через PHP-роутер (динамика, ETag/304)
+	RewriteRule ^(robots\.txt|sitemap\.xml|sitemap-index\.xml|rss\.xml|turbo\.xml|yml\.xml|feed\.yml|llms\.txt|llms-full\.txt|opensearch\.xml|ai-plugin\.json|openapi\.yaml)$ index.php [L]
+
+	# Старые .php-адреса → ЧПУ (301, защита от дублей; дублирует routes.php)
+	RewriteRule ^index\.php$ / [R=301,L]
+	RewriteRule ^home\.php$ / [R=301,L]
+	RewriteRule ^pages/uslugi/uslugi\.php$ /uslugi [R=301,L]
+	RewriteRule ^pages/portfolio\.php$ /portfolio [R=301,L]
+	RewriteRule ^pages/projects\.php$ /projects [R=301,L]
+	RewriteRule ^pages/politic/index\.php$ /politika [R=301,L]
+	RewriteRule ^pages/agree/index\.php$ /soglasie [R=301,L]
+	RewriteRule ^pages/services/([a-z0-9_\-]+)/index\.php$ /services/$1 [R=301,L]
+	RewriteRule ^pages/services/([a-z0-9_\-]+)/?$ /services/$1 [R=301,L]
+	# До переезда в public/: /assets/* → /public/assets/*
+	RewriteRule ^assets/(.+)$ /public/assets/$1 [R=301,L]
+
+	# Двойные и висячие слэши
+	RewriteCond %{REQUEST_URI} ^(.*)//(.*)$
+	RewriteRule . %1/%2 [R=301,L]
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.+)/$ /$1 [R=301,L]
+
+	# Закрытое: ядро, исходники, шаблоны и данные напрямую не отдаём (только через роутер)
+	RewriteRule ^(app|setting|vendor|tools)/ - [F,L]
+	RewriteRule ^public/pages/ - [F,L]
+
+	# Всё остальное — фронт-контроллер (существующие файлы отдаются напрямую)
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.*)$ index.php [L]
 </IfModule>
 
-# --- Disable directory listing ---
-Options -Indexes
+# --- 2. Ошибки: несуществующие URL уходит в роутер правилом выше (честный 404-шаблон) ---
 
-# --- Error Documents (SEO friendly) ---
-ErrorDocument 404 /index.php
-ErrorDocument 403 /index.php
+# --- 3. Заголовки безопасности (HTML ставит PHP/SecurityHeaders; здесь только статика) ---
+<IfModule mod_headers.c>
+	Header set X-Content-Type-Options "nosniff"
+	Header set X-Frame-Options "SAMEORIGIN"
+	Header set Referrer-Policy "strict-origin-when-cross-origin"
+	Header set Permissions-Policy "camera=(), microphone=(), geolocation=(self), payment=()"
+	Header set Cross-Origin-Opener-Policy "same-origin-allow-popins"
+	Header set X-DNS-Prefetch-Control "on"
+	# HSTS включать после проверки SSL на всех поддоменах:
+	# Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
 
-# --- UTF-8 ---
+	<FilesMatch "\.(jpg|jpeg|png|webp|avif|svg|mp4|css|js|woff2|ico)$">
+		Header set Cache-Control "public, max-age=31536000, immutable"
+	</FilesMatch>
+
+	# Шаблоны напрямую не индексируем (если правило F выше снято)
+	<If "%{REQUEST_URI} =~ m#^/public/pages/#">
+		Header set X-Robots-Tag "noindex, nofollow"
+	</If>
+</IfModule>
+
+# --- 4. Сжатие ---
+<IfModule mod_deflate.c>
+	AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json application/xml application/rss+xml image/svg+xml font/woff2
+</IfModule>
+<IfModule mod_brotli.c>
+	AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/xml text/css text/javascript application/javascript application/json application/rss+xml image/svg+xml font/woff2
+</IfModule>
+
+# --- 5. Кэш браузера (статика; HTML управляется из PHP) ---
+<IfModule mod_expires.c>
+	ExpiresActive On
+	ExpiresDefault "access plus 1 week"
+	ExpiresByType image/jpg "access plus 1 year"
+	ExpiresByType image/jpeg "access plus 1 year"
+	ExpiresByType image/png "access plus 1 year"
+	ExpiresByType image/webp "access plus 1 year"
+	ExpiresByType image/avif "access plus 1 year"
+	ExpiresByType image/svg+xml "access plus 1 year"
+	ExpiresByType video/mp4 "access plus 1 year"
+	ExpiresByType text/css "access plus 1 year"
+	ExpiresByType application/javascript "access plus 1 year"
+	ExpiresByType font/woff2 "access plus 1 year"
+	ExpiresByType image/x-icon "access plus 1 year"
+</IfModule>
+FileETag MTime Size
+
+# --- 6. Служебное ---
+Options -Indexes -MultiViews
 AddDefaultCharset UTF-8
 DefaultLanguage ru
+ServerSignature Off
 
-# --- Protect against clickjacking via meta if headers blocked ---
+<FilesMatch "^(composer\.(json|lock)|\.env|\.gitignore)$">
+<Files ".dev">
+	Require all denied
+</Files>
+	Require all denied
+</FilesMatch>
+<FilesMatch "\.(log|ini|conf|sql|md)$">
+	Require all denied
+</FilesMatch>
+
+php_flag display_errors off
+php_flag log_errors on

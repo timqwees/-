@@ -1,0 +1,37 @@
+{
+  "name": "ФАВОРИТ-СТРОЙ-СНАБ — Быстровозводимые здания под ключ",
+  "short_name": "ФАВОРИТ-СТРОЙ-СНАБ",
+  "start_url": "/?utm_source=pwa",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#F97316",
+  "description": "Быстровозводимые модульные здания под ключ, капитальный ремонт, поставка мебели, грузоперевозки и спецтехника в Москве. От 2 недель, гарантия 50+ лет.",
+  "lang": "ru",
+  "categories": ["business", "construction"],
+  "icons": [
+    {
+      "src": "/public/assets/image/favicon/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/public/assets/image/favicon/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/public/assets/image/favicon/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/public/assets/image/favicon/favicon.ico",
+      "sizes": "32x32 16x16",
+      "type": "image/x-icon",
+      "purpose": "any"
+    }
+  ],
+  "scope": "/",
+  "orientation": "portrait"
+}

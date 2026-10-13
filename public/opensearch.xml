@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+  <ShortName>ФАВОРИТ-СТРОЙ-СНАБ</ShortName>
+  <LongName>ФАВОРИТ-СТРОЙ-СНАБ — поиск по услугам БВЗ</LongName>
+  <Description>Поиск по услугам: БВЗ, склады, ангары, АБК, общежития, капремонт, грузоперевозки, спецтехника</Description>
+  <Tags>БВЗ ангар склад АБК общежитие капремонт спецтехника грузоперевозки</Tags>
+  <Contact>fss@xn--h1aafj.xn--p1ai</Contact>
+  <Url type="text/html" template="https://www.xn--h1aafj.xn--p1ai/search?q={searchTerms}"/>
+  <Url type="application/opensearchdescription+xml" rel="self" template="https://www.xn--h1aafj.xn--p1ai/opensearch.xml"/>
+  <Image height="32" width="32" type="image/png">https://www.xn--h1aafj.xn--p1ai/public/assets/image/favicon/favicon-32x32.png</Image>
+  <Image height="180" width="180" type="image/png">https://www.xn--h1aafj.xn--p1ai/public/assets/image/favicon/apple-touch-icon.png</Image>
+  <Query role="example" searchTerms="ангар под ключ"/>
+  <InputEncoding>UTF-8</InputEncoding>
+  <OutputEncoding>UTF-8</OutputEncoding>
+  <Developer>ФАВОРИТ-СТРОЙ-СНАБ</Developer>
+</OpenSearchDescription>
