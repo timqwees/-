@@ -11,6 +11,11 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap"></noscript>
+	<style> body { font-family: 'Wix Madefor Display', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
+
 	<title>Правила обработки персональных данных | ФАВОРИТ-СТРОЙ-СНАБ</title>
 	<meta name="description" content="Правила обработки персональных данных на сайте ФАВОРИТ-СТРОЙ-СНАБ: какие данные собираем и как защищаем.">
 	<meta name="robots" content="noindex, follow">
@@ -38,6 +43,7 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
 <?= seo_goals_script() ?>
 	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261009">
 <link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261009">
+	<script defer src="/public/assets/distJS/main.js"></script>
 </head>
 
 <body class="font-sans text-gray-800 bg-gray-50">
@@ -46,7 +52,7 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
 
 	<section class="py-16 px-4 lg:px-20">
 		<div class="container mx-auto bg-white rounded-lg shadow-lg p-8">
-			<h1 class="text-3xl font-bold mb-6 text-gray-900">Правила обработки персональных данных</h1>
+			<h1 class="pg-h1">Правила обработки персональных данных</h1>
 			<p class="mb-4 text-gray-700">
 				Настоящие Правила определяют порядок обработки и защиты персональных данных пользователей сайта
 				FAVORIT-STROY-SNAB (далее — Сайт).

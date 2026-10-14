@@ -66,7 +66,7 @@ $angarImages = [
 			<div class="flex-1 min-w-0 bg-white rounded-[24px] border border-gray-100 shadow-sm p-6 md:p-8">
 				<nav class="flex items-center gap-1.5 text-xs text-gray-500 mb-4"><a href="/" class="hover:text-emerald-700">Главная</a><span class="opacity-40">/</span><a href="/uslugi" class="hover:text-emerald-700">Услуги</a><span class="opacity-40">/</span><span class="text-gray-900 font-medium">Ангары</span></nav>
 				<div class="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-full px-3 py-1 text-xs font-bold tracking-widest uppercase text-emerald-700 mb-3">С 2011 года • Под ключ • Допуск СРО</div>
-				<h1 class="text-2xl md:text-3xl font-black tracking-tight text-gray-900 mb-4">
+				<h1 class="pg-h1">
 					Ангары под ключ: арочные и прямостенные
 				</h1>
 

@@ -59,7 +59,7 @@ if ($__related): ?>
 			<div class="mt-6 text-sm text-gray-600">
 			Смотрите также: <a href="/uslugi" class="text-emerald-700 font-semibold underline">все услуги</a> ·
 			<a href="/portfolio" class="text-emerald-700 font-semibold underline">портфолио объектов</a> ·
-			<a href="/projects" class="text-emerald-700 font-semibold underline">каталог проектов</a>
+			<a href="/portfolio" class="text-emerald-700 font-semibold underline">портфолио объектов</a>
 			</div>
 		</div>
 	</section>

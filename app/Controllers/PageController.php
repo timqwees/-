@@ -39,10 +39,6 @@ class PageController
 		self::show('portfolio.php');
 	}
 
-	public static function projects(): void
-	{
-		self::show('projects.php');
-	}
 
 	public static function politika(): void
 	{

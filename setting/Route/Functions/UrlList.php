@@ -19,7 +19,7 @@ final class UrlList
 		} else {
 			header('Cache-Control: public, max-age=3600');
 		}
-		$urls = ['/', '/uslugi', '/portfolio', '/projects', '/politika', '/soglasie', '/search'];
+		$urls = ['/', '/uslugi', '/portfolio', '/politika', '/soglasie', '/search'];
 		foreach (glob($root . '/public/pages/services/*/index.php') ?: [] as $file) {
 			$urls[] = '/services/' . basename(dirname((string)$file));
 		}
