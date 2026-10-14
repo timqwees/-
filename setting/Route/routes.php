@@ -20,7 +20,7 @@ Routes::get('/.dev', function () {
 Routes::get('/uslugi', [PageController::class, 'uslugi']);
 //==================================================================================================//PORTFOLIO + PROJECTS
 Routes::get('/portfolio', [PageController::class, 'portfolio']);
-Routes::get('/projects', [PageController::class, 'projects']);
+Routes::get('/projects', function () { Routes::redirect('/portfolio'); });
 //==================================================================================================//LEGAL
 Routes::get('/politika', [PageController::class, 'politika']);
 Routes::get('/soglasie', [PageController::class, 'soglasie']);
@@ -34,7 +34,6 @@ Routes::get('/services/{slug}', function (string $slug) {
 Routes::post('/', [PageController::class, 'home']);
 Routes::post('/uslugi', [PageController::class, 'uslugi']);
 Routes::post('/portfolio', [PageController::class, 'portfolio']);
-Routes::post('/projects', [PageController::class, 'projects']);
 Routes::post('/services/{slug}', function (string $slug) {
 	PageController::service($slug);
 });
@@ -43,7 +42,7 @@ Routes::get('/index.php', function () { Routes::redirect('/'); });
 Routes::get('/home.php', function () { Routes::redirect('/'); });
 Routes::get('/pages/uslugi/uslugi.php', function () { Routes::redirect('/uslugi'); });
 Routes::get('/pages/portfolio.php', function () { Routes::redirect('/portfolio'); });
-Routes::get('/pages/projects.php', function () { Routes::redirect('/projects'); });
+Routes::get('/pages/projects.php', function () { Routes::redirect('/portfolio'); });
 Routes::get('/pages/politic/index.php', function () { Routes::redirect('/politika'); });
 Routes::get('/pages/agree/index.php', function () { Routes::redirect('/soglasie'); });
 Routes::get('/pages/services/{slug}/index.php', function (string $slug) {

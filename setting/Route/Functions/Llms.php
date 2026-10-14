@@ -42,7 +42,7 @@ final class Llms
 		$out .= "## Главное\n";
 		$out .= "- [" . $brand . " — главная]({$base}/): БВЗ под ключ от " . seo_config('deadline_days') . " дней\n";
 		$out .= "- [Все услуги]({$base}/uslugi): каталог-хаб, " . count($services) . " направлений\n";
-		$out .= "- [Портфолио]({$base}/portfolio) | [Каталог проектов]({$base}/projects)\n\n";
+		$out .= "- [Портфолио]({$base}/portfolio): фото и видео сданных объектов\n\n";
 		$out .= "## Услуги\n";
 		foreach ($services as $slug => $s) {
 			$price = !empty($s['price_from']) ? ' (от ' . number_format((int)$s['price_from'], 0, ',', ' ') . ' ₽)' : '';

@@ -61,7 +61,6 @@ if (!function_exists('seo_url')) {
 				case 'public/pages/home.php': return $cached = '/';
 				case 'public/pages/uslugi/uslugi.php': return $cached = '/uslugi';
 				case 'public/pages/portfolio.php': return $cached = '/portfolio';
-				case 'public/pages/projects.php': return $cached = '/projects';
 				case 'public/pages/politic/index.php': return $cached = '/politika';
 				case 'public/pages/agree/index.php': return $cached = '/soglasie';
 				case '404.php': return $cached = '/404';
@@ -209,7 +208,6 @@ if (!function_exists('seo_breadcrumbs_jsonld')) {
 		$map = [
 			'/uslugi' => 'Услуги',
 			'/portfolio' => 'Портфолио объектов',
-			'/projects' => 'Каталог проектов',
 			'/politika' => 'Политика конфиденциальности',
 			'/soglasie' => 'Согласие на обработку данных',
 			'/search' => 'Поиск по сайту',

@@ -41,7 +41,7 @@ $__popular = array_slice(seo_services(), 0, 6, true);
 				<?php foreach ($__popular as $slug => $s): ?>
 					<li><a href="/services/<?= htmlspecialchars($slug) ?>"><?= htmlspecialchars($s['title']) ?></a></li>
 				<?php endforeach; ?>
-				<li><a href="/uslugi">Все услуги</a> · <a href="/portfolio">Портфолио</a> · <a href="/projects">Каталог проектов</a></li>
+				<li><a href="/uslugi">Все услуги</a> · <a href="/portfolio">Портфолио</a></li>
 			</ul>
 			<p>Или позвоните: <a href="tel:<?= htmlspecialchars(preg_replace('/\D/', '', seo_config('phone'))) ?>"><?= htmlspecialchars(seo_config('phone_display')) ?></a> — ответим за <?= htmlspecialchars(seo_config('callback_minutes')) ?> минут и посчитаем смету.</p>
 			<a class="btn" href="/">На главную</a>
