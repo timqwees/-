@@ -34,8 +34,9 @@
 
 	<!-- canonical -->
 	<?= seo_canonical_tags() ?>
+	<?= seo_verify_tags() ?>
 
-	<?= seo_og_tags('О компании — ФАВОРИТ-СТРОЙ-СНАБ на рынке с ' . htmlspecialchars((string)seo_config('founded_market')) . ' года', 'С ' . htmlspecialchars((string)seo_config('founded_market')) . ' года строим быстровозводимые здания: собственный завод БВЗ, ' . seo_config('objects') . ' сданных объектов, гарантия ' . seo_config('guarantee_years') . ' лет. Москва, МО и вся Россия.') ?>
+	<?= seo_og_tags('О компании — ФАВОРИТ-СТРОЙ-СНАБ на рынке с ' . htmlspecialchars((string)seo_config('founded_market')) . ' года', 'С ' . htmlspecialchars((string)seo_config('founded_market')) . ' года строим быстровозводимые здания: собственный завод БВЗ, ' . seo_config('objects') . ' сданных объектов, гарантия ' . seo_config('guarantee_years') . ' лет. Москва, МО и вся Россия.', '/public/assets/image/og/og-about-1200x630.jpg') ?>
 
 	<?php include_once __DIR__ . '/../components/sheoma.php'; ?>
 	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261009">
@@ -82,6 +83,7 @@
 	@media(max-width:560px){.bi-aud{grid-template-columns:1fr;}}
 	@media(prefers-reduced-motion:reduce){.bi-btn .roll{transition:none;}}
 	</style>
+	<?= seo_breadcrumbs_html() ?>
 	<main>
 		<section class="bi-hero view">
 			<div class="bi-hero-in">

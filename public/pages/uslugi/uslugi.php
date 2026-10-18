@@ -34,8 +34,9 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
 
 	<!-- canonical -->
 	<?= seo_canonical_tags() ?>
+	<?= seo_verify_tags() ?>
 
-	<?= seo_og_tags('Услуги — Производство, ремонт, доставка | ФАВОРИТ-СТРОЙ-СНАБ', 'Все услуги ФАВОРИТ-СТРОЙ-СНАБ: БВЗ под ключ, капитальный ремонт, грузоперевозки, спецтехника, мебель, склады, навесы.') ?>
+	<?= seo_og_tags('Услуги — Производство, ремонт, доставка | ФАВОРИТ-СТРОЙ-СНАБ', 'Все услуги ФАВОРИТ-СТРОЙ-СНАБ: БВЗ под ключ, капитальный ремонт, грузоперевозки, спецтехника, мебель, склады, навесы.', '/public/assets/image/og/og-uslugi-1200x630.jpg') ?>
 
 	<!-- Swiper Slider for Banner -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
@@ -161,6 +162,7 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
 </head>
 
 	<?php include_once 'public/components/header.php'; ?>
+	<?= seo_breadcrumbs_html() ?>
 
 	<!-- Hero (реф. ЮНО, sunset) -->
 	

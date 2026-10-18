@@ -33,8 +33,9 @@ if (file_exists($componentMailPath)) {
 	<link rel="mask-icon" href="/public/assets/image/logo/favicon-96x96.png" color="#F97316">
 	<!-- Canonical / hreflang / OG / Twitter — единый генератор (app/Seo/seo.php) -->
 <?= seo_canonical_tags() ?>
+<?= seo_verify_tags() ?>
 
-<?= seo_og_tags('ФАВОРИТ-СТРОЙ-СНАБ — быстровозводимые здания под ключ в Москве', 'Строительство БВЗ от 14 дней, капитальный ремонт, грузоперевозки, спецтехника. Смета за 15 минут, фиксируем цену в договоре.') ?>
+<?= seo_og_tags('ФАВОРИТ-СТРОЙ-СНАБ — быстровозводимые здания под ключ в Москве', 'Строительство БВЗ от 14 дней, капитальный ремонт, грузоперевозки, спецтехника. Смета за 15 минут, фиксируем цену в договоре.', '/public/assets/image/og/og-home-1200x630.jpg') ?>
 
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -167,11 +168,11 @@ if (file_exists($componentMailPath)) {
 			<button type="button" class="hero-video-control" id="hero-video-control" aria-label="Выключить звук" aria-pressed="false">
 				<span class="hero-video-control__icon" aria-hidden="true">
 					<svg class="hero-video-control__sound" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<polygon points="10 2 3 7v10a2 2 0 0 0 2 2h5a2 2 0 0 0 2-2V9a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-1"></polygon>
+						<polygon points="10 2 3 7 3 17 12 22 21 17 21 7 12 2"></polygon>
 						<path d="M10 6v6a4 4 0 0 0 0 6h-2"></path>
 					</svg>
 					<svg class="hero-video-control__muted" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
-						<polygon points="10 2 3 7v10a2 2 0 0 0 2 2h5a2 2 0 0 0 2-2V9a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-1"></polygon>
+						<polygon points="10 2 3 7 3 17 12 22 21 17 21 7 12 2"></polygon>
 						<path d="M10 6v6a4 4 0 0 0 0 6h-2"></path>
 						<line x1="1" y1="1" x2="23" y2="23"></line>
 					</svg>
@@ -584,6 +585,39 @@ if (file_exists($componentMailPath)) {
 </div>
 
 
+	<!-- 6. Отзывы клиентов (видимые + schema.org) -->
+	<section id="reviews" class="fss-reviews-section view">
+	<div class="fss-reviews-container">
+		<div class="section-heading">
+			<h2>Отзывы наших клиентов</h2>
+			<span class="heading-divider" aria-hidden="true"></span>
+			<p><?= seo_config('objects') ?> объектов за <?= seo_config('founded_market') ?> года — реальные истории</p>
+		</div>
+		<div class="fss-reviews-swiper swiper reviews-swiper">
+			<div class="swiper-wrapper">
+				<?php foreach (seo_reviews() as $r): ?>
+				<div class="swiper-slide">
+					<div class="fss-review-card">
+						<div class="fss-review-stars" aria-label="Рейтинг <?= $r['star'] ?> из 5">
+							<?php for ($i = 0; $i < 5; $i++): ?>
+							<?= $i < $r['star'] ? '<i class="fa-solid fa-star"></i>' : '<i class="fa-regular fa-star"></i>' ?>
+							<?php endfor ?>
+						</div>
+						<p class="fss-review-text"><?= htmlspecialchars($r['text'], ENT_QUOTES) ?></p>
+						<div class="fss-review-author">
+							<strong><?= htmlspecialchars($r['name'], ENT_QUOTES) ?></strong>
+							<span><?= htmlspecialchars($r['company'], ENT_QUOTES) ?></span>
+							<time datetime="<?= $r['date'] ?>"><?= $r['date'] ?></time>
+						</div>
+					</div>
+				</div>
+				<?php endforeach ?>
+			</div>
+			<div class="reviews-pagination swiper-pagination"></div>
+		</div>
+	</div>
+	</section>
+
 	<section id="portfolio" class="works-band view relative z-[15]">
 		<div class="works-inner">
 			<div class="absolute right-0 top-[76px] hidden h-14 w-14 items-center justify-center rounded-2xl bg-[#f5f5f4] border border-[#e7e5e4] text-[#171310] xl:flex" aria-hidden="true">
@@ -704,7 +738,7 @@ if (file_exists($componentMailPath)) {
 					<!-- slide 1 -->
 					<div class="viewLeft swiper-slide overflow-hidden rounded-[25px] relative">
 						<video class="slide-bg" muted loop playsinline
-							src="/public/assets/image/services/Мусор БАК/WhatsApp Video 2025-07-07 at 17.38.28-2.mp4" preload="none" poster="/public/assets/image/services/Мусор БАК/WhatsApp Image 2025-07-07 at 17.38.45.jpeg"></video>
+							src="/public/assets/image/banner/dostavka.MP4" preload="none" poster="/public/assets/image/banner.jpeg"></video>
 						<!-- темное затемнение -->
 						<div class="bg-black w-full h-full opacity-50 absolute"></div>
 						<div class="viewLeft slide-content">
@@ -730,7 +764,7 @@ if (file_exists($componentMailPath)) {
 					<!-- slide 1 -->
 					<div class="viewLeft swiper-slide overflow-hidden rounded-[25px] relative">
 						<video class="slide-bg" muted loop playsinline
-							src="/public/assets/image/services/Мусор БАК/WhatsApp Video 2025-07-07 at 17.38.28-3.mp4" preload="none" poster="/public/assets/image/services/Мусор БАК/WhatsApp Image 2025-07-07 at 17.38.45.jpeg"></video>
+							src="/public/assets/image/banner/dostavkaKD.MP4" preload="none" poster="/public/assets/image/banner.jpeg"></video>
 						<!-- темное затемнение -->
 						<div class="bg-black w-full h-full opacity-50 absolute"></div>
 						<div class="viewLeft slide-content">
@@ -755,7 +789,7 @@ if (file_exists($componentMailPath)) {
 					<!-- slide 1 -->
 					<div class="viewLeft swiper-slide overflow-hidden rounded-[25px] relative">
 						<video class="slide-bg" muted loop playsinline
-							src="/public/assets/image/services/Мусор БАК/WhatsApp Video 2025-07-07 at 17.38.28.mp4" preload="none" poster="/public/assets/image/services/Мусор БАК/WhatsApp Image 2025-07-07 at 17.38.45.jpeg"></video>
+							src="/public/assets/image/banner/schakman.mp4" preload="none" poster="/public/assets/image/banner.jpeg"></video>
 						<!-- темное затемнение -->
 						<div class="bg-black w-full h-full opacity-50 absolute"></div>
 						<div class="viewLeft slide-content">
@@ -778,7 +812,7 @@ if (file_exists($componentMailPath)) {
 					<!-- slide 1 -->
 					<div class="viewLeft swiper-slide overflow-hidden rounded-[25px] relative">
 						<video class="slide-bg" muted loop playsinline
-							src="/public/assets/image/services/Школа фото/WhatsApp Video 2025-07-06 at 13.38.37.mp4" preload="none" poster="/public/assets/image/services/Школа фото/1.jpeg"></video>
+							src="/public/assets/image/banner/tracktor.mp4" preload="none" poster="/public/assets/image/banner.jpeg"></video>
 						<!-- темное затемнение -->
 						<div class="bg-black w-full h-full opacity-50 absolute"></div>
 						<div class="viewLeft slide-content">
@@ -802,7 +836,7 @@ if (file_exists($componentMailPath)) {
 					<!-- slide 1 -->
 					<div class="viewLeft swiper-slide overflow-hidden rounded-[25px] relative">
 						<video class="slide-bg" muted loop playsinline
-							src="/public/assets/image/services/Школа фото/WhatsApp Video 2025-07-06 at 13.40.00-2.mp4" preload="none" poster="/public/assets/image/services/Школа фото/1.jpeg"></video>
+							src="/public/assets/image/banner/buldozer.mp4" preload="none" poster="/public/assets/image/banner.jpeg"></video>
 						<!-- темное затемнение -->
 						<div class="bg-black w-full h-full opacity-50 absolute"></div>
 						<div class="viewLeft slide-content">
@@ -825,7 +859,7 @@ if (file_exists($componentMailPath)) {
 					<!-- slide 1 -->
 					<div class="viewLeft swiper-slide overflow-hidden rounded-[25px] relative">
 						<video class="slide-bg" muted loop playsinline
-							src="/public/assets/image/services/Школа фото/WhatsApp Video 2025-07-06 at 13.40.00.mp4" preload="none" poster="/public/assets/image/services/Школа фото/1.jpeg"></video>
+							src="/public/assets/image/banner/buldozer.mp4" preload="none" poster="/public/assets/image/banner.jpeg"></video>
 						<!-- темное затемнение -->
 						<div class="bg-black w-full h-full opacity-50 absolute"></div>
 						<div class="viewLeft slide-content">
@@ -848,7 +882,7 @@ if (file_exists($componentMailPath)) {
 					<!-- slide 1 -->
 					<div class="viewLeft swiper-slide overflow-hidden rounded-[25px] relative">
 						<video class="slide-bg" muted loop playsinline
-							src="/public/assets/image/banner/2025-08-01 14.51.56.mp4" preload="none" poster="/public/assets/image/banner.jpeg"></video>
+							src="/public/assets/image/banner/schakman.mp4" preload="none" poster="/public/assets/image/banner.jpeg"></video>
 						<!-- темное затемнение -->
 						<div class="bg-black w-full h-full opacity-50 absolute"></div>
 						<div class="viewLeft slide-content">
@@ -1008,6 +1042,7 @@ if (file_exists($componentMailPath)) {
 			document.addEventListener("DOMContentLoaded", function () {
 				const swiper = new Swiper(".swipers", {
 					loop: true,
+					loopedSlides: 12,
 					slidesPerView: 4,
 					slidesPerGroup: 1,
 					spaceBetween: 20,

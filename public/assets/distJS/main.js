@@ -164,13 +164,33 @@
 		var el = document.querySelector('.showcase-swiper');
 		if (!el || el.classList.contains('inited')) return;
 		el.classList.add('inited');
+	new Swiper(el, {
+		loop: true,
+		loopedSlides: 3,
+		speed: 600,
+		spaceBetween: 20,
+		slidesPerView: 1,
+		navigation: { nextEl: '.showcase-next', prevEl: '.showcase-prev' },
+		breakpoints: { 768: { slidesPerView: 2 }, 1200: { slidesPerView: 3 } }
+	});
+	}
+
+	/* Слайдер отзывов: карусель с пагинацией */
+	function initReviewsSlider() {
+		if (typeof Swiper === 'undefined') return;
+		var el = document.querySelector('.reviews-swiper');
+		if (!el || el.classList.contains('inited')) return;
+		el.classList.add('inited');
+		var total = el.querySelectorAll('.swiper-slide').length;
 		new Swiper(el, {
 			loop: true,
-			speed: 600,
+			loopedSlides: total > 0 ? total : 1,
+			speed: 700,
 			spaceBetween: 20,
 			slidesPerView: 1,
-			navigation: { nextEl: '.showcase-next', prevEl: '.showcase-prev' },
-			breakpoints: { 768: { slidesPerView: 2 }, 1200: { slidesPerView: 3 } }
+			grabCursor: true,
+			pagination: { el: el.querySelector('.swiper-pagination'), clickable: true },
+			breakpoints: { 768: { slidesPerView: Math.min(total, 2) }, 1024: { slidesPerView: Math.min(total, 3) } }
 		});
 	}
 
@@ -486,6 +506,7 @@
 		initNavScroll();
 		initStepsDrift();
 		initShowcaseSlider();
+		initReviewsSlider();
 		initContactMerge();
 		initPhoneMask();
 		initSmoothScroll();

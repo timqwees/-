@@ -17,8 +17,10 @@ final class Sitemap
 		$services = file_exists($root . '/app/Data/services.php')
 			? (require $root . '/app/Data/services.php')
 			: [];
+		$blogPosts = function_exists('seo_blog_posts') ? seo_blog_posts() : [];
 		$pages = [
 			['/', '1.0', 'weekly'],
+			['/blog', '0.7', 'weekly'],
 			['/uslugi', '0.9', 'weekly'],
 			['/portfolio', '0.8', 'weekly'],
 			['/about', '0.5', 'monthly'],
@@ -30,6 +32,9 @@ final class Sitemap
 				$pages[] = ['/services/' . $slug, '0.8', 'monthly'];
 			}
 		}
+		foreach (array_keys($blogPosts) as $slug) {
+			$pages[] = ['/blog/' . $slug, '0.6', 'monthly'];
+		}
 		return $pages;
 	}
 
@@ -38,6 +43,7 @@ final class Sitemap
 		$root = dirname(__DIR__, 3);
 		$map = [
 			'/' => $root . '/public/pages/home.php',
+			'/blog' => $root . '/public/pages/blog/list.php',
 			'/uslugi' => $root . '/public/pages/uslugi/uslugi.php',
 			'/portfolio' => $root . '/public/pages/portfolio.php',
 			'/about' => $root . '/public/pages/about.php',
@@ -49,6 +55,9 @@ final class Sitemap
 		}
 		if (preg_match('#^/services/([a-z0-9_\-]+)$#', $loc, $m)) {
 			return $root . '/public/pages/services/' . $m[1] . '/index.php';
+		}
+		if (preg_match('#^/blog/([^/]+)$#', $loc, $m)) {
+			return $root . '/public/pages/blog/post.php';
 		}
 		return null;
 	}

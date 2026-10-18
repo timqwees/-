@@ -20,6 +20,7 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
 	<meta name="description" content="Политика конфиденциальности сайта FAVORIT-STROY-SNAB. Узнайте, как мы обрабатываем и защищаем ваши персональные данные.">
 	<meta name="robots" content="noindex, follow">
 	<meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
+	<?= seo_verify_tags() ?>
 	<link rel="canonical" href="https://www.xn--h1aafj.xn--p1ai/politika" />
 	<link rel="alternate" hreflang="ru" href="https://www.xn--h1aafj.xn--p1ai/politika" />
 	<meta property="og:locale" content="ru_RU">

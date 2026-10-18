@@ -32,10 +32,11 @@ define('TELEGRAM_BOT_TOKEN', $telegramToken);
 define('TELEGRAM_CHAT_IDS', serialize($telegramChats));
 
 // Mail
-define('MAIL_TO', getenv('MAIL_TO') ?: 'artemnersisyan777@gmail.com');
+define('MAIL_TO', getenv('MAIL_TO') ?: 'order@фсс.рус');
 define('MAIL_FROM', getenv('MAIL_FROM') ?: 'bingiabonbasv@gmail.com');
-define('MAIL_PASS', getenv('MAIL_PASS') ?: 'admu ohaa oeoz lvtd'); // App password Gmail
+define('MAIL_PASS', getenv('MAIL_PASS') ?: 'debg bqlp eqkn xzcp'); // App password Gmail
 define('MAIL_FROM_NAME', 'Новое обращение ФСС.РУС');
+define('MAIL_PORT', 587);
 
 // Antibot
 define('ANTIBOT_MIN_TIME', 3); // сек минимальное время заполнения

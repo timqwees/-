@@ -60,8 +60,9 @@
 
 	<!-- canonical -->
 	<?= seo_canonical_tags() ?>
+<?= seo_verify_tags() ?>
 
-	<?= seo_og_tags('Портфолио — Реализованные объекты | ФАВОРИТ-СТРОЙ-СНАБ', 'Портфолио выполненных объектов: фото и видео школ, складов, АБК, общежитий, навесов. 180+ сданных объектов.') ?>
+	<?= seo_og_tags('Портфолио — Реализованные объекты | ФАВОРИТ-СТРОЙ-СНАБ', 'Портфолио выполненных объектов: фото и видео школ, складов, АБК, общежитий, навесов. 180+ сданных объектов.', '/public/assets/image/og/og-portfolio-1200x630.jpg') ?>
 
 	<?php include_once __DIR__ . '/../components/sheoma.php'; ?>
 	<script type="application/ld+json">
@@ -121,6 +122,7 @@
 
 <body class="font-sans text-gray-800">
 	<?php include_once __DIR__ . '/../components/header.php'; ?>
+	<?= seo_breadcrumbs_html() ?>
 	<div class="esp-wrap">
 		<div class="esp-top">
 			<p class="esp-over">Наши реализованные объекты</p>
