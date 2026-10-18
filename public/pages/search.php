@@ -38,7 +38,7 @@ if ($q !== '') {
 	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261009">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
 	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261009">
-	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261009">
+	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261014">
 	<script defer src="/public/assets/distJS/main.js"></script>
 </head>
 <body class="font-sans text-gray-800">

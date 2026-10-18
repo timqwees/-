@@ -36,20 +36,21 @@ final class Llms
 		$services = self::services();
 
 		$out = "# {$brand} (фсс.рус) — быстровозводимые здания под ключ\n\n";
-		$out .= "> Москва и МО + вся РФ. С " . seo_config('founded') . " года, " . seo_config('objects') . " объектов, допуск СРО, гарантия " . seo_config('guarantee_years') . " лет.\n";
+		$out .= "> Москва и МО + вся РФ. На рынке с " . seo_config('founded_market') . " года, ООО «ФАВОРИТ-СТРОЙ-СНАБ» — с " . seo_config('founded') . " года, " . seo_config('objects') . " объектов, СРО, гарантия " . seo_config('guarantee_years') . " лет.\n";
 		$out .= "> Тел: {$phone}. Адрес: {$a['postal']}, {$a['locality']}, {$a['street']}.\n";
 		$out .= "> Бренд: {$brand} = Фаворит-Строй-Снаб = ФСС = фсс.рус\n\n";
 		$out .= "## Главное\n";
 		$out .= "- [" . $brand . " — главная]({$base}/): БВЗ под ключ от " . seo_config('deadline_days') . " дней\n";
 		$out .= "- [Все услуги]({$base}/uslugi): каталог-хаб, " . count($services) . " направлений\n";
-		$out .= "- [Портфолио]({$base}/portfolio): фото и видео сданных объектов\n\n";
+		$out .= "- [Портфолио]({$base}/portfolio): фото и видео сданных объектов
+- [О компании]({$base}/about)\n\n";
 		$out .= "## Услуги\n";
 		foreach ($services as $slug => $s) {
 			$price = !empty($s['price_from']) ? ' (от ' . number_format((int)$s['price_from'], 0, ',', ' ') . ' ₽)' : '';
 			$out .= "- [{$s['title']}]({$base}/services/{$slug}){$price}\n";
 		}
 		$out .= "\n## FAQ для AI Overviews\n";
-		foreach (array_slice($services, 0, 4) as $s) {
+		foreach ($services as $s) {
 			foreach ($s['faq'] as $qa) {
 				$out .= "- {$qa[0]} — {$qa[1]}\n";
 			}
@@ -74,7 +75,7 @@ final class Llms
 		$out .= "# Обновлено: " . date('Y-m-d') . ". Источник правды: /sitemap.xml\n\n";
 		$out .= "## Кто мы\n";
 		$out .= "{$brand} — производство и монтаж быстровозводимых зданий (БВЗ) под ключ, капитальное строение и ремонт, грузоперевозки и аренда спецтехники.\n";
-		$out .= "Основано в " . seo_config('founded') . " году, " . seo_config('objects') . " объектов, допуск СРО, гарантия " . seo_config('guarantee_years') . " лет.\n";
+		$out .= "На рынке с " . seo_config('founded_market') . " года, ООО — с " . seo_config('founded') . " года (" . seo_config('registered_at') . "), " . seo_config('objects') . " объектов, допуск СРО, гарантия " . seo_config('guarantee_years') . " лет.\n";
 		$out .= "Телефон: {$phone}. Почта: " . seo_config('email') . ". Адрес: {$a['postal']}, {$a['locality']}, {$a['street']}.\n";
 		$out .= "География: Москва и Московская область, работаем по всей России.\n\n";
 		$out .= "## Ключевые факты (для цитирования)\n";

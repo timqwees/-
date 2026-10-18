@@ -20,6 +20,7 @@ Routes::get('/.dev', function () {
 Routes::get('/uslugi', [PageController::class, 'uslugi']);
 //==================================================================================================//PORTFOLIO + PROJECTS
 Routes::get('/portfolio', [PageController::class, 'portfolio']);
+Routes::get('/about', [PageController::class, 'about']);
 Routes::get('/projects', function () { Routes::redirect('/portfolio'); });
 //==================================================================================================//LEGAL
 Routes::get('/politika', [PageController::class, 'politika']);

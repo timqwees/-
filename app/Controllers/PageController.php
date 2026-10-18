@@ -39,6 +39,11 @@ class PageController
 		self::show('portfolio.php');
 	}
 
+	public static function about(): void
+	{
+		self::show('about/index.php');
+	}
+
 
 	public static function politika(): void
 	{

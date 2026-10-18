@@ -28,10 +28,13 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
 	<meta property="og:description" content="Как мы обрабатываем и защищаем персональные данные.">
 	<meta property="og:url" content="https://www.xn--h1aafj.xn--p1ai/politika">
 	<meta property="og:image" content="https://www.xn--h1aafj.xn--p1ai/public/assets/image/logo/logo.svg">
-	<link rel="icon" type="image/png" sizes="32x32" href="/public/assets/image/favicon/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="/public/assets/image/favicon/favicon-16x16.png">
-	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/favicon/apple-touch-icon.png">
-	<link rel="manifest" href="/public/assets/image/favicon/site.webmanifest">
+	<!-- Favicon unified -->
+	<link rel="icon" type="image/png" href="/public/assets/image/logo/favicon-96x96.png" sizes="96x96" />
+	<link rel="icon" type="image/svg+xml" href="/public/assets/image/logo/favicon.svg" />
+	<link rel="shortcut icon" href="/public/assets/image/logo/favicon.ico" />
+	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/apple-touch-icon.png" />
+	<meta name="apple-mobile-web-app-title" content="ФСС" />
+	<link rel="manifest" href="/public/assets/image/logo/site.webmanifest" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261009">
 	<?php include_once __DIR__ . '/../../components/sheoma.php'; ?>
@@ -42,7 +45,7 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
 
 <?= seo_goals_script() ?>
 	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261009">
-<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261009">
+<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261014">
 	<script defer src="/public/assets/distJS/main.js"></script>
 </head>
 

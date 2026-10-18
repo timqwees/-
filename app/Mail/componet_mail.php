@@ -45,7 +45,29 @@ require_once __DIR__ . '/telegram/Messenger.php';
 $to_mail = MAIL_TO;
 $subject = "Заказ с сайта ФСС.РУС © " . date('Y');
 
-// Общий обработчик POST с антиботом
+	// Сбор UTM и трекинговых параметров из POST/GET (hidden поля формы + query string)
+	$utmParams = [];
+	foreach (['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'yclid', 'gclid', 'landing_page', 'referrer'] as $p) {
+		$v = $_POST[$p] ?? $_GET[$p] ?? null;
+		if ($v !== null && $v !== '') $utmParams[$p] = $v;
+	}
+	// Авто-заполняем landing_page текущим URL, если форма не передаёт
+	if (empty($utmParams['landing_page'])) {
+		$scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+		$utmParams['landing_page'] = $scheme . '://' . ($_SERVER['HTTP_HOST'] ?? '') . ($_SERVER['REQUEST_URI'] ?? '/');
+	}
+	if (empty($utmParams['referrer'])) {
+		$utmParams['referrer'] = $_SERVER['HTTP_REFERER'] ?? '';
+	}
+
+	// Определяем тип формы для Bitrix24
+	$formTypeMap = [
+		'mailer' => 'modal',
+		'mini-forma' => 'mini-forma',
+		'content_form' => 'content_form',
+	];
+
+	// Общий обработчик POST с антиботом
 if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['mailer']) || isset($_POST['mini-forma']) || isset($_POST['content_form']))) {
 
 	// 1. Антибот проверка - первая линия защиты
@@ -81,9 +103,11 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' &
 			'message' => $msgV,
 			'email' => $emailV,
 			'type' => 'modal',
-		];
+			'форма' => 'modal',
+		] + $utmParams;
 		$messenger = new Messenger();
 		$messenger->sendToTelegram($array);
+		$messenger->sendToBitrix24($array);
 
 	} elseif ($isMini) {
 		$err = '';
@@ -95,9 +119,11 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' &
 			'name' => $nameV,
 			'phone' => $phoneV,
 			'type' => 'mini-forma',
-		];
+			'форма' => 'mini-forma',
+		] + $utmParams;
 		$messenger = new Messenger();
 		$messenger->sendToTelegram($array);
+		$messenger->sendToBitrix24($array);
 
 	} elseif ($isContent) {
 		$err = '';
@@ -114,9 +140,11 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' &
 			'phone' => $phoneV,
 			'message' => $msgV,
 			'type' => 'content_form',
-		];
+			'форма' => 'content_form',
+		] + $utmParams;
 		$messenger = new Messenger();
 		$messenger->sendToTelegram($array);
+		$messenger->sendToBitrix24($array);
 	}
 }
 ?>
