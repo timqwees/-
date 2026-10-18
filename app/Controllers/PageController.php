@@ -72,6 +72,22 @@ class PageController
 		Routes::auto_element($file);
 	}
 
+	public static function serviceGeo(string $slug, string $geo): void
+	{
+		$file = self::view('services/' . $slug . '/index.php');
+		$g = function_exists('seo_geo') ? seo_geo() : ['geo' => [], 'priority_services' => []];
+		$priority = (array)($g['priority_services'] ?? []);
+		if (!is_file($file) || !isset($g['geo'][$geo]) || !in_array($slug, $priority, true)) {
+			Routes::error_404('/services/' . $slug . '/' . $geo);
+			return;
+		}
+		$_GET['service'] = $slug;
+		$GLOBALS['fss_service_geo'] = $geo;
+		$GLOBALS['fss_canonical_path'] = '/services/' . $slug . '/' . $geo;
+		$GLOBALS['fss_page_file'] = $file;
+		Routes::auto_element($file);
+	}
+
 	public static function blog(): void
 	{
 		$GLOBALS['fss_page_file'] = self::view('blog/list.php');
@@ -83,5 +99,10 @@ class PageController
 		$GLOBALS['fss_page_file'] = self::view('blog/post.php');
 		$_GET['post'] = $slug;
 		Routes::auto_element($GLOBALS['fss_page_file']);
+	}
+
+	public static function searchBlog(): void
+	{
+		self::show('search-blog/index.php');
 	}
 }

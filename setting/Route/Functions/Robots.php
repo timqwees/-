@@ -20,18 +20,25 @@ final class Robots
 		}
 		header('Content-Signal: search=yes, ai-train=yes, ai-input=yes');
 
+		$disallow = [
+			'/app/',
+			'/setting/',
+			'/vendor/',
+			'/tools/',
+			'/public/pages/',
+			'/*?s=',
+			'/*?*ref=',
+			'/*?*utm_',
+		];
+
 		$out = "# robots.txt — " . seo_config('brand') . " (" . seo_config('base_host') . ")\n";
 		$out .= "# Генерируется из app/Config/site.php — не редактировать вручную\n\n";
 		$out .= "User-agent: *\n";
 		$out .= "Allow: /\n";
-		$out .= "Disallow: /app/\n";
-		$out .= "Disallow: /setting/\n";
-		$out .= "Disallow: /vendor/\n";
-		$out .= "Disallow: /tools/\n";
-		$out .= "Disallow: /public/pages/\n";
-		$out .= "Disallow: /*?s=\n";
-		$out .= "Disallow: /*?*ref=\n";
-		$out .= "Disallow: /*?*utm_\n\n";
+		foreach ($disallow as $d) {
+			$out .= "Disallow: {$d}\n";
+		}
+		$out .= "\n";
 		$out .= "# Статика — индексировать и кэшировать\n";
 		$out .= "Allow: /public/assets/\n";
 		foreach (['css', 'js', 'png', 'jpg', 'jpeg', 'svg', 'webp', 'avif', 'woff2'] as $ext) {
@@ -43,7 +50,11 @@ final class Robots
 		}
 		$out .= "\n# AI / GEO-краулеры: явно пускаем — им нужны llms.txt и чистый HTML\n";
 		foreach (['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-Web', 'anthropic-ai', 'PerplexityBot', 'Google-Extended', 'Applebot-Extended', 'Bytespider', 'YandexAdditional', 'YandexBot', 'Googlebot', 'Bingbot'] as $bot) {
-			$out .= "User-agent: {$bot}\nAllow: /\n\n";
+			$out .= "User-agent: {$bot}\nAllow: /\n";
+			foreach ($disallow as $d) {
+				$out .= "Disallow: {$d}\n";
+			}
+			$out .= "\n";
 		}
 		$out .= "Host: " . seo_config('base_host') . "\n";
 		$out .= "Sitemap: {$base}/sitemap.xml\n";

@@ -16,19 +16,13 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
 	<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap"></noscript>
 	<style> body { font-family: 'Wix Madefor Display', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
 
-	<title>Правила обработки персональных данных | ФАВОРИТ-СТРОЙ-СНАБ</title>
-	<meta name="description" content="Правила обработки персональных данных на сайте ФАВОРИТ-СТРОЙ-СНАБ: какие данные собираем и как защищаем.">
+	<title>Согласие на обработку персональных данных — ФАВОРИТ-СТРОЙ-СНАБ</title>
+	<meta name="description" content="Согласие на обработку персональных данных ФАВОРИТ-СТРОЙ-СНАБ: порядок сбора, хранения и защиты данных клиентов при заказе строительства БВЗ, капремонта, спецтехники. Права субъектов, сроки, контакты.">
 	<meta name="robots" content="noindex, follow">
 	<meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
 	<?= seo_verify_tags() ?>
-	<link rel="canonical" href="https://www.xn--h1aafj.xn--p1ai/soglasie" />
-	<link rel="alternate" hreflang="ru" href="https://www.xn--h1aafj.xn--p1ai/soglasie" />
-	<meta property="og:locale" content="ru_RU">
-	<meta property="og:type" content="website">
-	<meta property="og:title" content="Правила обработки персональных данных | FAVORIT-STROY-SNAB">
-	<meta property="og:description" content="Правила обработки персональных данных на сайте.">
-	<meta property="og:url" content="https://www.xn--h1aafj.xn--p1ai/soglasie">
-	<meta property="og:image" content="https://www.xn--h1aafj.xn--p1ai/public/assets/image/logo/logo.svg">
+	<?= seo_canonical_tags() ?>
+	<?= seo_og_tags('Согласие на обработку персональных данных — ФАВОРИТ-СТРОЙ-СНАБ', 'Согласие на обработку ПДн ФАВОРИТ-СТРОЙ-СНАБ: какие данные собираем, как защищаем, ваши права. Актуально для заказчиков БВЗ, капремонта, спецтехники.', '/public/assets/image/og/og-blog-1200x630.jpg') ?>
 	<!-- Favicon unified -->
 	<link rel="icon" type="image/png" href="/public/assets/image/logo/favicon-96x96.png" sizes="96x96" />
 	<link rel="icon" type="image/svg+xml" href="/public/assets/image/logo/favicon.svg" />
@@ -36,7 +30,9 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
 	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/apple-touch-icon.png" />
 	<meta name="apple-mobile-web-app-title" content="ФСС" />
 	<link rel="manifest" href="/public/assets/image/logo/site.webmanifest" />
-	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261009">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+	<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=<?= seo_ver() ?>">
 	<?php include_once __DIR__ . '/../../components/sheoma.php'; ?>
 
 <?= seo_analytics() ?>
@@ -44,18 +40,18 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
 <?= seo_utm_script() ?>
 
 <?= seo_goals_script() ?>
-	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261009">
-<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261014">
-	<script defer src="/public/assets/distJS/main.js"></script>
+	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=<?= seo_ver() ?>">
+<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=<?= seo_ver() ?>">
+	<script defer src="/public/assets/distJS/main.js?v=<?= seo_ver() ?>"></script>
 </head>
 
 <body class="font-sans text-gray-800 bg-gray-50">
 	<?php include_once __DIR__ . '/../../components/header.php'; ?>
-	<nav class="w-full px-6 md:px-10 py-3 bg-[#f0fdf4]/30 border-b border-emerald-100 text-xs text-gray-500 flex items-center gap-1.5"><a href="/" class="hover:text-emerald-700">Главная</a><span class="opacity-40">/</span><span class="text-gray-900 font-medium">Правила обработки данных</span></nav>
+	<nav class="w-full px-6 md:px-10 py-3 bg-[#f0fdf4]/30 border-b border-emerald-100 text-xs text-gray-500 flex items-center gap-1.5"><a href="/" class="hover:text-emerald-700">Главная</a><span class="opacity-40">/</span><span class="text-gray-900 font-medium">Согласие на обработку данных</span></nav>
 
 	<section class="py-16 px-4 lg:px-20">
 		<div class="container mx-auto bg-white rounded-lg shadow-lg p-8">
-			<h1 class="pg-h1">Правила обработки персональных данных</h1>
+			<h1 class="pg-h1">Согласие на обработку персональных данных ФАВОРИТ-СТРОЙ-СНАБ</h1>
 			<p class="mb-4 text-gray-700">
 				Настоящие Правила определяют порядок обработки и защиты персональных данных пользователей сайта
 				FAVORIT-STROY-SNAB (далее — Сайт).

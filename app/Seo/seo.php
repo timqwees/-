@@ -49,6 +49,10 @@ if (!function_exists('seo_url')) {
 		if ($cached !== null) {
 			return $cached;
 		}
+		// Явный путь (гео-посадочные и прочие виртуальные URL) приоритетнее вывода из файла
+		if (!empty($GLOBALS['fss_canonical_path'])) {
+			return $cached = '/' . ltrim((string)$GLOBALS['fss_canonical_path'], '/');
+		}
 		$file = $GLOBALS['fss_page_file'] ?? ($_SERVER['SCRIPT_FILENAME'] ?? '');
 		$file = $file ? realpath($file) : false;
 		$root = realpath(dirname(__DIR__, 2));
@@ -65,7 +69,8 @@ if (!function_exists('seo_url')) {
 				case 'public/pages/home.php': return $cached = '/';
 				case 'public/pages/uslugi/uslugi.php': return $cached = '/uslugi';
 				case 'public/pages/portfolio.php': return $cached = '/portfolio';
-				case 'public/pages/about.php': return $cached = '/about';
+				case 'public/pages/about.php':
+				case 'public/pages/about/index.php': return $cached = '/about';
 				case 'public/pages/blog/list.php': return $cached = '/blog';
 				case 'public/pages/politic/index.php': return $cached = '/politika';
 				case 'public/pages/agree/index.php': return $cached = '/soglasie';
@@ -111,7 +116,16 @@ if (!function_exists('seo_og_tags')) {
 	{
 		$base = rtrim(seo_config('base_url'), '/');
 		$brand = seo_config('brand');
-		$img = $image ?: $base . '/public/assets/image/og/og-home-1200x630.jpg';
+		$default = '/public/assets/image/og/og-blog-1200x630.jpg';
+		$img = $image !== '' ? $image : $default;
+		$path = preg_match('#^https?://#i', $img) ? (string)parse_url($img, PHP_URL_PATH) : $img;
+		$path = '/' . ltrim(rawurldecode($path), '/');
+		if (!is_file(dirname(__DIR__, 2) . $path)) {
+			$img = $default;
+		}
+		if (!preg_match('#^https?://#i', $img)) {
+			$img = $base . $img;
+		}
 		$title = $title !== '' ? $title : $brand;
 		$desc = $desc !== '' ? $desc : 'Быстровозводимые здания под ключ от 14 дней. Склады, ангары, АБК, общежития, капремонт. ';
 		$imgAlt = $desc;
@@ -132,6 +146,40 @@ if (!function_exists('seo_og_tags')) {
 			. "\t<meta name=\"twitter:image\" content=\"{$img}\">\n"
 			. "\t<meta name=\"twitter:image:alt\" content=\"" . htmlspecialchars($brand, ENT_QUOTES) . "\">";
 		return $out;
+	}
+}
+
+if (!function_exists('seo_clip')) {
+	/** Обрезка текста до лимита meta-описания/заголовка по границе слова. */
+	function seo_clip(string $text, int $max = 158): string
+	{
+		$text = trim((string)preg_replace('/\s+/u', ' ', $text));
+		if (mb_strlen($text) <= $max) {
+			return $text;
+		}
+		$cut = mb_substr($text, 0, $max);
+		$sp = mb_strrpos($cut, ' ');
+		if ($sp !== false && $sp > (int)($max * 0.6)) {
+			$cut = mb_substr($cut, 0, $sp);
+		}
+		return rtrim($cut, " .,;:—-") . '…';
+	}
+}
+
+if (!function_exists('seo_img_attrs')) {
+	/** width/height из реального файла (борьба с CLS). Пусто, если размер не определён. */
+	function seo_img_attrs(string $src): string
+	{
+		$path = preg_match('#^https?://#i', $src) ? (string)parse_url($src, PHP_URL_PATH) : $src;
+		$file = dirname(__DIR__, 2) . '/' . ltrim(rawurldecode($path), '/');
+		if (!is_file($file)) {
+			return '';
+		}
+		$size = @getimagesize($file);
+		if (!$size || empty($size[0]) || empty($size[1])) {
+			return '';
+		}
+		return ' width="' . (int)$size[0] . '" height="' . (int)$size[1] . '"';
 	}
 }
 
@@ -161,7 +209,7 @@ if (!function_exists('seo_organization_jsonld')) {
 				'inn' => seo_config('inn'),
 				'ogrn' => seo_config('ogrn'),
 				'logo' => ['@type' => 'ImageObject', 'url' => $base . '/public/assets/image/logo/logo.svg', 'width' => 512, 'height' => 512],
-				'image' => ['@type' => 'ImageObject', 'url' => $base . '/public/assets/image/og/og-home-1200x630.jpg', 'width' => 1200, 'height' => 630],
+				'image' => ['@type' => 'ImageObject', 'url' => $base . '/public/assets/image/og/og-blog-1200x630.jpg', 'width' => 1200, 'height' => 630],
 				'description' => 'ФАВОРИТ-СТРОЙ-СНАБ — производство и монтаж быстровозводимых зданий (склады, ангары, АБК, общежития), капитальный ремонт, грузоперевозки и аренда спецтехники. Москва и Московская область, работаем по всей России.',
 				'foundingDate' => seo_config('founded'),
 				'slogan' => 'Быстровозводимые здания под ключ от 14 дней',
@@ -235,11 +283,21 @@ if (!function_exists('seo_breadcrumbs_jsonld')) {
 			'/politika' => 'Политика конфиденциальности',
 			'/soglasie' => 'Согласие на обработку данных',
 			'/search' => 'Поиск по сайту',
+			'/search/blog' => 'Поиск по блогу',
 		];
 		$items = [['@type' => 'ListItem', 'position' => 1, 'name' => 'Главная', 'item' => $base . '/']];
 
 		if (preg_match('#^/services/([^/]+)$#', $url)) {
 			$items[] = ['@type' => 'ListItem', 'position' => 2, 'name' => 'Услуги', 'item' => $base . '/uslugi'];
+		}
+		// Гео-посадочная /services/{slug}/{geo}: Главная → Услуги → Услуга → Гео
+		if (preg_match('#^/services/([^/]+)/([^/]+)$#', $url, $mg)) {
+			$sg = seo_service($mg[1]);
+			$gg = function_exists('seo_geo') ? seo_geo() : ['geo' => []];
+			$items[] = ['@type' => 'ListItem', 'position' => 2, 'name' => 'Услуги', 'item' => $base . '/uslugi'];
+			$items[] = ['@type' => 'ListItem', 'position' => 3, 'name' => (string)($sg['title'] ?? $mg[1]), 'item' => $base . '/services/' . $mg[1]];
+			$items[] = ['@type' => 'ListItem', 'position' => 4, 'name' => (string)($gg['geo'][$mg[2]]['name'] ?? $mg[2]), 'item' => $base . $url];
+			return ['@type' => 'BreadcrumbList', '@id' => $base . $url . '#breadcrumb', 'itemListElement' => $items];
 		}
 		if (preg_match('#^/blog/([^/]+)$#', $url)) {
 			$items[] = ['@type' => 'ListItem', 'position' => 2, 'name' => 'Блог', 'item' => $base . '/blog'];
@@ -302,8 +360,20 @@ if (!function_exists('seo_services')) {
 	}
 }
 
+if (!function_exists('seo_geo')) {
+	/** Гео-направления из app/Data/geo.php (кэш на запрос) */
+	function seo_geo(): array
+	{
+		static $all = null;
+		if ($all === null) {
+			$path = dirname(__DIR__, 2) . '/app/Data/geo.php';
+			$all = file_exists($path) ? require $path : ['geo' => [], 'priority_services' => []];
+		}
+		return $all;
+	}
+}
+
 if (!function_exists('seo_reviews')) {
-	/** Отзывы из app/Data/reviews.php */
 	function seo_reviews(): array
 	{
 		static $all = null;

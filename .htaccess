@@ -6,9 +6,8 @@
 	RewriteEngine On
 	RewriteBase /
 
-	# HTTPS + единый хост www.xn--h1aafj.xn--p1ai
-	RewriteCond %{HTTPS} !=on
-	RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+	# HTTPS + единый хост www.xn--h1aafj.xn--p1ai — ОДНИМ редиректом (без цепочек http→https→www)
+	RewriteCond %{HTTPS} !=on [OR]
 	RewriteCond %{HTTP_HOST} !^www\.xn--h1aafj\.xn--p1ai$ [NC]
 	RewriteRule ^(.*)$ https://www.xn--h1aafj.xn--p1ai/$1 [R=301,L]
 
@@ -20,7 +19,7 @@
 	RewriteRule ^home\.php$ / [R=301,L]
 	RewriteRule ^pages/uslugi/uslugi\.php$ /uslugi [R=301,L]
 	RewriteRule ^pages/portfolio\.php$ /portfolio [R=301,L]
-	RewriteRule ^pages/projects\.php$ /projects [R=301,L]
+	RewriteRule ^pages/projects\.php$ /portfolio [R=301,L]
 	RewriteRule ^pages/politic/index\.php$ /politika [R=301,L]
 	RewriteRule ^pages/agree/index\.php$ /soglasie [R=301,L]
 	RewriteRule ^pages/services/([a-z0-9_\-]+)/index\.php$ /services/$1 [R=301,L]
@@ -37,6 +36,14 @@
 	# Закрытое: ядро, исходники, шаблоны и данные напрямую не отдаём (только через роутер)
 	RewriteRule ^(app|setting|vendor|tools)/ - [F,L]
 	RewriteRule ^public/pages/ - [F,L]
+
+	# Контент-негоциация изображений: AVIF → WebP → оригинал (по Accept браузера, без правки шаблонов)
+	RewriteCond %{HTTP_ACCEPT} image/avif [NC]
+	RewriteCond %{REQUEST_FILENAME}\.avif -f
+	RewriteRule ^(.+\.(?:jpe?g|png|webp))$ $1.avif [T=image/avif,L]
+	RewriteCond %{HTTP_ACCEPT} image/webp [NC]
+	RewriteCond %{REQUEST_FILENAME}\.webp -f
+	RewriteRule ^(.+\.(?:jpe?g|png))$ $1.webp [T=image/webp,L]
 
 	# Всё остальное — фронт-контроллер (существующие файлы отдаются напрямую)
 	RewriteCond %{REQUEST_FILENAME} !-f
@@ -59,6 +66,11 @@
 
 	<FilesMatch "\.(jpg|jpeg|png|webp|avif|svg|mp4|css|js|woff2|ico)$">
 		Header set Cache-Control "public, max-age=31536000, immutable"
+	</FilesMatch>
+
+	# Контент-негоциация зависит от Accept — обязательно Vary: Accept (кэш/CDN)
+	<FilesMatch "\.(jpg|jpeg|png|webp|avif)$">
+		Header append Vary "Accept"
 	</FilesMatch>
 
 	# Шаблоны напрямую не индексируем (если правило F выше снято)

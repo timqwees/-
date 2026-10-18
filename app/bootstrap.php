@@ -10,6 +10,13 @@ if (defined('FSS_BOOT')) {
 }
 define('FSS_BOOT', microtime(true));
 
+// Загружаем .env через vlucas/phpdotenv (как в pkvartira)
+$envPath = dirname(__DIR__, 1);
+if (file_exists($envPath . '/.env')) {
+	$dotenv = Dotenv\Dotenv::createImmutable($envPath);
+	$dotenv->load();
+}
+
 // Какой файл-страница нас подключил (фронт-контроллер и контроллер игнорируем,
 // иначе canonical уедет не туда; PageController кладёт путь сам)
 $__caller = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0]['file'] ?? '';

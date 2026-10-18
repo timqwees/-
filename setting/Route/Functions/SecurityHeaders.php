@@ -58,7 +58,7 @@ final class SecurityHeaders
         echo $body;
     }
 
-    public static function sendSecurity(string $robots = 'index, follow'): void
+    public static function sendSecurity(string $robots = ''): void
     {
         if (headers_sent()) {
             return;
@@ -74,12 +74,15 @@ final class SecurityHeaders
         header('Cross-Origin-Opener-Policy: same-origin-allow-popups', true);
         header('Cross-Origin-Resource-Policy: same-origin', true);
         header('Cross-Origin-Embedder-Policy: unsafe-none', true);
-        // Permissive CSP: сайт использует инлайн-скрипты/стили, строгий CSP всё сломает.
-        // frame-ancestors усиливает X-Frame-Options.
-        header("Content-Security-Policy: upgrade-insecure-requests; frame-ancestors 'self'", true);
+// Permissive CSP: сайт использует инлайн-скрипты/стили, строгий CSP всё сломает.
+	// frame-ancestors усиливает X-Frame-Options.
+	// TODO: после перехода на nonce/hash — ужесточить CSP
+	header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://mc.yandex.ru https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://mc.yandex.ru https://www.google-analytics.com https://www.googletagmanager.com; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self';", true);
         // AI-readiness (enterno ai-check): явное разрешение индексации + машиночитаемые связи.
         // Без noai/noimageai — политика сайта «разрешить всех» (см. robots.php).
-        header('X-Robots-Tag: ' . $robots, true);
+        if ($robots !== '') {
+            header('X-Robots-Tag: ' . $robots, true);
+        }
         header('Link: </llms.txt>; rel="llms", </sitemap.xml>; rel="sitemap", </openapi.yaml>; rel="service-desc"', true);
     }
 

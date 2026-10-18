@@ -19,6 +19,10 @@ if (!isset($services[$slug])) {
 	return;
 }
 $svc = $services[$slug];
+$geoKey = (string)($GLOBALS['fss_service_geo'] ?? '');
+$geoAll = function_exists('seo_geo') ? seo_geo() : ['geo' => [], 'priority_services' => []];
+$geo = ($geoKey !== '' && isset($geoAll['geo'][$geoKey])) ? $geoAll['geo'][$geoKey] : null;
+$geoName = (string)($geo['name'] ?? '');
 $svcType = (string)($svc['service_type'] ?? $svc['title']);
 $h = function ($s) { return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); };
 $phone = (string)seo_config('phone_display');
@@ -77,6 +81,18 @@ $intent = trim((string)preg_replace('/^(Коммерческий|Транзак�
 if ($intent === '') { $intent = mb_strtolower($svcType); }
 $priceNum = !empty($svc['price_from']) ? number_format((int)$svc['price_from'], 0, ',', ' ') . ' ₽' : '';
 $priceDesc = $priceNum !== '' ? 'Ориентир — от ' . $priceNum . ', точную смету даём за 15 минут. Цена в договоре не растёт.' : 'Смету считаем за 15 минут по вашей задаче. Цена в договоре не растёт.';
+
+// --- SEO-поля с учётом гео-посадочной (/services/{slug}/{geo}) ---
+$seoTitle = $title;
+$seoDesc = (string)$svc['description'];
+if ($geo) {
+	$h1b = 'в ' . $geoName;
+	$seoTitle = trim($h1a) . ' в ' . $geoName;
+	$seoDesc = $geoName . ' — ' . (string)$svc['description'];
+}
+$basePrice = !empty($svc['price_from']) ? (int)$svc['price_from'] : 0;
+// Таблица цен «за м²» и калькулятор площади — только для услуг с площадной ценой
+$areaBased = in_array($slug, ['angar', 'sclad', 'proizvodim_modul', 'kapstroenie', 'kapital', 'administrativnoe', 'obchegitia', 'naves', 'montach', 'proektirovanie', 'postavka'], true);
 $specIcons = ['generatornae' => 'fa-bolt', 'compressor' => 'fa-fan', 'compressor_air' => 'fa-fan', 'gruzoperevozki' => 'fa-truck-fast', 'spectehnika' => 'fa-tractor', 'postavka' => 'fa-boxes-stacked', 'musorbak' => 'fa-trash-can', 'montach' => 'fa-screwdriver-wrench', 'proektirovanie' => 'fa-compass-drafting', 'sclad' => 'fa-warehouse', 'angar' => 'fa-warehouse', 'administrativnoe' => 'fa-building', 'obchegitia' => 'fa-bed', 'modultebel' => 'fa-couch', 'naves' => 'fa-umbrella'];
 $specIcon = $specIcons[$slug] ?? 'fa-helmet-safety';
 $wn = min($pn, 8);
@@ -88,8 +104,8 @@ for ($k = 0; $k < $wn; $k++) { $works[] = $pool[($off + 5 + $k) % $pn]; }
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?= $h($title) ?> | ФАВОРИТ-СТРОЙ-СНАБ</title>
-<meta name="description" content="<?= $h($svc['description']) ?> ☎ <?= $h($phone) ?>">
+<title><?= $h(seo_clip($seoTitle, 46)) ?> | ФАВОРИТ-СТРОЙ-СНАБ</title>
+<meta name="description" content="<?= $h(seo_clip($seoDesc, 130)) ?> ☎ <?= $h($phone) ?>">
 	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
 <meta name="theme-color" content="#F97316">
@@ -102,7 +118,7 @@ for ($k = 0; $k < $wn; $k++) { $works[] = $pool[($off + 5 + $k) % $pn]; }
 	<link rel="manifest" href="/public/assets/image/logo/site.webmanifest" />
 <?= seo_canonical_tags() ?>
 <?= seo_verify_tags() ?>
-<?= seo_og_tags($title . ' | ФАВОРИТ-СТРОЙ-СНАБ', (string)$svc['description'], $pick(0)) ?>
+<?= seo_og_tags($seoTitle . ' | ФАВОРИТ-СТРОЙ-СНАБ', $seoDesc, $pick(0)) ?>
 <link rel="search" type="application/opensearchdescription+xml" title="ФАВОРИТ-СТРОЙ-СНАБ" href="/opensearch.xml">
 <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -112,20 +128,20 @@ for ($k = 0; $k < $wn; $k++) { $works[] = $pool[($off + 5 + $k) % $pn]; }
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style> body { font-family: 'Wix Madefor Display', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
-<link rel="preload" href="/public/assets/distCSS/style.css?v=20261009" as="style">
-<link rel="preload" href="/public/assets/distJS/main.js?v=20261014" as="script">
+<link rel="preload" href="/public/assets/distCSS/style.css?v=20261018" as="style">
+<link rel="preload" href="/public/assets/distJS/main.js?v=20261018" as="script">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
-<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261009">
+<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261018">
 <script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
-<script defer src="/public/assets/distJS/main.js?v=20261014"></script>
+<script defer src="/public/assets/distJS/main.js?v=20261018"></script>
 <meta name="yandex-verification" content="27e0ba9980498150" />
 <?php include_once __DIR__ . '/sheoma.php'; ?>
 <?= seo_analytics() ?>
 <?= seo_utm_script() ?>
 <?= seo_goals_script() ?>
-<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261009">
-<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261014">
+<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261018">
+<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261018">
 <style>
 .svh-wrap{max-width:1440px;margin:0 auto;padding:104px 16px 0;}
 .svh-panel{position:relative;overflow:hidden;border-radius:28px;padding:clamp(26px,4vw,54px) clamp(26px,4vw,54px) clamp(64px,5vw,84px) calc(clamp(26px,4vw,54px) + 7%);}
@@ -156,7 +172,8 @@ for ($k = 0; $k < $wn; $k++) { $works[] = $pool[($off + 5 + $k) % $pn]; }
 .svh-circles a:hover{background:#EA580C;transform:translateX(3px);}
 .svh-toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;}
 .svh-media{position:relative;}
-.svh-media::after{content:"";position:absolute;right:0;bottom:0;width:78px;height:78px;background:#171310;border-radius:24px 0 22px 0;z-index:1;}
+.svh-media::before{content:"";position:absolute;left:0;right:0;bottom:0;height:60%;background:linear-gradient(180deg,transparent 0%,rgba(23,19,16,.7) 100%);border-radius:0 0 22px 22px;z-index:1;pointer-events:none;}
+.svh-media::after{content:"";position:absolute;right:0;bottom:0;width:78px;height:78px;background:#171310;border-radius:24px 0 22px 0;z-index:2;}
 a.svh-mphoto{position:absolute;right:13px;bottom:13px;width:52px;height:52px;border-radius:50%;background:#F97316;color:#171310;display:grid;place-items:center;font-size:18px;z-index:2;transition:transform .25s,background .25s;}
 a.svh-mphoto:hover{transform:translateY(3px);background:#EA580C;}
 .svh-media img{width:100%;height:clamp(280px,32vw,460px);object-fit:cover;border-radius:22px;display:block;}
@@ -262,12 +279,19 @@ html.lenis,html.lenis body{height:auto;}
 @media(max-width:900px){.svh-grid{grid-template-columns:1fr;}.sv-aud{grid-template-columns:1fr 1fr;}.sv-tall{grid-column:1/-1;grid-row:auto;min-height:250px;}.sv-leadgrid{grid-template-columns:1fr;}.sv-sgrid{grid-template-columns:1fr 1fr;}.sv-works{grid-auto-columns:min(300px,84vw);}}
 @media(max-width:560px){.sv-aud{grid-template-columns:1fr;}.sv-sgrid{grid-template-columns:1fr;}}
 @media(prefers-reduced-motion:reduce){.sv-tall,.scard{transition:none;}}
+  .fss-breadcrumbs { margin-bottom: 20px; }
+  .fss-bc-list { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; font-size: 13px; color: #6b7078; }
+  .fss-bc-item { display: flex; align-items: center; }
+  .fss-bc-item:not(:last-child)::after { content: "/"; margin-left: 6px; color: #b0b3b8; }
+  .fss-bc-link { color: #6b7078; text-decoration: none; transition: color .2s; }
+  .fss-bc-link:hover { color: #F97316; }
+  .fss-bc-current { color: #17191d; font-weight: 600; }
 </style>
 </head>
 <body class="font-sans text-gray-800">
 <?php include_once __DIR__ . '/header.php'; ?>
-<?= seo_breadcrumbs_html() ?>
 <main>
+<?= seo_breadcrumbs_html() ?>
 	<div class="svh-wrap">
 	<section class="svh-panel view">
 		<svg class="svh-surface" viewBox="0 0 1600 760" preserveAspectRatio="none" aria-hidden="true"><path d="M150 0H1290Q1318 0 1323 28Q1328 56 1356 56H1560Q1600 56 1600 96V720Q1600 760 1560 760H350Q325 760 325 735Q325 710 300 710H170Q145 710 145 735Q145 760 120 760H40Q0 760 0 720V430Q0 400 30 400H45Q115 400 115 370V40Q115 0 150 0Z"/>
@@ -277,22 +301,25 @@ html.lenis,html.lenis body{height:auto;}
 			<a href="https://t.me/fss_rus" target="_blank" rel="noopener" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
 			<a href="https://vk.com/fss_rus" target="_blank" rel="noopener" aria-label="ВКонтакте"><i class="fa-brands fa-vk"></i></a>
 		</div>
-		<nav class="svh-crumb" aria-label="Хлебные крошки"><a href="/">Главная</a><span>/</span><a href="/uslugi">Услуги</a><span>/</span><span><?= $h($svcType) ?></span></nav>
 		<div class="svh-grid">
 			<div>
 				<div class="svh-eyebrow">С <?= seo_config('founded_market') ?> года • Под ключ • Допуск СРО</div>
 				<h1 class="svh-h1"><?= $h($h1a) ?><?= $h1b !== '' ? ' <span class="acc">' . $h($h1b) . '</span>' : '' ?></h1>
 				<p class="svh-lead"><?= $h($svc['description']) ?></p>
+				<?php if ($geo): ?><p style="margin-top:10px"><?= $h($svcType) ?> в <?= $h($geoName) ?> (<?= $h($geo['region']) ?>): доставка конструкций <?= $h($geo['route']) ?> — <?= $h($geo['eta']) ?>. Работаем с юрлицами по договору, цена фиксируется.</p><?php endif; ?>
 				<div class="svh-cta">
 					<a class="svh-pill" href="#lead" data-goal="svc_hero_cta"><span class="svh-pill-label">Рассчитать стоимость</span><span class="svh-pill-arrow"><svg viewBox="0 0 384 512" aria-hidden="true"><path d="M328 96h24v288h-48V177.9L81 401l-17 17-33.9-34 17-17 223-223H64V96h264z"/></svg></span></a>
 					<a class="svh-phone" href="tel:<?= $h($phoneHref) ?>"><?= $h($phone) ?></a>
 				</div>
 				<nav class="svh-toc" aria-label="Разделы страницы">
-					<a href="#aud">Кому подойдёт</a><a href="#lead">Смета</a><a href="#steps">Этапы</a><a href="#works">Работы</a><a href="#adv">Преимущества</a><a href="#faq">Вопросы</a>
+					<a href="#aud">Кому подойдёт</a><a href="#ceny">Цены</a><a href="#lead">Смета</a><a href="#steps">Этапы</a><a href="#works">Работы</a><a href="#adv">Преимущества</a><a href="#faq">Вопросы</a>
 				</nav>
+				<?php $isPriority = in_array($slug, (array)($geoAll['priority_services'] ?? []), true); if (!$geo && $isPriority && !empty($geoAll['geo'])): ?>
+				<nav aria-label="Гео-направления" style="margin-top:12px;font-size:13px;line-height:1.9;color:#fff"><span style="opacity:.7">Строим в городах:</span> <?php $gi = 0; foreach ($geoAll['geo'] as $gk => $gv): echo $gi++ ? ' · ' : ''; ?><a style="color:#fff;text-decoration:underline;text-underline-offset:2px" href="/services/<?= $h($slug) ?>/<?= $h($gk) ?>"><?= $h($gv['name']) ?></a><?php endforeach; ?></nav>
+				<?php endif; ?>
 			</div>
 			<div class="svh-media">
-				<img src="<?= $h($pick(0)) ?>" alt="<?= $h($title) ?> — фото объекта" fetchpriority="high" decoding="async" onerror="this.style.display='none'">
+				<img src="<?= $h($pick(0)) ?>"<?= seo_img_attrs((string)$pick(0)) ?> alt="<?= $h($title) ?> — фото объекта" fetchpriority="high" decoding="async" onerror="this.style.display='none'">
 				<span class="svh-tag">Смета за <b>15 минут</b></span>
 				<a class="svh-mphoto" href="#aud" aria-label="Смотреть дальше"><i class="fa-solid fa-arrow-down"></i></a>
 			</div>
@@ -383,6 +410,55 @@ html.lenis,html.lenis body{height:auto;}
 		<div class="sv-wnav"><button type="button" data-wv="-1" aria-label="Назад"><i class="fa-solid fa-arrow-left"></i></button><button type="button" data-wv="1" aria-label="Вперёд"><i class="fa-solid fa-arrow-right"></i></button></div>
 		<script>(function(){var box=document.getElementById('svWorks');if(!box)return;var btns=document.querySelectorAll('[data-wv]');btns.forEach(function(b){b.addEventListener('click',function(){var card=box.querySelector('.sv-work');var w=card?card.getBoundingClientRect().width+14:360;box.scrollBy({left:parseInt(b.getAttribute('data-wv'),10)*w,behavior:'smooth'});});});})();</script>
 	</section>
+	<?php if ($basePrice > 0 && $areaBased): ?>
+	<section class="page-section view" id="ceny">
+		<div class="section-heading"><h2>Цены<?= $geo ? ' в ' . $h($geoName) : '' ?></h2><span class="heading-divider" aria-hidden="true"></span><p>Ориентировочные цены «под ключ» по площади<?= $geo ? ' в ' . $h($geoName) : '' ?> — точную смету считаем за 15 минут</p></div>
+		<div style="overflow-x:auto;margin-top:22px">
+			<table style="width:100%;border-collapse:collapse;font-size:15px;background:#fff;border-radius:16px;overflow:hidden">
+				<thead><tr style="background:#171310;color:#fff;text-align:left">
+					<th style="padding:12px 16px">Площадь</th>
+					<th style="padding:12px 16px">Базовая комплектация</th>
+					<th style="padding:12px 16px">Утеплённая / под ключ</th>
+					<th style="padding:12px 16px">Срок</th>
+				</tr></thead>
+				<tbody>
+				<?php foreach ([200, 300, 500, 1000] as $a): $cold = $a * $basePrice; $warm = (int)round($cold * 1.28); ?>
+				<tr style="border-bottom:1px solid #eee">
+					<td style="padding:12px 16px;font-weight:700"><?= number_format($a, 0, ',', ' ') ?> м²</td>
+					<td style="padding:12px 16px">от <?= number_format($cold, 0, ',', ' ') ?> ₽</td>
+					<td style="padding:12px 16px">от <?= number_format($warm, 0, ',', ' ') ?> ₽</td>
+					<td style="padding:12px 16px">от <?= $h($deadline) ?> дней</td>
+				</tr>
+				<?php endforeach; ?>
+				</tbody>
+			</table>
+		</div>
+		<p style="margin-top:10px;font-size:13px;opacity:.75">* Ориентир «от <?= number_format($basePrice, 0, ',', ' ') ?> ₽/м²». Итог зависит от пролёта, нагрузок и инженерных систем — фиксируем в договоре.</p>
+	</section>
+
+	<section class="page-section view" id="calc">
+		<div class="card-prem sv-nolift" style="padding:clamp(24px,4vw,48px);border-radius:24px">
+			<div class="section-heading"><h2>Калькулятор стоимости</h2><span class="heading-divider" aria-hidden="true"></span><p>Прикидка за 10 секунд — точный расчёт инженер даёт за 15 минут</p></div>
+			<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-top:20px" data-base="<?= $basePrice ?>">
+				<label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600">Площадь, м²
+					<input type="number" min="20" step="10" value="300" data-calc-area style="padding:12px;border:1px solid #e7e7db;border-radius:12px;font-size:16px">
+				</label>
+				<label style="display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600">Комплектация
+					<select data-calc-type style="padding:12px;border:1px solid #e7e7db;border-radius:12px;font-size:16px">
+						<option value="1">Холодная (без утепления)</option>
+						<option value="1.28">Утеплённая</option>
+						<option value="1.35">Тёплая с инженерией и отделкой</option>
+					</select>
+				</label>
+			</div>
+			<div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:16px;align-items:center">
+				<div style="font-size:15px">Ориентировочная стоимость: <b data-calc-out style="font-size:26px;color:#F97316">—</b></div>
+				<a href="#lead" class="btn-outline" data-calc-send>Отправить расчёт инженеру</a>
+			</div>
+		</div>
+		<script>(function(){var box=document.querySelector('#calc [data-base]');if(!box)return;var base=parseInt(box.getAttribute('data-base'),10)||0;var area=box.querySelector('[data-calc-area]'),type=box.querySelector('[data-calc-type]'),out=document.querySelector('#calc [data-calc-out]');function fmt(n){return n.toLocaleString('ru-RU')+' ₽';}function calc(){var a=Math.max(0,parseFloat(area.value)||0),k=parseFloat(type.value)||1,lo=a*base*k,hi=lo*1.15;out.textContent=lo?'≈ '+fmt(Math.round(lo))+' – '+fmt(Math.round(hi)):'—';}area.addEventListener('input',calc);type.addEventListener('change',calc);calc();var send=document.querySelector('#calc [data-calc-send]');if(send)send.addEventListener('click',function(){var lf=document.querySelector('#lead input[name="area"]');if(lf)lf.value=area.value;});})();</script>
+	</section>
+	<?php endif; ?>
 	<?php if ($faq): ?>
 	<section class="cta-band view">
 		<img src="/public/assets/image/Components/banner/hero.jpg" alt="Быстровозводимые здания ФСС — строим то, что ведёт вас вперёд" loading="lazy" decoding="async" onerror="this.style.display='none'">
@@ -445,9 +521,23 @@ html.lenis,html.lenis body{height:auto;}
 		<div style="margin-top:14px"><a class="btn-outline" href="#lead">Получить консультацию по другим вопросам</a></div>
 	</section>
 	<?php endif; ?>
+
+	<?php if ($geo && !empty($geoAll['geo'])): ?>
+	<section class="page-section view" id="geo">
+		<div class="section-heading"><h2>Другие направления <?= $h(trim($h1a)) ?></h2><span class="heading-divider" aria-hidden="true"></span><p>Строим и доставляем по Москве и Московской области</p></div>
+		<nav aria-label="Гео-направления" style="margin-top:18px;display:flex;flex-wrap:wrap;gap:10px;font-size:14px">
+			<a class="btn-outline" href="/services/<?= $h($slug) ?>">Все направления</a>
+			<?php foreach ($geoAll['geo'] as $gk => $gv): if ($gk === $geoKey) continue; ?>
+			<a class="btn-outline" href="/services/<?= $h($slug) ?>/<?= $h($gk) ?>"><?= $h($gv['name']) ?></a>
+			<?php endforeach; ?>
+		</nav>
+	</section>
+	<?php endif; ?>
+
+	<?php include_once __DIR__ . '/reviews_services.php'; ?>
 </main>
 
-<?php include_once __DIR__ . '/related_services.php'; ?>
-<?php include_once __DIR__ . '/footer.php'; ?>
+ <?php include_once __DIR__ . '/related_services.php'; ?>
+ <?php include_once __DIR__ . '/footer.php'; ?>
 </body>
 </html>

@@ -27,6 +27,17 @@ final class Llms
 		return is_array($all) ? $all : [];
 	}
 
+	/** @return array<string, array> */
+	private static function geo(): array
+	{
+		$file = dirname(__DIR__, 3) . '/app/Data/geo.php';
+		if (!is_file($file)) {
+			return [];
+		}
+		$all = require $file;
+		return is_array($all) ? $all : [];
+	}
+
 	public static function output(): void
 	{
 		$base = rtrim(seo_config('base_url'), '/');
@@ -54,8 +65,22 @@ final class Llms
 			$price = !empty($s['price_from']) ? ' (от ' . number_format((int)$s['price_from'], 0, ',', ' ') . ' ₽)' : '';
 			$out .= "- [{$s['title']}]({$base}/services/{$slug}){$price}\n";
 		}
-		$out .= "\n## FAQ для AI Overviews\n";
-		foreach ($services as $s) {
+		$geo = self::geo();
+		$geoList = (array)($geo['geo'] ?? []);
+		if ($geoList) {
+			$out .= "\n## Гео-направления\n";
+			foreach ((array)($geo['priority_services'] ?? []) as $slug) {
+				if (!isset($services[$slug])) {
+					continue;
+				}
+				$names = [];
+				foreach ($geoList as $gk => $gv) {
+					$names[] = '[' . $gv['name'] . '](' . $base . '/services/' . $slug . '/' . $gk . ')';
+				}
+				$out .= '- ' . $services[$slug]['title'] . ': ' . implode(', ', $names) . "\n";
+			}
+		}
+		$out .= "\n## FAQ для AI Overviews\n";		foreach ($services as $s) {
 			foreach ($s['faq'] as $qa) {
 				$out .= "- {$qa[0]} — {$qa[1]}\n";
 			}

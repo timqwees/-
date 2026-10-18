@@ -29,7 +29,7 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
 
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
 	<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
-	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261009">
+	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261018">
 	<script defer src="/public/assets/distJS/main.js"></script>
 
 	<!-- canonical -->
@@ -49,10 +49,9 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
 <?= seo_utm_script() ?>
 
 <?= seo_goals_script() ?>
-	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261009">
-<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261014">
+	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261018">
+<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261018">
 
-<script src="https://cdn.tailwindcss.com"></script>
 <style>
   :root { --mts-red: #F97316; --page-bg: #fff; --ink: #17191d; --muted: #6b7078; --soft: #f3f4f6; }
   * { box-sizing: border-box; }
@@ -93,30 +92,40 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
   @keyframes uslCardOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(10px); } }
   .usl-empty { display: none; text-align: center; color: #6b7078; font-size: 14px; padding: 40px 0 8px; }
   .usl-empty.show { display: block; }
-  .category { background: #f4f5f7; border-radius: 15px; min-height: 58px; display: flex; align-items: center; gap: 12px; padding: 12px 14px; font-size: 12px; font-weight: 600; transition: background .2s, transform .2s; }
-  button.category { border: 0; cursor: pointer; font-family: inherit; text-align: left; color: inherit; }
+  .category-row { display: flex; flex-wrap: wrap; gap: 3px; margin-bottom: 28px; }
+  .category { background: #f4f5f7; border-radius: 15px; min-height: 58px; display: flex; align-items: center; gap: 12px; padding: 12px 14px; font-size: 12px; font-weight: 600; transition: background .2s, transform .2s, box-shadow .2s; color: #17191d; }
+  button.category { border: 0; cursor: pointer; font-family: inherit; text-align: left; }
   .category.active { background: #17191d; color: #fff; }
   .category.active .category-icon { color: #F97316; }
-  .category:hover { background: #eceef2; transform: translateY(-2px); }
-  .category-icon { width: 34px; height: 34px; display: grid; place-items: center; flex: 0 0 34px; border-radius: 11px; color: #4274f4; background: linear-gradient(135deg, #e3eaff, #f7e8f4); font-size: 21px; }
+  .category:hover { background: #eceef2; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(30,43,67,.08); }
+  .category-icon { width: 34px; height: 34px; display: grid; place-items: center; flex: 0 0 34px; border-radius: 11px; color: #F97316; background: linear-gradient(135deg, #fff3e0, #ffe4b3); font-size: 21px; }
   .services-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 18px; }
-  .service-card { min-height: 188px; padding: 21px 20px 15px; border-radius: 28px; box-shadow: 0 8px 22px rgba(30,43,67,.10); border: 1px solid rgba(240,242,246,.7); display: flex; flex-direction: column; background: #fff; }
+  .service-card { min-height: 188px; padding: 20px 20px 24px; border-radius: var(--radius-xl); box-shadow: 0 8px 22px rgba(30,43,67,.10); border: 1px solid rgba(240,242,246,.7); display: flex; flex-direction: column; background: #fff; transition: transform .2s, box-shadow .2s, border-color .2s; }
+  .service-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(30,43,67,.14); border-color: rgba(249,115,22,.35); }
   .service-card h2 { margin: 0 0 9px; font-size: 18px; line-height: 1.13; letter-spacing: -.45px; font-weight: 700; }
   .service-card p { margin: 0; color: #41454c; font-size: 12px; line-height: 1.42; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .price { margin-top: auto; padding-top: 15px; font-size: 16px; font-weight: 700; }
   .price small { font-size: 12px; font-weight: 400; }
   .old-price { color: #777; text-decoration: line-through; font-size: 12px; margin-left: 6px; }
   .card-actions { display: grid; gap: 7px; margin-top: 13px; }
-  .action { min-height: 38px; border-radius: 13px; background: #f1f2f5; text-align: center; font-size: 11px; font-weight: 700; display: grid; place-items: center; padding: 8px; transition: background .2s; }
+  .action { min-height: 38px; border-radius: var(--radius-md); background: #f1f2f5; text-align: center; font-size: 11px; font-weight: 700; display: grid; place-items: center; padding: 8px; transition: background .2s; }
   .action:hover { background: #e5e7eb; }
   .action.primary { background: var(--mts-red); color: #fff; }
   .action.primary:hover { background: #EA580C; }
-  .tag { display: inline-block; align-self: flex-start; background: var(--mts-red); color: #fff; font-size: 9px; padding: 4px 7px; border-radius: 5px; margin-bottom: 8px; }
-  .show-all { display: block; width: min(250px,100%); margin: 38px auto 0; border-radius: 14px; background: #f3f4f6; padding: 13px 18px; font-size: 11px; font-weight: 700; text-align: center; }
+  .tag { display: inline-block; align-self: flex-start; background: var(--mts-red); color: #fff; font-size: 9px; padding: 4px 7px; border-radius: var(--radius-sm); margin-bottom: 8px; }
+  .show-all { display: block; width: min(250px,100%); margin: 38px auto 0; border-radius: var(--radius-md); background: #f3f4f6; padding: 13px 18px; font-size: 11px; font-weight: 700; text-align: center; transition: background .2s, color .2s; cursor: pointer; border: 0; font-family: inherit; }
+  .show-all:hover { background: #17191d; color: #fff; }
   .archive { display: block; margin: 16px auto 0; text-align: center; font-size: 10px; font-weight: 700; letter-spacing: .2px; }
   footer { margin-top: 55px; background: #f2f3f6; padding: 42px 0 60px; color: #34373d; }
   .footer-top { display: flex; flex-wrap: wrap; gap: 25px; padding-bottom: 45px; border-bottom: 1px solid #e5e6ea; font-size: 12px; font-weight: 700; }
   .footer-grid { display: grid; grid-template-columns: 1.1fr 1.1fr 1.1fr 1fr; gap: 38px; padding-top: 34px; }
+  .fss-breadcrumbs { margin-bottom: 20px; }
+  .fss-bc-list { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; font-size: 13px; color: #6b7078; }
+  .fss-bc-item { display: flex; align-items: center; }
+  .fss-bc-item:not(:last-child)::after { content: "/"; margin-left: 6px; color: #b0b3b8; }
+  .fss-bc-link { color: #6b7078; text-decoration: none; transition: color .2s; }
+  .fss-bc-link:hover { color: #F97316; }
+  .fss-bc-current { color: #17191d; font-weight: 600; }
   .footer-col h3 { font-size: 16px; margin: 0 0 15px; font-weight: 700; }
   .footer-col a, .footer-col p { display: block; font-size: 12px; line-height: 1.55; color: #777b83; margin: 0 0 10px; }
   .store-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 15px 0; }
@@ -126,7 +135,7 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
   @media (max-width: 1000px) {
     .container { width: min(100% - 48px, 900px); }
     .services-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
-    .category-row { grid-template-columns: repeat(4,minmax(0,1fr)); }
+    .category-row { gap: 3px; }
     .topnav-secondary { display: none; }
   }
   @media (max-width: 700px) {
@@ -138,7 +147,7 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
     .page-title { font-size: 39px; letter-spacing: -1.5px; margin: 32px 0 25px; }
     .title-row { align-items: flex-start; flex-direction: column; gap: 15px; }
     .search { width: 100%; }
-    .category-row { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 9px; }
+    .category-row { gap: 9px; margin-top: 16px; }
     .services-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
     .service-card { min-height: 205px; padding: 17px 15px 13px; border-radius: 22px; }
     .service-card h2 { font-size: 16px; }
@@ -150,7 +159,7 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
   }
   @media (max-width: 420px) {
     .services-grid { grid-template-columns: 1fr; }
-    .service-card { min-height: 180px; }
+    .service-card { min-height: 180px; padding: 20px 20px 24px; border-radius: var(--radius-xl); }
     .service-card h2 { font-size: 18px; }
     .service-card p { font-size: 12px; }
     .card-actions { grid-template-columns: 1fr 1fr; }
@@ -162,14 +171,9 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
 </head>
 
 	<?php include_once 'public/components/header.php'; ?>
-	<?= seo_breadcrumbs_html() ?>
-
-	<!-- Hero (реф. ЮНО, sunset) -->
-	
-
-
 	<!-- Main Content -->
 	<main class="container">
+	<?= seo_breadcrumbs_html() ?>
     <div class="title-row flex items-center justify-between gap-6">
       <h1 class="page-title">Все услуги компании</h1>
       <div class="search" role="search">
@@ -178,7 +182,7 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
       </div>
     </div>
 
-    <section aria-label="Категории услуг" class="category-row grid grid-cols-8 gap-3 mb-7">
+    <section aria-label="Категории услуг" class="category-row flex flex-row items-center gap-3 mb-7">
       <button class="category" type="button" data-cat="modul" aria-pressed="false"><span class="category-icon"><i class="fa-solid fa-cubes"></i></span><span>Модульные<br>здания</span></button>
       <button class="category" type="button" data-cat="sklad" aria-pressed="false"><span class="category-icon"><i class="fa-solid fa-warehouse"></i></span><span>Склады<br>и ангары</span></button>
       <button class="category" type="button" data-cat="abk" aria-pressed="false"><span class="category-icon"><i class="fa-solid fa-building"></i></span><span>АБК<br>и офисы</span></button>
@@ -210,16 +214,16 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
         <p><?= htmlspecialchars($svc['description']) ?></p>
         <div class="price"><small><?= htmlspecialchars($pre) ?></small> <?= htmlspecialchars($val) ?><?= ($slug === 'angar') ? ' <span class="old-price">30 дней</span>' : '' ?></div>
         <div class="card-actions">
-          <?php if ($feat): ?><a class="action primary" href="/#contact" data-goal="uslugi_card_cta">Рассчитать</a><?php endif; ?>
-          <a class="action" href="/services/<?= htmlspecialchars($slug) ?>">Подробнее</a>
+          <?php if ($feat): ?><a class="action primary" href="/#contact" data-goal="uslugi_card_cta" title="Рассчитать стоимость проекта за 15 минут">Рассчитать</a><?php endif; ?>
+          <a class="action" href="/services/<?= htmlspecialchars($slug) ?>" title="Подробнее об услуге">Подробнее</a>
         </div>
       </article>
       <?php $__i++; endforeach; ?>
     </section>
 
-    <div class="usl-empty" id="uslEmpty">Ничего не найдено — измените запрос или <a href="/#contact" style="color:var(--mts-red)">свяжитесь с нами</a>.</div>
+    <div class="usl-empty" id="uslEmpty">Ничего не найдено — измените запрос или <a href="/#contact" style="color:var(--mts-red)" title="Связаться с нами для консультации">свяжитесь с нами</a>.</div>
     <button class="show-all" id="showAll">ПОКАЗАТЬ ВСЕ</button>
-    <a class="archive" href="/portfolio">Смотреть портфолио объектов</a>
+    <a class="archive" href="/portfolio" title="Посмотреть портфолио реализованных объектов">Смотреть портфолио объектов</a>
   </main>
 
   <script>
@@ -319,7 +323,6 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
 	<?php include_once 'public/components/footer.php'; ?>
 	<!-- форма обратной связи -->
 
-	<?php include_once 'public/components/forma.php'; ?>
 
 	</body>
 

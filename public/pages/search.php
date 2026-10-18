@@ -35,14 +35,20 @@ if ($q !== '') {
 	<title>Поиск<?= $q !== '' ? ' — ' . htmlspecialchars($q) : '' ?> | <?= htmlspecialchars(seo_config('brand')) ?></title>
 	<meta name="description" content="Поиск по услугам <?= htmlspecialchars(seo_config('brand')) ?>: склады, ангары, АБК, общежития, капремонт, спецтехника.">
 	<meta name="robots" content="noindex, follow">
-	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261009">
+	<link rel="icon" type="image/png" href="/public/assets/image/logo/favicon-96x96.png" sizes="96x96" />
+	<link rel="icon" type="image/svg+xml" href="/public/assets/image/logo/favicon.svg" />
+	<link rel="shortcut icon" href="/public/assets/image/logo/favicon.ico" />
+	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/apple-touch-icon.png" />
+	<?= seo_canonical_tags() ?>
+	<?= seo_og_tags('Поиск по услугам — ' . seo_config('brand'), 'Поиск по каталогу услуг ФАВОРИТ-СТРОЙ-СНАБ: склады, ангары, АБК, общежития, капремонт, спецтехника.') ?>
+	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261018">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
-	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261009">
-	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261014">
+	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261018">
+	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261018">
 	<script defer src="/public/assets/distJS/main.js"></script>
 </head>
 <body class="font-sans text-gray-800">
-	<?php include_once __DIR__ . '/../../components/header.php'; ?>
+	<?php include_once __DIR__ . '/../components/header.php'; ?>
 
 	<section class="page-hero">
 		<div class="page-hero-inner">
@@ -80,11 +86,10 @@ if ($q !== '') {
 		<div class="mt-8 flex gap-3">
 			<a href="/uslugi" class="btn-outline"><i class="fa-solid fa-list"></i> Все услуги</a>
 			<a href="/portfolio" class="btn-outline"><i class="fa-solid fa-images"></i> Портфолио</a>
-			<a href="/portfolio" class="btn-outline"><i class="fa-solid fa-diagram-project"></i> Портфолио</a>
+			<a href="/search/blog" class="btn-outline"><i class="fa-solid fa-magnifying-glass"></i> Поиск по блогу</a>
 		</div>
 	</main>
 
-	<?php include_once __DIR__ . '/../../components/footer.php'; ?>
-	<?php include_once __DIR__ . '/../../components/forma.php'; ?>
+	<?php include_once __DIR__ . '/../components/footer.php'; ?>
 </body>
 </html>

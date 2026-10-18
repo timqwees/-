@@ -6,11 +6,11 @@
 $__n = (function_exists('seo_url') ? seo_url() : '/') ?: '/';
 $__act = function (bool $on): string { return $on ? ' is-active' : ''; };
 $__onHome = $__n === '/';
-$__tel = htmlspecialchars(preg_replace('/\D/', '', (string)seo_config('phone')));
+$__tel = htmlspecialchars((string) preg_replace( '/\D/', '', (string)seo_config('phone')));
 ?><header class="hd">
 	<nav class="hd-bar hd-glass" aria-label="Быстрая навигация">
 		<a href="/" class="hd-avatar" aria-label="ФАВОРИТ-СТРОЙ-СНАБ — на главную"><img src="/public/assets/image/logo/favicon.svg" alt="ФАВОРИТ-СТРОЙ-СНАБ" width="40" height="40" loading="eager" decoding="async"></a>
-		<div class="hd-mid" aria-hidden="true"><span>Смета за 15 минут</span></div>
+		<div class="hd-mid" aria-hidden="true"><span>СТРОЙ ФИРМА</span></div>
 	<div class="hd-links" data-menu-root="<?= $__onHome ? 'home' : 'other' ?>">
 		<a href="/" class="hd-link" data-menu-hash="home" data-menu-nav>Главная</a>
 		<a href="/uslugi" class="hd-link<?= $__act(!$__onHome && ($__n === '/uslugi' || str_starts_with($__n, '/services/'))) ?>">Услуги</a>
@@ -18,7 +18,7 @@ $__tel = htmlspecialchars(preg_replace('/\D/', '', (string)seo_config('phone')))
 		<a href="/portfolio" class="hd-link<?= $__act(!$__onHome && $__n === '/portfolio') ?>">Портфолио</a>
 	<a href="/blog" class="hd-link<?= $__act(!$__onHome && str_starts_with($__n, '/blog')) ?>">Статьи</a>
 		<a href="/about" class="hd-link<?= $__act(!$__onHome && $__n === '/about') ?>">О нас</a>
-		<a href="/#contact" class="hd-link" data-menu-hash="contact" data-menu-nav>Обратится</a>
+		<a href="/#contact" class="hd-link" data-menu-hash="contact" data-menu-nav>Связаться</a>
 	</div>
 		<a href="/#contact" class="hd-round" aria-label="Оставить заявку"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
 		<a href="tel:<?= $__tel ?>" class="hd-round" aria-label="Позвонить"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></a>
@@ -81,6 +81,29 @@ $__tel = htmlspecialchars(preg_replace('/\D/', '', (string)seo_config('phone')))
 				setActive(null);
 			});
 		});
+
+		// Бургер: мобильное меню
+		var bar = document.querySelector('.hd-bar');
+		var burger = document.querySelector('.hd-burger');
+		if (bar && burger) {
+			var setOpen = function(open){
+				bar.classList.toggle('hd-open', open);
+				burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+			};
+			burger.addEventListener('click', function(e){
+				e.stopPropagation();
+				setOpen(!bar.classList.contains('hd-open'));
+			});
+			document.addEventListener('click', function(e){
+				if (bar.classList.contains('hd-open') && !bar.contains(e.target)) setOpen(false);
+			});
+			document.addEventListener('keydown', function(e){
+				if (e.key === 'Escape') setOpen(false);
+			});
+			document.querySelectorAll('.hd-drop a').forEach(function(a){
+				a.addEventListener('click', function(){ setOpen(false); });
+			});
+		}
 	})();
 	</script>
 </header>
