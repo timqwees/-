@@ -57,11 +57,16 @@ if (!function_exists('seo_url')) {
 			if (preg_match('#^public/pages/services/([^/]+)/index\.php$#', $rel, $m)) {
 				return $cached = '/services/' . $m[1];
 			}
+			if (preg_match('#^public/pages/blog/post\.php$#', $rel)) {
+				$slug = $_GET['post'] ?? '';
+				return $cached = $slug !== '' ? '/blog/' . $slug : '/blog';
+			}
 			switch ($rel) {
 				case 'public/pages/home.php': return $cached = '/';
 				case 'public/pages/uslugi/uslugi.php': return $cached = '/uslugi';
 				case 'public/pages/portfolio.php': return $cached = '/portfolio';
 				case 'public/pages/about.php': return $cached = '/about';
+				case 'public/pages/blog/list.php': return $cached = '/blog';
 				case 'public/pages/politic/index.php': return $cached = '/politika';
 				case 'public/pages/agree/index.php': return $cached = '/soglasie';
 				case '404.php': return $cached = '/404';
@@ -80,12 +85,24 @@ if (!function_exists('seo_canonical')) {
 }
 
 if (!function_exists('seo_canonical_tags')) {
-	function seo_canonical_tags(): string
+ function seo_canonical_tags(): string
 	{
 		$c = seo_canonical();
 		return "\t<link rel=\"canonical\" href=\"{$c}\" />\n"
 			. "\t<link rel=\"alternate\" hreflang=\"ru\" href=\"{$c}\" />\n"
 			. "\t<link rel=\"alternate\" hreflang=\"x-default\" href=\"{$c}\" />";
+	}
+}
+
+if (!function_exists('seo_verify_tags')) {
+	function seo_verify_tags(): string
+	{
+		$out = '';
+		$y = (string)seo_config('yandex_verification');
+		if ($y !== '') $out .= "\t<meta name=\"yandex-verification\" content=\"{$y}\" />\n";
+		$g = (string)seo_config('google_verification');
+		if ($g !== '') $out .= "\t<meta name=\"google-site-verification\" content=\"{$g}\" />\n";
+		return $out;
 	}
 }
 
@@ -214,6 +231,7 @@ if (!function_exists('seo_breadcrumbs_jsonld')) {
 			'/uslugi' => 'Услуги',
 			'/portfolio' => 'Портфолио объектов',
 			'/about' => 'О компании',
+			'/blog' => 'Блог',
 			'/politika' => 'Политика конфиденциальности',
 			'/soglasie' => 'Согласие на обработку данных',
 			'/search' => 'Поиск по сайту',
@@ -223,10 +241,17 @@ if (!function_exists('seo_breadcrumbs_jsonld')) {
 		if (preg_match('#^/services/([^/]+)$#', $url)) {
 			$items[] = ['@type' => 'ListItem', 'position' => 2, 'name' => 'Услуги', 'item' => $base . '/uslugi'];
 		}
+		if (preg_match('#^/blog/([^/]+)$#', $url)) {
+			$items[] = ['@type' => 'ListItem', 'position' => 2, 'name' => 'Блог', 'item' => $base . '/blog'];
+		}
 		$name = $map[$url] ?? null;
 		if (!$name && preg_match('#^/services/([^/]+)$#', $url, $m)) {
 			$s = seo_service($m[1]);
 			$name = $s['title'] ?? $m[1];
+		}
+		if (!$name && preg_match('#^/blog/([^/]+)$#', $url, $m)) {
+			$p = seo_blog_post($m[1]);
+			$name = $p['title'] ?? $m[1];
 		}
 		if (!$name) return null;
 		$items[] = ['@type' => 'ListItem', 'position' => count($items) + 1, 'name' => $name, 'item' => $base . $url];
@@ -243,6 +268,29 @@ if (!function_exists('seo_service')) {
 	}
 }
 
+if (!function_exists('seo_breadcrumbs_html')) {
+	/** Видимые HTML-хлебные крошки — переиспользуют те же данные, что и JSON-LD. */
+	function seo_breadcrumbs_html(): string
+	{
+		$bc = seo_breadcrumbs_jsonld();
+		if (!$bc) return '';
+		$base = rtrim(seo_config('base_url'), '/');
+		$items = $bc['itemListElement'];
+		$out = '<nav aria-label="Хлебные крошки" class="fss-breadcrumbs"><ol class="fss-bc-list">';
+		foreach ($items as $it) {
+			$out .= '<li class="fss-bc-item">';
+			if (!empty($it['item'])) {
+				$out .= '<a href="' . htmlspecialchars($it['item'], ENT_QUOTES) . '" class="fss-bc-link">' . htmlspecialchars($it['name'], ENT_QUOTES) . '</a>';
+			} else {
+				$out .= '<span class="fss-bc-current">' . htmlspecialchars($it['name'], ENT_QUOTES) . '</span>';
+			}
+			$out .= '</li>';
+		}
+		$out .= '</ol></nav>';
+		return $out;
+	}
+}
+
 if (!function_exists('seo_services')) {
 	function seo_services(): array
 	{
@@ -251,6 +299,136 @@ if (!function_exists('seo_services')) {
 			$all = require dirname(__DIR__, 2) . '/app/Data/services.php';
 		}
 		return $all;
+	}
+}
+
+if (!function_exists('seo_reviews')) {
+	/** Отзывы из app/Data/reviews.php */
+	function seo_reviews(): array
+	{
+		static $all = null;
+		if ($all === null) {
+			$path = dirname(__DIR__, 2) . '/app/Data/reviews.php';
+			$all = file_exists($path) ? require $path : [];
+		}
+		return $all;
+	}
+}
+
+if (!function_exists('seo_reviews_jsonld')) {
+	/** Review[] + AggregateRating для Organization/LocalBusiness */
+	function seo_reviews_jsonld(): array
+	{
+		$reviews = seo_reviews();
+		if (!$reviews) return [];
+		$count = count($reviews);
+		$sum = array_sum(array_column($reviews, 'star'));
+		$avg = round($sum / $count, 1);
+		$base = rtrim(seo_config('base_url'), '/');
+		$nodes = [[
+			'@type' => 'AggregateRating',
+			'ratingValue' => $avg,
+			'bestRating' => '5',
+			'worstRating' => '1',
+			'reviewCount' => $count,
+		]];
+		foreach ($reviews as $i => $r) {
+			$nodes[] = [
+				'@type' => 'Review',
+				'author' => ['@type' => 'Person', 'name' => $r['name']],
+				'reviewBody' => $r['text'],
+				'datePublished' => $r['date'],
+				'reviewRating' => [
+					'@type' => 'Rating',
+					'ratingValue' => $r['star'],
+					'bestRating' => '5',
+					'worstRating' => '1',
+				],
+			];
+		}
+		return $nodes;
+	}
+}
+
+if (!function_exists('seo_blog_posts')) {
+	/** Все блог-посты из app/Data/blog.php */
+	function seo_blog_posts(): array
+	{
+		static $all = null;
+		if ($all === null) {
+			$path = dirname(__DIR__, 2) . '/app/Data/blog.php';
+			$all = file_exists($path) ? require $path : [];
+		}
+		return $all;
+	}
+}
+
+if (!function_exists('seo_blog_post')) {
+	/** Блог-пост по slug */
+	function seo_blog_post(string $slug): ?array
+	{
+		$all = seo_blog_posts();
+		return $all[$slug] ?? null;
+	}
+}
+
+if (!function_exists('seo_blog_post_content')) {
+	/** HTML-контент блог-поста по content_id */
+	function seo_blog_post_content(array $post): string
+	{
+		$id = $post['content_id'] ?? 0;
+		if (!$id) {
+			return $post['content'] ?? '';
+		}
+		$path = dirname(__DIR__, 2) . '/public/pages/blog/content/' . $id . '.php';
+		if (!is_file($path)) {
+			return $post['content'] ?? '';
+		}
+		return (string)file_get_contents($path);
+	}
+}
+
+if (!function_exists('seo_blog_jsonld')) {
+	/** BlogPosting schema.org для текущего поста или Article для списка */
+	function seo_blog_jsonld(?string $slug = null): ?array
+	{
+		$base = rtrim(seo_config('base_url'), '/');
+		$posts = seo_blog_posts();
+		if ($slug && isset($posts[$slug])) {
+			$p = $posts[$slug];
+			$author = seo_config('ceo');
+			return [
+				'@type' => 'BlogPosting',
+				'headline' => $p['title'],
+				'description' => $p['description'],
+				'datePublished' => $p['date'],
+				'dateModified' => $p['date'],
+				'author' => ['@type' => 'Person', 'name' => $author],
+				'publisher' => ['@id' => $base . '#organization'],
+				'image' => ['@type' => 'ImageObject', 'url' => $base . $p['og_image']],
+				'articleSection' => $p['category_name'],
+				'keywords' => implode(', ', $p['tags']),
+				'wordCount' => str_word_count(strip_tags(seo_blog_post_content($p))),
+				'timeRequired' => 'PT' . (int)($p['read_minutes'] ?? 5) . 'M',
+				'mainEntityOfPage' => ['@type' => 'WebPage', '@id' => $base . '/blog/' . $slug],
+			];
+		}
+		if (!$slug) {
+			$nodes = [];
+			foreach ($posts as $slug => $p) {
+				$nodes[] = [
+					'@type' => 'BlogPosting',
+					'headline' => $p['title'],
+					'description' => $p['description'],
+					'datePublished' => $p['date'],
+					'author' => ['@type' => 'Person', 'name' => seo_config('ceo')],
+					'publisher' => ['@id' => $base . '#organization'],
+					'mainEntityOfPage' => ['@type' => 'WebPage', '@id' => $base . '/blog/' . $slug],
+				];
+			}
+			return $nodes;
+		}
+		return null;
 	}
 }
 

@@ -101,7 +101,8 @@ for ($k = 0; $k < $wn; $k++) { $works[] = $pool[($off + 5 + $k) % $pn]; }
 	<meta name="apple-mobile-web-app-title" content="ФСС" />
 	<link rel="manifest" href="/public/assets/image/logo/site.webmanifest" />
 <?= seo_canonical_tags() ?>
-<?= seo_og_tags($title . ' | ФАВОРИТ-СТРОЙ-СНАБ', (string)$svc['description']) ?>
+<?= seo_verify_tags() ?>
+<?= seo_og_tags($title . ' | ФАВОРИТ-СТРОЙ-СНАБ', (string)$svc['description'], $pick(0)) ?>
 <link rel="search" type="application/opensearchdescription+xml" title="ФАВОРИТ-СТРОЙ-СНАБ" href="/opensearch.xml">
 <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -265,6 +266,7 @@ html.lenis,html.lenis body{height:auto;}
 </head>
 <body class="font-sans text-gray-800">
 <?php include_once __DIR__ . '/header.php'; ?>
+<?= seo_breadcrumbs_html() ?>
 <main>
 	<div class="svh-wrap">
 	<section class="svh-panel view">

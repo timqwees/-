@@ -12,6 +12,11 @@ if ($bc) {
 	$graph[] = $bc;
 }
 
+$reviews = seo_reviews_jsonld();
+foreach ($reviews as $node) {
+	$graph[] = $node;
+}
+
 // Service + Offer + FAQPage — только на странице самой услуги
 if (preg_match('#^/services/([^/]+)$#', seo_url(), $m)) {
 	$svc = seo_service_jsonld($m[1]);
@@ -67,6 +72,14 @@ if (seo_url() === '/uslugi') {
 			'availability' => 'https://schema.org/InStock',
 		] + (!empty($s['price_from']) ? ['price' => $s['price_from']] : []), array_keys(seo_services()), array_values(seo_services()))),
 	];
+}
+
+// Хаб блога — BlogPosting для каждого поста
+if (preg_match('#^/blog/([^/]+)$#', seo_url(), $m)) {
+	$bp = seo_blog_jsonld($m[1]);
+	if ($bp) {
+		$graph[] = $bp;
+	}
 }
 
 echo seo_jsonld($graph);

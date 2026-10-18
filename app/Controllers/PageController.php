@@ -71,4 +71,17 @@ class PageController
 		$GLOBALS['fss_page_file'] = $file;
 		Routes::auto_element($file);
 	}
+
+	public static function blog(): void
+	{
+		$GLOBALS['fss_page_file'] = self::view('blog/list.php');
+		Routes::auto_element($GLOBALS['fss_page_file']);
+	}
+
+	public static function blogPost(string $slug): void
+	{
+		$GLOBALS['fss_page_file'] = self::view('blog/post.php');
+		$_GET['post'] = $slug;
+		Routes::auto_element($GLOBALS['fss_page_file']);
+	}
 }

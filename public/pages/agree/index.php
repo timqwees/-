@@ -20,6 +20,7 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
 	<meta name="description" content="Правила обработки персональных данных на сайте ФАВОРИТ-СТРОЙ-СНАБ: какие данные собираем и как защищаем.">
 	<meta name="robots" content="noindex, follow">
 	<meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
+	<?= seo_verify_tags() ?>
 	<link rel="canonical" href="https://www.xn--h1aafj.xn--p1ai/soglasie" />
 	<link rel="alternate" hreflang="ru" href="https://www.xn--h1aafj.xn--p1ai/soglasie" />
 	<meta property="og:locale" content="ru_RU">

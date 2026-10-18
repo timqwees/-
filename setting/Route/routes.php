@@ -38,6 +38,15 @@ Routes::post('/portfolio', [PageController::class, 'portfolio']);
 Routes::post('/services/{slug}', function (string $slug) {
 	PageController::service($slug);
 });
+//==================================================================================================//BLOG (SEO контент + GEO для AI Overviews)
+Routes::get('/blog', [PageController::class, 'blog']);
+Routes::get('/blog/{slug}', function (string $slug) {
+	PageController::blogPost($slug);
+});
+// Legacy blog redirect
+Routes::get('/posts/{slug}', function (string $slug) {
+	Routes::redirect('/blog/' . $slug);
+});
 //==================================================================================================//LEGACY (старые .php-адреса → ЧПУ 301, защита от дублей)
 Routes::get('/index.php', function () { Routes::redirect('/'); });
 Routes::get('/home.php', function () { Routes::redirect('/'); });

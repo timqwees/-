@@ -44,7 +44,12 @@ final class Llms
 		$out .= "- [Все услуги]({$base}/uslugi): каталог-хаб, " . count($services) . " направлений\n";
 		$out .= "- [Портфолио]({$base}/portfolio): фото и видео сданных объектов
 - [О компании]({$base}/about)\n\n";
-		$out .= "## Услуги\n";
+		$out .= "## Блог\n";
+		$blogPosts = function_exists('seo_blog_posts') ? seo_blog_posts() : [];
+		foreach ($blogPosts as $slug => $p) {
+			$out .= "- [{$p['title']}]({$base}/blog/{$slug}): {$p['description']}\n";
+		}
+		$out .= "\n## Услуги\n";
 		foreach ($services as $slug => $s) {
 			$price = !empty($s['price_from']) ? ' (от ' . number_format((int)$s['price_from'], 0, ',', ' ') . ' ₽)' : '';
 			$out .= "- [{$s['title']}]({$base}/services/{$slug}){$price}\n";
@@ -84,6 +89,17 @@ final class Llms
 		$out .= "- Экономия к классическому строительству: до 30%\n";
 		$out .= "- Оплата по этапам, без 100% предоплаты, без скрытых платежей\n";
 		$out .= "- Технадзор на каждом этапе, фотоотчёт каждую неделю\n\n";
+		$out .= "## Блог (полные статьи)\n";
+		$blogPosts = function_exists('seo_blog_posts') ? seo_blog_posts() : [];
+		foreach ($blogPosts as $slug => $p) {
+			$out .= "### {$p['title']}\n";
+			$out .= "URL: {$base}/blog/{$slug}\n";
+			$out .= "Опубликовано: {$p['date']} | Чтение: {$p['read_minutes']} мин | Категория: {$p['category_name']}\n";
+			$out .= "Теги: " . implode(', ', $p['tags']) . "\n";
+			$out .= "Связанная услуга: {$p['service_slug']}\n\n";
+			$out .= function_exists('seo_blog_post_content') ? seo_blog_post_content($p) : ($p['content'] ?? '');
+			$out .= "\n\n";
+		}
 		$out .= "## Услуги (кластеры запросов)\n";
 		foreach ($services as $slug => $s) {
 			$out .= "- /services/{$slug} — {$s['title']}. {$s['description']}\n";
