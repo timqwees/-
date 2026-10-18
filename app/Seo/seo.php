@@ -61,6 +61,7 @@ if (!function_exists('seo_url')) {
 				case 'public/pages/home.php': return $cached = '/';
 				case 'public/pages/uslugi/uslugi.php': return $cached = '/uslugi';
 				case 'public/pages/portfolio.php': return $cached = '/portfolio';
+				case 'public/pages/about.php': return $cached = '/about';
 				case 'public/pages/politic/index.php': return $cached = '/politika';
 				case 'public/pages/agree/index.php': return $cached = '/soglasie';
 				case '404.php': return $cached = '/404';
@@ -96,6 +97,7 @@ if (!function_exists('seo_og_tags')) {
 		$img = $image ?: $base . '/public/assets/image/og/og-home-1200x630.jpg';
 		$title = $title !== '' ? $title : $brand;
 		$desc = $desc !== '' ? $desc : 'Быстровозводимые здания под ключ от 14 дней. Склады, ангары, АБК, общежития, капремонт. ';
+		$imgAlt = $desc;
 		$out = "\t<meta property=\"og:locale\" content=\"ru_RU\">\n"
 			. "\t<meta property=\"og:site_name\" content=\"{$brand}\">\n"
 			. "\t<meta property=\"og:type\" content=\"website\">\n"
@@ -105,7 +107,8 @@ if (!function_exists('seo_og_tags')) {
 			. "\t<meta property=\"og:image\" content=\"{$img}\">\n"
 			. "\t<meta property=\"og:image:width\" content=\"1200\">\n"
 			. "\t<meta property=\"og:image:height\" content=\"630\">\n"
-			. "\t<meta property=\"og:image:alt\" content=\"" . htmlspecialchars($brand, ENT_QUOTES) . "\">\n"
+			. "\t<meta property=\"og:image:alt\" content=\"" . htmlspecialchars($imgAlt, ENT_QUOTES) . "\">\n"
+		. "\t<meta name=\"twitter:image:alt\" content=\"" . htmlspecialchars($imgAlt, ENT_QUOTES) . "\">\n"
 			. "\t<meta name=\"twitter:card\" content=\"summary_large_image\">\n"
 			. "\t<meta name=\"twitter:title\" content=\"" . htmlspecialchars($title, ENT_QUOTES) . "\">\n"
 			. "\t<meta name=\"twitter:description\" content=\"" . htmlspecialchars($desc, ENT_QUOTES) . "\">\n"
@@ -138,6 +141,8 @@ if (!function_exists('seo_organization_jsonld')) {
 				'alternateName' => array_merge([seo_config('brand_en')], (array)seo_config('brand_alt')),
 				'legalName' => 'ООО "ФАВОРИТ-СТРОЙ-СНАБ"',
 				'url' => $base . '/',
+				'inn' => seo_config('inn'),
+				'ogrn' => seo_config('ogrn'),
 				'logo' => ['@type' => 'ImageObject', 'url' => $base . '/public/assets/image/logo/logo.svg', 'width' => 512, 'height' => 512],
 				'image' => ['@type' => 'ImageObject', 'url' => $base . '/public/assets/image/og/og-home-1200x630.jpg', 'width' => 1200, 'height' => 630],
 				'description' => 'ФАВОРИТ-СТРОЙ-СНАБ — производство и монтаж быстровозводимых зданий (склады, ангары, АБК, общежития), капитальный ремонт, грузоперевозки и аренда спецтехники. Москва и Московская область, работаем по всей России.',
@@ -208,6 +213,7 @@ if (!function_exists('seo_breadcrumbs_jsonld')) {
 		$map = [
 			'/uslugi' => 'Услуги',
 			'/portfolio' => 'Портфолио объектов',
+			'/about' => 'О компании',
 			'/politika' => 'Политика конфиденциальности',
 			'/soglasie' => 'Согласие на обработку данных',
 			'/search' => 'Поиск по сайту',

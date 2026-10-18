@@ -149,7 +149,7 @@
 
 	/* Навигация: уплотнение/тень при скролле */
 	function initNavScroll() {
-		var nav = document.querySelector('.nav-pill');
+		var nav = document.querySelector('.hd-bar');
 		if (!nav) return;
 		var onScroll = function () {
 			nav.classList.toggle('scrolled', window.scrollY > 24);
@@ -461,6 +461,23 @@
 		update();
 	}
 
+	/* Герой: переключатель звука видео (спикер ↔ перечеркнутый спикер) */
+	function initHeroVideoControl() {
+		var btn = document.getElementById('hero-video-control');
+		if (!btn) return;
+		var videos = document.querySelectorAll('video');
+		function setMuted(muted) {
+			btn.setAttribute('aria-pressed', muted ? 'true' : 'false');
+			btn.setAttribute('aria-label', muted ? 'Включить звук' : 'Выключить звук');
+			videos.forEach(function (v) { v.muted = muted; });
+		}
+		btn.addEventListener('click', function () {
+			var isMuted = btn.getAttribute('aria-pressed') === 'true';
+			setMuted(!isMuted);
+		});
+		setMuted(false);
+	}
+
 	function init() {
 		initViewElements();
 		initModalHandlers();
@@ -474,6 +491,7 @@
 		initSmoothScroll();
 		initStripSliders();
 		initFssCarousel();
+		initHeroVideoControl();
 	}
 	if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
 	else init();

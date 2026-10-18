@@ -1,7 +1,7 @@
 {
   "name": "favorit-stroy-snab",
   "title": "ФАВОРИТ-СТРОЙ-СНАБ — быстровозводимые здания под ключ",
-  "description": "Производство и монтаж БВЗ, капитальное строение и ремонт, грузоперевозки и спецтехника. Москва, МО и вся Россия. С 2011 года, 180+ объектов, допуск СРО, гарантия 50+ лет.",
+  "description": "Производство и монтаж БВЗ, капитальное строительство и ремонт, грузоперевозки и спецтехника. На рынке с 2011 года (ООО «ФАВОРИТ-СТРОЙ-СНАБ» — с 2020 года по ИНН 9724020865), 180+ объектов, допуск СРО, гарантия 50+ лет.",
   "homepage": "https://www.фсс.рус/",
   "capabilities": [
     "construction-quote-estimate",
@@ -13,15 +13,10 @@
   "endpoints": [
     { "path": "/uslugi", "type": "services-hub" },
     { "path": "/portfolio", "type": "portfolio" },
-    { "path": "/projects", "type": "catalog" },
-    { "path": "/search", "type": "site-search" },
-    { "path": "/yml.xml", "type": "offers-feed" },
-    { "path": "/turbo.xml", "type": "turbo-feed" },
-    { "path": "/rss.xml", "type": "feed" },
-    { "path": "/llms.txt", "type": "ai-summary" },
-    { "path": "/llms-full.txt", "type": "ai-full" },
+    { "path": "/sitemap-index.xml", "type": "sitemap-index" },
+    { "path": "/sitemap.xml", "type": "sitemap" },
     { "path": "/openapi.yaml", "type": "api-spec" },
-    { "path": "/sitemap.xml", "type": "sitemap" }
+    { "path": "/ai-plugin.json", "type": "ai-plugin" }
   ],
   "contacts": { "phone": "+7 938 018-00-06", "email": "fss@фсс.рус", "telegram": "https://t.me/fss_rus", "vk": "https://vk.com/fss_rus" },
   "address": { "postalCode": "101000", "locality": "Москва", "street": "ул. Большая Спасоглинищевская, д. 9/1 стр. 10, помещ. 1/2", "country": "RU" },

@@ -42,13 +42,15 @@
 	<meta name="theme-color" content="#F97316">
 	<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-	<meta name="robots" content="index, follow">
+	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
-	<!-- favicon -->
-	<link rel="icon" type="image/png" sizes="32x32" href="/public/assets/image/favicon/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="/public/assets/image/favicon/favicon-16x16.png">
-	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/favicon/apple-touch-icon.png">
-	<link rel="manifest" href="/public/assets/image/favicon/site.webmanifest">
+	<!-- Favicon unified -->
+	<link rel="icon" type="image/png" href="/public/assets/image/logo/favicon-96x96.png" sizes="96x96" />
+	<link rel="icon" type="image/svg+xml" href="/public/assets/image/logo/favicon.svg" />
+	<link rel="shortcut icon" href="/public/assets/image/logo/favicon.ico" />
+	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/apple-touch-icon.png" />
+	<meta name="apple-mobile-web-app-title" content="ФСС" />
+	<link rel="manifest" href="/public/assets/image/logo/site.webmanifest" />
 
 	<!-- Swiper CSS -->
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
@@ -62,10 +64,34 @@
 	<?= seo_og_tags('Портфолио — Реализованные объекты | ФАВОРИТ-СТРОЙ-СНАБ', 'Портфолио выполненных объектов: фото и видео школ, складов, АБК, общежитий, навесов. 180+ сданных объектов.') ?>
 
 	<?php include_once __DIR__ . '/../components/sheoma.php'; ?>
+	<script type="application/ld+json">
+	<?= json_encode([
+		'@context' => 'https://schema.org',
+		'@graph' => [
+			[
+				'@type' => 'ItemList',
+				'name' => 'Портфолио реализованных объектов ФАВОРИТ-СТРОЙ-СНАБ',
+				'description' => 'Фото и видео сданных объектов: склады, ангары, АБК, общежития, школы, навесы. 180+ объектов в Москве, МО и России.',
+				'numberOfItems' => 180,
+				'itemListOrder' => 'https://schema.org/Unordered',
+				'itemListElement' => array_map(function ($i) {
+					return [
+						'@type' => 'ListItem',
+						'position' => $i,
+						'name' => 'Объект ' . $i,
+						'url' => (string)seo_config('base_url') . '/portfolio#obj-' . $i,
+					];
+				}, range(1, 20)),
+			],
+		],
+	], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_LINE_TERMINATORS) ?>
+	</script>
+	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261009">
+	<!-- tailwind built into distCSS -->
 	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261009">
-	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261009">
-<style>
-.esp-wrap{max-width:1440px;margin:0 auto;padding:0 clamp(16px,3vw,44px);}
+	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261014">
+	<style>
+	.esp-wrap{max-width:1440px;margin:0 auto;padding:0 clamp(16px,3vw,44px);}
 .esp-top{padding-top:104px;}
 .esp-over{margin:0;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#171310;}
 .esp-h1{margin:18px 0 0;font-weight:600;text-transform:uppercase;letter-spacing:-.03em;line-height:.95;color:#111;font-size:clamp(52px,8.5vw,148px);}

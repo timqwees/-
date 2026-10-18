@@ -21,6 +21,7 @@ final class Sitemap
 			['/', '1.0', 'weekly'],
 			['/uslugi', '0.9', 'weekly'],
 			['/portfolio', '0.8', 'weekly'],
+			['/about', '0.5', 'monthly'],
 			['/politika', '0.3', 'yearly'],
 			['/soglasie', '0.3', 'yearly'],
 		];
@@ -39,6 +40,7 @@ final class Sitemap
 			'/' => $root . '/public/pages/home.php',
 			'/uslugi' => $root . '/public/pages/uslugi/uslugi.php',
 			'/portfolio' => $root . '/public/pages/portfolio.php',
+			'/about' => $root . '/public/pages/about.php',
 			'/politika' => $root . '/public/pages/politic/index.php',
 			'/soglasie' => $root . '/public/pages/agree/index.php',
 		];

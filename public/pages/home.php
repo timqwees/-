@@ -24,11 +24,13 @@ if (file_exists($componentMailPath)) {
 		<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 	<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 	<!-- Favicon unified -->
-	<link rel="icon" type="image/png" sizes="32x32" href="/public/assets/image/favicon/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="/public/assets/image/favicon/favicon-16x16.png">
-	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/favicon/apple-touch-icon.png">
-	<link rel="manifest" href="/public/assets/image/favicon/site.webmanifest">
-	<link rel="mask-icon" href="/public/assets/image/favicon/favicon-32x32.png" color="#F97316">
+	<link rel="icon" type="image/png" href="/public/assets/image/logo/favicon-96x96.png" sizes="96x96" />
+	<link rel="icon" type="image/svg+xml" href="/public/assets/image/logo/favicon.svg" />
+	<link rel="shortcut icon" href="/public/assets/image/logo/favicon.ico" />
+	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/apple-touch-icon.png" />
+	<meta name="apple-mobile-web-app-title" content="ФСС" />
+	<link rel="manifest" href="/public/assets/image/logo/site.webmanifest" />
+	<link rel="mask-icon" href="/public/assets/image/logo/favicon-96x96.png" color="#F97316">
 	<!-- Canonical / hreflang / OG / Twitter — единый генератор (app/Seo/seo.php) -->
 <?= seo_canonical_tags() ?>
 
@@ -91,6 +93,40 @@ if (file_exists($componentMailPath)) {
 		section {
 			overflow: hidden;
 		}
+
+		/* Video mute/unmute control (hero) */
+		.hero-video-control {
+			position: absolute;
+			bottom: 16px;
+			right: 16px;
+			z-index: 20;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			width: 44px;
+			height: 44px;
+			border-radius: 50%;
+			border: none;
+			background: rgba(255, 255, 255, 0.15);
+			backdrop-filter: blur(8px);
+			color: #fff;
+			cursor: pointer;
+			transition: background-color 0.2s ease, transform 0.1s ease;
+		}
+		.hero-video-control:hover {
+			background: rgba(255, 255, 255, 0.25);
+		}
+		.hero-video-control:active {
+			transform: scale(0.92);
+		}
+		.hero-video-control:focus-visible {
+			outline: 2px solid rgba(255, 255, 255, 0.6);
+			outline-offset: 2px;
+		}
+		.hero-video-control__sound { display: inline-block; }
+		.hero-video-control__muted { display: none; }
+		.hero-video-control[aria-pressed="true"] .hero-video-control__sound { display: none; }
+		.hero-video-control[aria-pressed="true"] .hero-video-control__muted { display: inline-block; }
 	</style>
 	<?php include_once __DIR__ . '/../components/sheoma.php'; ?>
 <?= seo_analytics() ?>
@@ -100,7 +136,7 @@ if (file_exists($componentMailPath)) {
 <?= seo_goals_script() ?>
 
 	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261009">
-<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261013">
+<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261014">
 </head>
 
 <body class="font-sans text-gray-800">
@@ -128,6 +164,19 @@ if (file_exists($componentMailPath)) {
 			<div class="portfolio-pill">
 				<a href="/portfolio" class="pp-main">Смотреть объекты <span aria-hidden="true">↗</span></a><a href="#contact" class="pp-text" data-goal="cta_hero_contact">Смета за 15 минут</a>
 			</div>
+			<button type="button" class="hero-video-control" id="hero-video-control" aria-label="Выключить звук" aria-pressed="false">
+				<span class="hero-video-control__icon" aria-hidden="true">
+					<svg class="hero-video-control__sound" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<polygon points="10 2 3 7v10a2 2 0 0 0 2 2h5a2 2 0 0 0 2-2V9a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-1"></polygon>
+						<path d="M10 6v6a4 4 0 0 0 0 6h-2"></path>
+					</svg>
+					<svg class="hero-video-control__muted" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+						<polygon points="10 2 3 7v10a2 2 0 0 0 2 2h5a2 2 0 0 0 2-2V9a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-1"></polygon>
+						<path d="M10 6v6a4 4 0 0 0 0 6h-2"></path>
+						<line x1="1" y1="1" x2="23" y2="23"></line>
+					</svg>
+				</span>
+			</button>
 			<span class="hero-tilde" aria-hidden="true">〰</span>
 		</div>
 	</section>
@@ -296,7 +345,7 @@ if (file_exists($componentMailPath)) {
 				</a>
 				<div class="view flex flex-col justify-center rounded-[30px] bg-[#3d5951] p-6" style="min-height:180px">
 					<div class="font-black leading-none text-[#ddf47a]" style="font-size:34px">14 лет</div>
-					<div class="mt-2 text-xs font-semibold text-white">на рынке с 2011 года</div>
+					<div class="mt-2 text-xs font-semibold text-white">на рынке с <?= seo_config('founded_market') ?> года</div>
 				</div>
 				<a href="/services/naves" class="view group bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
 					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-umbrella text-lg"></i></div>
@@ -623,7 +672,7 @@ if (file_exists($componentMailPath)) {
 						<div class="gauge-needle"></div>
 					</div>
 					<div class="uptime-number">180+</div>
-					<p>сданных объектов<br />с 2011 года</p>
+					<p>сданных объектов<br />на рынке с <?= seo_config('founded_market') ?> года</p>
 				</article>
 
 				<!-- 5. Техника -->
