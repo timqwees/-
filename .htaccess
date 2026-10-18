@@ -38,10 +38,10 @@
 	# Контент-негоциация изображений: AVIF → WebP → оригинал
 	RewriteCond %{HTTP_ACCEPT} image/avif [NC]
 	RewriteCond %{DOCUMENT_ROOT}/$1.avif -f
-	RewriteRule ^(.+\.(?:jpe?g|png|webp))$ $1.avif [T=image/avif,L]
+	RewriteRule ^(.+)\.(?:jpe?g|png|webp)$ $1.avif [T=image/avif,L]
 	RewriteCond %{HTTP_ACCEPT} image/webp [NC]
 	RewriteCond %{DOCUMENT_ROOT}/$1.webp -f
-	RewriteRule ^(.+\.(?:jpe?g|png))$ $1.webp [T=image/webp,L]
+	RewriteRule ^(.+)\.(?:jpe?g|png)$ $1.webp [T=image/webp,L]
 
 	# Всё остальное — фронт-контроллер
 	RewriteCond %{REQUEST_FILENAME} !-f
