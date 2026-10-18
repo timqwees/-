@@ -6,15 +6,15 @@
 	RewriteEngine On
 	RewriteBase /
 
-	# HTTPS + единый хост www.xn--h1aafj.xn--p1ai — ОДНИМ редиректом (без цепочек http→https→www)
+	# HTTPS + единый хост www.xn--h1aafj.xn--p1ai — ОДНИМ редиректом
 	RewriteCond %{HTTPS} !=on [OR]
 	RewriteCond %{HTTP_HOST} !^www\.xn--h1aafj\.xn--p1ai$ [NC]
 	RewriteRule ^(.*)$ https://www.xn--h1aafj.xn--p1ai/$1 [R=301,L]
 
 	# SEO-фиды и AI-файлы — всегда через PHP-роутер (динамика, ETag/304)
-	RewriteRule ^(robots\.txt|sitemap\.xml|sitemap-index\.xml|rss\.xml|turbo\.xml|yml\.xml|feed\.yml|llms\.txt|llms-full\.txt|opensearch\.xml|ai-plugin\.json|openapi\.yaml)$ index.php [L]
+	RewriteRule ^(robots\.txt|sitemap\.xml|sitemap-index\.xml|rss\.xml|turbo\.xml|feed\.yml|llms\.txt|llms-full\.txt|opensearch\.xml|ai-plugin\.json|openapi\.yaml)$ index.php [L]
 
-	# Старые .php-адреса → ЧПУ (301, защита от дублей; дублирует routes.php)
+	# Старые .php-адреса → ЧПУ (301, защита от дублей)
 	RewriteRule ^index\.php$ / [R=301,L]
 	RewriteRule ^home\.php$ / [R=301,L]
 	RewriteRule ^pages/uslugi/uslugi\.php$ /uslugi [R=301,L]
@@ -24,8 +24,6 @@
 	RewriteRule ^pages/agree/index\.php$ /soglasie [R=301,L]
 	RewriteRule ^pages/services/([a-z0-9_\-]+)/index\.php$ /services/$1 [R=301,L]
 	RewriteRule ^pages/services/([a-z0-9_\-]+)/?$ /services/$1 [R=301,L]
-	# До переезда в public/: /assets/* → /public/assets/*
-	RewriteRule ^assets/(.+)$ /public/assets/$1 [R=301,L]
 
 	# Двойные и висячие слэши
 	RewriteCond %{REQUEST_URI} ^(.*)//(.*)$
@@ -33,27 +31,27 @@
 	RewriteCond %{REQUEST_FILENAME} !-d
 	RewriteRule ^(.+)/$ /$1 [R=301,L]
 
-	# Закрытое: ядро, исходники, шаблоны и данные напрямую не отдаём (только через роутер)
+	# Закрытое: ядро, исходники, шаблоны и данные напрямую не отдаём
 	RewriteRule ^(app|setting|vendor|tools)/ - [F,L]
 	RewriteRule ^public/pages/ - [F,L]
 
-	# Контент-негоциация изображений: AVIF → WebP → оригинал (по Accept браузера, без правки шаблонов)
+	# Контент-негоциация изображений: AVIF → WebP → оригинал
 	RewriteCond %{HTTP_ACCEPT} image/avif [NC]
-	RewriteCond %{REQUEST_FILENAME}\.avif -f
+	RewriteCond %{DOCUMENT_ROOT}/$1.avif -f
 	RewriteRule ^(.+\.(?:jpe?g|png|webp))$ $1.avif [T=image/avif,L]
 	RewriteCond %{HTTP_ACCEPT} image/webp [NC]
-	RewriteCond %{REQUEST_FILENAME}\.webp -f
+	RewriteCond %{DOCUMENT_ROOT}/$1.webp -f
 	RewriteRule ^(.+\.(?:jpe?g|png))$ $1.webp [T=image/webp,L]
 
-	# Всё остальное — фронт-контроллер (существующие файлы отдаются напрямую)
+	# Всё остальное — фронт-контроллер
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d
 	RewriteRule ^(.*)$ index.php [L]
 </IfModule>
 
-# --- 2. Ошибки: несуществующие URL уходит в роутер правилом выше (честный 404-шаблон) ---
+# --- 2. Ошибки: несуществующие URL уходит в роутер (честный 404) ---
 
-# --- 3. Заголовки безопасности (HTML ставит PHP/SecurityHeaders; здесь только статика) ---
+# --- 3. Заголовки безопасности (статика) ---
 <IfModule mod_headers.c>
 	Header set X-Content-Type-Options "nosniff"
 	Header set X-Frame-Options "SAMEORIGIN"
@@ -61,22 +59,21 @@
 	Header set Permissions-Policy "camera=(), microphone=(), geolocation=(self), payment=()"
 	Header set Cross-Origin-Opener-Policy "same-origin-allow-popins"
 	Header set X-DNS-Prefetch-Control "on"
-    # HSTS (HTTPS-only: сайт работает через https://www.фсс.рус/)
-    Header set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+	# HSTS (подайте в hstspreload.org после проверки)
+	Header set Strict-Transport-Security "max-age=63072000; includeSubDomains"
 
 	<FilesMatch "\.(jpg|jpeg|png|webp|avif|svg|mp4|css|js|woff2|ico)$">
 		Header set Cache-Control "public, max-age=31536000, immutable"
 	</FilesMatch>
 
-	# Контент-негоциация зависит от Accept — обязательно Vary: Accept (кэш/CDN)
 	<FilesMatch "\.(jpg|jpeg|png|webp|avif)$">
 		Header append Vary "Accept"
 	</FilesMatch>
 
-	# Шаблоны напрямую не индексируем (если правило F выше снято)
-	<If "%{REQUEST_URI} =~ m#^/public/pages/#">
+	# noindex для шаблонов (если F выше снято)
+	<FilesMatch "^public/pages/">
 		Header set X-Robots-Tag "noindex, nofollow"
-	</If>
+	</FilesMatch>
 </IfModule>
 
 # --- 4. Сжатие ---
@@ -87,7 +84,7 @@
 	AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/xml text/css text/javascript application/javascript application/json application/rss+xml image/svg+xml font/woff2
 </IfModule>
 
-# --- 5. Кэш браузера (статика; HTML управляется из PHP) ---
+# --- 5. Кэш браузера (статика) ---
 <IfModule mod_expires.c>
 	ExpiresActive On
 	ExpiresDefault "access plus 1 week"
@@ -118,5 +115,6 @@ ServerSignature Off
 	Require all denied
 </FilesMatch>
 
-php_flag display_errors off
-php_flag log_errors on
+# PHP flags — ТОЛЬКО для mod_php! При PHP-FPM настройте в php.ini / .user.ini:
+# php_flag display_errors off
+# php_flag log_errors on
