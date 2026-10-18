@@ -1,120 +1,100 @@
-# .htaccess — ФАВОРИТ-СТРОЙ-СНАБ (nginx-эквивалент: tools/nginx.conf)
-# Ядро (app/, setting/) вне прямых URL; контент в public/; вход — index.php (роутер).
+# .htaccess — ФАВОРИТ-СТРОЙ-СНАБ (минимально-безопасный для reg.ru)
+RewriteEngine On
+RewriteBase /
 
-# --- 1. Редиректы и ЧПУ (фронт-контроллер index.php) ---
-<IfModule mod_rewrite.c>
-	RewriteEngine On
-	RewriteBase /
+# 1. HTTPS + www — ОДНИМ редиректом
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} !^www\.xn--h1aafj\.xn--p1ai$ [NC]
+RewriteRule ^(.*)$ https://www.xn--h1aafj.xn--p1ai/$1 [R=301,L]
 
-	# HTTPS + единый хост www.xn--h1aafj.xn--p1ai — ОДНИМ редиректом
-	RewriteCond %{HTTPS} !=on [OR]
-	RewriteCond %{HTTP_HOST} !^www\.xn--h1aafj\.xn--p1ai$ [NC]
-	RewriteRule ^(.*)$ https://www.xn--h1aafj.xn--p1ai/$1 [R=301,L]
+# 2. SEO-фиды через PHP-роутер
+RewriteRule ^(robots\.txt|sitemap\.xml|sitemap-index\.xml|rss\.xml|turbo\.xml|feed\.yml|llms\.txt|llms-full\.txt|opensearch\.xml|ai-plugin\.json|openapi\.yaml)$ index.php [L]
 
-	# SEO-фиды и AI-файлы — всегда через PHP-роутер (динамика, ETag/304)
-	RewriteRule ^(robots\.txt|sitemap\.xml|sitemap-index\.xml|rss\.xml|turbo\.xml|feed\.yml|llms\.txt|llms-full\.txt|opensearch\.xml|ai-plugin\.json|openapi\.yaml)$ index.php [L]
+# 3. Старые .php → ЧПУ (301)
+RewriteRule ^index\.php$ / [R=301,L]
+RewriteRule ^home\.php$ / [R=301,L]
+RewriteRule ^pages/uslugi/uslugi\.php$ /uslugi [R=301,L]
+RewriteRule ^pages/portfolio\.php$ /portfolio [R=301,L]
+RewriteRule ^pages/projects\.php$ /portfolio [R=301,L]
+RewriteRule ^pages/politic/index\.php$ /politika [R=301,L]
+RewriteRule ^pages/agree/index\.php$ /soglasie [R=301,L]
+RewriteRule ^pages/services/([a-z0-9_\-]+)/index\.php$ /services/$1 [R=301,L]
+RewriteRule ^pages/services/([a-z0-9_\-]+)/?$ /services/$1 [R=301,L]
 
-	# Старые .php-адреса → ЧПУ (301, защита от дублей)
-	RewriteRule ^index\.php$ / [R=301,L]
-	RewriteRule ^home\.php$ / [R=301,L]
-	RewriteRule ^pages/uslugi/uslugi\.php$ /uslugi [R=301,L]
-	RewriteRule ^pages/portfolio\.php$ /portfolio [R=301,L]
-	RewriteRule ^pages/projects\.php$ /portfolio [R=301,L]
-	RewriteRule ^pages/politic/index\.php$ /politika [R=301,L]
-	RewriteRule ^pages/agree/index\.php$ /soglasie [R=301,L]
-	RewriteRule ^pages/services/([a-z0-9_\-]+)/index\.php$ /services/$1 [R=301,L]
-	RewriteRule ^pages/services/([a-z0-9_\-]+)/?$ /services/$1 [R=301,L]
+# 4. Двойные слэши
+RewriteCond %{REQUEST_URI} ^(.*)//(.*)$
+RewriteRule . %1/%2 [R=301,L]
 
-	# Двойные и висячие слэши
-	RewriteCond %{REQUEST_URI} ^(.*)//(.*)$
-	RewriteRule . %1/%2 [R=301,L]
-	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteRule ^(.+)/$ /$1 [R=301,L]
+# 5. Убрать trailing slash (кроме директорий)
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.+)/$ /$1 [R=301,L]
 
-	# Закрытое: ядро, исходники, шаблоны и данные напрямую не отдаём
-	RewriteRule ^(app|setting|vendor|tools)/ - [F,L]
-	RewriteRule ^public/pages/ - [F,L]
+# 6. Закрыть служебные папки
+RewriteRule ^(app|setting|vendor|tools)/ - [F,L]
+RewriteRule ^public/pages/ - [F,L]
 
-	# Контент-негоциация изображений: AVIF → WebP → оригинал
-	RewriteCond %{HTTP_ACCEPT} image/avif [NC]
-	RewriteCond %{DOCUMENT_ROOT}/$1.avif -f
-	RewriteRule ^(.+)\.(?:jpe?g|png|webp)$ $1.avif [T=image/avif,L]
-	RewriteCond %{HTTP_ACCEPT} image/webp [NC]
-	RewriteCond %{DOCUMENT_ROOT}/$1.webp -f
-	RewriteRule ^(.+)\.(?:jpe?g|png)$ $1.webp [T=image/webp,L]
+# 7. Image negotiation (AVIF → WebP) — БЕЗОПАСНЫЙ вариант
+RewriteCond %{HTTP_ACCEPT} image/avif [NC]
+RewriteCond %{DOCUMENT_ROOT}/$1.avif -f
+RewriteRule ^(.+)\.(?:jpe?g|png|webp)$ $1.avif [T=image/avif,L]
 
-	# Всё остальное — фронт-контроллер
-	RewriteCond %{REQUEST_FILENAME} !-f
-	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteRule ^(.*)$ index.php [L]
-</IfModule>
+RewriteCond %{HTTP_ACCEPT} image/webp [NC]
+RewriteCond %{DOCUMENT_ROOT}/$1.webp -f
+RewriteRule ^(.+)\.(?:jpe?g|png)$ $1.webp [T=image/webp,L]
 
-# --- 2. Ошибки: несуществующие URL уходит в роутер (честный 404) ---
+# 8. Фронт-контроллер
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [L]
 
-# --- 3. Заголовки безопасности (статика) ---
+# --- Security headers (только если mod_headers есть) ---
 <IfModule mod_headers.c>
-	Header set X-Content-Type-Options "nosniff"
-	Header set X-Frame-Options "SAMEORIGIN"
-	Header set Referrer-Policy "strict-origin-when-cross-origin"
-	Header set Permissions-Policy "camera=(), microphone=(), geolocation=(self), payment=()"
-	Header set Cross-Origin-Opener-Policy "same-origin-allow-popins"
-	Header set X-DNS-Prefetch-Control "on"
-	# HSTS (подайте в hstspreload.org после проверки)
-	Header set Strict-Transport-Security "max-age=63072000; includeSubDomains"
-
-	<FilesMatch "\.(jpg|jpeg|png|webp|avif|svg|mp4|css|js|woff2|ico)$">
-		Header set Cache-Control "public, max-age=31536000, immutable"
-	</FilesMatch>
-
-	<FilesMatch "\.(jpg|jpeg|png|webp|avif)$">
-		Header append Vary "Accept"
-	</FilesMatch>
-
-	# noindex для шаблонов (если F выше снято)
-	<FilesMatch "^public/pages/">
-		Header set X-Robots-Tag "noindex, nofollow"
-	</FilesMatch>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set Strict-Transport-Security "max-age=63072000; includeSubDomains"
+    
+    <FilesMatch "\.(jpg|jpeg|png|webp|avif|svg|css|js|woff2|ico)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+    
+    <FilesMatch "\.(jpg|jpeg|png|webp|avif)$">
+        Header append Vary "Accept"
+    </FilesMatch>
 </IfModule>
 
-# --- 4. Сжатие ---
+# Сжатие
 <IfModule mod_deflate.c>
-	AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json application/xml application/rss+xml image/svg+xml font/woff2
-</IfModule>
-<IfModule mod_brotli.c>
-	AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/xml text/css text/javascript application/javascript application/json application/rss+xml image/svg+xml font/woff2
+    AddOutputFilterByType DEFLATE text/html text/plain text/css text/javascript application/javascript application/json application/xml application/rss+xml image/svg+xml font/woff2
 </IfModule>
 
-# --- 5. Кэш браузера (статика) ---
+# Кэш браузера
 <IfModule mod_expires.c>
-	ExpiresActive On
-	ExpiresDefault "access plus 1 week"
-	ExpiresByType image/jpg "access plus 1 year"
-	ExpiresByType image/jpeg "access plus 1 year"
-	ExpiresByType image/png "access plus 1 year"
-	ExpiresByType image/webp "access plus 1 year"
-	ExpiresByType image/avif "access plus 1 year"
-	ExpiresByType image/svg+xml "access plus 1 year"
-	ExpiresByType video/mp4 "access plus 1 year"
-	ExpiresByType text/css "access plus 1 year"
-	ExpiresByType application/javascript "access plus 1 year"
-	ExpiresByType font/woff2 "access plus 1 year"
-	ExpiresByType image/x-icon "access plus 1 year"
+    ExpiresActive On
+    ExpiresDefault "access plus 1 week"
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/avif "access plus 1 year"
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
 </IfModule>
-FileETag MTime Size
 
-# --- 6. Служебное ---
+FileETag MTime Size
 Options -Indexes -MultiViews
 AddDefaultCharset UTF-8
-DefaultLanguage ru
 ServerSignature Off
 
+# Защита служебных файлов
 <FilesMatch "^(composer\.(json|lock)|\.env|\.gitignore|\.dev)$">
-	Require all denied
+    Require all denied
 </FilesMatch>
 <FilesMatch "\.(log|ini|conf|sql|md)$">
-	Require all denied
+    Require all denied
 </FilesMatch>
 
-# PHP flags — ТОЛЬКО для mod_php! При PHP-FPM настройте в php.ini / .user.ini:
+# PHP flags — только для mod_php (на reg.ru чаще PHP-FPM, поэтому закомментированы)
 # php_flag display_errors off
 # php_flag log_errors on
