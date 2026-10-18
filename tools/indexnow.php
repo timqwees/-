@@ -26,26 +26,46 @@ $host = (string)$site['base_host'];
 function collectUrls(string $base): array
 {
     $root = dirname(__DIR__) . '/public/pages';
-    $map = [
-        'home.php' => '/',
-        'uslugi/uslugi.php' => '/uslugi',
-        'portfolio.php' => '/portfolio',
-        'projects.php' => '/projects',
-        'politic/index.php' => '/politika',
-        'agree/index.php' => '/soglasie',
-        'search.php' => '/search',
-    ];
     $urls = [];
-    foreach ($map as $file => $route) {
-        if (is_file($root . '/' . $file)) {
-            $urls[] = $base . $route;
-        }
+
+    // 1. Ключевые/хабовые страницы — из массива tools/indexnow.urls.php
+    $listFile = __DIR__ . '/indexnow.urls.php';
+    foreach ((array)(is_file($listFile) ? require $listFile : []) as $path) {
+        $path = '/' . ltrim(trim((string)$path), '/');
+        $urls[] = $base . $path;
     }
+
+    // 2. Услуги — по факту наличия public/pages/services/*/index.php
     foreach (glob($root . '/services/*/index.php') ?: [] as $file) {
         $urls[] = $base . '/services/' . basename(dirname((string)$file));
     }
+
+    // 3. Статьи блога — из app/Data/blog.php (slug => ...)
+    $blogFile = dirname(__DIR__) . '/app/Data/blog.php';
+    if (is_file($blogFile)) {
+        foreach (array_keys((array)require $blogFile) as $slug) {
+            $urls[] = $base . '/blog/' . $slug;
+        }
+    }
+
+    // 4. Гео-посадочные (приоритетные услуги × города) — из app/Data/geo.php
+    $geoFile = dirname(__DIR__) . '/app/Data/geo.php';
+    if (is_file($geoFile)) {
+        $geo = (array)require $geoFile;
+        $services = array_map('basename', glob($root . '/services/*', GLOB_ONLYDIR) ?: []);
+        foreach (($geo['priority_services'] ?? []) as $svc) {
+            if (!in_array($svc, $services, true)) {
+                continue;
+            }
+            foreach (array_keys((array)($geo['geo'] ?? [])) as $g) {
+                $urls[] = $base . '/services/' . $svc . '/' . $g;
+            }
+        }
+    }
+
+    $urls = array_values(array_unique(array_filter($urls)));
     sort($urls);
-    return array_values(array_unique($urls));
+    return $urls;
 }
 
 $urls = [];

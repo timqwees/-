@@ -32,6 +32,17 @@ final class Sitemap
 				$pages[] = ['/services/' . $slug, '0.8', 'monthly'];
 			}
 		}
+		// Гео-посадочные НЧ (/services/{slug}/{geo}) — только приоритетные услуги
+		$geoData = file_exists($root . '/app/Data/geo.php') ? (require $root . '/app/Data/geo.php') : [];
+		$geoList = (array)($geoData['geo'] ?? []);
+		foreach ((array)($geoData['priority_services'] ?? []) as $slug) {
+			if (!is_file($root . '/public/pages/services/' . $slug . '/index.php')) {
+				continue;
+			}
+			foreach (array_keys($geoList) as $gk) {
+				$pages[] = ['/services/' . $slug . '/' . $gk, '0.6', 'monthly'];
+			}
+		}
 		foreach (array_keys($blogPosts) as $slug) {
 			$pages[] = ['/blog/' . $slug, '0.6', 'monthly'];
 		}
@@ -46,7 +57,7 @@ final class Sitemap
 			'/blog' => $root . '/public/pages/blog/list.php',
 			'/uslugi' => $root . '/public/pages/uslugi/uslugi.php',
 			'/portfolio' => $root . '/public/pages/portfolio.php',
-			'/about' => $root . '/public/pages/about.php',
+			'/about' => $root . '/public/pages/about/index.php',
 			'/politika' => $root . '/public/pages/politic/index.php',
 			'/soglasie' => $root . '/public/pages/agree/index.php',
 		];
@@ -54,6 +65,9 @@ final class Sitemap
 			return $map[$loc];
 		}
 		if (preg_match('#^/services/([a-z0-9_\-]+)$#', $loc, $m)) {
+			return $root . '/public/pages/services/' . $m[1] . '/index.php';
+		}
+		if (preg_match('#^/services/([a-z0-9_\-]+)/[a-z0-9_\-]+$#', $loc, $m)) {
 			return $root . '/public/pages/services/' . $m[1] . '/index.php';
 		}
 		if (preg_match('#^/blog/([^/]+)$#', $loc, $m)) {

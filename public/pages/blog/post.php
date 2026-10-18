@@ -11,9 +11,13 @@ if (!$post) {
 
 $h = function ($s) { return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); };
 $phone = (string)seo_config('phone_display');
+$phone_tel = preg_replace('/\D/', '', (string)seo_config('phone'));
 $service = seo_service($post['service_slug'] ?? '');
 $articleUrl = rtrim(seo_config('base_url'), '/') . '/blog/' . $slug;
 $today = date('c', strtotime($post['date']));
+$updated = isset($post['updated']) ? date('c', strtotime($post['updated'])) : $today;
+$base = rtrim(seo_config('base_url'), '/');
+$authorId = $base . '/about#' . strtolower(str_replace(' ', '-', $post['author']['name'] ?? seo_config('ceo')));
 
 // Related posts (same category, excluding current)
 $related = [];
@@ -38,9 +42,8 @@ if (count($related) < 4) {
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title><?= $h($post['title']) ?> — Блог ФАВОРИТ-СТРОЙ-СНАБ</title>
-	<meta name="description" content="<?= $h($post['description']) ?> ☎ <?= $h($phone) ?>">
-	<meta name="keywords" content="<?= $h(implode(', ', $post['tags'])) ?>">
+	<title><?= $h(seo_clip($post['title'], 52)) ?> — Блог</title>
+	<meta name="description" content="<?= $h(seo_clip($post['description'], 130)) ?> ☎ <?= $h($phone) ?>">
 	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 	<meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
 	<meta name="theme-color" content="#F97316">
@@ -51,129 +54,218 @@ if (count($related) < 4) {
 	<?= seo_canonical_tags() ?>
 	<?= seo_verify_tags() ?>
 	<?= seo_og_tags($post['title'] . ' — Блог ФАВОРИТ-СТРОЙ-СНАБ', $post['description'], $post['og_image']) ?>
+	<meta property="article:published_time" content="<?= $h($today) ?>">
+	<meta property="article:modified_time" content="<?= $h($updated) ?>">
+	<meta property="article:author" content="<?= $h($base . '/about') ?>">
+	<?php if (!empty($post['author'])): ?>
+	<meta property="article:author" content="<?= $h($authorId) ?>">
+	<?php endif; ?>
+	<meta property="article:section" content="<?= $h($post['category_name'] ?? 'Блог') ?>">
+	<meta property="article:tag" content="<?= $h(implode('", "', $post['tags'] ?? [])) ?>">
 	<link rel="preload" href="/public/assets/distCSS/style.css?v=<?= seo_ver() ?>" as="style">
 	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=<?= seo_ver() ?>">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+	<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=<?= seo_ver() ?>">
 	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=<?= seo_ver() ?>">
+	<link rel="stylesheet" href="/public/assets/distCSS/article.css?v=<?= seo_ver() ?>">
 	<?php include_once __DIR__ . '/../../components/sheoma.php'; ?>
 	<script defer src="/public/assets/distJS/main.js?v=<?= seo_ver() ?>"></script>
 </head>
 
 <body class="blog-post-page">
 	<?php include_once __DIR__ . '/../../components/header.php'; ?>
-	<?= seo_breadcrumbs_html() ?>
 
 	<div id="reading-bar"></div>
 
-	<main class="fss-article-body-wrap">
+	<main class="fss-article-layout">
 		<div class="fss-blog-container">
-			<article class="fss-article" itemscope itemtype="https://schema.org/BlogPosting">
+			<div class="article-layout">
 
-				<header class="fss-article-head">
-					<div class="fss-article-meta">
-						<span class="fss-blog-cat"><?= $h($post['category_name']) ?></span>
-						<time datetime="<?= $today ?>"><?= date('d.m.Y', strtotime($post['date'])) ?></time>
-						<span class="fss-article-read">~<?= $post['read_minutes'] ?> мин чтения</span>
-					</div>
-					<h1 class="fss-article-title" itemprop="headline"><?= $h($post['title']) ?></h1>
-					<p class="fss-article-desc" itemprop="description"><?= $h($post['description']) ?></p>
-					<div class="fss-article-tags">
+				<!-- Article Hero + Content -->
+				<div class="article-main">
+
+					<section class="article-hero">
+						<nav class="article-breadcrumbs">
+								<a href="/">Главная</a>
+								<span class="article-bc-sep">→</span>
+								<a href="/blog">Блог</a>
+								<span class="article-bc-sep">→</span>
+								<span><?= $h($post['category_name']) ?></span>
+							</nav>
+							<div class="article-meta-top">
+								<div class="article-meta-left">
+									<?php if (!empty($post['author'])): ?>
+									<div class="article-author-info">
+										<img src="<?= $h($post['author']['photo']) ?>" alt="<?= $h($post['author']['name']) ?>" class="article-author-avatar" loading="lazy" width="36" height="36" title="<?= $h($post['author']['name']) ?> — <?= $h($post['author']['role']) ?>">
+										<div class="article-author-details">
+											<span class="article-author-name"><?= $h($post['author']['name']) ?></span>
+											<span class="article-author-role"><?= $h($post['author']['role']) ?></span>
+										</div>
+									</div>
+									<?php else: ?>
+									<span class="article-author-label">Автор:</span>
+									<span class="article-author-name">ФАВОРИТ-СТРОЙ-СНАБ</span>
+									<?php endif; ?>
+								</div>
+								<div class="article-meta-right">
+									<span class="article-cat"><?= $h($post['category_name']) ?></span>
+									<time class="article-date" datetime="<?= $today ?>"><?= date('d.m.Y', strtotime($post['date'])) ?></time>
+								</div>
+							</div>
+							<h1 class="article-title" itemprop="headline"><?= $h($post['title']) ?></h1>
+							<p class="article-desc" itemprop="description"><?= $h($post['description']) ?></p>
+						</section>
+
+					<article class="article-body" itemprop="articleBody">
+						<meta itemprop="inLanguage" content="ru-RU">
+						<meta itemprop="datePublished" content="<?= $h($today) ?>">
+						<meta itemprop="dateModified" content="<?= $h($updated) ?>">
+						<?php if (!empty($post['author'])): ?>
+						<meta itemprop="author" content="<?= $h($post['author']['name']) ?>">
+						<link itemprop="author" href="<?= $h($authorId) ?>" />
+						<?php else: ?>
+						<meta itemprop="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
+						<?php endif; ?>
+						<link itemprop="mainEntityOfPage" href="<?= $articleUrl ?>">
+
+						<div class="article-img" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+							<img src="<?= $post['og_image'] ?>"<?= seo_img_attrs((string)$post['og_image']) ?> alt="<?= $h($post['title']) ?>" itemprop="contentUrl" loading="eager" fetchpriority="high" decoding="async" title="<?= $h($post['title']) ?>">
+						</div>
+
+						<nav class="article-toc" id="article-toc" aria-label="Содержание статьи" hidden>
+							<div class="article-toc-title"><i class="fa-solid fa-list-ul"></i> Содержание</div>
+							<ol></ol>
+						</nav>
+
+						<?php
+						$contentFile = __DIR__ . '/content/' . $post['content_id'] . '.php';
+						file_exists($contentFile) ? include $contentFile : print('<p>' . $h($post['content'] ?? '') . '</p>');
+						?>
+					</article>
+
+					<?php if ($service): ?>
+					<aside class="article-expert" itemscope itemtype="https://schema.org/Service">
+						<meta itemprop="name" content="Консультация по услуге <?= $h($service['title']) ?> — ФАВОРИТ-СТРОЙ-СНАБ">
+						<div class="article-expert__badge">⚠️ Не рискуйте — получите правильное решение</div>
+						<h3 class="article-expert__title">Сомневаетесь в выборе? Получите консультацию эксперта</h3>
+						<p class="article-expert__text">Ошибки при выборе материалов и технологий стоят тысячи рублей. <strong>ФАВОРИТ-СТРОЙ-СНАБ</strong> предлагает: бесплатную консультацию, расчёт сметы и подбор оптимального решения для вашего проекта.</p>
+						<ol class="article-expert__steps">
+							<li><strong>Оставьте заявку</strong> — опишите ваш объект и задачи.</li>
+							<li><strong>Получите расчёт</strong> — наш эксперт подготовит смету за 15 минут.</li>
+							<li><strong>Реализуйте проект</strong> — мы поможем с доставкой и монтажом под ключ.</li>
+						</ol>
+						<div class="article-expert__btns">
+							<a href="/#contact" class="article-expert__btn article-expert__btn--order">Рассчитать смету →</a>
+							<a href="tel:+<?= $phone_tel ?>" class="article-expert__btn article-expert__btn--phone">Позвонить: <?= $h($phone) ?></a>
+						</div>
+						<p class="article-expert__note">Работаем по всей России · Гарантия 50+ лет · СРО</p>
+					</aside>
+					<?php endif ?>
+
+					<div class="article-tags">
 						<?php foreach ($post['tags'] as $tag): ?>
-						<span class="fss-article-tag" itemprop="keywords"><?= $h($tag) ?></span>
+						<span class="article-tag" itemprop="keywords"><?= $h($tag) ?></span>
 						<?php endforeach ?>
 					</div>
-					<meta itemprop="datePublished" content="<?= $today ?>">
-					<meta itemprop="dateModified" content="<?= $today ?>">
-					<meta itemprop="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
-					<meta itemprop="inLanguage" content="ru-RU">
-					<link itemprop="mainEntityOfPage" href="<?= $articleUrl ?>">
-					<meta itemprop="image" content="<?= $post['og_image'] ?>">
-				</header>
 
-				<div class="fss-article-img" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
-					<img src="<?= $post['og_image'] ?>" alt="<?= $h($post['title']) ?>" itemprop="contentUrl" loading="eager" decoding="async">
+					<div class="article-cta">
+						<h3 class="article-cta-title">Нужна помощь с проектом?</h3>
+						<p class="article-cta-desc">Оставьте заявку — рассчитаем стоимость, сроки и подберём оптимальное решение для вашего объекта.</p>
+						<div class="article-cta-btns">
+							<a href="/#contact" class="article-cta-btn">Получить расчёт</a>
+							<a href="tel:+<?= $phone_tel ?>" class="article-cta-btn article-cta-btn--phone">Позвонить</a>
+							<a href="/#contact" class="article-cta-btn article-cta-btn--outline">Написать нам</a>
+						</div>
+					</div>
+
 				</div>
 
-				<div class="fss-article-content" itemprop="articleBody">
-					<?php
-					$contentFile = __DIR__ . '/content/' . $post['content_id'] . '.php';
-					file_exists($contentFile) ? include $contentFile : print('<p>' . $h($post['content'] ?? '') . '</p>');
-					?>
-				</div>
-
-				<?php if ($service): ?>
-				<aside class="fss-article-aside" itemscope itemtype="https://schema.org/Service">
-					<meta itemprop="serviceType" content="Строительство БВЗ">
-					<meta itemprop="provider" content="<?= htmlspecialchars(seo_config('brand'), ENT_QUOTES) ?>">
-					<h3>Связанная услуга</h3>
-					<a href="/services/<?= $post['service_slug'] ?>" class="fss-service-link">
-						<strong itemprop="name"><?= $h($service['title']) ?></strong>
-						<span itemprop="description"><?= $h($service['description']) ?></span>
-					</a>
-				</aside>
-				<?php endif ?>
-
-				<div class="fss-article-tags-bottom">
-					<span>Теги:</span>
-					<?php foreach ($post['tags'] as $tag): ?>
-					<a href="/blog?tag=<?= rawurlencode($tag) ?>" class="fss-article-tag-link">#<?= $h($tag) ?></a>
-					<?php endforeach ?>
-				</div>
-
-				<?php if (!empty($related)): ?>
-				<aside class="fss-article-related">
-					<h3>Читайте также</h3>
-					<div class="fss-related-grid">
-						<?php foreach ($related as [$rSlug, $rPost]): ?>
-						<article class="fss-related-item">
-							<a href="/blog/<?= $rSlug ?>">
-								<img src="<?= $rPost['og_image'] ?>" alt="<?= $h($rPost['title']) ?>" loading="lazy" decoding="async">
-								<div class="fss-related-info">
-									<span class="fss-related-cat"><?= $h($rPost['category_name']) ?></span>
-									<h4><?= $h($rPost['title']) ?></h4>
-									<time datetime="<?= $rPost['date'] ?>"><?= date('d.m.Y', strtotime($rPost['date'])) ?></time>
+				<!-- Sidebar -->
+				<aside class="article-sidebar">
+					<?php if (!empty($related)): ?>
+					<div class="article-sidebar-card">
+						<div class="article-sidebar-header">Читайте также</div>
+						<div class="article-sidebar-body">
+							<?php foreach ($related as [$rSlug, $rPost]): ?>
+							<a class="article-popular-item" href="/blog/<?= $rSlug ?>">
+								<div class="article-popular-img" style="background-image:url('<?= $rPost['og_image'] ?>')"></div>
+								<div class="article-popular-body">
+									<span class="article-popular-title"><?= $h($rPost['title']) ?></span>
+									<span class="article-popular-date"><?= date('d.m.Y', strtotime($rPost['date'])) ?></span>
 								</div>
 							</a>
-						</article>
-						<?php endforeach ?>
+							<?php endforeach ?>
+						</div>
+					</div>
+					<?php endif ?>
+
+					<div class="article-sidebar-card article-sidebar-card--cta">
+						<div class="article-sidebar-body">
+							<h4>Бесплатная консультация</h4>
+							<p>Рассчитаем смету, подберём материалы и определим сроки для вашего проекта.</p>
+							<a href="tel:+<?= $phone_tel ?>" class="article-sidebar-card--cta-btn article-sidebar-card--cta-btn--phone">Позвонить: <?= $h($phone) ?></a>
+							<a href="/#contact" class="article-sidebar-card--cta-btn article-sidebar-card--cta-btn--primary">Получить расчёт</a>
+						</div>
 					</div>
 				</aside>
-				<?php endif ?>
-
-				<div class="fss-article-cta">
-					<h3>Нужен объект под ключ?</h3>
-					<p>Оставьте заявку — рассчитаем смету за 15 минут и фиксируем цену в договоре. Работаем по всей России.</p>
-					<div class="fss-cta-buttons">
-						<a href="/#contact" class="btn btn-brand">Рассчитать смету</a>
-						<a href="tel:<?= seo_config('phone_tel') ?>" class="btn btn-phone"><?= $h($phone) ?></a>
-					</div>
-				</div>
-
-			</article>
+			</div>
 		</div>
 	</main>
+
+	<button id="back-top" aria-label="Наверх">
+		<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+			<path d="M18 15l-6-6-6 6" />
+		</svg>
+	</button>
 
 	<?php include_once __DIR__ . '/../../components/footer.php'; ?>
 
 	<script>
 	document.addEventListener('DOMContentLoaded', function(){
 		var bar = document.getElementById('reading-bar');
-		if (!bar) return;
+		var back = document.getElementById('back-top');
+		if (back) {
+			back.addEventListener('click', function(){ window.scrollTo({top:0,behavior:'smooth'}); });
+		}
+		var img = document.querySelector('.article-img img');
+		if (img) { img.classList.add('loaded'); }
+		var toc = document.getElementById('article-toc');
+		var body = document.querySelector('.article-body');
+		if (toc && body) {
+			var heads = body.querySelectorAll('h2, h3');
+			var list = toc.querySelector('ol');
+			var slug = function(t){ return 'toc-' + t.toLowerCase().replace(/[^a-zа-я0-9\s-]/gi,'').trim().replace(/\s+/g,'-').slice(0,60); };
+			var used = {};
+			heads.forEach(function(h){
+				var text = h.textContent.trim();
+				if (!text) return;
+				var id = h.id || slug(text);
+				while (used[id]) { id += '-1'; }
+				used[id] = true;
+				h.id = id;
+				var li = document.createElement('li');
+				var a = document.createElement('a');
+				a.href = '#' + id;
+				a.textContent = text;
+				if (h.tagName === 'H3') a.className = 'article-toc-h3';
+				li.appendChild(a);
+				list.appendChild(li);
+			});
+			if (list.children.length > 2) toc.hidden = false;
+		}
 		var ticking = false;
 		window.addEventListener('scroll', function(){
 			if (!ticking) {
 				requestAnimationFrame(function(){
 					var dh = document.documentElement.scrollHeight - window.innerHeight;
 					var pct = dh > 0 ? (window.scrollY / dh) * 100 : 0;
-					bar.style.width = pct + '%';
+					if (bar) bar.style.width = pct + '%';
+					if (back) back.classList.toggle('show', window.scrollY > 400);
 					ticking = false;
 				});
 			}
 			ticking = true;
-		});
-		var imgs = document.querySelectorAll('.fss-article-img img, .fss-article-content img');
-		imgs.forEach(function(im){
-			if (im.complete) return;
-			im.addEventListener('load', function(){ im.style.opacity='1'; });
 		});
 	});
 	</script>

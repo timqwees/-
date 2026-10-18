@@ -15,7 +15,7 @@ $d = 'ООО «ФАВОРИТ-СТРОЙ-СНАБ» (ИНН ' . $inn . ', ОГР
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title><?= htmlspecialchars($t) ?></title>
-	<meta name="description" content="<?= htmlspecialchars($d) ?>">
+	<meta name="description" content="<?= htmlspecialchars(seo_clip($d)) ?>">
 	<meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
 	<meta name="theme-color" content="#F97316">
 	<meta name="format-detection" content="telephone=yes">
@@ -33,7 +33,7 @@ $d = 'ООО «ФАВОРИТ-СТРОЙ-СНАБ» (ИНН ' . $inn . ', ОГР
 	<link rel="manifest" href="/public/assets/image/logo/site.webmanifest" />
 <?= seo_canonical_tags() ?>
 <?= seo_verify_tags() ?>
-<?= seo_og_tags($t, $d) ?>
+<?= seo_og_tags($t, seo_clip($d)) ?>
 	<link rel="search" type="application/opensearchdescription+xml" title="ФАВОРИТ-СТРОЙ-СНАБ" href="/opensearch.xml">
 	<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -42,12 +42,12 @@ $d = 'ООО «ФАВОРИТ-СТРОЙ-СНАБ» (ИНН ' . $inn . ', ОГР
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
 	<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
 	<style> body { font-family: 'Wix Madefor Display', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
-	<link rel="preload" href="/public/assets/distCSS/style.css?v=20261014" as="style">
-	<link rel="preload" href="/public/assets/distJS/main.js?v=20261014" as="script">
-	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261014">
-	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261014">
-	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261014">
-	<script defer src="/public/assets/distJS/main.js?v=20261014"></script>
+	<link rel="preload" href="/public/assets/distCSS/style.css?v=20261018" as="style">
+	<link rel="preload" href="/public/assets/distJS/main.js?v=20261018" as="script">
+	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261018">
+	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261018">
+	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261018">
+	<script defer src="/public/assets/distJS/main.js?v=20261018"></script>
 	<?php include_once __DIR__ . '/../../components/sheoma.php'; ?>
 	<?= seo_analytics() ?>
 	<?= seo_utm_script() ?>
@@ -142,14 +142,21 @@ $d = 'ООО «ФАВОРИТ-СТРОЙ-СНАБ» (ИНН ' . $inn . ', ОГР
 			.xl-cards{grid-template-columns:1fr}
 			.xl-stats-row{grid-template-columns:repeat(2,1fr)}
 			.xl-stat{border-right:0}
-			.xl-band{height:300px;border-radius:24px}
+.xl-band{height:300px;border-radius:24px}
 		}
-	</style>
+  .fss-breadcrumbs { margin-bottom: 20px; }
+  .fss-bc-list { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; font-size: 13px; color: #6b7078; }
+  .fss-bc-item { display: flex; align-items: center; }
+  .fss-bc-item:not(:last-child)::after { content: "/"; margin-left: 6px; color: #b0b3b8; }
+  .fss-bc-link { color: #6b7078; text-decoration: none; transition: color .2s; }
+  .fss-bc-link:hover { color: #F97316; }
+  .fss-bc-current { color: #17191d; font-weight: 600; }
+</style>
 </head>
 <body>
 	<?php include_once __DIR__ . '/../../components/header.php'; ?>
-
 	<main>
+	<?= seo_breadcrumbs_html() ?>
 		<!-- HERO -->
 		<section class="xl xl-hero">
 			<div class="xl-eyebrow">Инновации на каждом этапе</div>
@@ -246,7 +253,7 @@ $d = 'ООО «ФАВОРИТ-СТРОЙ-СНАБ» (ИНН ' . $inn . ', ОГР
 		<!-- ФОНОВОЕ ИЗОБРАЖЕНИЕ -->
 		<section class="xl">
 			<div class="xl-band">
-				<img src="/public/assets/image/banner.jpeg" alt="Модульное строительство — ФСС" loading="lazy" onerror="this.style.display='none'">
+				<img src="/public/assets/image/banner.jpeg"<?= seo_img_attrs('/public/assets/image/banner.jpeg') ?> alt="Модульное строительство — ФСС" loading="lazy" onerror="this.style.display=.none." title="Модульное строительство — ФСС">
 				<div class="ov"></div>
 				<div class="cap">
 					<div class="who">ФАВОРИТ-СТРОЙ-СНАБ</div>
@@ -276,6 +283,5 @@ $d = 'ООО «ФАВОРИТ-СТРОЙ-СНАБ» (ИНН ' . $inn . ', ОГР
 	</main>
 
 	<?php include_once __DIR__ . '/../../components/footer.php'; ?>
-	<?php include_once __DIR__ . '/../../components/forma.php'; ?>
 </body>
 </html>

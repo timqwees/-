@@ -27,9 +27,14 @@ Routes::get('/politika', [PageController::class, 'politika']);
 Routes::get('/soglasie', [PageController::class, 'soglasie']);
 //==================================================================================================//SEARCH (закрывает SearchAction в schema и opensearch.xml)
 Routes::get('/search', [PageController::class, 'search']);
+Routes::get('/search/blog', [PageController::class, 'searchBlog']);
 //==================================================================================================//SERVICE (1 услуга = 1 кластер)
 Routes::get('/services/{slug}', function (string $slug) {
 	PageController::service($slug);
+});
+//==================================================================================================//GEO (НЧ-гео посадочные: /services/{slug}/{geo})
+Routes::get('/services/{slug}/{geo}', function (string $slug, string $geo) {
+	PageController::serviceGeo($slug, $geo);
 });
 //==================================================================================================//FORMS (POST на тот же URL — обрабатывает app/Mail/componet_mail.php в шаблоне)
 Routes::post('/', [PageController::class, 'home']);
@@ -37,6 +42,9 @@ Routes::post('/uslugi', [PageController::class, 'uslugi']);
 Routes::post('/portfolio', [PageController::class, 'portfolio']);
 Routes::post('/services/{slug}', function (string $slug) {
 	PageController::service($slug);
+});
+Routes::post('/services/{slug}/{geo}', function (string $slug, string $geo) {
+	PageController::serviceGeo($slug, $geo);
 });
 //==================================================================================================//BLOG (SEO контент + GEO для AI Overviews)
 Routes::get('/blog', [PageController::class, 'blog']);
@@ -61,9 +69,9 @@ Routes::get('/pages/services/{slug}/index.php', function (string $slug) {
 Routes::get('/pages/services/{slug}', function (string $slug) {
 	Routes::redirect('/services/' . $slug);
 });
-// Старые пути контента (до переезда в public/) → новые
+// Всё прочее под /pages/ — не существует: честный 404 (без редирект-цепочки на закрытый /public/pages/)
 Routes::get('/pages/{rest:.+}', function (string $rest) {
-	Routes::redirect('/public/pages/' . $rest);
+	Routes::error_404('/pages/' . $rest);
 });
 Routes::get('/assets/{rest:.+}', function (string $rest) {
 	Routes::redirect('/public/assets/' . $rest);

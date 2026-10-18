@@ -16,6 +16,7 @@
   "main": "tailwind.config.js",
   "scripts": {
     "git":"git add -f . && git commit -m 'update' && git push -f",
+    "index": "php tools/indexnow.php",
     "indexnow": "php tools/indexnow.php",
     "qwees:start": "php -S 0.0.0.0:80"
   },

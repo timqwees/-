@@ -5,7 +5,7 @@
 		<span class="ripple-effect absolute inset-0 rounded-[14px] pointer-events-none"></span>
 	</button>
 	<!-- Forma Popup — modern -->
-	<div id="forma_wrapper" class="hidden absolute bottom-20 right-0 w-[340px] max-w-[92vw] bg-white rounded-[18px] shadow-[0_24px_64px_rgba(15,23,42,.22)] border border-gray-100 p-5">
+	<div id="forma_wrapper" class="hidden absolute bottom-20 right-0 w-[340px] max-w-[92vw] bg-white rounded-[24px] shadow-[0_24px_64px_rgba(15,23,42,.22)] border border-gray-100 p-5">
 		<div class="flex justify-between items-start mb-3">
 			<div>
 				<div class="font-extrabold tracking-tight text-gray-900">Быстрый расчёт</div>
@@ -87,6 +87,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <style>
 @keyframes widgetRipple { 0% { transform: scale(0.3); opacity: 0.6; } 100% { transform: scale(1.1); opacity: 0; } }
+/* Фон виджета быстрого расчёта: тёплый фирменный градиент + точечный паттерн */
+#forma_wrapper { overflow: hidden; background:
+	radial-gradient(120% 90% at 100% 0%, rgba(249,115,22,.16), transparent 60%),
+	radial-gradient(90% 70% at 0% 100%, rgba(234,88,12,.12), transparent 55%),
+	linear-gradient(180deg, #FFFFFF 0%, #FFF7ED 100%);
+}
+#forma_wrapper::before { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+	background-image: radial-gradient(rgba(23,19,16,.05) 1px, transparent 1px);
+	background-size: 14px 14px; opacity: .55;
+}
+#forma_wrapper > * { position: relative; z-index: 1; }
+/* Фон кнопки-лаунчера виджета: лёгкий блик + точечный паттерн поверх градиента */
+#forma_toggle { border-radius: 14px; background: linear-gradient(135deg, #F97316 0%, #ff8038 55%, #A03A0E 100%); }
+#forma_toggle:hover { background: linear-gradient(135deg, #EA580C 0%, #F97316 55%, #8A2E0A 100%); }
+#forma_toggle::before { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0; border-radius: inherit;
+	background:
+		radial-gradient(circle at 30% 22%, rgba(255,255,255,.45), transparent 55%),
+		radial-gradient(rgba(255,255,255,.28) 1px, transparent 1.4px);
+	background-size: 100% 100%, 9px 9px;
+}
+#forma_toggle i { z-index: 2; }
 .fss-widget-phone { background: #F5F5F4; border: 1px solid #E7E5E4; border-radius: 12px; padding: 10px 14px; }
 .fss-widget-phone-link { display: inline-flex; align-items: center; gap: 8px; color: #171310; text-decoration: none; font-weight: 600; font-size: 13px; transition: color .2s; }
 .fss-widget-phone-link:hover { color: #C2410C; }

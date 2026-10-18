@@ -55,7 +55,7 @@
 	<!-- Swiper CSS -->
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
 	<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
-	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261009">
+	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261018">
 	<!-- tailwind built into distCSS -->
 
 	<!-- canonical -->
@@ -87,10 +87,10 @@
 		],
 	], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_LINE_TERMINATORS) ?>
 	</script>
-	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261009">
+	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261018">
 	<!-- tailwind built into distCSS -->
-	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261009">
-	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261014">
+	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261018">
+	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261018">
 	<style>
 	.esp-wrap{max-width:1440px;margin:0 auto;padding:0 clamp(16px,3vw,44px);}
 .esp-top{padding-top:104px;}
@@ -117,13 +117,20 @@
 @keyframes espIn{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
 .esp-item.flash{animation:espIn .5s cubic-bezier(.16,1,.3,1) both;}
 @media(prefers-reduced-motion:reduce){.esp-item img{transition:none;}.esp-item.flash{animation:none;}}
+  .fss-breadcrumbs { margin-bottom: 20px; }
+  .fss-bc-list { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; font-size: 13px; color: #6b7078; }
+  .fss-bc-item { display: flex; align-items: center; }
+  .fss-bc-item:not(:last-child)::after { content: "/"; margin-left: 6px; color: #b0b3b8; }
+  .fss-bc-link { color: #6b7078; text-decoration: none; transition: color .2s; }
+  .fss-bc-link:hover { color: #F97316; }
+  .fss-bc-current { color: #17191d; font-weight: 600; }
 </style>
 </head>
 
 <body class="font-sans text-gray-800">
 	<?php include_once __DIR__ . '/../components/header.php'; ?>
-	<?= seo_breadcrumbs_html() ?>
 	<div class="esp-wrap">
+	<?= seo_breadcrumbs_html() ?>
 		<div class="esp-top">
 			<p class="esp-over">Наши реализованные объекты</p>
 			<h1 class="esp-h1">Проекты <span class="it">что вдохновляют</span></h1>
@@ -270,8 +277,6 @@
 		});
 	</script>
 
-	<!--форма обратной связи-->
-	<?php include_once __DIR__ . '/../components/forma.php'; ?>
 	<?php include_once __DIR__ . '/../components/footer.php'; ?>
 
 </body>

@@ -28,9 +28,9 @@
 
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
 	<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
-	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261009">
+	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261018">
 	<script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
-	<script defer src="/public/assets/distJS/main.js?v=20261014"></script>
+	<script defer src="/public/assets/distJS/main.js?v=20261018"></script>
 
 	<!-- canonical -->
 	<?= seo_canonical_tags() ?>
@@ -39,8 +39,8 @@
 	<?= seo_og_tags('О компании — ФАВОРИТ-СТРОЙ-СНАБ на рынке с ' . htmlspecialchars((string)seo_config('founded_market')) . ' года', 'С ' . htmlspecialchars((string)seo_config('founded_market')) . ' года строим быстровозводимые здания: собственный завод БВЗ, ' . seo_config('objects') . ' сданных объектов, гарантия ' . seo_config('guarantee_years') . ' лет. Москва, МО и вся Россия.', '/public/assets/image/og/og-about-1200x630.jpg') ?>
 
 	<?php include_once __DIR__ . '/../components/sheoma.php'; ?>
-	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261009">
-	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261014">
+	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261018">
+	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261018">
 </head>
 
 <body class="font-sans text-gray-800">
@@ -72,6 +72,13 @@
 	.bi-stats div b i{font-style:normal;color:#F97316;}
 	.bi-stats div span{font-size:12.5px;color:#A8A29E;}
 	.bi-aud{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .fss-breadcrumbs { margin-bottom: 20px; }
+  .fss-bc-list { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; font-size: 13px; color: #6b7078; }
+  .fss-bc-item { display: flex; align-items: center; }
+  .fss-bc-item:not(:last-child)::after { content: "/"; margin-left: 6px; color: #b0b3b8; }
+  .fss-bc-link { color: #6b7078; text-decoration: none; transition: color .2s; }
+  .fss-bc-link:hover { color: #F97316; }
+  .fss-bc-current { color: #17191d; font-weight: 600; }
 	.bi-card{background:#fff;border:1px solid #F5E6D3;border-radius:24px;overflow:hidden;transition:transform .3s ease,box-shadow .3s ease;}
 	.bi-card:hover{transform:translateY(-6px);box-shadow:0 24px 54px rgba(23,19,16,.12);}
 	.bi-card img{width:100%;height:190px;object-fit:cover;display:block;}
@@ -83,8 +90,8 @@
 	@media(max-width:560px){.bi-aud{grid-template-columns:1fr;}}
 	@media(prefers-reduced-motion:reduce){.bi-btn .roll{transition:none;}}
 	</style>
-	<?= seo_breadcrumbs_html() ?>
 	<main>
+	<?= seo_breadcrumbs_html() ?>
 		<section class="bi-hero view">
 			<div class="bi-hero-in">
 				<div>
@@ -101,7 +108,7 @@
 					</div>
 				</div>
 				<div class="bi-visual">
-					<img class="main" src="/public/assets/image/services/капстроение/1.JPG" alt="Быстровозводимое здание ФСС" fetchpriority="high" decoding="async" onerror="this.style.display='none'">
+					<img class="main" src="/public/assets/image/services/капстроение/1.JPG"<?= seo_img_attrs('/public/assets/image/services/капстроение/1.JPG') ?> alt="Быстровозводимое здание ФСС" fetchpriority="high" decoding="async" onerror="this.style.display=.none." title="Быстровозводимое здание ФСС">
 					<div class="bi-badge"><b>14 <i>дней</i></b><span>от старта до сдачи</span></div>
 				</div>
 			</div>
@@ -209,7 +216,6 @@
 		</section>
 	</main>
 	<?php include_once __DIR__ . '/../components/footer.php'; ?>
-	<?php include_once __DIR__ . '/../components/forma.php'; ?>
 </body>
 
 </html>

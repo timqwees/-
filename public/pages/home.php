@@ -11,8 +11,8 @@ if (file_exists($componentMailPath)) {
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>ФАВОРИТ-СТРОЙ-СНАБ — Быстровозводимые здания под ключ | Москва</title>
-	<meta name="description" content="Быстровозводимые здания под ключ в Москве: склады, ангары, АБК, общежития. Капремонт, грузоперевозки, спецтехника. От 14 дней, гарантия 50 лет. ☎ <?= htmlspecialchars((string)seo_config('phone_display')) ?>">
+	<title>ФАВОРИТ-СТРОЙ-СНАБ — быстровозводимые здания под ключ</title>
+	<meta name="description" content="Быстровозводимые здания под ключ в Москве: склады, ангары, АБК, общежития. Капремонт, спецтехника. От 14 дней, гарантия 50 лет. ☎ <?= htmlspecialchars((string)seo_config('phone_display')) ?>">
 	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 	<meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
 	<meta name="theme-color" content="#F97316">
@@ -42,12 +42,12 @@ if (file_exists($componentMailPath)) {
 	<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap"></noscript>
 	<style> body { font-family: 'Wix Madefor Display', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
 	<!-- Preload critical -->
-	<link rel="preload" href="/public/assets/distCSS/style.css?v=20261009" as="style">
+	<link rel="preload" href="/public/assets/distCSS/style.css?v=20261018" as="style">
 	<link rel="preload" href="/public/assets/distJS/main.js" as="script">
 	<!-- Styles -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
 	<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
-	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261009">
+	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261018">
 	<!-- Swiper -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 	<script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
@@ -128,6 +128,21 @@ if (file_exists($componentMailPath)) {
 		.hero-video-control__muted { display: none; }
 		.hero-video-control[aria-pressed="true"] .hero-video-control__sound { display: none; }
 		.hero-video-control[aria-pressed="true"] .hero-video-control__muted { display: inline-block; }
+
+		/* Hero: чипсы-фильтры категорий */
+		.hero-chips { position: relative; z-index: 10; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
+		.hero-chip { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,.72); border: 1px solid rgba(23,19,16,.1); color: #171310; border-radius: 999px; padding: 9px 18px; font-size: 14px; font-weight: 600; text-decoration: none; white-space: nowrap; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); transition: background-color .2s, color .2s, border-color .2s, transform .2s; }
+		.hero-chip:hover { background: #171310; color: #fff; border-color: #171310; transform: translateY(-2px); }
+		.hero-chip i { font-size: 12px; color: #F97316; }
+		.hero-chip:hover i { color: #fff; }
+		.hero-chip--hot { background: linear-gradient(135deg,#FB923C,#EA580C); color: #fff; border-color: transparent; box-shadow: 0 8px 20px rgba(234,88,12,.3); }
+		.hero-chip--hot i { color: #fff; }
+		.hero-chip--hot:hover { background: linear-gradient(135deg,#EA580C,#C2410C); color: #fff; }
+		@media (max-width: 767px) {
+			.hero-chips { flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; margin-top: 18px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+			.hero-chips::-webkit-scrollbar { display: none; }
+			.hero-chip { scroll-snap-align: start; flex: 0 0 auto; }
+		}
 	</style>
 	<?php include_once __DIR__ . '/../components/sheoma.php'; ?>
 <?= seo_analytics() ?>
@@ -136,8 +151,8 @@ if (file_exists($componentMailPath)) {
 
 <?= seo_goals_script() ?>
 
-	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261009">
-<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261014">
+	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261018">
+<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261018">
 </head>
 
 <body class="font-sans text-gray-800">
@@ -148,11 +163,11 @@ if (file_exists($componentMailPath)) {
 	<section class="jc-hero view" id="home">
 		<div class="hero-main">
 			<div class="relative z-10 hero-top">
-				<div class="hello-wrap"><span class="hello-pill">Привет!</span><span class="hello-burst" aria-hidden="true">〃</span></div>
-				<h1 class="hero-title">Быстровозводимые <span class="text-brand font-medium">здания,</span><br>под ключ за 14 дней</h1>
+				<div class="hello-wrap"><span class="hello-pill">Привет — это ФСС</span><span class="hello-burst" aria-hidden="true">〃</span></div>
+				<h1 class="hero-title">Быстровозводимые <span class="text-brand font-medium">здания,</span><br>под ключ от 14 дней</h1>
 			</div>
 			<div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[510px] h-[255px] max-w-[80vw] rounded-t-full bg-[#ffad70]" aria-hidden="true"></div>
-			<img class="portrait" src="/public/assets/image/Components/avatar/1.png" alt="Быстровозводимые здания под ключ — ФСС" fetchpriority="high" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'">
+			<img class="portrait" src="/public/assets/image/Components/avatar/1.png"<?= seo_img_attrs('/public/assets/image/Components/avatar/1.png') ?> alt="Быстровозводимые здания под ключ — ФСС" fetchpriority="high" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'">
 			<div class="quote">
 				<div class="qmark" aria-hidden="true">❝</div>
 				<p><b>180+ сданных объектов</b> — склады, ангары, АБК и общежития. Москва, МО и вся Россия</p>
@@ -163,28 +178,16 @@ if (file_exists($componentMailPath)) {
 				<div class="exp-small">на рынке</div>
 			</div>
 			<div class="portfolio-pill">
-				<a href="/portfolio" class="pp-main">Смотреть объекты <span aria-hidden="true">↗</span></a><a href="#contact" class="pp-text" data-goal="cta_hero_contact">Смета за 15 минут</a>
+				<a href="/portfolio" class="pp-main" title="Портфолио сданных объектов ФСС">Смотреть объекты <span aria-hidden="true">↗</span></a><a href="#contact" class="pp-text" data-goal="cta_hero_contact" title="Получить бесплатную консультацию и расчёт сметы">Смета за 15 минут</a>
 			</div>
-			<button type="button" class="hero-video-control" id="hero-video-control" aria-label="Выключить звук" aria-pressed="false">
-				<span class="hero-video-control__icon" aria-hidden="true">
-					<svg class="hero-video-control__sound" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<polygon points="10 2 3 7 3 17 12 22 21 17 21 7 12 2"></polygon>
-						<path d="M10 6v6a4 4 0 0 0 0 6h-2"></path>
-					</svg>
-					<svg class="hero-video-control__muted" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
-						<polygon points="10 2 3 7 3 17 12 22 21 17 21 7 12 2"></polygon>
-						<path d="M10 6v6a4 4 0 0 0 0 6h-2"></path>
-						<line x1="1" y1="1" x2="23" y2="23"></line>
-					</svg>
-				</span>
-			</button>
+
 			<span class="hero-tilde" aria-hidden="true">〰</span>
 		</div>
 	</section>
 
 	<!-- Тёмная секция услуг по референсу -->
 	<section id="showcase" class="px-3 sm:px-5">
-		<img src="/public/assets/image/Components/bg.png" alt="" aria-hidden="true" loading="lazy" decoding="async" class="showcase-bg">
+		<img src="/public/assets/image/Components/bg.png" alt="Фон секции услуг" aria-hidden="true" loading="lazy" decoding="async" class="showcase-bg">
 		<div class="showcase-light view max-w-[1240px] mx-auto px-5 py-8 md:p-10 relative overflow-hidden">
 			<div class="show-head view">
 				<span class="show-pill">18 услуг</span>
@@ -196,19 +199,19 @@ if (file_exists($componentMailPath)) {
 				<div class="fss-glow fss-glow-r" aria-hidden="true"></div>
 				<ul class="fss-cards" aria-label="Выберите услугу">
 					<li class="fss-card" style="--cx:250;--cy:430;--angle:-10deg" tabindex="0" aria-label="Склады под ключ">
-						<div class="fss-art" aria-hidden="true"><img src="/public/assets/image/swiper/2.jpg" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'"></div>
+						<div class="fss-art" aria-hidden="true"><img src="/public/assets/image/swiper/2.jpg" alt="Пример склада из сэндвич-панелей" loading="lazy" decoding="async" onerror="this.style.display=.none." title="Пример склада из сэндвич-панелей"></div>
 						<div class="fss-copy"><h3>Склады<br>под ключ</h3><p>Логистика<br>любой площади</p></div>
 					</li>
 					<li class="fss-card" style="--cx:750;--cy:380;--angle:-3deg" tabindex="0" aria-label="Ангары под ключ">
-						<div class="fss-art" aria-hidden="true"><img src="/public/assets/image/services/капстроение/10.JPG" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'"></div>
+						<div class="fss-art" aria-hidden="true"><img src="/public/assets/image/services/капстроение/10.JPG" alt="Пример капитального строительства" loading="lazy" decoding="async" onerror="this.style.display=.none." title="Пример капитального строительства"></div>
 						<div class="fss-copy"><h3>Ангары<br>под ключ</h3><p>Навесы и укрытия<br>для техники</p></div>
 					</li>
 					<li class="fss-card" style="--cx:1250;--cy:380;--angle:3deg" tabindex="0" aria-label="АБК и модули">
-						<div class="fss-art" aria-hidden="true"><img src="/public/assets/image/swiper/1.jpeg" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'"></div>
+						<div class="fss-art" aria-hidden="true"><img src="/public/assets/image/swiper/1.jpeg" alt="Пример ангара под ключ" loading="lazy" decoding="async" onerror="this.style.display=.none." title="Пример ангара под ключ"></div>
 						<div class="fss-copy"><h3>АБК<br>и модули</h3><p>Офисы и корпуса<br>под ключ</p></div>
 					</li>
 					<li class="fss-card" style="--cx:1750;--cy:430;--angle:10deg" tabindex="0" aria-label="Ваша идея">
-						<div class="fss-art" aria-hidden="true"><img src="/public/assets/image/banner.jpeg" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'"></div>
+						<div class="fss-art" aria-hidden="true"><img src="/public/assets/image/banner.jpeg" alt="Пример модульного здания" loading="lazy" decoding="async" onerror="this.style.display=.none." title="Пример модульного здания"></div>
 						<div class="fss-copy"><h3>Ваша<br>идея</h3><p>Не нашли нужное?<br>Соберём под задачу</p></div>
 					</li>
 				</ul>
@@ -216,7 +219,7 @@ if (file_exists($componentMailPath)) {
 			<div class="show-cta view">
 				<span class="show-cta-n">180+</span>
 				<span class="show-cta-t">сданных объектов<br>под ключ</span>
-				<a href="#contact" class="show-cta-btn" data-goal="cta_showcase_contact">Смета за 15 минут</a>
+				<a href="#contact" class="show-cta-btn" data-goal="cta_showcase_contact" title="Рассчитать стоимость проекта за 15 минут">Смета за 15 минут</a>
 				<span class="show-cta-time"><i class="fa-solid fa-bolt"></i> 7 мин</span>
 			</div>
 		</div>
@@ -278,7 +281,7 @@ if (file_exists($componentMailPath)) {
 			<span class="cta-eyebrow"><i></i>Ваш проект — наше дело</span>
 			<h2>Строим то,<br>что ведёт вас вперёд</h2>
 			<p>Проектируем, производим и монтируем здания, которые служат десятилетиями.</p>
-			<a href="#contact" class="cta-pill" data-goal="cta_band_contact">Построить с нами <i class="fa-solid fa-arrow-right"></i></a>
+			<a href="#contact" class="cta-pill" data-goal="cta_band_contact" title="Заказать бесплатную консультацию и расчёт сметы">Построить с нами <i class="fa-solid fa-arrow-right"></i></a>
 		</div>
 	</section>
 
@@ -292,25 +295,25 @@ if (file_exists($componentMailPath)) {
 			</div>
 			<div class="mx-auto max-w-[1280px]">
 			<div class="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-				<a href="/services/kapital" class="view group bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+				<a href="/services/kapital" class="view group" title="Капитальное строительство и ремонт под ключ" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
 					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-screwdriver-wrench text-lg"></i></div>
 					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Капитальный ремонт</div>
 					<div class="text-xs text-gray-500 mt-1">Школы, АБК, фасады, кровля</div>
 
 				</a>
-				<a href="/services/obchegitia" class="view group bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+				<a href="/services/obchegitia" class="view group" title="Строительство общежитий и жилых комплексов" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
 					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-building-user text-lg"></i></div>
 					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Общежития</div>
 					<div class="text-xs text-gray-500 mt-1">Жилые комплексы, вахтовые</div>
 
 				</a>
-				<a href="/services/proizvodim_modul" class="view group bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+				<a href="/services/proizvodim_modul" class="view group" title="Производство модульных зданий на собственном заводе" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
 					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-cubes text-lg"></i></div>
 					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Производство модульных зданий</div>
 					<div class="text-xs text-gray-500 mt-1">Завод БВЗ, блок-контейнеры</div>
 
 				</a>
-				<a href="/services/modultebel" class="view group bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+				<a href="/services/modultebel" class="view group" title="Поставка и сборка мебели для офисов и общежитий" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
 					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-chair text-lg"></i></div>
 					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Поставка и сборка мебели</div>
 					<div class="text-xs text-gray-500 mt-1">Для офисов, школ, общежитий</div>
@@ -320,25 +323,25 @@ if (file_exists($componentMailPath)) {
 					<div class="font-black leading-none text-[#ddf47a]" style="font-size:34px">180+</div>
 					<div class="mt-2 text-xs font-semibold text-white">сданных объектов</div>
 				</div>
-				<a href="/services/proektirovanie" class="view group bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+				<a href="/services/proektirovanie" class="view group" title="Проектирование БВЗ и инженерных сетей" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
 					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-ruler-combined text-lg"></i></div>
 					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Проектирование</div>
 					<div class="text-xs text-gray-500 mt-1">Чертежи, расчёты, согласования</div>
 
 				</a>
-				<a href="/services/montach" class="view group bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+				<a href="/services/montach" class="view group" title="Монтаж инженерных сетей и систем отопления" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
 					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-bolt text-lg"></i></div>
 					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Монтаж инженерных сетей</div>
 					<div class="text-xs text-gray-500 mt-1">Отопление, электрика, вода</div>
 
 				</a>
-				<a href="/services/administrativnoe" class="view group bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+				<a href="/services/administrativnoe" class="view group" title="Строительство АБК и офисных зданий" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
 					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-building-columns text-lg"></i></div>
 					<div class="mt-3 text-base font-bold leading-tight text-gray-900">АБК и офисы</div>
 					<div class="text-xs text-gray-500 mt-1">Административные здания</div>
 
 				</a>
-				<a href="/services/generatornae" class="view group bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+				<a href="/services/generatornae" class="view group" title="Поставка и монтаж дизель-генераторных установок" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
 					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-plug-circle-bolt text-lg"></i></div>
 					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Генераторные</div>
 					<div class="text-xs text-gray-500 mt-1">ДГУ, энергокомплексы</div>
@@ -348,25 +351,25 @@ if (file_exists($componentMailPath)) {
 					<div class="font-black leading-none text-[#ddf47a]" style="font-size:34px">14 лет</div>
 					<div class="mt-2 text-xs font-semibold text-white">на рынке с <?= seo_config('founded_market') ?> года</div>
 				</div>
-				<a href="/services/naves" class="view group bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+				<a href="/services/naves" class="view group" title="Навесы и козырьки из металлоконструкций" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
 					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-umbrella text-lg"></i></div>
 					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Навесы</div>
 					<div class="text-xs text-gray-500 mt-1">Металлоконструкции</div>
 
 				</a>
-				<a href="/services/compressor" class="view group bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+				<a href="/services/compressor" class="view group" title="Газовые и промышленные компрессоры" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
 					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-gauge text-lg"></i></div>
 					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Газовые компрессоры</div>
 					<div class="text-xs text-gray-500 mt-1">Поставка и монтаж</div>
 
 				</a>
-				<a href="/services/compressor_air" class="view group bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+				<a href="/services/compressor_air" class="view group" title="Винтовые и поршневые воздушные компрессоры" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
 					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-fan text-lg"></i></div>
 					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Воздушные компрессоры</div>
 					<div class="text-xs text-gray-500 mt-1">Винтовые, поршневые</div>
 
 				</a>
-				<a href="/services/sclad" class="view group bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+				<a href="/services/sclad" class="view group" title="Строительство складов из сэндвич-панелей" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
 					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-warehouse text-lg"></i></div>
 					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Склады</div>
 					<div class="text-xs text-gray-500 mt-1">Логистические центры</div>
@@ -376,25 +379,25 @@ if (file_exists($componentMailPath)) {
 					<div class="font-black leading-none text-[#ddf47a]" style="font-size:34px">50+ лет</div>
 					<div class="mt-2 text-xs font-semibold text-white">гарантии на конструкции</div>
 				</div>
-				<a href="/services/musorbak" class="view group bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+				<a href="/services/musorbak" class="view group" title="Мусорные баки и контейнеры для вывоза отходов" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
 					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-dumpster text-lg"></i></div>
 					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Мусорные баки</div>
 					<div class="text-xs text-gray-500 mt-1">Контейнеры, оцинковка</div>
 
 				</a>
-				<a href="/services/gruzoperevozki" class="view group bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+				<a href="/services/gruzoperevozki" class="view group" title="Грузоперевозки по Москве, МО и всей России" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
 					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-truck-ramp-box text-lg"></i></div>
 					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Грузоперевозки</div>
 					<div class="text-xs text-gray-500 mt-1">Авто и ЖД</div>
 
 				</a>
-				<a href="/services/spectehnika" class="view group bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+				<a href="/services/spectehnika" class="view group" title="Аренда строительной спецтехники и услуги" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
 					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-tractor text-lg"></i></div>
 					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Спецтехника</div>
 					<div class="text-xs text-gray-500 mt-1">Аренда, услуги</div>
 
 				</a>
-				<a href="/services/kapstroenie" class="view group bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
+				<a href="/services/kapstroenie" class="view group" title="Капитальное строение зданий и сооружений" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
 					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-building-shield text-lg"></i></div>
 					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Капитальное строение</div>
 					<div class="text-xs text-gray-500 mt-1">Здания и сооружения</div>
@@ -407,7 +410,7 @@ if (file_exists($componentMailPath)) {
 			</div>
 			<div class="mt-10 flex flex-col items-center sm:flex-row gap-[20px] justify-center">
 				<a href="#contact" data-goal="cta_advantages_contact" class="flex h-[56px] w-[250px] items-center justify-center rounded-full border-2 border-[#3d5951] text-[18px] font-medium transition-colors hover:bg-[#3d5951] hover:text-white">Смета за 15 минут</a>
-				<a href="/uslugi" class="flex h-[54px] w-[250px] items-center justify-center rounded-full bg-[#ddf47a] text-[18px] font-medium text-[#18251e] transition-colors hover:bg-[#cce968]">Все услуги</a>
+				<a href="/uslugi" class="flex h-[54px]" title="Все услуги ФСС: производство, монтаж, ремонт, спецтехника" w-[250px] items-center justify-center rounded-full bg-[#ddf47a] text-[18px] font-medium text-[#18251e] transition-colors hover:bg-[#cce968]">Все услуги</a>
 			</div>
 			</div>
 		</div>
@@ -422,7 +425,7 @@ if (file_exists($componentMailPath)) {
 	<!-- Contact — High converting -->
 <div class="px-3 sm:px-5">
 	<section id="contact" class="view relative isolate z-[20] overflow-hidden rounded-[28px] bg-[#FFB77D] px-5 py-12 sm:px-8 lg:min-h-[760px] lg:px-12 lg:py-16">
-		<img src="/public/assets/image/Components/element.png" alt="" aria-hidden="true" loading="lazy" decoding="async" class="contact-element">
+		<img src="/public/assets/image/Components/element.png" alt="Декоративный элемент" aria-hidden="true" loading="lazy" decoding="async" class="contact-element" title="Декоративный элемент">
 		<div class="pointer-events-none absolute -bottom-40 -left-24 h-[480px] w-[480px] rounded-full bg-[#FF9A45]/70 blur-[1px]" aria-hidden="true"></div>
 		<div class="pointer-events-none absolute -bottom-52 left-24 h-[440px] w-[440px] rounded-full bg-[#FFD0A7]" aria-hidden="true"></div>
 		<div class="pointer-events-none absolute -bottom-64 left-0 h-[350px] w-[350px] rotate-[-35deg] rounded-[80px] bg-gradient-to-br from-[#FFE2C8] via-[#FFB77D] to-[#FF8A2A] shadow-[inset_8px_8px_18px_rgba(255,255,255,0.6),inset_-8px_-8px_20px_rgba(205,80,0,0.15)]" aria-hidden="true"></div>
@@ -436,7 +439,7 @@ if (file_exists($componentMailPath)) {
 				<p class="mt-7 max-w-[460px] text-base leading-relaxed text-white/95 sm:text-lg">
 					Оставьте контакты — инженер перезвонит, уточнит задачу и пришлёт смету с фиксированной ценой
 				</p>
-				<a href="tel:<?= htmlspecialchars(preg_replace("/\D/", "", seo_config("phone"))) ?>" class="mt-8 inline-flex items-center gap-2 rounded-full bg-white/20 px-6 py-3 font-semibold text-white backdrop-blur transition hover:bg-white/30"><i class="fa-solid fa-phone"></i> <?= htmlspecialchars((string)seo_config('phone_display')) ?></a>
+				<a href="tel:<?= htmlspecialchars(preg_replace("/\D/", "", seo_config("phone"))) ?>" title="Позвонить: +7 938 018-00-06" class="mt-8 inline-flex items-center gap-2 rounded-full bg-white/20 px-6 py-3 font-semibold text-white backdrop-blur transition hover:bg-white/30"><i class="fa-solid fa-phone"></i> <?= htmlspecialchars((string)seo_config('phone_display')) ?></a>
 			</div>
 			<div class="w-full rounded-[28px] bg-white p-6 shadow-[0_20px_60px_rgba(130,55,0,0.08)] sm:p-8 lg:p-10 xl:p-12">
 				<div class="mb-8 flex items-start justify-between gap-5">
@@ -1104,7 +1107,7 @@ if (file_exists($componentMailPath)) {
 	<!-- sticky lead bar (mobile) -->
 	<div id="sticky-cta" class="fixed bottom-0 inset-x-0 z-40 md:hidden bg-white/95 backdrop-blur-md border-t border-gray-200 px-3 py-2 safe-pb">
 		<div class="flex gap-2">
-			<a href="tel:<?= htmlspecialchars(preg_replace("/\D/", "", seo_config("phone"))) ?>" class="flex-1 inline-flex items-center justify-center gap-2 bg-white border border-gray-200 text-gray-900 rounded-full py-3 font-semibold"><i class="fa-solid fa-phone text-emerald-600"></i> Позвонить</a>
+			<a href="tel:<?= htmlspecialchars(preg_replace("/\D/", "", seo_config("phone"))) ?>" title="Позвонить: +7 938 018-00-06" class="flex-1 inline-flex items-center justify-center gap-2 bg-white border border-gray-200 text-gray-900 rounded-full py-3 font-semibold"><i class="fa-solid fa-phone text-emerald-600"></i> Позвонить</a>
 			<a href="#contact" class="flex-1 inline-flex items-center justify-center gap-2 bg-emerald-600 text-white rounded-full py-3 font-semibold shadow">Рассчитать <i class="fa-solid fa-arrow-right text-xs"></i></a>
 		</div>
 		<div class="text-center text-[11px] text-gray-500 mt-1">Отвечаем за 7 минут • Без спама</div>
@@ -1118,7 +1121,6 @@ if (file_exists($componentMailPath)) {
 	<?php include_once 'public/components/footer.php'; ?>
 	<!-- форма обратной связи -->
 
-	<?php include_once 'public/components/forma.php'; ?>
 
 </body>
 

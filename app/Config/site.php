@@ -2,7 +2,11 @@
 /**
  * SEO/GEO-конфигурация — единый источник правды (NAP, цифры, счётчики).
  * Меняешь здесь — обновляется везде: канониклы, schema, sitemap, rss, llms.txt.
+ * Значения берутся из .env (через $_ENV, загруженное vlucas/phpdotenv в bootstrap.php)
+ * с фоллбэками на плейсхолдеры.
  */
+
+$env = fn(string $key, string $default = '') => $_ENV[$key] ?? getenv($key) ?: $default;
 
 return [
 	// Домен-канон (punycode — одинаково понимается всеми парсерами)
@@ -18,6 +22,9 @@ return [
 	'phone' => '+7 938 018-00-06',
 	'phone_tel' => '+79380180006',
 	'phone_display' => '+7 938 018-00-06',
+	'phone_8800' => '8 800 000 00 00',
+	'phone_8800_tel' => '88000000000',
+	'phone_8800_display' => '8 800 000 00 00',
 	'email' => 'fss@фсс.рус',
 	'telegram' => 'https://t.me/fss_rus',
 	'vk' => 'https://vk.com/fss_rus',
@@ -45,15 +52,15 @@ return [
 	'callback_minutes' => '7',
 	'area_served' => ['Москва', 'Московская область', 'Россия'],
 
-	// --- Аналитика (заполнить перед выкатом) ---
-	'ym_id' => '',            // номер счётчика Яндекс.Метрики
-	'ga4_id' => '',           // G-XXXXXXXXXX
-	'gtm_id' => '',           // GTM-XXXXXXX
-	'gtag_id' => '',          // AW-XXXXXXXXX (Google Ads)
-	'yandex_verification' => '27e0ba9980498150',
-	'google_verification' => '',
-	'indexnow_key' => '',
+	// --- Аналитика (из .env) ---
+	'ym_id' => $env('YM_ID', 'XXXXXXXX'),
+	'ga4_id' => $env('GA4_ID', 'G-XXXXXXXXXX'),
+	'gtm_id' => $env('GTM_ID', 'GTM-XXXXXXX'),
+	'gtag_id' => $env('GADS_ID', 'AW-XXXXXXXXX'),
+	'yandex_verification' => $env('YWEB_ID', ''),
+	'google_verification' => $env('GSC_ID', ''),
+	'indexnow_key' => $env('INDEXNOW_KEY', 'b339c4d027c523c5aa5bed28703c94bd'),
 
 	// Прочее
-	'cache_bust' => '20261009',
+	'cache_bust' => '20261018',
 ];

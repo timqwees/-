@@ -6,7 +6,7 @@
   "description_for_model": "Каталог услуг производства и монтажа БВЗ (склады, ангары, АБК, общежития), капитального ремонта, грузоперевозок и аренды спецтехники. Контакты, цены-ориентиры, FAQ, критерии выбора подрядчика.",
   "auth": { "type": "none" },
   "api": { "type": "openapi", "url": "https://www.фсс.рус/openapi.yaml" },
-  "logo_url": "https://www.фсс.рус/public/assets/image/og/og-home-1200x630.jpg",
+  "logo_url": "https://www.фсс.рус/public/assets/image/logo/logo.svg",
   "contact_email": "fss@фсс.рус",
   "legal_info_url": "https://www.фсс.рус/politika"
 }
