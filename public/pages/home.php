@@ -1204,9 +1204,10 @@ if (file_exists($componentMailPath)) {
 	</div>
 		<script>
 			document.addEventListener("DOMContentLoaded", function () {
-				const swiper = new Swiper(".swipers", {
+				const el = document.querySelector(".swipers");
+				if (!el || el.offsetParent === null) return;
+				new Swiper(el, {
 					loop: true,
-					loopedSlides: 12,
 					slidesPerView: 4,
 					slidesPerGroup: 1,
 					spaceBetween: 20,
@@ -1237,7 +1238,7 @@ if (file_exists($componentMailPath)) {
 						}
 					},
 				});
-				document.querySelector(".swipers").classList.add("loaded");
+				el.classList.add("loaded");
 			});
 		</script>
 	<!-- uslugi — modern bento -->
