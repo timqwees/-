@@ -144,6 +144,21 @@ if (count($related) < 4) {
 						?>
 					</article>
 
+					<!-- Author Bio / E-E-A-T -->
+					<?php if (!empty($post['author'])): ?>
+					<section class="author-bio" style="margin-top:48px;padding:28px;background:#FFF7EF;border:1px solid #F5E6D3;border-radius:24px">
+						<div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
+							<img src="<?= $h($post['author']['photo']) ?>" alt="<?= $h($post['author']['name']) ?>" class="article-author-avatar" loading="lazy" width="64" height="64" style="width:64px;height:64px;border-radius:50%;object-fit:cover">
+							<div>
+								<div style="font-size:18px;font-weight:800;color:#171310"><?= $h($post['author']['name']) ?></div>
+								<div style="font-size:14px;color:#EA580C;font-weight:600"><?= $h($post['author']['role']) ?></div>
+								<div style="font-size:13px;color:#78716C;margin-top:4px"><i class="fa-solid fa-medal" style="color:#F97316;margin-right:6px"></i>Опыт: <?= $h($post['author']['experience']) ?></div>
+							</div>
+						</div>
+						<p style="margin:0;font-size:15px;line-height:1.7;color:#44403C">Статья подготовлена экспертом ООО «Фаворит-Строй-Снаб» — компании с 14-летним опытом строительства БВЗ, капремонта школ и поставки оборудования госзаказчикам (Росгвардия, Минпросвещение РФ). 180+ сданных объектов, гарантия 50+ лет, работа по 44-ФЗ/223-ФЗ.</p>
+					</section>
+					<?php endif; ?>
+
 					<?php if ($service): ?>
 					<aside class="article-expert" itemscope itemtype="https://schema.org/Service">
 						<meta itemprop="name" content="Консультация по услуге <?= $h($service['title']) ?> — ФАВОРИТ-СТРОЙ-СНАБ">

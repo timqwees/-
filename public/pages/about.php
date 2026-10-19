@@ -132,6 +132,7 @@
 			<div class="section-heading"><h2>Кто мы</h2><span class="heading-divider" aria-hidden="true"></span><p>Завод, инженеры и своя техника — без посредников</p></div>
 			<div class="card-prem" style="padding:clamp(24px,4vw,44px)">
 				<p style="margin:0;font-size:16px;line-height:1.75;color:#44403C;max-width:70ch">Начинали в <?= htmlspecialchars((string)seo_config('founded_market')) ?> году с металлоконструкций — сегодня это производство блок-модулей и быстровозводимых зданий, капитальное строительство и ремонт, грузоперевозки и аренда спецтехники. Работаем с бизнесом и госзаказом по договору: фиксируем цену и сроки, ведём технадзор и сдаём объекты с пакетом документов. База — Москва и Московская область, объекты — по всей России.</p>
+				<p style="margin:14px 0 0;font-size:15px;line-height:1.7;color:#44403C;max-width:70ch"><strong>ООО «Фаворит-Строй-Снаб»</strong> осуществляет комплексную деятельность по обеспечению нужд силовых и государственных структур РФ. В настоящее время сотрудничаем с <strong>Федеральной службой войск национальной гвардии РФ (Росгвардия)</strong>. Реализуем проекты под ключ: от проектирования и производства БВЗ до капитального ремонта социальных объектов с полным техническим оснащением.</p>
 				<div style="margin-top:18px;display:flex;flex-wrap:wrap;gap:10px">
 					<a class="btn-sun" href="/uslugi">Все услуги</a>
 					<a class="btn-outline" href="/portfolio">Смотреть объекты</a>
@@ -195,6 +196,84 @@
 				<details class="faq-ex"><summary><span class="faq-mark" aria-hidden="true"></span><span>Даёте ли гарантию и договор?</span></summary><div class="faq-content"><p class="faq-a">Да: договор с фиксированной ценой и сроками, гарантия на конструкции — 50+ лет, на работы — по договору.</p></div></details>
 				<details class="faq-ex"><summary><span class="faq-mark" aria-hidden="true"></span><span>Работаете с юрлицами и НДС?</span></summary><div class="faq-content"><p class="faq-a">Да, работаем с юрлицами и госзаказом: договор, счёт, закрывающие документы, допуск СРО.</p></div></details>
 				<details class="faq-ex"><summary><span class="faq-mark" aria-hidden="true"></span><span>Как быстро посчитаете мой объект?</span></summary><div class="faq-content"><p class="faq-a">Смету даём за 15 минут по телефону <?= htmlspecialchars((string)seo_config('phone_display')) ?> или из заявки — инженер перезванивает за 7 минут.</p></div></details>
+			</div>
+		</section>
+		<section class="page-section view" id="expertise">
+			<div class="section-heading"><h2>Наша экспертиза и реализованные проекты</h2><span class="heading-divider" aria-hidden="true"></span><p>Опыт, подтверждённый госзаказчиками и 힘이ными структурами</p></div>
+			<div class="expertise-grid" style="margin-top:22px;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px">
+				<article class="expertise-card" style="background:#fff;border:1px solid #F5E6D3;border-radius:24px;overflow:hidden;padding:28px;transition:transform .3s ease,box-shadow .3s ease;">
+					<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+						<div style="width:48px;height:48px;background:#F97316;border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-building" style="color:#fff;font-size:20px"></i></div>
+						<h3 style="margin:0;font-size:20px;font-weight:800;color:#171310">Госзаказ и силовые структуры</h3>
+					</div>
+					<p style="margin:0 0 12px;font-size:14px;color:#44403C;line-height:1.6">Сотрудничаем с <strong>Росгвардией (ФСВНГ РФ)</strong> — обеспечиваем нужды силовых и государственных структур РФ. Работаем по 44-ФЗ и 223-ФЗ, имеем допуск СРО.</p>
+					<ul style="margin:0;padding-left:20px;font-size:14px;color:#44403C;line-height:1.8">
+						<li>Работа по 44-ФЗ и 223-ФЗ</li>
+						<li>Допуск СРО на проектирование и строительство</li>
+						<li>Работа с госзаказом и НДС</li>
+						<li>Закрывающие пакеты документов</li>
+					</ul>
+				</article>
+				<article class="expertise-card" style="background:#fff;border:1px solid #F5E6D3;border-radius:24px;overflow:hidden;padding:28px;">
+					<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+						<div style="width:48px;height:48px;background:#F97316;border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-bed" style="color:#fff;font-size:20px"></i></div>
+						<h3 style="margin:0;font-size:20px;font-weight:800;color:#171310">Общежития и вахтовые посёлки</h3>
+					</div>
+					<p style="margin:0 0 12px;font-size:14px;color:#44403C;line-height:1.6"><strong>Комплекс в Сочи (Адлерский район)</strong> — 9 000+ м² под ключ: проектирование, строительство, инженерное оснащение, меблировка.</p>
+					<ul style="margin:0;padding-left:20px;font-size:14px;color:#44403C;line-height:1.8">
+						<li>Площадь 9 000+ м²</li>
+						<li>Полный цикл: проект → стройка → оснащение</li>
+						<li>Инженерные системы и меблировка</li>
+					</ul>
+				</article>
+				<article class="expertise-card" style="background:#fff;border:1px solid #F5E6D3;border-radius:24px;overflow:hidden;padding:28px;">
+					<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+						<div style="width:48px;height:48px;background:#F97316;border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-school" style="color:#fff;font-size:20px"></i></div>
+						<h3 style="margin:0;font-size:20px;font-weight:800;color:#171310">Капремонт школ (13+ объектов)</h3>
+					</div>
+					<p style="margin:0 0 12px;font-size:14px;color:#44403C;line-height:1.6">Капитальный ремонт 13+ социальных объектов (школы, спортивные залы, дворцы спорта) в Чечне, Ростовской области, Москве.</p>
+					<ul style="margin:0;padding-left:20px;font-size:14px;color:#44403C;line-height:1.8">
+						<li>ГБОУ «Центр образования г. Гудермес»</li>
+						<li>МБОУ СОШ №2 г. Аргун и др. (13+ объектов)</li>
+						<li>Спортивные залы и дворцы спорта</li>
+					</ul>
+				</article>
+				<article class="expertise-card" style="background:#fff;border:1px solid #F5E6D3;border-radius:24px;overflow:hidden;padding:28px;">
+					<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+						<div style="width:48px;height:48px;background:#F97316;border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-chalkboard-user" style="color:#fff;font-size:20px"></i></div>
+						<h3 style="margin:0;font-size:20px;font-weight:800;color:#171310">Комплексное оснащение школ</h3>
+					</div>
+					<p style="margin:0 0 12px;font-size:14px;color:#44403C;line-height:1.6">Комплексное оснащение 13 новопостроенных школ по стандартам Минпросвещения РФ.</p>
+					<ul style="margin:0;padding-left:20px;font-size:14px;color:#44403C;line-height:1.8">
+						<li>Мебель всех типов (ученическая, офисная, лаб.)</li>
+						<li>Оборудование кабинетов и лабораторные комплексы</li>
+						<li>Мультимедийные и инженерные системы</li>
+					</ul>
+				</article>
+				<article class="expertise-card" style="background:#fff;border:1px solid #F5E6D3;border-radius:24px;overflow:hidden;padding:28px;">
+					<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+						<div style="width:48px;height:48px;background:#F97316;border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-chair" style="color:#fff;font-size:20px"></i></div>
+						<h3 style="margin:0;font-size:20px;font-weight:800;color:#171310">Поставка мебели и оснащения</h3>
+					</div>
+					<p style="margin:0 0 12px;font-size:14px;color:#44403C;line-height:1.6">Функциональная, служебная и представительская мебель. Индивидуальное проектирование и визуализация.</p>
+					<ul style="margin:0;padding-left:20px;font-size:14px;color:#44403C;line-height:1.8">
+						<li>Мебель для кабинетов руководства</li>
+						<li>Индивидуальное проектирование и 3D-визуализация</li>
+						<li>Получение лицензий и разрешений</li>
+					</ul>
+				</article>
+				<article class="expertise-card" style="background:#fff;border:1px solid #F5E6D3;border-radius:24px;overflow:hidden;padding:28px;">
+					<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+						<div style="width:48px;height:48px;background:#F97316;border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-drone" style="color:#fff;font-size:20px"></i></div>
+						<h3 style="margin:0;font-size:20px;font-weight:800;color:#171310">БПЛА, КИТ и высокотех оборудование</h3>
+					</div>
+					<p style="margin:0 0 12px;font-size:14px;color:#44403C;line-height:1.6">Поставка БПЛА, комплектующих, систем КИТ. Работа с ведущими производителями, адаптация под ТЗ, сертификация.</p>
+					<ul style="margin:0;padding-left:20px;font-size:14px;color:#44403C;line-height:1.8">
+						<li>БПЛА и комплектующие</li>
+						<li>Системы КИТ, адаптация под ТЗ</li>
+						<li>Сертификация и сопровождение</li>
+					</ul>
+				</article>
 			</div>
 		</section>
 		<section class="page-section view">
