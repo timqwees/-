@@ -47,10 +47,10 @@ if (!empty($_SESSION['fss_form_success'])) {
 	$tgOk = $success['tg'] ?? false;
 	if ($mailOk || $tgOk) {
 		setFormSuccessCookie($type);
-		Security::pushScript('if(window.dataLayer) dataLayer.push({event:"form_success", form_type:"' . addslashes($type) . '"});');
-		Security::showAlert('success', 'Вы успешно оставили заявку! Мы свяжемся с вами в ближайшее время.');
+		\App\Mail\Security::pushScript('if(window.dataLayer) dataLayer.push({event:"form_success", form_type:"' . addslashes($type) . '"});');
+		\App\Mail\Security::showAlert('success', 'Вы успешно оставили заявку! Мы свяжемся с вами в ближайшее время.');
 	} else {
-		Security::showAlert('error', 'Не удалось отправить заявку. Пожалуйста, позвоните нам +7 938 018-00-06 или попробуйте позже.');
+		\App\Mail\Security::showAlert('error', 'Не удалось отправить заявку. Пожалуйста, позвоните нам +7 938 018-00-06 или попробуйте позже.');
 	}
 }
 
