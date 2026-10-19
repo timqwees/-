@@ -1,8 +1,6 @@
 <?php
 /**
  * Обработчик POST-форм сайта ФАВОРИТ-СТРОЙ-СНАБ.
- * Единая точка входа для всех форм (как в pkvartira).
- * Валидация, антибот, отправка в Telegram + почта.
  */
 
 require_once dirname(__DIR__, 1) . '/../vendor/autoload.php';
@@ -19,15 +17,11 @@ use App\Mail\Telegram\Messenger;
 
 function setFormSuccessCookie(string $formType): void
 {
-    if (headers_sent()) {
-        return;
-    }
+    if (headers_sent()) return;
     $secure = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https');
     $cookieName = 'fss_form_' . $formType . '_success';
-    $cookieValue = '1';
-    $expire = time() + 300;
-    setcookie($cookieName, $cookieValue, [
-        'expires' => $expire,
+    setcookie($cookieName, '1', [
+        'expires' => time() + 300,
         'path' => '/',
         'domain' => '',
         'secure' => $secure,
@@ -43,10 +37,6 @@ class FormMailer
     private string $pass = MAIL_PASS;
     private string $fromName = MAIL_FROM_NAME;
     private int $port = MAIL_PORT;
-
-    public function __construct()
-    {
-    }
 
     public function send(array $array): bool
     {
@@ -81,7 +71,7 @@ class FormMailer
         if ($name)  $bodyRows .= "<tr><td style='padding:8px 0;color:#374151;font-weight:500'>Имя:</td><td style='padding:8px 0;color:$mainColor;font-weight:600'>" . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . "</td></tr>";
         if ($phone) $bodyRows .= "<tr><td style='padding:8px 0;color:#374151;font-weight:500'>Телефон:</td><td style='padding:8px 0;color:$mainColor;font-weight:600'>+" . htmlspecialchars($phone, ENT_QUOTES, 'UTF-8') . "</td></tr>";
         if ($email) $bodyRows .= "<tr><td style='padding:8px 0;color:#374151;font-weight:500'>Email:</td><td style='padding:8px 0;color:$mainColor;font-weight:600'>" . htmlspecialchars($email, ENT_QUOTES, 'UTF-8') . "</td></tr>";
-        if ($msg)   $bodyRows .= "<tr><td style='padding:8px 0;color:#374151;font-weight:500;vertical-align:top'>Сообщение:</td><td style='padding:8px 0;color:#374151;background:#f0fdf4;border-radius:6px'>" . nl2br(htmlspecialchars($msg, ENT_QUOTES, 'UTF-8')) . "</td></tr>";
+        if ($msg)   $bodyRows .= "<tr><td style='padding:8px 0;color:#374151;font-weight:500;vertical-align:top'>Сообщение:</td><td style='padding:8px 0;color:$mainColor;font-weight:500;background:#f0fdf4;border-radius:6px'>" . nl2br(htmlspecialchars($msg, ENT_QUOTES, 'UTF-8')) . "</td></tr>";
         $bodyRows .= "<tr><td style='padding:8px 0;color:#374151;font-weight:500'>Форма:</td><td style='padding:8px 0;color:$mainColor;font-weight:600'>" . htmlspecialchars($form, ENT_QUOTES, 'UTF-8') . "</td></tr>";
         $bodyRows .= "<tr><td style='padding:8px 0;color:#374151;font-weight:500'>Дата:</td><td style='padding:8px 0;color:$mainColor;font-weight:600'>$dateStr</td></tr>";
 
@@ -135,11 +125,9 @@ class FormMailer
             $mail->addAddress($this->to);
             $mail->Subject    = "Новая заявка с ФСС.РУС — форма: $form";
             $mail->msgHTML($body);
-
             $mail->send();
             return true;
         } catch (Exception $e) {
-            error_log("Email send failed: " . $mail->ErrorInfo);
             return false;
         }
     }
@@ -149,11 +137,9 @@ function deliverLead(FormMailer $formMailer, Messenger $messenger, array $array)
 {
     $type = $array['type'] ?? 'form';
 
-    // Отправляем в фоне (быстро, параллельно)
     $mailOk = $formMailer->send($array);
     $tgOk = $messenger->sendToTelegram($array);
 
-    // Сохраняем результат в сессию для показа после редиректа
     if (session_status() === PHP_SESSION_NONE) {
         @session_start();
     }
@@ -164,10 +150,8 @@ function deliverLead(FormMailer $formMailer, Messenger $messenger, array $array)
         'time' => time(),
     ];
 
-    // Гарантируем запись сессии перед редиректом
     session_write_close();
 
-    // PRG: редирект на тот же URL (GET) — убирает повторную отправку при F5
     $redirectUrl = $_SERVER['REQUEST_URI'] ?? '/';
     $redirectUrl = parse_url($redirectUrl, PHP_URL_PATH) ?: '/';
     header('Location: ' . $redirectUrl, true, 303);
