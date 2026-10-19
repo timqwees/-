@@ -614,7 +614,7 @@ if (file_exists($componentMailPath)) {
 						class="hidden h-16 w-16 shrink-0 rounded-full object-cover sm:block"
 					>
 				</div>
-				<form method="POST" novalidate class="space-y-3" data-form="contact">
+				<form method="POST" action="/send/email" novalidate class="space-y-3" data-form="contact">
 					<input type="hidden" name="mailer">
 					<?php include __DIR__ . '/../components/antibot_fields.php'; ?>
 					<input type="hidden" name="message" id="contact_message_hidden" value="Заявка с главной страницы">

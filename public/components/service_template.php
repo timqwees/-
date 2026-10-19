@@ -396,7 +396,7 @@ html.lenis,html.lenis body{height:auto;}
 					<h3 class="sv-leadh">Оцените стоимость<br>за пару минут</h3>
 					<p class="sv-leadp">Оставьте заявку — <b>инженер перезвонит за 7 минут</b>, рассчитает смету за 15 минут и зафиксирует цену в договоре.</p>
 				</div>
-				<form class="sv-form js-svcalc" method="POST" action="#" data-goal="lead_<?= $h($slug) ?>" novalidate>
+				<form class="sv-form js-svcalc" method="POST" action="/send/email" data-goal="lead_<?= $h($slug) ?>" novalidate>
 					<input type="hidden" name="content_form">
 					<?php $abPath = __DIR__ . '/antibot_fields.php'; if (file_exists($abPath)) include $abPath; ?>
 					<input type="text" name="name" placeholder="Ваше имя" autocomplete="name" required>
