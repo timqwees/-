@@ -16,7 +16,7 @@
 				<i class="fa-solid fa-xmark text-sm"></i>
 			</button>
 		</div>
-		<form class="space-y-3" method="post" data-form="mini" novalidate>
+		<form class="space-y-3" method="post" action="/send/email" data-form="mini" novalidate>
 			<input type="hidden" name="mini-forma">
 			<?php
 				$antibotPath = __DIR__ . '/antibot_fields.php';

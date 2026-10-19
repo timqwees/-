@@ -32,9 +32,6 @@ unset($__caller, $__real, $__index, $__ctrl);
 
 require_once __DIR__ . '/Seo/seo.php';
 
-// Глобальный обработчик форм (должен быть до роутинга, как в pkvartira)
-require_once __DIR__ . '/Mail/component_mail.php';
-
 // Показать уведомление об успехе после PRG-редиректа (GET)
 if (session_status() === PHP_SESSION_NONE) {
 	@session_start();
@@ -57,8 +54,7 @@ if (!headers_sent()) {
 	header_remove('X-Powered-By');
 	header_remove('Server');
 }
-// Автоверсия статики: захардкоженный ?v=20261009 в шаблонах заменяем живым ?v= по mtime,
-// иначе браузер кэширует CSS/JS и не видит правок. Плюс добавляем ?v к main.js без версии.
+// Автоверсия статики
 if (!defined('FSS_ASSET_VER')) {
 	$__mt = @filemtime(__DIR__ . '/../public/assets/distCSS/premium.css') ?: time();
 	define('FSS_ASSET_VER', date('YmdHi', $__mt));
