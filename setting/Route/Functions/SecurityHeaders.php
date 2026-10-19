@@ -91,40 +91,18 @@ final class SecurityHeaders
     }
 
     /**
-     * HTML-кэширование + условные запросы.
-     * Один ЕДИНСТВЕННЫЙ Cache-Control (replace=true), ETag и Last-Modified.
-     * При совпадении If-None-Match / If-Modified-Since отдаёт 304 и завершает запрос.
+     * HTML не кэшируем публично: в разметке per-session антибот-токены
+     * (render_time, csrf_token, js_token). Публичный кэш и 304 отдавали бы
+     * чужие/устаревшие токены — отсюда «Некорректная форма (время)».
      */
     public static function sendHtmlCache(string $templatePath): void
     {
         if (headers_sent()) {
             return;
         }
-        if (self::isDev()) {
-            self::sendNoCache();
-            return;
-        }
+        self::sendNoCache();
         $mtime = is_file($templatePath) ? (int) filemtime($templatePath) : time();
-        $etag = '"' . md5($templatePath . '|' . $mtime) . '"';
-
-        // replace=true — затирает любые предыдущие Cache-Control от вызывающего кода
-        header('Cache-Control: public, max-age=' . self::HTML_CACHE_MAX_AGE . ', must-revalidate', true);
         header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $mtime) . ' GMT', true);
-        header('ETag: ' . $etag, true);
-
-        $ifNoneMatch = $_SERVER['HTTP_IF_NONE_MATCH'] ?? '';
-        $ifModifiedSince = $_SERVER['HTTP_IF_MODIFIED_SINCE'] ?? '';
-        if ($ifNoneMatch !== '' && trim($ifNoneMatch) === $etag) {
-            http_response_code(304);
-            exit;
-        }
-        if ($ifNoneMatch === '' && $ifModifiedSince !== '') {
-            $since = strtotime($ifModifiedSince);
-            if ($since !== false && $since >= $mtime) {
-                http_response_code(304);
-                exit;
-            }
-        }
     }
 
     /** Совместимость с прокси: HTTPS напрямую или X-Forwarded-Proto=https */

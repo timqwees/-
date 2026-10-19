@@ -20,7 +20,7 @@
 			<input type="hidden" name="mini-forma">
 			<?php
 				$antibotPath = __DIR__ . '/antibot_fields.php';
-				if (file_exists($antibotPath)) include_once $antibotPath;
+				if (file_exists($antibotPath)) include $antibotPath;
 				else {
 					$alt = dirname(__DIR__, 2) . '/app/Mail/Antibot.php';
 					if (file_exists($alt)) { require_once $alt; echo \App\Mail\Antibot::generateFields(); }

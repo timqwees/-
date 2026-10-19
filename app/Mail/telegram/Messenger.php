@@ -11,7 +11,7 @@ class Messenger
 	/**
 	 * Форматируем и отправляем сообщение в Telegram
 	 */
-	public function sendToTelegram(array $arr)
+	public function sendToTelegram(array $arr): bool
 	{
 		$token = TELEGRAM_BOT_TOKEN;
 		$chat_ids = unserialize(TELEGRAM_CHAT_IDS);
@@ -77,15 +77,9 @@ class Messenger
 			}
 		}
 
-		if ($successCount > 0) {
-			Security::showAlert('success', 'Вы успешно оставили заявление, ожидайте ответа!');
-			echo '<script>if(window.dataLayer) dataLayer.push({event:"form_success", form_type:"'.htmlspecialchars($arr['type'] ?? 'unknown').'"});</script>';
-			if ($failCount > 0) {
-				error_log("Telegram partial fail: success $successCount fail $failCount " . implode('; ', $errors));
-			}
-		} else {
-			Security::showAlert('error', 'Не удалось отправить заявку. Пожалуйста, позвоните нам +7 938 018-00-06 или попробуйте позже.');
-			error_log("Telegram all fail: " . implode('; ', $errors));
+		if ($failCount > 0) {
+			error_log("Telegram: success $successCount fail $failCount " . implode('; ', $errors));
 		}
+		return $successCount > 0;
 	}
 }

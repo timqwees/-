@@ -46,3 +46,4 @@ html{scroll-behavior:smooth}body{margin:0;background:white}
 document.querySelectorAll('[data-footer-top]').forEach(button=>button.addEventListener('click',()=>window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'})));
 </script>
 <?php include_once __DIR__ . '/forma.php'; ?>
+<?php if (class_exists('\\App\\Mail\\Security')) { \App\Mail\Security::renderAlerts(); } ?>

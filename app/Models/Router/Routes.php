@@ -61,18 +61,28 @@ class Routes
 		$uri = '/' . trim(rawurldecode($uri), '/');
 		$uri = rtrim($uri, '/') === '' ? '/' : rtrim($uri, '/');
 
-		foreach (self::$patterns[$method] ?? [] as $pattern => $callback) {
-			if (!preg_match($pattern, $uri, $m)) {
-				continue;
-			}
-			$params = [];
-			foreach ($m as $k => $v) {
-				if (is_string($k)) {
-					$params[$k] = urldecode((string)$v);
+		// POST-формы обрабатываются в index.php до роутинга (component_mail).
+		// Если для URL нет отдельного POST-маршрута — рендерим ту же страницу как GET
+		// (иначе виджет в футере на /about, /blog и т.п. отдавал 404 после отправки).
+		$methods = [$method];
+		if ($method === 'POST') {
+			$methods[] = 'GET';
+		}
+
+		foreach ($methods as $m) {
+			foreach (self::$patterns[$m] ?? [] as $pattern => $callback) {
+				if (!preg_match($pattern, $uri, $m2)) {
+					continue;
 				}
+				$params = [];
+				foreach ($m2 as $k => $v) {
+					if (is_string($k)) {
+						$params[$k] = urldecode((string)$v);
+					}
+				}
+				self::execute($callback, $params);
+				return;
 			}
-			self::execute($callback, $params);
-			return;
 		}
 
 		self::error_404($uri);

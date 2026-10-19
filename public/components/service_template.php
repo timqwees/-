@@ -7,10 +7,6 @@
  * цифры и контакты: app/Config/site.php. Фото — только существующие файлы.
  */
 require_once __DIR__ . '/../../app/bootstrap.php';
-$componentMailPath = __DIR__ . '/../../app/Mail/component_mail.php';
-if (file_exists($componentMailPath)) {
-	include_once $componentMailPath;
-}
 
 $slug = $fss_service_slug ?? ($_GET['service'] ?? '');
 $services = seo_services();
@@ -402,7 +398,7 @@ html.lenis,html.lenis body{height:auto;}
 				</div>
 				<form class="sv-form js-svcalc" method="POST" action="#" data-goal="lead_<?= $h($slug) ?>" novalidate>
 					<input type="hidden" name="content_form">
-					<?php $abPath = __DIR__ . '/antibot_fields.php'; if (file_exists($abPath)) include_once $abPath; ?>
+					<?php $abPath = __DIR__ . '/antibot_fields.php'; if (file_exists($abPath)) include $abPath; ?>
 					<input type="text" name="name" placeholder="Ваше имя" autocomplete="name" required>
 					<div class="row2">
 						<input type="tel" name="phone" placeholder="Телефон" autocomplete="tel" inputmode="tel" required>

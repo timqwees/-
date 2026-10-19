@@ -66,9 +66,33 @@ class Security {
         return htmlspecialchars($str, ENT_QUOTES | ENT_HTML5, 'UTF-8');
     }
 
+    /** Очередь уведомлений: выводим их в футере, чтобы не ломать DOCTYPE. */
+    private static array $alerts = [];
+    private static array $scripts = [];
+
     public static function showAlert($type, $message) {
+        $key = $type . '|' . $message;
+        self::$alerts[$key] = ['type' => $type, 'message' => $message];
+    }
+
+    public static function pushScript(string $js): void {
+        self::$scripts[] = $js;
+    }
+
+    public static function renderAlerts(): void {
+        if (!self::$alerts && !self::$scripts) return;
+        foreach (self::$alerts as $a) {
+            self::renderAlert($a['type'], $a['message']);
+        }
+        self::$alerts = [];
+        foreach (self::$scripts as $js) {
+            echo '<script>' . $js . '</script>';
+        }
+        self::$scripts = [];
+    }
+
+    private static function renderAlert($type, $message): void {
         // type: success|error
-        $color = $type === 'success' ? 'green' : 'red';
         $bg = $type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700';
         $id = $type === 'success' ? 'success-alert' : 'error-alert';
         $icon = $type === 'success' ? '✅' : '❌';
@@ -80,6 +104,6 @@ class Security {
                     style="position:absolute; top:13px; right:12px; background:none; border:none; font-size:1.5rem; color:'.$border.'; cursor:pointer; line-height:1;">&times;</button>
             </div>';
         // Авто скрытие через 6 сек
-        echo '<script>setTimeout(()=>{var e=document.getElementById("'.$id.'");if(e)e.style.display="none";},6000);</script>';
+        echo '<script>setTimeout(function(){var e=document.getElementById("'.$id.'");if(e)e.style.display="none";},6000);</script>';
     }
 }
