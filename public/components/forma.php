@@ -22,7 +22,7 @@
 				if (file_exists($antibotPath)) include_once $antibotPath;
 				else {
 					$alt = dirname(__DIR__, 2) . '/app/Mail/Antibot.php';
-					if (file_exists($alt)) { require_once $alt; echo Antibot::generateFields(); }
+					if (file_exists($alt)) { require_once $alt; echo \App\Mail\Antibot::generateFields(); }
 				}
 			?>
 			<div>
