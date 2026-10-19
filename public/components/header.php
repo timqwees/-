@@ -1,131 +1,160 @@
 <?php
-// Шапка v6 (Loro): стеклянная пилюля по центру, underline-ссылки, чёрные круги, бургер.
-// Активный пункт: определяется по текущему URL (seo_url).
-// На главной странице PHP-активность временно отключается для НЕ-hash пунктов,
-// чтобы JS мог управлять активностью "Этапы"/"Обращение" без конфликтов.
+// Header — exact Protenance copy
 $__n = (function_exists('seo_url') ? seo_url() : '/') ?: '/';
 $__act = function (bool $on): string { return $on ? ' is-active' : ''; };
 $__onHome = $__n === '/';
-$__tel = htmlspecialchars((string) preg_replace( '/\D/', '', (string)seo_config('phone')));
-?><header class="hd">
-	<nav class="hd-bar hd-glass" aria-label="Быстрая навигация">
-		<a href="/" class="hd-avatar" title="ФАВОРИТ-СТРОЙ-СНАБ — на главную" aria-label="ФАВОРИТ-СТРОЙ-СНАБ — на главную"><img src="/public/assets/image/logo/favicon/favicon.svg" alt="ФАВОРИТ-СТРОЙ-СНАБ" title="ФАВОРИТ-СТРОЙ-СНАБ" width="40" height="40" loading="eager" decoding="async"></a>
-		<div class="hd-mid" aria-hidden="true"><span>СТРОЙ ФИРМА</span></div>
-	<div class="hd-links" data-menu-root="<?= $__onHome ? 'home' : 'other' ?>">
-		<a href="/" class="hd-link" data-menu-hash="home" data-menu-nav title="Главная">Главная</a>
-		<a href="/uslugi" class="hd-link<?= $__act(!$__onHome && ($__n === '/uslugi' || str_starts_with($__n, '/services/'))) ?>" title="Услуги и цены">Услуги</a>
-		<a href="/#process" class="hd-link" data-menu-hash="process" data-menu-nav title="Этапы работы">Этапы</a>
-		<a href="/portfolio" class="hd-link<?= $__act(!$__onHome && $__n === '/portfolio') ?>" title="Портфолио объектов">Портфолио</a>
-	<a href="/blog" class="hd-link<?= $__act(!$__onHome && str_starts_with($__n, '/blog')) ?>" title="Статьи и блог">Статьи</a>
-		<a href="/about" class="hd-link<?= $__act(!$__onHome && $__n === '/about') ?>" title="О компании">О нас</a>
-		<a href="/#contact" class="hd-link" data-menu-hash="contact" data-menu-nav title="Связаться с нами">Связаться</a>
+$__tel = htmlspecialchars((string) preg_replace('/\D/', '', (string)seo_config('phone')));
+?>
+<header id="site-header" data-header="" style="z-index: 90; position: fixed; inset: 0 0 auto;">
+	<div class="site-navigation" data-header-bar="" style="--nav-opacity: 0.02; --nav-blur: 1px; height: 90px; color: #fff; backdrop-filter: blur(var(--nav-blur, 1px)); background: rgba(23, 23, 24, var(--nav-opacity, .02)); border-bottom: 1px solid transparent; justify-content: space-between; align-items: center; gap: 30px; padding-inline: clamp(24px, 4.4vw, 96px); transition: background .5s, color .4s, border-color .4s; display: flex;">
+		<!-- Brand / Logo -->
+		<a href="/" class="brand" aria-label="ФСС — на главную" style="flex-shrink: 0; align-items: center; gap: 10px; display: flex;">
+			<img src="/public/assets/image/logo/favicon/favicon.svg" alt="" loading="lazy" decoding="async" width="28" height="34">
+			<span style="letter-spacing: -.045em; font-size: 24px; font-weight: 600;">ФСС</span>
+		</a>
+
+		<!-- Desktop Navigation -->
+		<nav aria-label="Primary" class="desktop-nav" style="gap: 34px; display: flex;">
+			<a href="/portfolio" class="<?= $__act(!$__onHome && $__n === '/portfolio') ?>" style="padding-block: 8px; font-size: 12px; position: relative; color: inherit; text-decoration: none;">Проекты</a>
+			<a href="/uslugi" class="<?= $__act(!$__onHome && ($__n === '/uslugi' || str_starts_with($__n, '/services/'))) ?>" style="padding-block: 8px; font-size: 12px; position: relative; color: inherit; text-decoration: none;">Услуги</a>
+			<a href="/about" class="<?= $__act(!$__onHome && $__n === '/about') ?>" style="padding-block: 8px; font-size: 12px; position: relative; color: inherit; text-decoration: none;">О нас</a>
+			<a href="/#contact" class="<?= $__act(!$__onHome && $__n === '/contact') ?>" style="padding-block: 8px; font-size: 12px; position: relative; color: inherit; text-decoration: none;">Контакты</a>
+		</nav>
+
+		<!-- CTA Button -->
+		<a href="/#contact" class="nav-enquire" style="border-bottom: 1px solid; align-items: center; gap: 28px; padding-block: 8px; font-size: 12px; display: flex; color: inherit; text-decoration: none;">Оставить заявку
+			<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+				<path d="M7 7h10v10"></path>
+				<path d="M7 17 17 7"></path>
+			</svg>
+		</a>
+
+		<!-- Mobile Burger -->
+		<button id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-panel" style="background: none; border: none; color: inherit; cursor: pointer; display: none; align-items: center; gap: 14px; font-size: 12px;">
+			<span data-nav-label="">Меню</span>
+			<span data-nav-open="">
+				<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+					<path d="M4 5h16"></path>
+					<path d="M4 12h16"></path>
+					<path d="M4 19h16"></path>
+				</svg>
+			</span>
+			<span data-nav-close="" class="hidden">
+				<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+					<path d="M18 6 6 18"></path>
+					<path d="m6 6 12 12"></path>
+				</svg>
+			</span>
+		</button>
 	</div>
-		<a href="/#contact" class="hd-round" title="Оставить заявку" aria-label="Оставить заявку"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
-		<a href="tel:<?= $__tel ?>" class="hd-round" title="Позвонить" aria-label="Позвонить"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></a>
-		<button class="hd-burger" type="button" aria-label="Открыть меню" aria-expanded="false"><span></span><span></span></button>
-	<div class="hd-drop" id="hdDrop">
-		<a href="/" class="hd-drop-link" data-menu-hash="home" data-menu-nav title="Главная">Главная</a>
-		<a href="/uslugi" class="hd-drop-link<?= $__act(!$__onHome && ($__n === '/uslugi' || str_starts_with($__n, '/services/'))) ?>" title="Услуги и цены">Услуги</a>
-		<a href="/#process" class="hd-drop-link" data-menu-hash="process" data-menu-nav title="Этапы работы">Этапы</a>
-		<a href="/portfolio" class="hd-drop-link<?= $__act(!$__onHome && $__n === '/portfolio') ?>" title="Портфолио объектов">Портфолио</a>
-		<a href="/blog" class="hd-drop-link<?= $__act(!$__onHome && str_starts_with($__n, '/blog')) ?>" title="Статьи и блог">Статьи</a>
-		<a href="/about" class="hd-drop-link<?= $__act(!$__onHome && $__n === '/about') ?>" title="О компании">О нас</a>
-		<a href="/#contact" class="hd-drop-link" data-menu-nav data-menu-hash="contact" title="Обращение">Обращение</a>
-		<a href="/#contact" class="hd-drop-cta" title="Оставить заявку">Оставить заявку</a>
+
+	<!-- Mobile Panel -->
+	<div id="nav-panel" hidden="" style="--line: #ffffff29; --muted: #b2ada8; backdrop-filter: blur(28px); color: #fff; background: #181819f0; max-height: calc(100svh - 74px); padding: 12px 24px 32px; overflow-y: auto; box-shadow: 0 24px 40px #1b1c1d15; display: none; position: fixed; top: 74px; left: 0; right: 0; z-index: 99;">
+		<nav aria-label="Primary, mobile">
+			<a href="/portfolio" style="letter-spacing: -.04em; border-bottom: 1px solid var(--line); align-items: center; gap: 22px; padding: 16px 0; font-size: 30px; display: flex; color: inherit; text-decoration: none;"><span>01</span>Проекты<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
+			<a href="/uslugi" style="letter-spacing: -.04em; border-bottom: 1px solid var(--line); align-items: center; gap: 22px; padding: 16px 0; font-size: 30px; display: flex; color: inherit; text-decoration: none;"><span>02</span>Услуги<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
+			<a href="/about" style="letter-spacing: -.04em; border-bottom: 1px solid var(--line); align-items: center; gap: 22px; padding: 16px 0; font-size: 30px; display: flex; color: inherit; text-decoration: none;"><span>03</span>О нас<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
+			<a href="/#contact" style="letter-spacing: -.04em; border-bottom: 1px solid var(--line); align-items: center; gap: 22px; padding: 16px 0; font-size: 30px; display: flex; color: inherit; text-decoration: none;"><span>04</span>Контакты<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
+			<a href="/#contact" class="button" style="color: #1b1c1d; background: #f0efed; width: 100%; margin-top: 24px; border-radius: 6px; border: 1px solid transparent; justify-content: space-between; align-items: center; gap: 35px; min-height: 52px; padding: 15px 22px; font-size: 13px; font-weight: 500; line-height: 1.2; transition: background .3s, color .3s; display: inline-flex; color: #1b1c1d; background: #f0efed;">Оставить заявку <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
+		</nav>
+		<p style="color: var(--muted); margin-top: 24px; font-size: 11px;">ФАВОРИТ-СТРОЙ-СНАБ — строительство БВЗ под ключ с 2011 года.</p>
 	</div>
-	</nav>
-	<style>
-		/* Плавное открытие/закрытие мобильного меню */
-		.hd-drop {
-			display: block;
-			opacity: 0;
-			visibility: hidden;
-			pointer-events: none;
-			transform: translateX(-50%) translateY(-8px) scale(.98);
-			transform-origin: top center;
-			transition: opacity .25s ease, transform .25s ease, visibility 0s linear .25s;
-		}
-		.hd-bar.hd-open .hd-drop {
-			opacity: 1;
-			visibility: visible;
-			pointer-events: auto;
-			transform: translateX(-50%) translateY(0) scale(1);
-			transition: opacity .25s ease, transform .25s ease, visibility 0s;
-		}
-		@media (prefers-reduced-motion: reduce) {
-			.hd-drop, .hd-bar.hd-open .hd-drop { transition: none; }
-		}
-	</style>
-	<script>
-	(function(){
-		"use strict";
-		var root = document.querySelector('.hd-links');
-		var isHomePage = root ? root.getAttribute('data-menu-root') === 'home' : false;
-
-		function setActive(hash) {
-			document.querySelectorAll('a[data-menu-nav]').forEach(function(a){
-				if (a.getAttribute('data-menu-hash') === hash) {
-					a.classList.add('is-active');
-				} else {
-					a.classList.remove('is-active');
-				}
-			});
-		}
-
-		// При загрузке: на главной если URL содержит #process или #contact — подсвечиваем
-		if (isHomePage) {
-			var hash = window.location.hash.replace('#', '');
-			if (hash === 'process' || hash === 'contact') {
-				setActive(hash);
-			} else {
-				// На главной без хеша — "Главная" active по умолчанию
-				setActive('home');
-			}
-		}
-
-		// При клике на hash-ссылку: активируем
-		document.querySelectorAll('a[data-menu-nav]').forEach(function(a){
-			a.addEventListener('click', function(){
-				if (isHomePage) {
-					setActive(a.getAttribute('data-menu-hash'));
-				}
-			});
-		});
-
-		// При клике на обычную ссылку (не hash): сбрасываем hash-пункты
-		document.querySelectorAll('a[data-menu-nav]').forEach(function(a){
-			a.addEventListener('click', function(e){
-				// Не сбрасываем при клике на самих hash-пунктах
-			});
-		});
-		document.querySelectorAll('.hd-links a:not([data-menu-nav]), .hd-drop a:not([data-menu-nav])').forEach(function(a){
-			a.addEventListener('click', function(){
-				setActive(null);
-			});
-		});
-
-		// Бургер: мобильное меню
-		var bar = document.querySelector('.hd-bar');
-		var burger = document.querySelector('.hd-burger');
-		if (bar && burger) {
-			var setOpen = function(open){
-				bar.classList.toggle('hd-open', open);
-				burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-			};
-			burger.addEventListener('click', function(e){
-				e.stopPropagation();
-				setOpen(!bar.classList.contains('hd-open'));
-			});
-			document.addEventListener('click', function(e){
-				if (bar.classList.contains('hd-open') && !bar.contains(e.target)) setOpen(false);
-			});
-			document.addEventListener('keydown', function(e){
-				if (e.key === 'Escape') setOpen(false);
-			});
-			document.querySelectorAll('.hd-drop a').forEach(function(a){
-				a.addEventListener('click', function(){ setOpen(false); });
-			});
-		}
-	})();
-	</script>
 </header>
+<style>
+	@media (width<=992px) {
+		.desktop-nav { display: none; }
+		#nav-toggle { display: flex; }
+		.site-navigation { height: 78px; }
+		.nav-enquire { margin-left: auto; }
+	}
+	@media (width<=576px) {
+		.site-navigation { gap: 15px; height: 74px; }
+		.brand>span { font-size: 19px; }
+		.brand>img { height: 25px; }
+		.nav-enquire { display: none; }
+	}
+	.site-navigation[data-stuck] { color: #fff; backdrop-filter: blur(24px); background: #171718d1; border-bottom-color: #ffffff29; }
+	[data-page=home] .site-navigation { background: rgba(23, 23, 24, 0.02); color: #fff; backdrop-filter: blur(var(--nav-blur, 1px)); border-bottom-color: #ffffff29; }
+	.site-navigation .brand>span { letter-spacing: -.045em; font-size: 24px; font-weight: 600; }
+	.site-navigation .brand>img { filter: invert(); mix-blend-mode: screen; width: auto; height: 30px; }
+	.site-navigation .desktop-nav a { padding-block: 8px; font-size: 12px; position: relative; }
+	.site-navigation .desktop-nav a:after { content: ""; transform-origin: 100%; height: 1px; transition: transform .5s cubic-bezier(.2, .8, .2, 1); background: currentColor; position: absolute; bottom: 0; left: 0; right: 0; transform: scaleX(0); }
+	.site-navigation .desktop-nav a:hover:after, .site-navigation .desktop-nav a[aria-current]:after { transform-origin: 0; transform: scaleX(1); }
+	.site-navigation .nav-enquire { border-bottom: 1px solid; align-items: center; gap: 28px; padding-block: 8px; font-size: 12px; display: flex; }
+	#nav-panel { --line: #ffffff29; --muted: #b2ada8; backdrop-filter: blur(28px); color: #fff; background: #181819f0; max-height: calc(100svh - 74px); padding: 12px 24px 32px; overflow-y: auto; box-shadow: 0 24px 40px #1b1c1d15; }
+	#nav-panel nav a { letter-spacing: -.04em; border-bottom: 1px solid var(--line); align-items: center; gap: 22px; padding: 16px 0; font-size: 30px; display: flex; }
+	#nav-panel nav a>span { letter-spacing: 0; color: var(--muted); font-size: 10px; }
+	#nav-panel nav a svg { margin-left: auto; }
+	#nav-panel>.button { width: 100%; margin-top: 24px; }
+	#nav-panel>p { color: var(--muted); margin-top: 24px; font-size: 11px; }
+	.button { color: #1b1c1d; background: #f0efed; border-radius: 6px; border: 1px solid transparent; justify-content: space-between; align-items: center; gap: 35px; min-height: 52px; padding: 15px 22px; font-size: 13px; font-weight: 500; line-height: 1.2; transition: background .3s, color .3s; display: inline-flex; }
+	.button:hover { background: #fff; }
+	.button svg { transition: transform .4s cubic-bezier(.2, .8, .2, 1); flex-shrink: 0; }
+	.button:hover svg { transform: translate(2px, -2px); }
+</style>
+<script>
+(function(){
+	"use strict";
+	var header = document.querySelector('#site-header');
+	var navBar = document.querySelector('.site-navigation');
+	var isHome = document.body.classList.contains('home-page') || window.location.pathname === '/';
+
+	// Update nav-opacity/blur on scroll
+	function onScroll() {
+		if (!navBar) return;
+		var scrollY = window.scrollY || window.pageYOffset;
+		var maxOpacity = 0.86;
+		var maxBlur = 24;
+		var startFade = 20;
+		var endFade = 120;
+
+		if (scrollY <= startFade) {
+			navBar.style.setProperty('--nav-opacity', '0.02');
+			navBar.style.setProperty('--nav-blur', '1px');
+		} else if (scrollY >= endFade) {
+			navBar.style.setProperty('--nav-opacity', String(maxOpacity));
+			navBar.style.setProperty('--nav-blur', String(maxBlur) + 'px');
+		} else {
+			var progress = (scrollY - startFade) / (endFade - startFade);
+			var opacity = 0.02 + (maxOpacity - 0.02) * progress;
+			var blur = 1 + (maxBlur - 1) * progress;
+			navBar.style.setProperty('--nav-opacity', String(opacity));
+			navBar.style.setProperty('--nav-blur', blur + 'px');
+		}
+
+		// Toggle data-stuck attribute
+		if (scrollY > 50) {
+			navBar.setAttribute('data-stuck', '');
+		} else {
+			navBar.removeAttribute('data-stuck');
+		}
+	}
+
+	// Mobile burger
+	var bar = document.querySelector('.site-navigation');
+	var burger = document.querySelector('#nav-toggle');
+	if (bar && burger) {
+		var setOpen = function(open){
+			bar.classList.toggle('hd-open', open);
+			burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+		};
+		burger.addEventListener('click', function(e){
+			e.stopPropagation();
+			setOpen(!bar.classList.contains('hd-open'));
+		});
+		document.addEventListener('click', function(e){
+			if (bar.classList.contains('hd-open') && !bar.contains(e.target)) setOpen(false);
+		});
+		document.addEventListener('keydown', function(e){
+			if (e.key === 'Escape') setOpen(false);
+		});
+		document.querySelectorAll('#nav-panel a').forEach(function(a){
+			a.addEventListener('click', function(){ setOpen(false); });
+		});
+	}
+
+	// Init scroll listener
+	window.addEventListener('scroll', onScroll, { passive: true });
+	onScroll(); // Initial
+})();
+</script>
