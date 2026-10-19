@@ -39,8 +39,6 @@ if (!headers_sent()) {
 	header_remove('X-Powered-By');
 	header_remove('Server');
 }
-// Сессии (формы/антибот) не должны перебивать Cache-Control владельца — SecurityHeaders
-ini_set('session.cache_limiter', '');
 // Автоверсия статики: захардкоженный ?v=20261009 в шаблонах заменяем живым ?v= по mtime,
 // иначе браузер кэширует CSS/JS и не видит правок. Плюс добавляем ?v к main.js без версии.
 if (!defined('FSS_ASSET_VER')) {

@@ -7,6 +7,8 @@
 if (!ob_get_level() && !headers_sent()) {
     ob_start();
 }
+// Сессии не должны перебивать Cache-Control владельца — SecurityHeaders
+ini_set('session.cache_limiter', '');
 if (session_status() === PHP_SESSION_NONE) {
     if (!headers_sent()) {
         @session_start();
