@@ -69,6 +69,28 @@ class Antibot
         setTimeout(function(){btn.disabled=false;btn.style.opacity="";setText(orig);},15000);
       });
     });
+
+    // Phone mask for all type="tel" inputs
+    document.querySelectorAll('input[type="tel"]').forEach(function(input){
+      if (input.dataset.fssPhoneMask) return;
+      input.dataset.fssPhoneMask = '1';
+      input.addEventListener('focus', function(){
+        if (!this.value) this.value = '+7 ';
+      });
+      input.addEventListener('input', function(){
+        var x = this.value.replace(/\D/g, '').substring(0, 11);
+        if (x.length === 0) { this.value = ''; return; }
+        var formatted = '+7 ';
+        if (x.length > 1) formatted += '(' + x.substring(1, 4);
+        if (x.length >= 4) formatted += ') ' + x.substring(4, 7);
+        if (x.length >= 7) formatted += '-' + x.substring(7, 9);
+        if (x.length >= 9) formatted += '-' + x.substring(9, 11);
+        this.value = formatted;
+      });
+      input.addEventListener('blur', function(){
+        if (this.value === '+7 ') this.value = '';
+      });
+    });
   });
 })();
 </script>
@@ -124,10 +146,16 @@ HTML;
             self::logAttempt('missing_ts_soft', $data);
         }
 
-        if ($jsToken === '' || !ctype_digit($jsToken) || strlen($jsToken) < 10 || strlen($jsToken) > 15) {
+        // JS token: мягче — принимаем любой непустой токен, если есть _ts мягкий проход
+        // (пользователь мог отправить быстро, JS не успел заполнить, но _ts есть)
+        $jsOk = $jsToken !== '' && ctype_digit($jsToken) && strlen($jsToken) >= 10 && strlen($jsToken) <= 15;
+        if (!$jsOk && $ts === 0) {
             $error = 'Проверка браузера не пройдена. Включите JavaScript и обновите страницу.';
             self::logAttempt('missing_js_token', $data);
             return false;
+        } elseif (!$jsOk) {
+            // _ts есть, но js_token невалидный — не блокируем, логируем
+            self::logAttempt('weak_js_token', $data);
         }
 
         $ip = self::getIP();
