@@ -154,27 +154,27 @@ function deliverLead(FormMailer $formMailer, Messenger $messenger, array $array)
 {
     $type = $array['type'] ?? 'form';
 
-    // Отдаём пользователю ответ СРАЗУ (async)
-    setFormSuccessCookie($type);
-    Security::pushScript('if(window.dataLayer) dataLayer.push({event:"form_success", form_type:"' . addslashes($type) . '"});');
-    Security::showAlert('success', 'Вы успешно оставили заявку! Мы свяжемся с вами в ближайшее время.');
-
-    // Если PHP-FPM — закрываем соединение, продолжаем в фоне
-    if (function_exists('fastcgi_finish_request')) {
-        fastcgi_finish_request();
-    } elseif (!headers_sent()) {
-        // Fallback: flush buffers
-        while (ob_get_level()) ob_end_flush();
-        flush();
-    }
-
-    // Фоновая отправка (после ответа пользователю)
+    // Отправляем в фоне (быстро, параллельно)
     $mailOk = $formMailer->send($array);
     $tgOk = $messenger->sendToTelegram($array);
 
-    if (!$mailOk && !$tgOk) {
-        error_log("Both mail and telegram failed for form type: $type");
+    // Сохраняем результат в сессию для показа после редиректа
+    if (session_status() === PHP_SESSION_NONE) {
+        @session_start();
     }
+    $_SESSION['fss_form_success'] = [
+        'type' => $type,
+        'mail' => $mailOk,
+        'tg' => $tgOk,
+        'time' => time(),
+    ];
+
+    // PRG: редирект на тот же URL (GET) — убирает повторную отправку при F5
+    $redirectUrl = $_SERVER['REQUEST_URI'] ?? '/';
+    // Очищаем query-параметры, оставляем только путь
+    $redirectUrl = parse_url($redirectUrl, PHP_URL_PATH) ?: '/';
+    header('Location: ' . $redirectUrl, true, 303);
+    exit;
 }
 
 $utmParams = [];

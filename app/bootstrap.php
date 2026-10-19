@@ -35,6 +35,25 @@ require_once __DIR__ . '/Seo/seo.php';
 // Глобальный обработчик форм (должен быть до роутинга, как в pkvartira)
 require_once __DIR__ . '/Mail/component_mail.php';
 
+// Показать уведомление об успехе после PRG-редиректа (GET)
+if (session_status() === PHP_SESSION_NONE) {
+	@session_start();
+}
+if (!empty($_SESSION['fss_form_success'])) {
+	$success = $_SESSION['fss_form_success'];
+	unset($_SESSION['fss_form_success']);
+	$type = $success['type'] ?? 'form';
+	$mailOk = $success['mail'] ?? false;
+	$tgOk = $success['tg'] ?? false;
+	if ($mailOk || $tgOk) {
+		setFormSuccessCookie($type);
+		Security::pushScript('if(window.dataLayer) dataLayer.push({event:"form_success", form_type:"' . addslashes($type) . '"});');
+		Security::showAlert('success', 'Вы успешно оставили заявку! Мы свяжемся с вами в ближайшее время.');
+	} else {
+		Security::showAlert('error', 'Не удалось отправить заявку. Пожалуйста, позвоните нам +7 938 018-00-06 или попробуйте позже.');
+	}
+}
+
 if (!headers_sent()) {
 	header_remove('X-Powered-By');
 	header_remove('Server');
