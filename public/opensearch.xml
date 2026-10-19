@@ -7,8 +7,8 @@
   <Contact>fss@xn--h1aafj.xn--p1ai</Contact>
   <Url type="text/html" template="https://www.xn--h1aafj.xn--p1ai/search?q={searchTerms}"/>
   <Url type="application/opensearchdescription+xml" rel="self" template="https://www.xn--h1aafj.xn--p1ai/opensearch.xml"/>
-  <Image height="32" width="32" type="image/png">https://www.xn--h1aafj.xn--p1ai/public/assets/image/favicon/favicon-32x32.png</Image>
-  <Image height="180" width="180" type="image/png">https://www.xn--h1aafj.xn--p1ai/public/assets/image/favicon/apple-touch-icon.png</Image>
+  <Image height="32" width="32" type="image/png">https://www.xn--h1aafj.xn--p1ai/public/assets/image/logo/favicon/favicon-32x32.png</Image>
+  <Image height="180" width="180" type="image/png">https://www.xn--h1aafj.xn--p1ai/public/assets/image/logo/favicon/apple-touch-icon.png</Image>
   <Query role="example" searchTerms="ангар под ключ"/>
   <InputEncoding>UTF-8</InputEncoding>
   <OutputEncoding>UTF-8</OutputEncoding>

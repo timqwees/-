@@ -24,13 +24,13 @@ if (file_exists($componentMailPath)) {
 		<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 	<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 	<!-- Favicon unified -->
-	<link rel="icon" type="image/png" href="/public/assets/image/logo/favicon-96x96.png" sizes="96x96" />
-	<link rel="icon" type="image/svg+xml" href="/public/assets/image/logo/favicon.svg" />
-	<link rel="shortcut icon" href="/public/assets/image/logo/favicon.ico" />
-	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/apple-touch-icon.png" />
+	<link rel="icon" type="image/png" href="/public/assets/image/logo/favicon/favicon-96x96.png" sizes="96x96" />
+	<link rel="icon" type="image/svg+xml" href="/public/assets/image/logo/favicon/favicon.svg" />
+	<link rel="shortcut icon" href="/public/assets/image/logo/favicon/favicon.ico" />
+	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/favicon/apple-touch-icon.png" />
 	<meta name="apple-mobile-web-app-title" content="ФСС" />
-	<link rel="manifest" href="/public/assets/image/logo/site.webmanifest" />
-	<link rel="mask-icon" href="/public/assets/image/logo/favicon-96x96.png" color="#F97316">
+	<link rel="manifest" href="/public/assets/image/logo/favicon/site.webmanifest" />
+	<link rel="mask-icon" href="/public/assets/image/logo/favicon/favicon-96x96.png" color="#F97316">
 	<!-- Canonical / hreflang / OG / Twitter — единый генератор (app/Seo/seo.php) -->
 <?= seo_canonical_tags() ?>
 <?= seo_verify_tags() ?>
@@ -167,7 +167,7 @@ if (file_exists($componentMailPath)) {
 				<h1 class="hero-title">Быстровозводимые <span class="text-brand font-medium">здания,</span><br>под ключ от 14 дней</h1>
 			</div>
 			<div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[510px] h-[255px] max-w-[80vw] rounded-t-full bg-[#ffad70]" aria-hidden="true"></div>
-			<img class="portrait" src="/public/assets/image/Components/avatar/1.png"<?= seo_img_attrs('/public/assets/image/Components/avatar/1.png') ?> alt="Быстровозводимые здания под ключ — ФСС" title="Быстровозводимые здания под ключ — ФСС" fetchpriority="high" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'">
+			<img class="portrait" src="/public/assets/image/Components/avatar/1.png"<?= seo_img_attrs('/public/assets/image/Components/avatar/1.png') ?> alt="Быстровозводимые здания под ключ — ФСС" title="Быстровозводимые здания под ключ — ФСС" fetchpriority="high" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
 			<div class="quote">
 				<div class="qmark" aria-hidden="true">❝</div>
 				<p><b>180+ сданных объектов</b> — склады, ангары, АБК и общежития. Москва, МО и вся Россия</p>
@@ -237,19 +237,19 @@ if (file_exists($componentMailPath)) {
 
 			<div class="steps3">
 				<article class="step3">
-					<img class="step3-img" src="/public/assets/image/services/капстроение/10.JPG" alt="Заявка и смета на модульное здание" title="Заявка и смета на модульное здание" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'">
+					<img class="step3-img" src="/public/assets/image/services/капстроение/10.JPG" alt="Заявка и смета на модульное здание" title="Заявка и смета на модульное здание" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
 					<h3>Заявка и смета</h3>
 					<p>Оставляете заявку — инженер перезвонит за 15 минут и рассчитает фиксированную смету.</p>
 					<span class="step3-n">01</span>
 				</article>
 				<article class="step3">
-					<img class="step3-img" src="/public/assets/image/swiper/2.jpg" alt="Проектирование модульного здания" title="Проектирование модульного здания" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'">
+					<img class="step3-img" src="/public/assets/image/swiper/2.jpg" alt="Проектирование модульного здания" title="Проектирование модульного здания" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
 					<h3>Проектирование</h3>
 					<p>Готовим чертежи, рассчитываем нагрузку и согласовываем проект с вами.</p>
 					<span class="step3-n">02</span>
 				</article>
 				<article class="step3 step3-photo">
-					<img src="/public/assets/image/banner.jpeg" alt="Производство модулей на заводе" title="Производство модулей на заводе" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'">
+					<img src="/public/assets/image/banner.jpeg" alt="Производство модулей на заводе" title="Производство модулей на заводе" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
 					<div class="step3-ovl">
 						<h3>Фундамент</h3>
 						<p>Устраиваем основание: свайное, ленточное или столбчатое под модули.</p>
@@ -257,13 +257,13 @@ if (file_exists($componentMailPath)) {
 					</div>
 				</article>
 				<article class="step3">
-					<img class="step3-img" src="/public/assets/image/swiper/1.jpeg" alt="Производство модулей из сэндвич-панелей" title="Производство модулей из сэндвич-панелей" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'">
+					<img class="step3-img" src="/public/assets/image/swiper/1.jpeg" alt="Производство модулей из сэндвич-панелей" title="Производство модулей из сэндвич-панелей" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
 					<h3>Производство</h3>
 					<p>Изготавливаем модули из сэндвич-панелей на собственном заводе БВЗ.</p>
 					<span class="step3-n">04</span>
 				</article>
 				<article class="step3">
-					<img class="step3-img" src="/public/assets/image/swiper/3.jpeg" alt="Монтаж и сдача модульного здания" title="Монтаж и сдача модульного здания" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'">
+					<img class="step3-img" src="/public/assets/image/swiper/3.jpeg" alt="Монтаж и сдача модульного здания" title="Монтаж и сдача модульного здания" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
 					<h3>Монтаж и сдача</h3>
 					<p>Собираем, подключаем коммуникации и сдаём объект под ключ.</p>
 					<span class="step3-n">05</span>
@@ -276,7 +276,7 @@ if (file_exists($componentMailPath)) {
 
 	<!-- CTA-баннер: попробуйте -->
 	<section class="view cta-band">
-		<img src="/public/assets/image/Components/banner/hero.jpg" alt="Быстровозводимые здания ФСС — строим то, что ведёт вас вперёд" title="Быстровозводимые здания ФСС — строим то, что ведёт вас вперёд" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'">
+		<img src="/public/assets/image/Components/banner/hero.jpg" alt="Быстровозводимые здания ФСС — строим то, что ведёт вас вперёд" title="Быстровозводимые здания ФСС — строим то, что ведёт вас вперёд" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
 		<div class="cta-in">
 			<span class="cta-eyebrow"><i></i>Ваш проект — наше дело</span>
 			<h2>Строим то,<br>что ведёт вас вперёд</h2>
@@ -650,9 +650,9 @@ if (file_exists($componentMailPath)) {
 				</div>
 				<div class="works-right">
 					<div class="works-stack" id="worksStack">
-						<div class="works-card back"><img id="worksBack" src="/public/assets/image/swiper/2.jpg" alt="Склад из сэндвич-панелей — объект ФСС" title="Склад из сэндвич-панелей — объект ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'"></div>
-						<div class="works-card mid"><img id="worksMid" src="/public/assets/image/banner.jpeg" alt="Модульные здания — производство ФСС" title="Модульные здания — производство ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'"></div>
-						<div class="works-card front"><img id="worksFront" src="/public/assets/image/swiper/1.jpeg" alt="Модульное общежитие из сэндвич-панелей — объект ФСС" title="Модульное общежитие из сэндвич-панелей — объект ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'"></div>
+						<div class="works-card back"><img id="worksBack" src="/public/assets/image/swiper/2.jpg" alt="Склад из сэндвич-панелей — объект ФСС" title="Склад из сэндвич-панелей — объект ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'"></div>
+						<div class="works-card mid"><img id="worksMid" src="/public/assets/image/banner.jpeg" alt="Модульные здания — производство ФСС" title="Модульные здания — производство ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'"></div>
+						<div class="works-card front"><img id="worksFront" src="/public/assets/image/swiper/1.jpeg" alt="Модульное общежитие из сэндвич-панелей — объект ФСС" title="Модульное общежитие из сэндвич-панелей — объект ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'"></div>
 					</div>
 				</div>
 			</div>

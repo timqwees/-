@@ -35,10 +35,10 @@ if ($q !== '') {
 	<title>Поиск по услугам<?= $q !== '' ? ' — ' . htmlspecialchars($q) : '' ?> | <?= htmlspecialchars(seo_config('brand')) ?></title>
 	<meta name="description" content="Поиск по услугам <?= htmlspecialchars(seo_config('brand')) ?>: склады, ангары, АБК, общежития, капремонт, спецтехника.">
 	<meta name="robots" content="noindex, follow">
-	<link rel="icon" type="image/png" href="/public/assets/image/logo/favicon-96x96.png" sizes="96x96" />
-	<link rel="icon" type="image/svg+xml" href="/public/assets/image/logo/favicon.svg" />
-	<link rel="shortcut icon" href="/public/assets/image/logo/favicon.ico" />
-	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/apple-touch-icon.png" />
+	<link rel="icon" type="image/png" href="/public/assets/image/logo/favicon/favicon-96x96.png" sizes="96x96" />
+	<link rel="icon" type="image/svg+xml" href="/public/assets/image/logo/favicon/favicon.svg" />
+	<link rel="shortcut icon" href="/public/assets/image/logo/favicon/favicon.ico" />
+	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/favicon/apple-touch-icon.png" />
 	<?= seo_canonical_tags() ?>
 	<?= seo_og_tags('Поиск по услугам — ' . seo_config('brand'), 'Поиск по каталогу услуг ФАВОРИТ-СТРОЙ-СНАБ: склады, ангары, АБК, общежития, капремонт, спецтехника.') ?>
 	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261018">

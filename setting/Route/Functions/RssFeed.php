@@ -129,7 +129,7 @@ final class RssFeed
 		$out .= "\t\t<managingEditor>" . htmlspecialchars('support@' . parse_url($base, PHP_URL_HOST)) . " (" . htmlspecialchars($brand) . ")</managingEditor>\n";
 		$out .= "\t\t<webMaster>" . htmlspecialchars('webmaster@' . parse_url($base, PHP_URL_HOST)) . "</webMaster>\n";
 		$out .= "\t\t<image>\n";
-		$out .= "\t\t\t<url>{$base}/public/assets/image/logo/logo.svg</url>\n";
+		$out .= "\t\t\t<url>{$base}/public/assets/image/logo/favicon/favicon.svg</url>\n";
 		$out .= "\t\t\t<title>" . htmlspecialchars($brand) . "</title>\n";
 		$out .= "\t\t\t<link>{$base}</link>\n";
 		$out .= "\t\t\t<width>144</width>\n";

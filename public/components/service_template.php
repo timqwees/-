@@ -118,12 +118,12 @@ for ($k = 0; $k < $wn; $k++) { $works[] = $pool[($off + 5 + $k) % $pn]; }
 <meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
 <meta name="theme-color" content="#F97316">
 	<!-- Favicon unified -->
-	<link rel="icon" type="image/png" href="/public/assets/image/logo/favicon-96x96.png" sizes="96x96" />
-	<link rel="icon" type="image/svg+xml" href="/public/assets/image/logo/favicon.svg" />
-	<link rel="shortcut icon" href="/public/assets/image/logo/favicon.ico" />
-	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/apple-touch-icon.png" />
+	<link rel="icon" type="image/png" href="/public/assets/image/logo/favicon/favicon-96x96.png" sizes="96x96" />
+	<link rel="icon" type="image/svg+xml" href="/public/assets/image/logo/favicon/favicon.svg" />
+	<link rel="shortcut icon" href="/public/assets/image/logo/favicon/favicon.ico" />
+	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/favicon/apple-touch-icon.png" />
 	<meta name="apple-mobile-web-app-title" content="ФСС" />
-	<link rel="manifest" href="/public/assets/image/logo/site.webmanifest" />
+	<link rel="manifest" href="/public/assets/image/logo/favicon/site.webmanifest" />
 <?= seo_canonical_tags() ?>
 <?= seo_verify_tags() ?>
 <?= seo_og_tags($seoTitle, $seoDesc, $pick(0)) ?>

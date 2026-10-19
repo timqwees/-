@@ -181,9 +181,10 @@ if (preg_match('#^/blog/([^/]+)$#', seo_url(), $m)) {
 // Главная — VideoObject для hero-видео
 if (seo_url() === '/') {
 	$base = rtrim(seo_config('base_url'), '/');
-	$videoPath = dirname(__DIR__, 3) . '/public/assets/video/hero.mp4';
-	$duration = 'PT30S'; // fallback
+	$videoRel = '/public/assets/image/banner/dostavka.MP4';
+	$videoPath = dirname(__DIR__, 2) . $videoRel;
 	if (is_file($videoPath)) {
+		$duration = 'PT30S'; // fallback
 		// Попытка получить реальную длительность через ffprobe (если есть)
 		$ffprobe = @shell_exec('which ffprobe');
 		if ($ffprobe) {
@@ -193,20 +194,20 @@ if (seo_url() === '/') {
 				$duration = 'PT' . $sec . 'S';
 			}
 		}
+		$graph[] = [
+			'@type' => 'VideoObject',
+			'@id' => $base . '#hero-video',
+			'name' => 'Быстровозводимые здания ФСС — строим то, что ведёт вас вперёд',
+			'description' => 'Видео-презентация ФАВОРИТ-СТРОЙ-СНАБ: производство и монтаж БВЗ под ключ, склады, ангары, АБК, общежития, капремонт. 180+ объектов, 14 лет на рынке.',
+			'thumbnailUrl' => $base . '/public/assets/image/og/og-home-1200x630.jpg',
+			'uploadDate' => date('c', (int)@filemtime(dirname(__DIR__, 2) . '/public/pages/home.php')),
+			'contentUrl' => $base . $videoRel,
+			'embedUrl' => $base . '/',
+			'duration' => $duration,
+			'encodingFormat' => 'video/mp4',
+			'publisher' => ['@id' => $base . '#organization'],
+		];
 	}
-	$graph[] = [
-		'@type' => 'VideoObject',
-		'@id' => $base . '#hero-video',
-		'name' => 'Быстровозводимые здания ФСС — строим то, что ведёт вас вперёд',
-		'description' => 'Видео-презентация ФАВОРИТ-СТРОЙ-СНАБ: производство и монтаж БВЗ под ключ, склады, ангары, АБК, общежития, капремонт. 180+ объектов, 14 лет на рынке.',
-		'thumbnailUrl' => $base . '/public/assets/image/og/og-home-1200x630.jpg',
-		'uploadDate' => date('c', (int)@filemtime(dirname(__DIR__, 3) . '/public/pages/home.php')),
-		'contentUrl' => $base . '/public/assets/video/hero.mp4',
-		'embedUrl' => $base . '/',
-		'duration' => $duration,
-		'encodingFormat' => 'video/mp4',
-		'publisher' => ['@id' => $base . '#organization'],
-	];
 }
 
 // Speakable для главной

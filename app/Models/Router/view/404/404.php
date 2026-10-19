@@ -17,7 +17,7 @@ $__popular = array_slice(seo_services(), 0, 6, true);
 	<title>Страница не найдена (404) — <?= htmlspecialchars(seo_config('brand')) ?></title>
 	<meta name="robots" content="noindex, follow">
 	<meta name="description" content="Запрошенная страница не найдена. Перейдите в каталог услуг быстровозводимых зданий или позвоните нам.">
-	<link rel="icon" type="image/png" sizes="32x32" href="/public/assets/image/favicon/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/public/assets/image/logo/favicon/favicon-32x32.png">
 	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261009">
 	<style>
 		body{font-family:Manrope,Inter,system-ui,sans-serif;background:#f8fafc;color:#0f172a;margin:0}

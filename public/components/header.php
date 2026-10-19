@@ -9,7 +9,7 @@ $__onHome = $__n === '/';
 $__tel = htmlspecialchars((string) preg_replace( '/\D/', '', (string)seo_config('phone')));
 ?><header class="hd">
 	<nav class="hd-bar hd-glass" aria-label="Быстрая навигация">
-		<a href="/" class="hd-avatar" title="ФАВОРИТ-СТРОЙ-СНАБ — на главную" aria-label="ФАВОРИТ-СТРОЙ-СНАБ — на главную"><img src="/public/assets/image/logo/favicon.svg" alt="ФАВОРИТ-СТРОЙ-СНАБ" title="ФАВОРИТ-СТРОЙ-СНАБ" width="40" height="40" loading="eager" decoding="async"></a>
+		<a href="/" class="hd-avatar" title="ФАВОРИТ-СТРОЙ-СНАБ — на главную" aria-label="ФАВОРИТ-СТРОЙ-СНАБ — на главную"><img src="/public/assets/image/logo/favicon/favicon.svg" alt="ФАВОРИТ-СТРОЙ-СНАБ" title="ФАВОРИТ-СТРОЙ-СНАБ" width="40" height="40" loading="eager" decoding="async"></a>
 		<div class="hd-mid" aria-hidden="true"><span>СТРОЙ ФИРМА</span></div>
 	<div class="hd-links" data-menu-root="<?= $__onHome ? 'home' : 'other' ?>">
 		<a href="/" class="hd-link" data-menu-hash="home" data-menu-nav title="Главная">Главная</a>

@@ -226,7 +226,7 @@ if (!function_exists('seo_organization_jsonld')) {
 				'url' => $base . '/',
 				'inn' => seo_config('inn'),
 				'ogrn' => seo_config('ogrn'),
-				'logo' => ['@type' => 'ImageObject', 'url' => $base . '/public/assets/image/logo/logo.svg', 'width' => 512, 'height' => 512],
+				'logo' => ['@type' => 'ImageObject', 'url' => $base . '/public/assets/image/logo/favicon/favicon.svg', 'width' => 512, 'height' => 512],
 				'image' => ['@type' => 'ImageObject', 'url' => $base . '/public/assets/image/og/og-blog-1200x630.jpg', 'width' => 1200, 'height' => 630],
 				'description' => 'ФАВОРИТ-СТРОЙ-СНАБ — производство и монтаж быстровозводимых зданий (склады, ангары, АБК, общежития), капитальный ремонт, грузоперевозки и аренда спецтехники. Москва и Московская область, работаем по всей России.',
 				'foundingDate' => seo_config('founded'),
