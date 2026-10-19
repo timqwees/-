@@ -13,7 +13,6 @@ if (session_status() === PHP_SESSION_NONE) {
     if (!headers_sent()) {
         @session_start();
     } else {
-        // fallback если заголовки уже отправлены — пробуем с буфером
         @session_start();
         if (session_status() === PHP_SESSION_NONE && !isset($_SESSION)) {
             $_SESSION = [];
@@ -26,7 +25,7 @@ $httpHost = $_SERVER['HTTP_HOST'] ?? 'xn--h1aafj.xn--p1ai';
 $httpHost = strtolower(trim($httpHost));
 $httpHost = preg_replace('/^www\./', '', $httpHost);
 
-$scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || 
+$scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ||
           (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')
     ? 'https' : 'http';
 
@@ -54,24 +53,22 @@ $telegramChatsRaw = fss_env('TELEGRAM_CHAT_IDS');
 $telegramChats = $telegramChatsRaw !== '' ? array_map('trim', explode(',', $telegramChatsRaw)) : [];
 define('TELEGRAM_CHAT_IDS', serialize($telegramChats));
 
-// Mail
-$mailDomain = preg_match('/^xn--/', $httpHost) ? idn_to_utf8($httpHost, IDNA_NONTRANSITIONAL_TO_ASCII, INTL_IDNA_VARIANT_UTS46) : $httpHost;
-define('MAIL_TO', fss_env('MAIL_TO', 'order@' . $mailDomain));
-define('MAIL_TO_PUNY', fss_env('MAIL_TO_PUNY', 'order@' . (preg_match('/^xn--/', $httpHost) ? $httpHost : idn_to_ascii($mailDomain, IDNA_NONTRANSITIONAL_TO_ASCII, INTL_IDNA_VARIANT_UTS46))));
-define('MAIL_FROM', fss_env('MAIL_FROM'));
-define('MAIL_PASS', fss_env('MAIL_PASS')); // App password Gmail
+// Mail - ПРОСТЫЕ ЖЁСТКИЕ ЗНАЧЕНИЯ
+define('MAIL_TO', 'order@фсс.рус');           // для отображения (IDN)
+define('MAIL_TO_PUNY', 'order@xn--h1aafj.xn--p1ai'); // для SMTP (punycode)
+define('MAIL_FROM', fss_env('MAIL_FROM'));    // bingiabonbasv@gmail.com
+define('MAIL_PASS', fss_env('MAIL_PASS'));    // App password Gmail
 define('MAIL_FROM_NAME', 'Новое обращение ФСС.РУС');
 define('MAIL_PORT', 587);
 
 // Antibot
-define('ANTIBOT_MIN_TIME', 3); // сек минимальное время заполнения
-define('ANTIBOT_MAX_TIME', 3600); // макс время жизни формы (1 час)
-define('ANTIBOT_RATE_LIMIT_COUNT', 5); // max за окно
-define('ANTIBOT_RATE_LIMIT_WINDOW', 600); // окно 10 минут в сек
-define('ANTIBOT_HONEYPOT_FIELD', 'fax_number'); // honeypot
+define('ANTIBOT_MIN_TIME', 3);
+define('ANTIBOT_MAX_TIME', 3600);
+define('ANTIBOT_RATE_LIMIT_COUNT', 5);
+define('ANTIBOT_RATE_LIMIT_WINDOW', 600);
+define('ANTIBOT_HONEYPOT_FIELD', 'fax_number');
 define('ANTIBOT_STORAGE_DIR', sys_get_temp_dir() . '/fss_antibot');
 
-// Ensure storage dir
 if (!is_dir(ANTIBOT_STORAGE_DIR)) {
     @mkdir(ANTIBOT_STORAGE_DIR, 0755, true);
 }

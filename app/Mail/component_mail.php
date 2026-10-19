@@ -38,19 +38,14 @@ function setFormSuccessCookie(string $formType): void
 
 class FormMailer
 {
-    private string $to;
-    private string $from;
-    private string $pass;
-    private string $fromName;
-    private int $port;
+    private string $to = MAIL_TO_PUNY;
+    private string $from = MAIL_FROM;
+    private string $pass = MAIL_PASS;
+    private string $fromName = MAIL_FROM_NAME;
+    private int $port = MAIL_PORT;
 
     public function __construct()
     {
-        $this->to       = defined('MAIL_TO_PUNY') ? MAIL_TO_PUNY : MAIL_TO;
-        $this->from     = MAIL_FROM;
-        $this->pass     = MAIL_PASS;
-        $this->fromName = MAIL_FROM_NAME;
-        $this->port     = defined('MAIL_PORT') ? (int)MAIL_PORT : 587;
     }
 
     public function send(array $array): bool
@@ -169,9 +164,11 @@ function deliverLead(FormMailer $formMailer, Messenger $messenger, array $array)
         'time' => time(),
     ];
 
+    // Гарантируем запись сессии перед редиректом
+    session_write_close();
+
     // PRG: редирект на тот же URL (GET) — убирает повторную отправку при F5
     $redirectUrl = $_SERVER['REQUEST_URI'] ?? '/';
-    // Очищаем query-параметры, оставляем только путь
     $redirectUrl = parse_url($redirectUrl, PHP_URL_PATH) ?: '/';
     header('Location: ' . $redirectUrl, true, 303);
     exit;

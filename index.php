@@ -39,13 +39,6 @@ if (!ob_get_level() && extension_loaded('zlib') && !ini_get('zlib.output_compres
 
 require_once __DIR__ . '/app/bootstrap.php';
 
-// POST-формы: обрабатываем на любой странице (виджет в футере есть везде),
-// а не только на главной/услугах. Вывод буферизован, заголовки ещё не отправлены.
-$mailHandler = __DIR__ . '/app/Mail/component_mail.php';
-if (is_file($mailHandler)) {
-	require_once $mailHandler;
-}
-
 require_once __DIR__ . '/setting/Route/routes.php';
 
 use App\Models\Router\Routes;
