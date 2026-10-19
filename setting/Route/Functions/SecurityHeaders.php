@@ -69,7 +69,11 @@ final class SecurityHeaders
         }
         header('X-Frame-Options: SAMEORIGIN', true);
         header('X-Content-Type-Options: nosniff', true);
+        header('X-XSS-Protection: 0', true);
         header('Referrer-Policy: strict-origin-when-cross-origin', true);
+        header('X-DNS-Prefetch-Control: on', true);
+        header('X-Permitted-Cross-Domain-Policies: none', true);
+        header('X-Download-Options: noopen', true);
         header('Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()', true);
         header('Cross-Origin-Opener-Policy: same-origin-allow-popups', true);
         header('Cross-Origin-Resource-Policy: same-origin', true);
