@@ -59,49 +59,10 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 	<!-- Swiper -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 	<script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-	<script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
-	<script defer>
-		// Lenis Smooth Scroll — exact Protenance settings
-		if (typeof Lenis !== 'undefined') {
-			const lenis = new Lenis({
-				duration: 1.12,
-				smoothWheel: true,
-				syncTouch: false,
-				anchors: { offset: -105 },
-				prevent: e => e.closest('#nav-panel') !== null,
-				easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-				direction: 'vertical',
-				gestureDirection: 'vertical',
-				smooth: true,
-				smoothTouch: false,
-				touchMultiplier: 2,
-				infinite: false,
-			});
-			function raf(time) {
-				lenis.raf(time);
-				requestAnimationFrame(raf);
-			}
-			requestAnimationFrame(raf);
-			// Expose for debugging
-			window.lenis = lenis;
-
-			// Anchor scroll — exact Protenance: duration 1.05, offset -105
-			document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
-				anchor.addEventListener('click', function(e) {
-					var targetId = this.getAttribute('href');
-					if (targetId === '#') return;
-					var target = document.querySelector(targetId);
-					if (target) {
-						e.preventDefault();
-						lenis.scrollTo(target, { offset: -105, duration: 1.05 });
-					}
-				});
-			});
-		}
-	</script>
 	<script defer src="/public/assets/distJS/main.js"></script>
 	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261018">
 	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261018">
+	<link rel="stylesheet" href="/public/assets/distCSS/protenance.css?v=20261018">
 
 <?php include_once __DIR__ . '/../components/sheoma.php'; ?>
 <?= seo_analytics() ?>
@@ -429,10 +390,10 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 			</div>
 		</div>
 		<div class="hero-bottom" style="grid-template-columns: 1.1fr 1fr auto; align-items: end; gap: 40px; display: grid; position: absolute; bottom: 32px; left: clamp(24px, 4.4vw, 96px); right: clamp(24px, 4.4vw, 96px);">
-			<a href="/projects/jewel-of-the-creek" class="hero-project" data-cinema-link="" style="backdrop-filter: blur(22px); border-radius: 8px; background: #16161794; border: 1px solid #ffffff4d; flex-direction: column; gap: 9px; padding: 24px 75px 24px 24px; transition: background .4s; display: flex; position: relative;">
-				<span class="eyebrow" style="opacity: .7; font-size: 8px; letter-spacing: .12em; text-transform: uppercase; font-weight: 500; line-height: 1.5; display: flex; align-items: center; gap: 2px;">Featured project / <span data-cinema-number="">01</span></span>
-				<strong data-cinema-name="" style="letter-spacing: -.02em; font-size: 18px; font-weight: 500;">Jewel of the Creek</strong>
-				<span data-cinema-caption="" style="opacity: .7; font-size: 10px;">Dubai / Hospitality & mixed use</span>
+			<a href="/portfolio/sklad-himki" class="hero-project" data-cinema-link style="backdrop-filter: blur(22px); border-radius: 8px; background: #16161794; border: 1px solid #ffffff4d; flex-direction: column; gap: 9px; padding: 24px 75px 24px 24px; transition: background .4s; display: flex; position: relative;">
+				<span class="eyebrow" style="opacity: .7; font-size: 8px; letter-spacing: .12em; text-transform: uppercase; font-weight: 500; line-height: 1.5; display: flex; align-items: center; gap: 2px;">Избранный проект / <span data-cinema-number>01</span></span>
+				<strong data-cinema-name style="letter-spacing: -.02em; font-size: 18px; font-weight: 500;">Склад под ключ — Химки</strong>
+				<span data-cinema-caption style="opacity: .7; font-size: 10px;">Московская область / Логистика</span>
 				<span class="hero-project-arrow" style="position: absolute; top: 50%; right: 24px; transform: translateY(-50%);">
 					<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 						<path d="M7 7h10v10"></path>
@@ -441,21 +402,21 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 				</span>
 			</a>
 			<div class="hero-controls" style="translate: none; rotate: none; scale: none; opacity: 1; visibility: inherit; transform: translate(0px, 0px); display: flex; flex-direction: column; gap: 16px;">
-				<div class="cinema-pagination" role="group" aria-label="Featured projects" style="align-items: center; gap: 16px; display: flex;">
-					<button type="button" data-cinema-select="0" data-name="Jewel of the Creek" data-caption="Dubai / Hospitality & mixed use" data-project="jewel-of-the-creek" aria-label="Show Jewel of the Creek" aria-pressed="true" style="opacity: 1; align-items: center; gap: 12px; min-height: 44px; font-size: 10px; display: flex; background: none; border: none; color: inherit; cursor: pointer; padding: 0;">
-						01<span style="width: 65px; height: 1px; transition: width .6s cubic-bezier(.2, .8, .2, 1); background: #fff; display: block;"></span>
+				<div class="cinema-pagination" role="group" aria-label="Избранные проекты" style="align-items: center; gap: 16px; display: flex;">
+					<button type="button" data-cinema-select="0" data-name="Склад под ключ — Химки" data-caption="Московская область / Логистика" data-project="sklad-himki" aria-label="Показать склад под ключ в Химках" aria-pressed="true" style="align-items: center; gap: 12px; min-height: 44px; font-size: 10px; display: flex; background: none; border: none; color: inherit; cursor: pointer; padding: 0;">
+						01<span style="height: 1px; transition: width .6s cubic-bezier(.2, .8, .2, 1); background: #fff; display: block;"></span>
 					</button>
-					<button type="button" data-cinema-select="1" data-name="Sheikh Khalifa Medical City" data-caption="Abu Dhabi / Healthcare" data-project="sheikh-khalifa-medical-city" aria-label="Show Sheikh Khalifa Medical City" aria-pressed="false" style="opacity: .5; align-items: center; gap: 12px; min-height: 44px; font-size: 10px; display: flex; background: none; border: none; color: inherit; cursor: pointer; padding: 0;">
-						02<span style="width: 20px; height: 1px; transition: width .6s cubic-bezier(.2, .8, .2, 1); background: #fff; display: block;"></span>
+					<button type="button" data-cinema-select="1" data-name="Ангар под ключ — Мытищи" data-caption="Московская область / Производство" data-project="angar-mytishchi" aria-label="Показать ангар под ключ в Мытищах" aria-pressed="false" style="align-items: center; gap: 12px; min-height: 44px; font-size: 10px; display: flex; background: none; border: none; color: inherit; cursor: pointer; padding: 0;">
+						02<span style="height: 1px; transition: width .6s cubic-bezier(.2, .8, .2, 1); background: #fff; display: block;"></span>
 					</button>
-					<button type="button" data-cinema-select="2" data-name="Sunmarke School" data-caption="Dubai / Education" data-project="sunmarke-school" aria-label="Show Sunmarke School" aria-pressed="false" style="opacity: .5; align-items: center; gap: 12px; min-height: 44px; font-size: 10px; display: flex; background: none; border: none; color: inherit; cursor: pointer; padding: 0;">
-						03<span style="width: 20px; height: 1px; transition: width .6s cubic-bezier(.2, .8, .2, 1); background: #fff; display: block;"></span>
+					<button type="button" data-cinema-select="2" data-name="АБК под ключ — Подольск" data-caption="Московская область / Образование" data-project="abk-podolsk" aria-label="Показать АБК под ключ в Подольске" aria-pressed="false" style="align-items: center; gap: 12px; min-height: 44px; font-size: 10px; display: flex; background: none; border: none; color: inherit; cursor: pointer; padding: 0;">
+						03<span style="height: 1px; transition: width .6s cubic-bezier(.2, .8, .2, 1); background: #fff; display: block;"></span>
 					</button>
 				</div>
-				<p class="eyebrow" data-cinema-status="" aria-live="polite" style="opacity: .65; font-size: 8px; letter-spacing: .12em; text-transform: uppercase; font-weight: 500; line-height: 1.5;">01 / 03 — Jewel of the Creek</p>
+				<p class="eyebrow" data-cinema-status aria-live="polite" style="opacity: .65; font-size: 8px; letter-spacing: .12em; text-transform: uppercase; font-weight: 500; line-height: 1.5;">01 / 03 — Склад под ключ — Химки</p>
 			</div>
-			<a href="/projects" class="hero-cta" style="color: #1b1c1d; border-radius: 8px; background: #f0efed; align-items: center; gap: 45px; margin-bottom: 15px; padding: 22px 26px; font-size: 12px; transition: background .3s; display: flex; align-items: center; gap: 45px;">
-				Explore our work
+			<a href="/portfolio" class="hero-cta" style="color: #1b1c1d; border-radius: 8px; background: #f0efed; align-items: center; gap: 45px; margin-bottom: 15px; padding: 22px 26px; font-size: 12px; transition: background .3s; display: flex;">
+				Изучить проекты
 				<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 					<path d="M7 7h10v10"></path>
 					<path d="M7 17 17 7"></path>
@@ -463,242 +424,436 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 			</a>
 		</div>
 	</section>
-	<section id="showcase" class="px-3 sm:px-5">
-		<img src="/public/assets/image/Components/bg.png" alt="Фон секции услуг" title="Фон секции услуг" aria-hidden="true" loading="lazy" decoding="async" class="showcase-bg">
-		<div class="showcase-light view max-w-[1240px] mx-auto px-5 py-8 md:p-10 relative overflow-hidden">
-			<div class="show-head view">
-				<span class="show-pill">18 услуг</span>
-				<h2>Выберите услугу — остальное за нами</h2>
-				<p>Производство и монтаж быстровозводимых зданий, капитальный ремонт и спецтехника — с фиксированной ценой в договоре.</p>
-			</div>
-			<div class="fss-stage" id="fssStage2">
-				<div class="fss-glow fss-glow-l" aria-hidden="true"></div>
-				<div class="fss-glow fss-glow-r" aria-hidden="true"></div>
-				<ul class="fss-cards" aria-label="Выберите услугу">
-					<li class="fss-card" style="--cx:250;--cy:430;--angle:-10deg" tabindex="0" aria-label="Склады под ключ">
-						<div class="fss-art" aria-hidden="true"><img src="/public/assets/image/swiper/2.jpg" alt="Пример склада из сэндвич-панелей" loading="lazy" decoding="async" onerror="this.style.display=.none." title="Пример склада из сэндвич-панелей"></div>
-						<div class="fss-copy"><h3>Склады<br>под ключ</h3><p>Логистика<br>любой площади</p></div>
-					</li>
-					<li class="fss-card" style="--cx:750;--cy:380;--angle:-3deg" tabindex="0" aria-label="Ангары под ключ">
-						<div class="fss-art" aria-hidden="true"><img src="/public/assets/image/services/капстроение/10.JPG" alt="Пример капитального строительства" loading="lazy" decoding="async" onerror="this.style.display=.none." title="Пример капитального строительства"></div>
-						<div class="fss-copy"><h3>Ангары<br>под ключ</h3><p>Навесы и укрытия<br>для техники</p></div>
-					</li>
-					<li class="fss-card" style="--cx:1250;--cy:380;--angle:3deg" tabindex="0" aria-label="АБК и модули">
-						<div class="fss-art" aria-hidden="true"><img src="/public/assets/image/swiper/1.jpeg" alt="Пример ангара под ключ" loading="lazy" decoding="async" onerror="this.style.display=.none." title="Пример ангара под ключ"></div>
-						<div class="fss-copy"><h3>АБК<br>и модули</h3><p>Офисы и корпуса<br>под ключ</p></div>
-					</li>
-					<li class="fss-card" style="--cx:1750;--cy:430;--angle:10deg" tabindex="0" aria-label="Ваша идея">
-						<div class="fss-art" aria-hidden="true"><img src="/public/assets/image/banner.jpeg" alt="Пример модульного здания" loading="lazy" decoding="async" onerror="this.style.display=.none." title="Пример модульного здания"></div>
-						<div class="fss-copy"><h3>Ваша<br>идея</h3><p>Не нашли нужное?<br>Соберём под задачу</p></div>
-					</li>
-				</ul>
-			</div>
-			<div class="show-cta view">
-				<span class="show-cta-n">180+</span>
-				<span class="show-cta-t">сданных объектов<br>под ключ</span>
-				<a href="#contact" class="show-cta-btn" data-goal="cta_showcase_contact" title="Рассчитать стоимость проекта за 15 минут">Смета за 15 минут</a>
-				<span class="show-cta-time"><i class="fa-solid fa-bolt"></i> 7 мин</span>
+	<!-- ABOUT (ProMaintenance about-section) -->
+	<section id="about" class="about-section section-shell view">
+		<div class="section-topline">
+			<p class="eyebrow">01 / Наш опыт</p>
+			<span class="eyebrow">Москва и область</span>
+		</div>
+		<div class="about-grid">
+			<h2 data-reveal>Будущее не всегда<br>начинается<br><span>с земли.</span></h2>
+			<div class="about-copy" data-reveal>
+				<span class="about-symbol" aria-hidden="true">
+					<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M5 12h14"></path>
+						<path d="M12 5v14"></path>
+					</svg>
+				</span>
+				<p>Работаем с 2011 года. В основе — 15 лет практики в быстровозводимом строительстве.</p>
+				<p>От фундаментов до реконструкции существующих зданий: мы объединяем производство БВЗ, капитальный ремонт и монтаж инженерных сетей. Три направления, один завод, команда в Москве и области.</p>
+				<a href="/uslugi" class="text-link">Смотреть направления
+					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+						<path d="M7 7h10v10"></path>
+						<path d="M7 17 17 7"></path>
+					</svg>
+				</a>
 			</div>
 		</div>
+		<dl class="about-stats">
+			<div><dd>15</dd><dt>лет на рынке</dt></div>
+			<div><dd>03</dd><dt>основных направления</dt></div>
+			<div><dd>180<span>+</span></dd><dt>сданных объектов</dt></div>
+		</dl>
 	</section>
 
+	<!-- DIVISIONS (ProMaintenance division-section) -->
+	<section id="divisions" class="division-section section-shell view">
+		<div class="section-topline">
+			<p class="eyebrow">Три направления</p>
+			<span class="eyebrow">Одно ФСС</span>
+		</div>
+		<div class="work-heading">
+			<h2>Экспертиза,<br>которая работает вместе.</h2>
+			<p>От фундамента и основания.<br>Внутри конструкций и на площадке.</p>
+		</div>
+		<div class="division-grid">
+			<a class="division-card" href="/services/bazovoe-stroenie" title="Производство быстровозводимых зданий">
+				<div class="division-photo">
+					<img src="/public/assets/image/banner.jpeg" alt="Производство быстровозводимых зданий — завод ФСС" title="Производство быстровозводимых зданий — завод ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
+				</div>
+				<div class="division-card-label">
+					<span class="eyebrow">01</span>
+					<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<path d="M7 7h10v10"></path>
+						<path d="M7 17 17 7"></path>
+					</svg>
+				</div>
+				<h3>Быстровозводимые здания</h3>
+				<p>Собственный завод БВЗ, модульные блоки, ангары, склады, АБК и общежития под ключ.</p>
+			</a>
+			<a class="division-card" href="/services/kapital" title="Капитальный строительство и ремонт">
+				<div class="division-photo">
+					<img src="/public/assets/image/services/капстроение/10.JPG" alt="Капитальный ремонт здания — объект ФСС" title="Капитальный ремонт здания — объект ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
+				</div>
+				<div class="division-card-label">
+					<span class="eyebrow">02</span>
+					<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<path d="M7 7h10v10"></path>
+						<path d="M7 17 17 7"></path>
+					</svg>
+				</div>
+				<h3>Капитальный ремонт</h3>
+				<p>Школы, АБК, фасады, кровля, полы и инженерные сети — сдаём к началу учебного года.</p>
+			</a>
+			<a class="division-card" href="/services/spectehnika" title="Спецтехника и услуги">
+				<div class="division-photo">
+					<img src="/public/assets/image/swiper/3.jpeg" alt="Спецтехника и услуги ФСС" title="Спецтехника и услуги ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
+				</div>
+				<div class="division-card-label">
+					<span class="eyebrow">03</span>
+					<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<path d="M7 7h10v10"></path>
+						<path d="M7 17 17 7"></path>
+					</svg>
+				</div>
+				<h3>Спецтехника и услуги</h3>
+				<p>Аренда компрессоров и генераторов, грузоперевозки, монтажные работы, техобслуживание.</p>
+			</a>
+		</div>
+	</section>
+	<section id="projects" class="selected-work section-shell view">
+		<div class="section-topline">
+			<p class="eyebrow">02 / Избранные проекты</p>
+			<a href="/portfolio" class="text-link">Смотреть все объекты
+				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+					<path d="M7 7h10v10"></path>
+					<path d="M7 17 17 7"></path>
+				</svg>
+			</a>
+		</div>
 
-						<!-- Process Section -->
-	<section id="process" class="view relative isolate z-[30] w-full bg-[#f3f4ef] text-[#171310]">
-		<div class="relative mx-auto max-w-[1280px] px-4 pt-[72px] pb-[80px]">
-			<div class="section-heading">
-				<h2>Этапы работы</h2>
-				<span class="heading-divider" aria-hidden="true"></span>
-				<p>От заявки до сдачи — 5 шагов под ключ: проектирование, производство и монтаж</p>
-			</div>
+		<div class="work-heading">
+			<h2>Места с будущим</h2>
+			<p>За каждым объектом — причина<br>сделать его надолго.</p>
+		</div>
 
-			<div class="steps3">
-				<article class="step3">
-					<img class="step3-img" src="/public/assets/image/services/капстроение/10.JPG" alt="Заявка и смета на модульное здание" title="Заявка и смета на модульное здание" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
-					<h3>Заявка и смета</h3>
-					<p>Оставляете заявку — инженер перезвонит за 15 минут и рассчитает фиксированную смету.</p>
-					<span class="step3-n">01</span>
-				</article>
-				<article class="step3">
-					<img class="step3-img" src="/public/assets/image/swiper/2.jpg" alt="Проектирование модульного здания" title="Проектирование модульного здания" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
-					<h3>Проектирование</h3>
-					<p>Готовим чертежи, рассчитываем нагрузку и согласовываем проект с вами.</p>
-					<span class="step3-n">02</span>
-				</article>
-				<article class="step3 step3-photo">
-					<img src="/public/assets/image/banner.jpeg" alt="Производство модулей на заводе" title="Производство модулей на заводе" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
-					<div class="step3-ovl">
-						<h3>Фундамент</h3>
-						<p>Устраиваем основание: свайное, ленточное или столбчатое под модули.</p>
-						<span class="step3-n">03</span>
+		<div class="featured-grid">
+			<article class="project-card" data-slug="sklad-1200">
+				<a href="/portfolio" class="project-card__link" title="Склад 1 200 м² из сэндвич-панелей — объект ФСС">
+					<div class="project-card__image">
+						<img src="/public/assets/image/services/капстроение/10.JPG" alt="Склад 1 200 м² из сэндвич-панелей — объект ФСС" title="Склад 1 200 м² из сэндвич-панелей — объект ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
+						<span class="project-card__number">01 — Логистика</span>
+						<span class="project-card__arrow">
+							<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+								<path d="M7 7h10v10"></path>
+								<path d="M7 17 17 7"></path>
+							</svg>
+						</span>
+						<span class="project-card__caption">Фото с объекта ФСС</span>
 					</div>
-				</article>
-				<article class="step3">
-					<img class="step3-img" src="/public/assets/image/swiper/1.jpeg" alt="Производство модулей из сэндвич-панелей" title="Производство модулей из сэндвич-панелей" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
-					<h3>Производство</h3>
-					<p>Изготавливаем модули из сэндвич-панелей на собственном заводе БВЗ.</p>
-					<span class="step3-n">04</span>
-				</article>
-				<article class="step3">
-					<img class="step3-img" src="/public/assets/image/swiper/3.jpeg" alt="Монтаж и сдача модульного здания" title="Монтаж и сдача модульного здания" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
-					<h3>Монтаж и сдача</h3>
-					<p>Собираем, подключаем коммуникации и сдаём объект под ключ.</p>
-					<span class="step3-n">05</span>
-				</article>
-			</div>
+					<div class="project-card__meta"><span>Московская область</span><span>Логистика</span></div>
+					<h3>Склад 1 200 м² из сэндвич-панелей</h3>
+					<p>Доковые ворота, тёплый контур, освещение и вентиляция. Каркас и обшивка за 45 дней.</p>
+				</a>
+			</article>
 
-			<div class="steps3-nav" role="group" aria-label="Навигация по этапам работы">
-				<span class="steps3-count" aria-hidden="true"><b>01</b> / 05</span>
-				<div class="steps3-dots"></div>
-			</div>
+			<article class="project-card" data-slug="obshchiezhie-120">
+				<a href="/portfolio" class="project-card__link" title="Модульное общежитие на 120 мест — объект ФСС">
+					<div class="project-card__image">
+						<img src="/public/assets/image/swiper/1.jpeg" alt="Модульное общежитие на 120 мест — объект ФСС" title="Модульное общежитие на 120 мест — объект ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
+						<span class="project-card__number">02 — Жильё</span>
+						<span class="project-card__arrow">
+							<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+								<path d="M7 7h10v10"></path>
+								<path d="M7 17 17 7"></path>
+							</svg>
+						</span>
+						<span class="project-card__caption">Фото с объекта ФСС</span>
+					</div>
+					<div class="project-card__meta"><span>Московская область</span><span>Жильё</span></div>
+					<h3>Модульное общежитие на 120 мест</h3>
+					<p>Два этажа, тёплый контур, кондиционеры в каждой комнате. Сдали за 30 дней — заселили сразу.</p>
+				</a>
+			</article>
 
+			<article class="project-card" data-slug="kapremont-shkoly">
+				<a href="/portfolio" class="project-card__link" title="Капремонт школы под ключ — объект ФСС">
+					<div class="project-card__image">
+						<img src="/public/assets/image/swiper/3.jpeg" alt="Капремонт школы под ключ — объект ФСС" title="Капремонт школы под ключ — объект ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
+						<span class="project-card__number">03 — Образование</span>
+						<span class="project-card__arrow">
+							<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+								<path d="M7 7h10v10"></path>
+								<path d="M7 17 17 7"></path>
+							</svg>
+						</span>
+						<span class="project-card__caption">Фото с объекта ФСС</span>
+					</div>
+					<div class="project-card__meta"><span>Московская область</span><span>Образование</span></div>
+					<h3>Капремонт школы под ключ</h3>
+					<p>Полы, потолки, электрика и чистовая отделка классов. Сдали к 1 сентября — без срыва сроков.</p>
+				</a>
+			</article>
+		</div>
+
+		<p class="image-editorial-note">Фотографии — с реальных объектов ФСС. На странице проектов мы разделяем референсные здания и авторские визуализации.</p>
+	</section>
+
+	<!-- EXPERTISE (ProMaintenance expertise-section) -->
+	<section id="expertise" class="expertise-section section-shell view">
+		<div class="section-topline">
+			<p class="eyebrow">02 / Компетенции</p>
+			<span class="eyebrow">Точность снаружи и внутри</span>
+		</div>
+		<div class="expertise-layout">
+			<div class="expertise-visual">
+				<h2>Разные задачи.<br><span>Один сильный результат.</span></h2>
+				<div class="expertise-image">
+					<img src="/public/assets/image/swiper/1.jpeg" alt="Модульное общежитие из сэндвич-панелей — объект ФСС" title="Модульное общежитие из сэндвич-панелей — объект ФСС" loading="lazy" data-expertise-image="moduli" decoding="async" class="is-active">
+					<img src="/public/assets/image/swiper/2.jpg" alt="Склад из сэндвич-панелей — объект ФСС" title="Склад из сэндвич-панелей — объект ФСС" loading="lazy" data-expertise-image="sklad" decoding="async">
+					<img src="/public/assets/image/banner.jpeg" alt="Производство модульных зданий — завод ФСС" title="Производство модульных зданий — завод ФСС" loading="lazy" data-expertise-image="proizvodstvo" decoding="async">
+					<img src="/public/assets/image/services/капстроение/10.JPG" alt="Капитальный ремонт здания — объект ФСС" title="Капитальный ремонт здания — объект ФСС" loading="lazy" data-expertise-image="kapremont" decoding="async">
+				</div>
+				<p class="eyebrow">Технологическая экспертиза / Структурная надёжность</p>
+			</div>
+			<div class="service-list">
+				<details class="service-detail" name="expertise" id="service-moduli" data-service-detail="moduli" open>
+					<summary>
+						<span>01</span>
+						<h3>Модульные здания под ключ</h3>
+						<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M5 12h14"></path>
+							<path d="M12 5v14"></path>
+						</svg>
+					</summary>
+					<div class="service-detail-body">
+						<span class="service-tag">Производство</span>
+						<p>Модули из сэндвич-панелей изготавливаем на собственном заводе БВЗ: ангары, склады, АБК, общежития и бытовые городки. Собственное производство — это контроль качества и цена ниже рынка без посредников.</p>
+						<a href="/services/bazovoe-stroenie" class="text-link">Обсудить систему
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+								<path d="M7 7h10v10"></path>
+								<path d="M7 17 17 7"></path>
+							</svg>
+						</a>
+					</div>
+				</details>
+				<details class="service-detail" name="expertise" id="service-sklad" data-service-detail="sklad">
+					<summary>
+						<span>02</span>
+						<h3>Склады и логистические центры</h3>
+						<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M5 12h14"></path>
+							<path d="M12 5v14"></path>
+						</svg>
+					</summary>
+					<div class="service-detail-body">
+						<span class="service-tag">Ёмкость</span>
+						<p>Каркас и обшивка за 45 дней, доковые ворота, тёплый контур, освещение и вентиляция. Считаем несущую способность под ваши нагрузки и подъездные пути — до начала работ.</p>
+						<a href="/services/sklady" class="text-link">Обсудить систему
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+								<path d="M7 7h10v10"></path>
+								<path d="M7 17 17 7"></path>
+							</svg>
+						</a>
+					</div>
+				</details>
+				<details class="service-detail" name="expertise" id="service-proizvodstvo" data-service-detail="proizvodstvo">
+					<summary>
+						<span>03</span>
+						<h3>Проектирование и инженерные системы</h3>
+						<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M5 12h14"></path>
+							<path d="M12 5v14"></path>
+						</svg>
+					</summary>
+					<div class="service-detail-body">
+						<span class="service-tag">Инженерия</span>
+						<p>Чертежи, расчёты нагрузок, согласования, отопление, электрика, вода и вентиляция. Проект пишется так, чтобы его можно было построить на площадке, а не только показать.</p>
+						<a href="/services/proektirovanie" class="text-link">Обсудить систему
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+								<path d="M7 7h10v10"></path>
+								<path d="M7 17 17 7"></path>
+							</svg>
+						</a>
+					</div>
+				</details>
+				<details class="service-detail" name="expertise" id="service-kapremont" data-service-detail="kapremont">
+					<summary>
+						<span>04</span>
+						<h3>Капитальный ремонт</h3>
+						<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M5 12h14"></path>
+							<path d="M12 5v14"></path>
+						</svg>
+					</summary>
+					<div class="service-detail-body">
+						<span class="service-tag">Долговечность</span>
+						<p>Школы, АБК, фасады, кровля, полы, внутренняя отделка и пожарная безопасность. Ремонтируем без остановки работы объекта — phased по этажам и зонам.</p>
+						<a href="/services/kapital" class="text-link">Обсудить систему
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+								<path d="M7 7h10v10"></path>
+								<path d="M7 17 17 7"></path>
+							</svg>
+						</a>
+					</div>
+				</details>
+			</div>
 		</div>
 	</section>
 
-	<!-- CTA-баннер: попробуйте -->
-	<section class="view cta-band">
-		<img src="/public/assets/image/Components/banner/hero.jpg" alt="Быстровозводимые здания ФСС — строим то, что ведёт вас вперёд" title="Быстровозводимые здания ФСС — строим то, что ведёт вас вперёд" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
-		<div class="cta-in">
-			<span class="cta-eyebrow"><i></i>Ваш проект — наше дело</span>
-			<h2>Строим то,<br>что ведёт вас вперёд</h2>
-			<p>Проектируем, производим и монтируем здания, которые служат десятилетиями.</p>
-			<a href="#contact" class="cta-pill" data-goal="cta_band_contact" title="Заказать бесплатную консультацию и расчёт сметы">Построить с нами <i class="fa-solid fa-arrow-right"></i></a>
+	<!-- PROCESS (ProMaintenance process-section) -->
+	<section id="process" class="process-section view">
+		<div class="process-photo">
+			<img src="/public/assets/image/banner.jpeg" alt="Модульные здания — производство ФСС" title="Модульные здания — производство ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
+		</div>
+		<div class="process-content section-shell">
+			<p class="eyebrow">03 / Как мы работаем</p>
+			<h2>Продуманно на каждом этапе.<br><span>Уверенно на каждом шаге.</span></h2>
+			<div class="process-steps">
+				<details data-phase="0" open>
+					<summary>
+						<span>01</span>
+						<h3>Заявка и смета</h3>
+						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M5 12h14"></path>
+							<path d="M12 5v14"></path>
+						</svg>
+					</summary>
+					<p>Оставляете заявку — инженер перезвонит за 15 минут, уточнит задачу и пришлёт смету с фиксированной ценой в договоре.</p>
+				</details>
+				<details data-phase="1">
+					<summary>
+						<span>02</span>
+						<h3>Проектирование</h3>
+						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M5 12h14"></path>
+							<path d="M12 5v14"></path>
+						</svg>
+					</summary>
+					<p>Готовим чертежи, рассчитываем нагрузки, подбираем комплектацию и согласовываем проект с вами до начала работ на площадке.</p>
+				</details>
+				<details data-phase="2">
+					<summary>
+						<span>03</span>
+						<h3>Фундамент</h3>
+						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M5 12h14"></path>
+							<path d="M12 5v14"></path>
+						</svg>
+					</summary>
+					<p>Устраиваем основание под модули: свайное, ленточное или столбчатое — по геологии участка и нагрузкам здания.</p>
+				</details>
+				<details data-phase="3">
+					<summary>
+						<span>04</span>
+						<h3>Производство</h3>
+						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M5 12h14"></path>
+							<path d="M12 5v14"></path>
+						</svg>
+					</summary>
+					<p>Изготавливаем модули из сэндвич-панелей на собственном заводе БВЗ. Контроль качества — на каждой стадии, а не на выходе.</p>
+				</details>
+				<details data-phase="4">
+					<summary>
+						<span>05</span>
+						<h3>Монтаж и сдача</h3>
+						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M5 12h14"></path>
+							<path d="M12 5v14"></path>
+						</svg>
+					</summary>
+					<p>Собираем здание, подключаем коммуникации, сдаём объект под ключ с исполнительной документацией и гарантией 50 лет на конструкции.</p>
+				</details>
+			</div>
 		</div>
 	</section>
 
-
-	<section id="advantages" class="view relative isolate z-[10] w-full bg-[#f3f4ef] text-[#3d5951]">
-		<div class="relative mx-auto max-w-[1625px] px-4 pt-[72px]">
-			<div class="section-heading">
-				<h2>Мы выполняем</h2>
-				<span class="heading-divider" aria-hidden="true"></span>
-				<p>18 услуг — от проекта и завода до монтажа и сервиса</p>
-			</div>
-			<div class="mx-auto max-w-[1280px]">
-			<div class="services-grid mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-				<a href="/services/kapital" class="view group" title="Капитальное строительство и ремонт под ключ" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
-					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-screwdriver-wrench text-lg"></i></div>
-					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Капитальный ремонт</div>
-					<div class="text-xs text-gray-500 mt-1">Школы, АБК, фасады, кровля</div>
-
-				</a>
-				<a href="/services/obchegitia" class="view group" title="Строительство общежитий и жилых комплексов" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
-					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-building-user text-lg"></i></div>
-					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Общежития</div>
-					<div class="text-xs text-gray-500 mt-1">Жилые комплексы, вахтовые</div>
-
-				</a>
-				<a href="/services/proizvodim_modul" class="view group" title="Производство модульных зданий на собственном заводе" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
-					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-cubes text-lg"></i></div>
-					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Производство модульных зданий</div>
-					<div class="text-xs text-gray-500 mt-1">Завод БВЗ, блок-контейнеры</div>
-
-				</a>
-				<a href="/services/modultebel" class="view group" title="Поставка и сборка мебели для офисов и общежитий" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
-					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-chair text-lg"></i></div>
-					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Поставка и сборка мебели</div>
-					<div class="text-xs text-gray-500 mt-1">Для офисов, школ, общежитий</div>
-
-				</a>
-				<div class="view flex flex-col justify-center rounded-[30px] bg-[#3d5951] p-5">
-					<div class="font-black leading-none text-[#ddf47a]" style="font-size:34px">180+</div>
-					<div class="mt-2 text-xs font-semibold text-white">сданных объектов</div>
-				</div>
-				<a href="/services/proektirovanie" class="view group" title="Проектирование БВЗ и инженерных сетей" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
-					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-ruler-combined text-lg"></i></div>
-					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Проектирование</div>
-					<div class="text-xs text-gray-500 mt-1">Чертежи, расчёты, согласования</div>
-
-				</a>
-				<a href="/services/montach" class="view group" title="Монтаж инженерных сетей и систем отопления" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
-					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-bolt text-lg"></i></div>
-					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Монтаж инженерных сетей</div>
-					<div class="text-xs text-gray-500 mt-1">Отопление, электрика, вода</div>
-
-				</a>
-				<a href="/services/administrativnoe" class="view group" title="Строительство АБК и офисных зданий" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
-					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-building-columns text-lg"></i></div>
-					<div class="mt-3 text-base font-bold leading-tight text-gray-900">АБК и офисы</div>
-					<div class="text-xs text-gray-500 mt-1">Административные здания</div>
-
-				</a>
-				<a href="/services/generatornae" class="view group" title="Поставка и монтаж дизель-генераторных установок" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
-					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-plug-circle-bolt text-lg"></i></div>
-					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Генераторные</div>
-					<div class="text-xs text-gray-500 mt-1">ДГУ, энергокомплексы</div>
-
-				</a>
-				<div class="view flex flex-col justify-center rounded-[30px] bg-[#3d5951] p-5">
-					<div class="font-black leading-none text-[#ddf47a]" style="font-size:34px">14 лет</div>
-					<div class="mt-2 text-xs font-semibold text-white">на рынке с <?= seo_config('founded_market') ?> года</div>
-				</div>
-				<a href="/services/naves" class="view group" title="Навесы и козырьки из металлоконструкций" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
-					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-umbrella text-lg"></i></div>
-					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Навесы</div>
-					<div class="text-xs text-gray-500 mt-1">Металлоконструкции</div>
-
-				</a>
-				<a href="/services/compressor" class="view group" title="Газовые и промышленные компрессоры" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
-					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-gauge text-lg"></i></div>
-					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Газовые компрессоры</div>
-					<div class="text-xs text-gray-500 mt-1">Поставка и монтаж</div>
-
-				</a>
-				<a href="/services/compressor_air" class="view group" title="Винтовые и поршневые воздушные компрессоры" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
-					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-fan text-lg"></i></div>
-					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Воздушные компрессоры</div>
-					<div class="text-xs text-gray-500 mt-1">Винтовые, поршневые</div>
-
-				</a>
-				<a href="/services/sclad" class="view group" title="Строительство складов из сэндвич-панелей" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
-					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-warehouse text-lg"></i></div>
-					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Склады</div>
-					<div class="text-xs text-gray-500 mt-1">Логистические центры</div>
-
-				</a>
-				<div class="view flex flex-col justify-center rounded-[30px] bg-[#3d5951] p-5">
-					<div class="font-black leading-none text-[#ddf47a]" style="font-size:34px">50+ лет</div>
-					<div class="mt-2 text-xs font-semibold text-white">гарантии на конструкции</div>
-				</div>
-				<a href="/services/musorbak" class="view group" title="Мусорные баки и контейнеры для вывоза отходов" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
-					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-dumpster text-lg"></i></div>
-					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Мусорные баки</div>
-					<div class="text-xs text-gray-500 mt-1">Контейнеры, оцинковка</div>
-
-				</a>
-				<a href="/services/gruzoperevozki" class="view group" title="Грузоперевозки по Москве, МО и всей России" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
-					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-truck-ramp-box text-lg"></i></div>
-					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Грузоперевозки</div>
-					<div class="text-xs text-gray-500 mt-1">Авто и ЖД</div>
-
-				</a>
-				<a href="/services/spectehnika" class="view group" title="Аренда строительной спецтехники и услуги" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
-					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-tractor text-lg"></i></div>
-					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Спецтехника</div>
-					<div class="text-xs text-gray-500 mt-1">Аренда, услуги</div>
-
-				</a>
-				<a href="/services/kapstroenie" class="view group" title="Капитальное строение зданий и сооружений" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
-					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-building-shield text-lg"></i></div>
-					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Капитальное строение</div>
-					<div class="text-xs text-gray-500 mt-1">Здания и сооружения</div>
-
-				</a>
-				<div class="view flex flex-col justify-center rounded-[30px] bg-[#3d5951] p-5">
-					<div class="font-black leading-none text-[#ddf47a]" style="font-size:34px">15 минут</div>
-					<div class="mt-2 text-xs font-semibold text-white">на точную смету</div>
-				</div>
-			</div>
-			<div class="mt-10 flex flex-col items-center sm:flex-row gap-[20px] justify-center">
-							<a href="#contact" data-goal="cta_advantages_contact" title="Смета за 15 минут" class="flex h-[56px] w-[250px] items-center justify-center rounded-full border-2 border-[#3d5951] text-[18px] font-medium transition-colors hover:bg-[#3d5951] hover:text-white">Смета за 15 минут</a>
-				<a href="/uslugi" title="Все услуги ФСС: производство, монтаж, ремонт, спецтехника" class="flex h-[54px] w-[250px] items-center justify-center rounded-full bg-[#ddf47a] text-[18px] font-medium text-[#18251e] transition-colors hover:bg-[#cce968]">Все услуги</a>
-			</div>
-			</div>
+	<!-- WORKS PREVIEW (ProMaintenance works-preview) -->
+	<section class="works-preview section-shell view">
+		<div class="works-preview-copy">
+			<p class="eyebrow">С наших объектов</p>
+			<h2>Построено в поле.<br><span>Увидено вблизи.</span></h2>
+			<p>Арматура, опалубка, сваи. Смотрите оригинальные фотографии наших объектов в процессе работ.</p>
+			<a href="/portfolio" class="text-link">Все наши объекты
+				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+					<path d="M7 7h10v10"></path>
+					<path d="M7 17 17 7"></path>
+				</svg>
+			</a>
 		</div>
-		<!-- Organic bottom edge -->
-		<div class="pointer-events-none absolute inset-x-0 -bottom-[86px] z-20 h-[86px]">
-			<div class="absolute -top-px right-0 h-[87px] w-[36%] rounded-bl-[82px] bg-[#f3f4ef]"></div>
-		</div>
+		<a href="/portfolio" class="works-preview-photo" aria-label="Смотреть все объекты ФСС">
+			<img src="/public/assets/image/swiper/2.jpg" alt="Склад из сэндвич-панелей — объект ФСС" title="Склад из сэндвич-панелей — объект ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
+		</a>
+	</section>
+
+	<!-- ASSESSMENT (ProMaintenance assessment-section) -->
+	<section id="triage" class="assessment-section section-shell view">
+		<details class="assessment-disclosure">
+			<summary>
+				<span class="eyebrow">Полезно начать отсюда</span>
+				<span>Не знаете, какая система нужна?</span>
+				<span class="assessment-toggle">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<path d="M5 12h14"></path>
+						<path d="M12 5v14"></path>
+					</svg>
+				</span>
+			</summary>
+			<div class="assessment-content" data-triage>
+				<p>Три наблюдения, чтобы начать разговор. Это ориентировочный guidance, а не строительная экспертиза.</p>
+				<form data-triage-form class="assessment-questions">
+					<label>
+						<span>01 / Что вы видите?</span>
+						<select name="symptom">
+							<option value="">Выберите наблюдение</option>
+							<option value="cracking">Трещины</option>
+							<option value="spalling">Отслоение бетона</option>
+							<option value="rust-staining">Ржавые потёки</option>
+							<option value="water-ingress">Протечки воды</option>
+							<option value="deflection">Провисание</option>
+							<option value="added-load">Меняется нагрузка</option>
+						</select>
+					</label>
+					<label>
+						<span>02 / Какой элемент?</span>
+						<select name="element">
+							<option value="">Выберите элемент</option>
+							<option value="column">Колонна</option>
+							<option value="beam">Балка / перекрытие</option>
+							<option value="slab">Плита</option>
+							<option value="wall-core">Стена / ядро</option>
+							<option value="foundation">Фундамент</option>
+							<option value="water-retaining">Резервуар / ёмкость</option>
+						</select>
+					</label>
+					<label>
+						<span>03 / Это ещё движется?</span>
+						<select name="movement">
+							<option value="">Выберите вариант</option>
+							<option value="moving">Да, движется</option>
+							<option value="stopped">Нет, стабильно</option>
+							<option value="unknown">Не знаем</option>
+						</select>
+					</label>
+				</form>
+				<div data-triage-empty class="assessment-empty">Ответьте на все три вопроса — покажем отправную точку.</div>
+				<div data-triage-answer hidden class="assessment-answer" aria-live="polite">
+					<div>
+						<p class="eyebrow">Вероятная причина</p>
+						<p data-triage-cause></p>
+						<p class="eyebrow">Первый шаг</p>
+						<p data-triage-step></p>
+					</div>
+					<div>
+						<p class="eyebrow">Обычная система</p>
+						<h3 data-triage-service></h3>
+						<p class="eyebrow">Также стоит рассмотреть</p>
+						<p data-triage-also></p>
+						<p data-triage-caution hidden class="assessment-caution"><span data-triage-caution-text></span></p>
+					</div>
+					<div class="assessment-actions">
+						<a href="/#contact" class="button">Получить расчёт за 15 минут
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+								<path d="M7 7h10v10"></path>
+								<path d="M7 17 17 7"></path>
+							</svg>
+						</a>
+						<button type="button" data-triage-reset class="text-link" style="background:none;border:none;cursor:pointer;">Начать заново</button>
+					</div>
+				</div>
+			</div>
+		</details>
 	</section>
 
 
@@ -711,7 +866,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 		<div class="pointer-events-none absolute -bottom-52 left-24 h-[440px] w-[440px] rounded-full bg-[#FFD0A7]" aria-hidden="true"></div>
 		<div class="pointer-events-none absolute -bottom-64 left-0 h-[350px] w-[350px] rotate-[-35deg] rounded-[80px] bg-gradient-to-br from-[#FFE2C8] via-[#FFB77D] to-[#FF8A2A] shadow-[inset_8px_8px_18px_rgba(255,255,255,0.6),inset_-8px_-8px_20px_rgba(205,80,0,0.15)]" aria-hidden="true"></div>
 		<div class="relative z-10 mx-auto grid max-w-[1440px] grid-cols-1 items-start gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-12">
-			<div class="flex flex-col items-start pt-2 lg:pt-0">
+			<div class="enquiry-lead flex flex-col items-start pt-2 lg:pt-0">
 				<h2 class="max-w-[650px] text-4xl font-semibold leading-[1.02] tracking-[-0.055em] text-white sm:text-5xl lg:text-6xl xl:text-7xl">
 					Рассчитаем стоимость
 					<br class="hidden sm:block">
@@ -735,57 +890,84 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 						class="hidden h-16 w-16 shrink-0 rounded-full object-cover sm:block"
 					>
 				</div>
-				<form method="POST" action="/send/email" novalidate class="space-y-3" data-form="contact">
+				<form method="POST" action="/send/email" novalidate class="space-y-3" data-form="contact" data-multistep>
 					<input type="hidden" name="mailer">
 					<?php include __DIR__ . '/../components/antibot_fields.php'; ?>
 					<input type="hidden" name="message" id="contact_message_hidden" value="Заявка с главной страницы">
-					<input
-						type="text"
-						name="name"
-						id="contact_name"
-						placeholder="Ваше имя"
-						aria-label="Ваше имя"
-						autocomplete="name"
-						required
-						minlength="2"
-						maxlength="100"
-						pattern="^[A-Za-zА-Яа-яЁё\s\-\.\']+$"
-						class="h-[76px] w-full rounded-2xl border border-transparent bg-[#FFF7F1] px-7 text-base text-[#333333] outline-none transition placeholder:text-[#B8B8B8] focus:border-[#F97316] focus:bg-white focus:ring-4 focus:ring-[#F97316]/10"
-					>
-					<input
-						type="text"
-						name="company"
-						id="contact_company"
-						placeholder="Ваша компания"
-						aria-label="Ваша компания"
-						autocomplete="organization"
-						maxlength="100"
-						class="h-[76px] w-full rounded-2xl border border-transparent bg-[#FFF7F1] px-7 text-base text-[#333333] outline-none transition placeholder:text-[#B8B8B8] focus:border-[#F97316] focus:bg-white focus:ring-4 focus:ring-[#F97316]/10"
-					>
-					<input
-						type="email"
-						name="email"
-						id="contact_email"
-						placeholder="Email"
-						aria-label="Email"
-						autocomplete="email"
-						required
-						maxlength="254"
-						class="h-[76px] w-full rounded-2xl border border-transparent bg-[#FFF7F1] px-7 text-base text-[#333333] outline-none transition placeholder:text-[#B8B8B8] focus:border-[#F97316] focus:bg-white focus:ring-4 focus:ring-[#F97316]/10"
-					>
-					<input
-						type="tel"
-						name="phone"
-						id="phone"
-						placeholder="+7 (000) 000-00-00"
-						aria-label="Телефон"
-						autocomplete="tel"
-						inputmode="tel"
-						required
-						maxlength="18"
-						pattern="^\+?[0-9\s\-\(\)]{10,20}$"
-						class="h-[76px] w-full rounded-2xl border border-transparent bg-[#FFF7F1] px-7 text-base text-[#333333] outline-none transition placeholder:text-[#B8B8B8] focus:border-[#F97316] focus:bg-white focus:ring-4 focus:ring-[#F97316]/10"
-					>
+
+					<!-- Прогресс формы (Protenance) -->
+					<div class="form-heading" style="justify-content: space-between; align-items: center; gap: 20px; display: flex; margin-bottom: 4px;">
+						<span class="eyebrow" style="color: #b1aaa4; font-size: 10px;">Заявка на расчёт</span>
+						<span class="form-step-count" data-form-counter style="color: #b1aaa4; font-size: 10px;">01 / 02</span>
+					</div>
+					<div class="form-progress" data-form-progress style="color: #9a938d; align-items: center; gap: 20px; margin: 18px 0 26px; font-size: 10px; display: flex;">
+						<span data-step-indicator class="is-current" style="color: #fff;"><span>Контакты</span></span>
+						<i aria-hidden="true" style="background: #5b554f; width: 40px; height: 1px;"></i>
+						<span data-step-indicator style=""><span>Задача</span></span>
+					</div>
+					<div class="form-errors" data-error-summary hidden style="color: #f4cbbd; background: #49352e; margin-bottom: 20px; padding: 14px; font-size: 11px; border-radius: 6px;"></div>
+
+					<!-- ЭТАП 1: контакты -->
+					<div class="form-stage" data-form-stage="0" style="display: grid; gap: 12px;">
+						<input
+							type="text"
+							name="name"
+							id="contact_name"
+							placeholder="Ваше имя"
+							aria-label="Ваше имя"
+							autocomplete="name"
+							required
+							minlength="2"
+							maxlength="100"
+							pattern="^[A-Za-zА-Яа-яЁё\s\-\.\']+$"
+							class="h-[76px] w-full rounded-2xl border border-transparent bg-[#FFF7F1] px-7 text-base text-[#333333] outline-none transition placeholder:text-[#B8B8B8] focus:border-[#F97316] focus:bg-white focus:ring-4 focus:ring-[#F97316]/10"
+						>
+						<input
+							type="text"
+							name="company"
+							id="contact_company"
+							placeholder="Ваша компания"
+							aria-label="Ваша компания"
+							autocomplete="organization"
+							maxlength="100"
+							class="h-[76px] w-full rounded-2xl border border-transparent bg-[#FFF7F1] px-7 text-base text-[#333333] outline-none transition placeholder:text-[#B8B8B8] focus:border-[#F97316] focus:bg-white focus:ring-4 focus:ring-[#F97316]/10"
+						>
+						<input
+							type="email"
+							name="email"
+							id="contact_email"
+							placeholder="Email"
+							aria-label="Email"
+							autocomplete="email"
+							required
+							maxlength="254"
+							class="h-[76px] w-full rounded-2xl border border-transparent bg-[#FFF7F1] px-7 text-base text-[#333333] outline-none transition placeholder:text-[#B8B8B8] focus:border-[#F97316] focus:bg-white focus:ring-4 focus:ring-[#F97316]/10"
+						>
+						<input
+							type="tel"
+							name="phone"
+							id="phone"
+							placeholder="+7 (000) 000-00-00"
+							aria-label="Телефон"
+							autocomplete="tel"
+							inputmode="tel"
+							required
+							maxlength="18"
+							pattern="^\+?[0-9\s\-\(\)]{10,20}$"
+							class="h-[76px] w-full rounded-2xl border border-transparent bg-[#FFF7F1] px-7 text-base text-[#333333] outline-none transition placeholder:text-[#B8B8B8] focus:border-[#F97316] focus:bg-white focus:ring-4 focus:ring-[#F97316]/10"
+						>
+						<button
+							type="button"
+							data-form-next
+							class="form-next inline-flex min-h-[68px] w-full items-center justify-center rounded-full bg-[#F97316] px-10 py-4 text-base font-medium text-white shadow-[0_8px_24px_rgba(249,115,22,0.2)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#EA6508] hover:shadow-[0_12px_28px_rgba(249,115,22,0.28)] focus:outline-none focus:ring-4 focus:ring-[#F97316]/25 active:translate-y-0"
+						>
+							Дальше
+							<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+						</button>
+					</div>
+
+					<!-- ЭТАП 2: задача -->
+					<div class="form-stage" data-form-stage="1" hidden style="display: grid; gap: 12px;">
 					<div class="relative">
 						<select
 							name="product"
@@ -856,12 +1038,23 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 						</label>
 					</div>
 					<div class="pt-5">
-						<button
-							type="submit"
-							class="inline-flex min-h-[68px] items-center justify-center rounded-full bg-[#F97316] px-10 py-4 text-base font-medium text-white shadow-[0_8px_24px_rgba(249,115,22,0.2)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#EA6508] hover:shadow-[0_12px_28px_rgba(249,115,22,0.28)] focus:outline-none focus:ring-4 focus:ring-[#F97316]/25 active:translate-y-0"
-						>
-							Получить расчет за 15 минут
-						</button>
+						<div class="form-actions" style="justify-content: space-between; align-items: center; gap: 20px; margin-top: 24px; display: flex;">
+							<button
+								type="button"
+								data-form-back
+								class="inline-flex min-h-[68px] items-center justify-center rounded-full border border-[#E5E7EB] bg-white px-8 py-4 text-base font-medium text-[#333333] transition duration-200 hover:border-[#F97316] hover:text-[#F97316] focus:outline-none focus:ring-4 focus:ring-[#F97316]/25"
+							>
+								<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform: rotate(-135deg);"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+								Назад
+							</button>
+							<button
+								type="submit"
+								class="inline-flex min-h-[68px] items-center justify-center rounded-full bg-[#F97316] px-10 py-4 text-base font-medium text-white shadow-[0_8px_24px_rgba(249,115,22,0.2)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#EA6508] hover:shadow-[0_12px_28px_rgba(249,115,22,0.28)] focus:outline-none focus:ring-4 focus:ring-[#F97316]/25 active:translate-y-0"
+							>
+								Получить расчет за 15 минут
+							</button>
+						</div>
+					</div>
 					</div>
 				</form>
 			</div>
@@ -903,43 +1096,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 	</div>
 	</section>
 
-	<section id="portfolio" class="works-band view relative z-[15]">
-		<div class="works-inner">
-			<div class="absolute right-0 top-[76px] hidden h-14 w-14 items-center justify-center rounded-2xl bg-[#f5f5f4] border border-[#e7e5e4] text-[#171310] xl:flex" aria-hidden="true">
-				<i class="fa-solid fa-helmet-safety text-xl"></i>
-			</div>
-			<div class="section-heading">
-				<h2>Наши работы</h2>
-				<span class="heading-divider" aria-hidden="true"></span>
-				<p>Склады, общежития и школы — смотрите, что сдаём под ключ</p>
-			</div>
-			<div class="works-grid">
-				<div class="works-left">
-					<div class="works-text" id="worksText">
-						<div class="works-num" id="worksNum">01</div>
-						<h3 class="works-name" id="worksName">Модульное общежитие на 120 мест</h3>
-						<p class="works-desc" id="worksDesc">Два этажа, тёплый контур, кондиционеры в каждой комнате. Сдали за 30 дней — заселили сразу, без доводок.</p>
-					</div>
-					<div class="works-nav">
-						<button type="button" class="works-btn prev" id="worksPrev" aria-label="Предыдущий объект" data-goal="works_prev"><i class="fa-solid fa-arrow-left"></i></button>
-						<button type="button" class="works-btn next" id="worksNext" aria-label="Следующий объект" data-goal="works_next"><i class="fa-solid fa-arrow-right"></i></button>
-					</div>
-					<div class="works-foot">
-						<span class="works-count" id="worksCount">01/03</span>
-						<a href="/portfolio" title="Смотреть все объекты" class="works-all">Смотреть все объекты <i class="fa-solid fa-arrow-right"></i></a>
-					</div>
-				</div>
-				<div class="works-right">
-					<div class="works-stack" id="worksStack">
-						<div class="works-card back"><img id="worksBack" src="/public/assets/image/swiper/2.jpg" alt="Склад из сэндвич-панелей — объект ФСС" title="Склад из сэндвич-панелей — объект ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'"></div>
-						<div class="works-card mid"><img id="worksMid" src="/public/assets/image/banner.jpeg" alt="Модульные здания — производство ФСС" title="Модульные здания — производство ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'"></div>
-						<div class="works-card front"><img id="worksFront" src="/public/assets/image/swiper/1.jpeg" alt="Модульное общежитие из сэндвич-панелей — объект ФСС" title="Модульное общежитие из сэндвич-панелей — объект ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'"></div>
-					</div>
-				</div>
-			</div>
-
-		</div>
-	</section>
+	<!-- ИЗБРАННЫЕ ПРОЕКТЫ (Protenance selected-work) -->
 	<!-- Бегущая строка направлений -->
 	<section class="marquee-band" aria-hidden="true">
 		<div class="marquee-track"><span class="marquee-item">Капитальный ремонт</span><span class="marquee-item">Поставка мебели</span><span class="marquee-item">Быстровозводимые здания</span><span class="marquee-item">Склады</span><span class="marquee-item">Ангары</span><span class="marquee-item">Навесы</span><span class="marquee-item">Дизель-генераторы</span><span class="marquee-item">Компрессорные станции</span><span class="marquee-item">Блочно-модульные конструкции</span><span class="marquee-item">Монтаж инженерных систем</span><span class="marquee-item">Проектирование объектов</span><span class="marquee-item">Техническое обслуживание</span><span class="marquee-item">Ремонт кровли</span><span class="marquee-item">Внутренняя отделка</span><span class="marquee-item">Промышленные полы</span><span class="marquee-item">Фасадные работы</span><span class="marquee-item">Пожарная безопасность</span><span class="marquee-item">Ландшафтные работы</span><span class="marquee-item">Капитальный ремонт</span><span class="marquee-item">Поставка мебели</span><span class="marquee-item">Быстровозводимые здания</span><span class="marquee-item">Склады</span><span class="marquee-item">Ангары</span><span class="marquee-item">Навесы</span><span class="marquee-item">Дизель-генераторы</span><span class="marquee-item">Компрессорные станции</span><span class="marquee-item">Блочно-модульные конструкции</span><span class="marquee-item">Монтаж инженерных систем</span><span class="marquee-item">Проектирование объектов</span><span class="marquee-item">Техническое обслуживание</span><span class="marquee-item">Ремонт кровли</span><span class="marquee-item">Внутренняя отделка</span><span class="marquee-item">Промышленные полы</span><span class="marquee-item">Фасадные работы</span><span class="marquee-item">Пожарная безопасность</span><span class="marquee-item">Ландшафтные работы</span></div>
@@ -1480,81 +1637,6 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 		}
 	</script>
 
-<!-- Cinema Hero JS — exact Protenance copy -->
-	<script>
-	(function () {
-		"use strict";
-		var hero = document.querySelector('.hero');
-		if (!hero) return;
-
-		var images = Array.prototype.slice.call(hero.querySelectorAll('.cinema-image'));
-		var buttons = Array.prototype.slice.call(hero.querySelectorAll('[data-cinema-select]'));
-		var statusEl = hero.querySelector('[data-cinema-status]');
-		var projectLink = hero.querySelector('[data-cinema-link]');
-		var projectName = hero.querySelector('[data-cinema-name]');
-		var projectCaption = hero.querySelector('[data-cinema-caption]');
-		var projectNumber = hero.querySelector('[data-cinema-number]');
-
-		if (!images.length || !buttons.length) return;
-
-		var activeIndex = 0;
-		var timer = null;
-		var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-		function setActive(index) {
-			if (index === activeIndex) return;
-			activeIndex = index;
-			images.forEach(function (img, i) {
-				img.classList.toggle('is-active', i === index);
-			});
-			buttons.forEach(function (btn, i) {
-				btn.setAttribute('aria-pressed', i === index ? 'true' : 'false');
-			});
-			if (projectName) projectName.textContent = buttons[index].getAttribute('data-name') || '';
-			if (projectCaption) projectCaption.textContent = buttons[index].getAttribute('data-caption') || '';
-			if (projectNumber) projectNumber.textContent = String(index + 1).padStart(2, '0');
-			if (projectLink) projectLink.setAttribute('href', '/' + (buttons[index].getAttribute('data-project') || 'projects'));
-			if (statusEl) statusEl.textContent = String(index + 1).padStart(2, '0') + ' / ' + String(buttons.length).padStart(2, '0') + ' \u2014 ' + (buttons[index].getAttribute('data-name') || '');
-		}
-
-		function next() {
-			setActive((activeIndex + 1) % images.length);
-		}
-
-		function startTimer() {
-			if (reduced.matches) return;
-			timer = setInterval(next, 6000);
-		}
-
-		function stopTimer() {
-			if (timer) clearInterval(timer);
-			timer = null;
-		}
-
-		buttons.forEach(function (btn, i) {
-			btn.addEventListener('click', function () {
-				setActive(i);
-				stopTimer();
-				startTimer();
-			});
-		});
-
-		hero.addEventListener('mouseenter', stopTimer);
-		hero.addEventListener('mouseleave', startTimer);
-		hero.addEventListener('focusin', stopTimer);
-		hero.addEventListener('focusout', startTimer);
-
-		if (document.readyState === 'loading') {
-			document.addEventListener('DOMContentLoaded', function () {
-				setActive(0);
-				startTimer();
-			});
-		} else {
-			setActive(0);
-			startTimer();
-		}
-	})();
-	</script>
 
 	<!-- FAQ главной (FAQPage + ответы для AI Overviews) -->
 	<?php include_once 'public/components/home_faq.php'; ?>

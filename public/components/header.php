@@ -1,14 +1,13 @@
 <?php
-// Header — exact Protenance copy
+// Header — по образцу Protenance (логика в public/assets/distJS/animations.js → initHeader)
 $__n = (function_exists('seo_url') ? seo_url() : '/') ?: '/';
 $__act = function (bool $on): string { return $on ? ' is-active' : ''; };
 $__onHome = $__n === '/';
-$__tel = htmlspecialchars((string) preg_replace('/\D/', '', (string)seo_config('phone')));
 ?>
 <header id="site-header" data-header="" style="z-index: 90; position: fixed; inset: 0 0 auto;">
-	<div class="site-navigation" data-header-bar="" style="--nav-opacity: 0.02; --nav-blur: 1px; height: 90px; color: #fff; backdrop-filter: blur(var(--nav-blur, 1px)); background: rgba(23, 23, 24, var(--nav-opacity, .02)); border-bottom: 1px solid transparent; justify-content: space-between; align-items: center; gap: 30px; padding-inline: clamp(24px, 4.4vw, 96px); transition: background .5s, color .4s, border-color .4s; display: flex;">
-		<!-- Brand / Logo -->
-		<a href="/" class="brand" aria-label="ФСС — на главную" style="flex-shrink: 0; align-items: center; gap: 10px; display: flex;">
+	<div class="site-navigation" data-header-bar="" style="--nav-opacity: 0.02; --nav-blur: 1px; height: 90px; color: #fff; backdrop-filter: blur(var(--nav-blur, 1px)); background: rgba(23, 23, 24, var(--nav-opacity, .02)); border-bottom: 1px solid #0000; justify-content: space-between; align-items: center; gap: 30px; padding-inline: clamp(24px, 4.4vw, 96px); transition: background .5s, color .4s, border-color .4s; display: flex;">
+		<!-- Brand -->
+		<a href="/" class="brand" aria-label="ФАВОРИТ-СТРОЙ-СНАБ — на главную" style="flex-shrink: 0; align-items: center; gap: 10px; display: flex;">
 			<img src="/public/assets/image/logo/favicon/favicon.svg" alt="" loading="lazy" decoding="async" width="28" height="34">
 			<span style="letter-spacing: -.045em; font-size: 24px; font-weight: 600;">ФСС</span>
 		</a>
@@ -21,7 +20,7 @@ $__tel = htmlspecialchars((string) preg_replace('/\D/', '', (string)seo_config('
 			<a href="/#contact" class="<?= $__act(!$__onHome && $__n === '/contact') ?>" style="padding-block: 8px; font-size: 12px; position: relative; color: inherit; text-decoration: none;">Контакты</a>
 		</nav>
 
-		<!-- CTA Button -->
+		<!-- CTA -->
 		<a href="/#contact" class="nav-enquire" style="border-bottom: 1px solid; align-items: center; gap: 28px; padding-block: 8px; font-size: 12px; display: flex; color: inherit; text-decoration: none;">Оставить заявку
 			<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 				<path d="M7 7h10v10"></path>
@@ -65,13 +64,11 @@ $__tel = htmlspecialchars((string) preg_replace('/\D/', '', (string)seo_config('
 		.desktop-nav { display: none; }
 		#nav-toggle { display: flex; }
 		.site-navigation { height: 78px; }
-		.nav-enquire { margin-left: auto; }
 	}
 	@media (width<=576px) {
 		.site-navigation { gap: 15px; height: 74px; }
 		.brand>span { font-size: 19px; }
 		.brand>img { height: 25px; }
-		.nav-enquire { display: none; }
 	}
 	.site-navigation[data-stuck] { color: #fff; backdrop-filter: blur(24px); background: #171718d1; border-bottom-color: #ffffff29; }
 	[data-page=home] .site-navigation { background: rgba(23, 23, 24, 0.02); color: #fff; backdrop-filter: blur(var(--nav-blur, 1px)); border-bottom-color: #ffffff29; }
@@ -91,70 +88,12 @@ $__tel = htmlspecialchars((string) preg_replace('/\D/', '', (string)seo_config('
 	.button:hover { background: #fff; }
 	.button svg { transition: transform .4s cubic-bezier(.2, .8, .2, 1); flex-shrink: 0; }
 	.button:hover svg { transform: translate(2px, -2px); }
+	#nav-panel { border-radius: 0 0 var(--radius-surface, 8px) var(--radius-surface, 8px); }
 </style>
-<script>
-(function(){
-	"use strict";
-	var header = document.querySelector('#site-header');
-	var navBar = document.querySelector('.site-navigation');
-	var isHome = document.body.classList.contains('home-page') || window.location.pathname === '/';
 
-	// Update nav-opacity/blur on scroll
-	function onScroll() {
-		if (!navBar) return;
-		var scrollY = window.scrollY || window.pageYOffset;
-		var maxOpacity = 0.86;
-		var maxBlur = 24;
-		var startFade = 20;
-		var endFade = 120;
-
-		if (scrollY <= startFade) {
-			navBar.style.setProperty('--nav-opacity', '0.02');
-			navBar.style.setProperty('--nav-blur', '1px');
-		} else if (scrollY >= endFade) {
-			navBar.style.setProperty('--nav-opacity', String(maxOpacity));
-			navBar.style.setProperty('--nav-blur', String(maxBlur) + 'px');
-		} else {
-			var progress = (scrollY - startFade) / (endFade - startFade);
-			var opacity = 0.02 + (maxOpacity - 0.02) * progress;
-			var blur = 1 + (maxBlur - 1) * progress;
-			navBar.style.setProperty('--nav-opacity', String(opacity));
-			navBar.style.setProperty('--nav-blur', blur + 'px');
-		}
-
-		// Toggle data-stuck attribute
-		if (scrollY > 50) {
-			navBar.setAttribute('data-stuck', '');
-		} else {
-			navBar.removeAttribute('data-stuck');
-		}
-	}
-
-	// Mobile burger
-	var bar = document.querySelector('.site-navigation');
-	var burger = document.querySelector('#nav-toggle');
-	if (bar && burger) {
-		var setOpen = function(open){
-			bar.classList.toggle('hd-open', open);
-			burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-		};
-		burger.addEventListener('click', function(e){
-			e.stopPropagation();
-			setOpen(!bar.classList.contains('hd-open'));
-		});
-		document.addEventListener('click', function(e){
-			if (bar.classList.contains('hd-open') && !bar.contains(e.target)) setOpen(false);
-		});
-		document.addEventListener('keydown', function(e){
-			if (e.key === 'Escape') setOpen(false);
-		});
-		document.querySelectorAll('#nav-panel a').forEach(function(a){
-			a.addEventListener('click', function(){ setOpen(false); });
-		});
-	}
-
-	// Init scroll listener
-	window.addEventListener('scroll', onScroll, { passive: true });
-	onScroll(); // Initial
-})();
-</script>
+<!-- Анимационный стек (Protenance): Lenis + GSAP 3.15 + ScrollTrigger + SplitText -->
+<script defer src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js"></script>
+<script defer src="/public/assets/distJS/animations.js"></script>

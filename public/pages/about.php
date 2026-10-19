@@ -29,7 +29,6 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
 	<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
 	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261018">
-	<script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
 	<script defer src="/public/assets/distJS/main.js?v=20261018"></script>
 
 	<!-- canonical -->
