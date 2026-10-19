@@ -1,8 +1,9 @@
 <?php
 /**
  * Central config - FAVORIT-STROY-SNAB
- * Secrets вынесены сюда. В проде вынести в .env / env переменные.
+ * QweesCore format: EMAIL, EMAIL_PASSWORD, EMAIL_PORT, EMAIL_NICKNAME, EMAIL_TO
  */
+
 // Включаем буферизацию чтобы session_start работал даже после небольшого вывода
 if (!ob_get_level() && !headers_sent()) {
     ob_start();
@@ -47,19 +48,12 @@ if (!function_exists('fss_env')) {
     }
 }
 
-// Telegram — секреты ТОЛЬКО из .env (см. .env.example)
-define('TELEGRAM_BOT_TOKEN', fss_env('TELEGRAM_BOT_TOKEN'));
-$telegramChatsRaw = fss_env('TELEGRAM_CHAT_IDS');
-$telegramChats = $telegramChatsRaw !== '' ? array_map('trim', explode(',', $telegramChatsRaw)) : [];
-define('TELEGRAM_CHAT_IDS', serialize($telegramChats));
-
-// Mail - ПРОСТЫЕ ЖЁСТКИЕ ЗНАЧЕНИЯ
-define('MAIL_TO', 'order@фсс.рус');           // для отображения (IDN)
-define('MAIL_TO_PUNY', 'order@xn--h1aafj.xn--p1ai'); // для SMTP (punycode)
-define('MAIL_FROM', fss_env('MAIL_FROM'));    // bingiabonbasv@gmail.com
-define('MAIL_PASS', fss_env('MAIL_PASS'));    // App password Gmail
-define('MAIL_FROM_NAME', 'Новое обращение ФСС.РУС');
-define('MAIL_PORT', 587);
+// Email config - QweesCore format
+define('EMAIL', fss_env('EMAIL'));
+define('EMAIL_PASSWORD', fss_env('EMAIL_PASSWORD'));
+define('EMAIL_PORT', (int)fss_env('EMAIL_PORT', '587'));
+define('EMAIL_NICKNAME', fss_env('EMAIL_NICKNAME', 'Новое обращение ФСС.РУС'));
+define('EMAIL_TO', fss_env('EMAIL_TO'));
 
 // Antibot
 define('ANTIBOT_MIN_TIME', 3);
