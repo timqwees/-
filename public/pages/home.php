@@ -102,6 +102,154 @@ if (file_exists($componentMailPath)) {
 			border-radius: 30px;
 		}
 
+		/* Мобильная секция «Выберите услугу»: корректный свайп и размер карточек */
+		@media (max-width: 767px) {
+			#showcase .fss-cards { -webkit-overflow-scrolling: touch; }
+			#showcase .fss-card {
+				flex: 0 0 min(320px, calc(100vw - 72px));
+				width: min(320px, calc(100vw - 72px));
+				touch-action: auto;
+			}
+		}
+
+		/* Мобильная секция «Этапы работы» — горизонтальный слайдер */
+		.steps3-nav { display: none; }
+
+		@media (max-width: 899px) {
+			#process .steps3 {
+				display: flex;
+				gap: 14px;
+				margin-top: 30px;
+				margin-left: -16px;
+				margin-right: -16px;
+				padding: 4px 16px 12px;
+				overflow-x: auto;
+				scroll-snap-type: x mandatory;
+				scrollbar-width: none;
+				-webkit-overflow-scrolling: touch;
+				overscroll-behavior-x: contain;
+			}
+			#process .steps3::-webkit-scrollbar { display: none; }
+			#process .steps3:not(.is-ready) .step3 { opacity: 1; transform: none; }
+			#process .step3 {
+				flex: 0 0 82%;
+				max-width: 360px;
+				scroll-snap-align: center;
+				display: flex;
+				flex-direction: column;
+				padding: 14px 14px 18px;
+				border-radius: 24px;
+				text-align: left;
+				background: #fff;
+				border: 1px solid rgba(23, 19, 16, .06);
+				box-shadow: 0 14px 34px rgba(23, 19, 16, .08);
+				opacity: .72;
+				transform: scale(.95);
+				transform-origin: center bottom;
+				transition: opacity .3s ease, transform .3s ease, box-shadow .3s ease;
+			}
+			#process .step3.is-active {
+				opacity: 1;
+				transform: scale(1);
+				box-shadow: 0 18px 44px rgba(23, 19, 16, .14);
+			}
+			#process .step3-img {
+				width: 100%;
+				height: 175px;
+				border-radius: 16px;
+				object-fit: cover;
+			}
+			#process .step3 h3 {
+				margin: 14px 0 0;
+				font-size: 19px;
+				line-height: 1.25;
+				text-align: left;
+			}
+			#process .step3 p {
+				margin: 8px 0 0;
+				font-size: 14px;
+				line-height: 1.55;
+				flex: 1;
+			}
+			#process .step3-n {
+				position: absolute;
+				top: 14px;
+				left: 14px;
+				z-index: 2;
+				margin: 0;
+				width: 36px;
+				height: 36px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: 50%;
+				background: rgba(23, 19, 16, .82);
+				color: #fff;
+				font-size: 12px;
+				font-weight: 700;
+				letter-spacing: .02em;
+				box-shadow: 0 6px 16px rgba(0, 0, 0, .22);
+				-webkit-backdrop-filter: blur(6px);
+				backdrop-filter: blur(6px);
+			}
+			#process .step3-photo {
+				min-height: 0;
+				padding: 0;
+				background: #171310;
+			}
+			#process .step3-photo .step3-ovl {
+				padding: 56px 18px 20px;
+				text-align: left;
+			}
+			#process .step3-photo .step3-ovl h3 { color: #fff; }
+			#process .step3-photo .step3-ovl p { color: rgba(255, 255, 255, .9); }
+			#process .step3-photo .step3-n {
+				position: static;
+				display: inline-flex;
+				width: auto;
+				height: auto;
+				margin: 12px 0 0;
+				padding: 4px 10px;
+				border-radius: 999px;
+				background: rgba(255, 255, 255, .18);
+				box-shadow: none;
+				font-size: 11px;
+				letter-spacing: .08em;
+			}
+			#process .steps3-nav {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 12px;
+				margin-top: 16px;
+			}
+			#process .steps3-count {
+				font-size: 13px;
+				font-weight: 700;
+				letter-spacing: .08em;
+				color: #78716c;
+			}
+			#process .steps3-count b { color: #171310; font-size: 15px; }
+			#process .steps3-dots { display: flex; align-items: center; gap: 7px; }
+			#process .steps3-dot {
+				width: 7px;
+				height: 7px;
+				padding: 0;
+				border: 0;
+				border-radius: 999px;
+				background: rgba(23, 19, 16, .18);
+				cursor: pointer;
+				transition: width .25s ease, background .25s ease;
+			}
+			#process .steps3-dot.is-active {
+				width: 22px;
+				background: #f97316;
+			}
+		}
+		@media (prefers-reduced-motion: reduce) {
+			#process .step3 { transition: none; }
+		}
+
 		/* Video mute/unmute control (hero) */
 		.hero-video-control {
 			position: absolute;
@@ -277,6 +425,10 @@ if (file_exists($componentMailPath)) {
 				</article>
 			</div>
 
+			<div class="steps3-nav" role="group" aria-label="Навигация по этапам работы">
+				<span class="steps3-count" aria-hidden="true"><b>01</b> / 05</span>
+				<div class="steps3-dots"></div>
+			</div>
 
 		</div>
 	</section>
@@ -1121,6 +1273,89 @@ if (file_exists($componentMailPath)) {
 		<div class="text-center text-[11px] text-gray-500 mt-1">Отвечаем за 7 минут • Без спама</div>
 	</div>
 	<script> (function(){ var bar=document.getElementById('sticky-cta'); var showAt=700; function onScroll(){ if(window.scrollY>showAt) bar.classList.add('show'); else bar.classList.remove('show'); } window.addEventListener('scroll', onScroll, {passive:true}); onScroll(); })(); </script>
+
+	<!-- Этапы работы: слайдер на мобильных -->
+	<script>
+	(function () {
+		"use strict";
+		var steps = document.querySelector('#process .steps3');
+		if (!steps) return;
+		var items = Array.prototype.slice.call(steps.querySelectorAll('.step3'));
+		var dotsWrap = document.querySelector('#process .steps3-dots');
+		var countEl = document.querySelector('#process .steps3-count');
+		if (!items.length || !dotsWrap) return;
+
+		var mq = window.matchMedia('(max-width: 899px)');
+		var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+		var dots = [];
+		var active = -1;
+
+		items.forEach(function (_, i) {
+			var b = document.createElement('button');
+			b.type = 'button';
+			b.className = 'steps3-dot';
+			b.setAttribute('aria-label', 'Показать этап ' + (i + 1) + ' из ' + items.length);
+			b.addEventListener('click', function () { goTo(i); });
+			dotsWrap.appendChild(b);
+			dots.push(b);
+		});
+
+		function pad(n) { return (n < 10 ? '0' : '') + n; }
+
+		function setActive(i) {
+			if (i === active) return;
+			active = i;
+			items.forEach(function (el, idx) { el.classList.toggle('is-active', idx === i); });
+			dots.forEach(function (d, idx) { d.classList.toggle('is-active', idx === i); });
+			if (countEl) countEl.innerHTML = '<b>' + pad(i + 1) + '</b> / ' + pad(items.length);
+		}
+
+		function goTo(i) {
+			if (i < 0 || i >= items.length) return;
+			var sr = steps.getBoundingClientRect();
+			var er = items[i].getBoundingClientRect();
+			var left = steps.scrollLeft + (er.left + er.width / 2) - (sr.left + sr.width / 2);
+			steps.scrollTo({ left: left, behavior: reduced.matches ? 'auto' : 'smooth' });
+		}
+
+		function nearest() {
+			var sr = steps.getBoundingClientRect();
+			var center = sr.left + sr.width / 2;
+			var best = 0, dist = Infinity;
+			items.forEach(function (el, idx) {
+				var r = el.getBoundingClientRect();
+				var d = Math.abs(r.left + r.width / 2 - center);
+				if (d < dist) { dist = d; best = idx; }
+			});
+			return best;
+		}
+
+		var raf = 0;
+		function onScroll() {
+			if (raf) return;
+			raf = requestAnimationFrame(function () {
+				raf = 0;
+				if (mq.matches) setActive(nearest());
+			});
+		}
+
+		function sync() {
+			steps.classList.add('is-ready');
+			if (mq.matches) setActive(nearest());
+		}
+
+		steps.addEventListener('scroll', onScroll, { passive: true });
+		window.addEventListener('resize', sync);
+		window.addEventListener('load', sync);
+		if (mq.addEventListener) mq.addEventListener('change', sync); else mq.addListener(sync);
+
+		if (document.readyState === 'loading') {
+			document.addEventListener('DOMContentLoaded', sync);
+		} else {
+			sync();
+		}
+	})();
+	</script>
 
 	<!-- FAQ главной (FAQPage + ответы для AI Overviews) -->
 	<?php include_once 'public/components/home_faq.php'; ?>

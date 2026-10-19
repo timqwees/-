@@ -34,6 +34,28 @@ $__tel = htmlspecialchars((string) preg_replace( '/\D/', '', (string)seo_config(
 		<a href="/#contact" class="hd-drop-cta" title="Оставить заявку">Оставить заявку</a>
 	</div>
 	</nav>
+	<style>
+		/* Плавное открытие/закрытие мобильного меню */
+		.hd-drop {
+			display: block;
+			opacity: 0;
+			visibility: hidden;
+			pointer-events: none;
+			transform: translateX(-50%) translateY(-8px) scale(.98);
+			transform-origin: top center;
+			transition: opacity .25s ease, transform .25s ease, visibility 0s linear .25s;
+		}
+		.hd-bar.hd-open .hd-drop {
+			opacity: 1;
+			visibility: visible;
+			pointer-events: auto;
+			transform: translateX(-50%) translateY(0) scale(1);
+			transition: opacity .25s ease, transform .25s ease, visibility 0s;
+		}
+		@media (prefers-reduced-motion: reduce) {
+			.hd-drop, .hd-bar.hd-open .hd-drop { transition: none; }
+		}
+	</style>
 	<script>
 	(function(){
 		"use strict";

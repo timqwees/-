@@ -1,4 +1,5 @@
-<div class="fixed bottom-6 right-6 z-50">
+<?php $__fssHomePage = function_exists('seo_url') && seo_url() === '/'; ?>
+<div class="fss-float-widget fixed bottom-6 right-6 z-50<?= $__fssHomePage ? ' fss-float-widget--home' : '' ?>">
 	<button id="forma_toggle" type="button"
 		class="text-white w-[56px] h-[56px] rounded-full shadow-[0_8px_24px_rgba(249,115,22,.40)] flex items-center justify-center transition-all duration-200 bg-gradient-to-br from-[#FB923C] via-[#EA580C] to-[#C2410C] hover:from-[#F97316] hover:to-[#A03A0E] hover:scale-105 hover:shadow-[0_12px_36px_rgba(249,115,22,.55)] active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#F97316] focus:ring-offset-2 relative overflow-hidden">
 		<i class="fa-solid fa-comment-dots text-xl relative z-10"></i>
@@ -108,6 +109,10 @@ document.addEventListener('DOMContentLoaded', () => {
 	background-size: 100% 100%, 9px 9px;
 }
 #forma_toggle i { z-index: 2; }
+/* Скрыть виджет на главной в мобильной версии */
+@media (max-width: 900px) {
+	.fss-float-widget--home { display: none !important; }
+}
 .fss-widget-phone { background: #F5F5F4; border: 1px solid #E7E5E4; border-radius: 12px; padding: 10px 14px; }
 .fss-widget-phone-link { display: inline-flex; align-items: center; gap: 8px; color: #171310; text-decoration: none; font-weight: 600; font-size: 13px; transition: color .2s; }
 .fss-widget-phone-link:hover { color: #C2410C; }
