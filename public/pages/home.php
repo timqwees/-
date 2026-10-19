@@ -116,6 +116,7 @@ if (file_exists($componentMailPath)) {
 		.steps3-nav { display: none; }
 
 		@media (max-width: 899px) {
+			section#process > .relative.mx-auto { padding-bottom: 0; }
 			#process .steps3 {
 				display: flex;
 				gap: 14px;
