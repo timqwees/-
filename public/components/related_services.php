@@ -48,7 +48,7 @@ if ($__related): ?>
 			<p class="mt-2 text-sm text-gray-600">Чаще всего заказывают вместе — можно одним договором и одним выездом инженера.</p>
 			<div class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
 			<?php foreach ($__related as $r): ?>
-				<a href="/services/<?= htmlspecialchars($r['slug']) ?>" data-goal="related_click"
+				<a href="/services/<?= htmlspecialchars($r['slug']) ?>" title="<?= htmlspecialchars($r['title']) ?>" data-goal="related_click"
 						class="group bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition">
 						<div class="text-[15px] font-bold text-gray-900 group-hover:text-[#EA580C]"><?= htmlspecialchars($r['title']) ?></div>
 						<p class="mt-2 text-xs leading-relaxed text-gray-600"><?= htmlspecialchars($r['desc']) ?></p>
@@ -57,8 +57,8 @@ if ($__related): ?>
 				<?php endforeach; ?>
 			</div>
 			<div class="mt-6 text-sm text-gray-600">
-			Смотрите также: <a href="/uslugi" class="text-[#C2410C] font-semibold underline">все услуги</a> ·
-			<a href="/portfolio" class="text-[#C2410C] font-semibold underline">портфолио объектов</a>
+			Смотрите также: <a href="/uslugi" title="Все услуги" class="text-[#C2410C] font-semibold underline">все услуги</a> ·
+			<a href="/portfolio" title="Портфолио объектов" class="text-[#C2410C] font-semibold underline">портфолио объектов</a>
 			</div>
 		</div>
 	</section>

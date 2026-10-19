@@ -96,7 +96,7 @@
 			<div class="bi-hero-in">
 				<div>
 					<span class="bi-eyebrow">О компании</span>
-					<h1 class="bi-h1">Строим <span class="pill"><img src="/public/assets/image/services/капстроение/10.JPG" alt="Объект ФСС" fetchpriority="high" decoding="async" onerror="this.style.display='none'"></span>на рынке с <?= htmlspecialchars((string)seo_config('founded_market')) ?> <span class="acc">года</span></h1>
+					<h1 class="bi-h1">Строим <span class="pill"><img src="/public/assets/image/services/капстроение/10.JPG" alt="Объект ФСС" title="Объект ФСС" fetchpriority="high" decoding="async" onerror="this.style.display='none'"></span>на рынке с <?= htmlspecialchars((string)seo_config('founded_market')) ?> <span class="acc">года</span></h1>
 					<div class="bi-cta">
 						<a href="/#contact" title="Рассчитать смету" class="bi-btn"><span class="clip"><span class="roll">Рассчитать смету<br>Рассчитать смету</span></span></a>
 						<a href="/portfolio" title="Наши объекты" class="bi-btn ghost"><span class="clip"><span class="roll">Наши объекты<br>Наши объекты</span></span></a>
@@ -123,9 +123,9 @@
 			<div class="section-heading"><h2>Для кого строим</h2><span class="heading-divider" aria-hidden="true"></span><p>Четыре сегмента — один стандарт качества</p></div>
 			<div class="bi-aud" style="margin-top:22px">
 				<article class="bi-card"><img src="/public/assets/image/services/капстроение/5.JPG" alt="Производство ФСС" title="Производство ФСС" loading="lazy" decoding="async" onerror="this.style.display='none'"><div><h3>Производство</h3><p>Цеха, склады и ангары для бизнеса — под ключ за 14 дней.</p><a href="/services/proizvodim_modul" title="Модульные здания">Подробнее →</a></div></article>
-				<article class="bi-card"><img src="/public/assets/image/services/Грузоперевозки/2.jpg" alt="Логистика ФСС" loading="lazy" decoding="async" onerror="this.style.display='none'"><div><h3>Логистика</h3><p>Склады и логистика с доставкой и спецтехникой.</p><a href="/services/sclad">Подробнее →</a></div></article>
-				<article class="bi-card"><img src="/public/assets/image/services/АБК/04d8caee-f083-42f8-8be2-64e7e461cace.JPG" alt="АБК ФСС" loading="lazy" decoding="async" onerror="this.style.display='none'"><div><h3>Госзаказ и юрлица</h3><p>Договор, НДС, допуск СРО и закрывающие документы.</p><a href="/services/kapstroenie">Подробнее →</a></div></article>
-				<article class="bi-card"><img src="/public/assets/image/services/Генераторные/017C294C-9AF3-4638-ADC2-476CD4C3A7ED.JPG" alt="Энергетика ФСС" loading="lazy" decoding="async" onerror="this.style.display='none'"><div><h3>Энергетика</h3><p>ДГУ и компрессоры: подбор, поставка, монтаж и сервис.</p><a href="/services/generatornae">Подробнее →</a></div></article>
+				<article class="bi-card"><img src="/public/assets/image/services/Грузоперевозки/2.jpg" alt="Логистика ФСС" title="Логистика ФСС" loading="lazy" decoding="async" onerror="this.style.display='none'"><div><h3>Логистика</h3><p>Склады и логистика с доставкой и спецтехникой.</p><a href="/services/sclad" title="Склады под ключ">Подробнее →</a></div></article>
+				<article class="bi-card"><img src="/public/assets/image/services/АБК/04d8caee-f083-42f8-8be2-64e7e461cace.JPG" alt="АБК ФСС" title="АБК ФСС" loading="lazy" decoding="async" onerror="this.style.display='none'"><div><h3>Госзаказ и юрлица</h3><p>Договор, НДС, допуск СРО и закрывающие документы.</p><a href="/services/kapstroenie" title="Капитальное строительство">Подробнее →</a></div></article>
+				<article class="bi-card"><img src="/public/assets/image/services/Генераторные/017C294C-9AF3-4638-ADC2-476CD4C3A7ED.JPG" alt="Энергетика ФСС" title="Энергетика ФСС" loading="lazy" decoding="async" onerror="this.style.display='none'"><div><h3>Энергетика</h3><p>ДГУ и компрессоры: подбор, поставка, монтаж и сервис.</p><a href="/services/generatornae" title="Генераторные установки">Подробнее →</a></div></article>
 			</div>
 		</section>
 		<section class="page-section view">
@@ -134,8 +134,8 @@
 				<p style="margin:0;font-size:16px;line-height:1.75;color:#44403C;max-width:70ch">Начинали в <?= htmlspecialchars((string)seo_config('founded_market')) ?> году с металлоконструкций — сегодня это производство блок-модулей и быстровозводимых зданий, капитальное строительство и ремонт, грузоперевозки и аренда спецтехники. Работаем с бизнесом и госзаказом по договору: фиксируем цену и сроки, ведём технадзор и сдаём объекты с пакетом документов. База — Москва и Московская область, объекты — по всей России.</p>
 				<p style="margin:14px 0 0;font-size:15px;line-height:1.7;color:#44403C;max-width:70ch"><strong>ООО «Фаворит-Строй-Снаб»</strong> осуществляет комплексную деятельность по обеспечению нужд силовых и государственных структур РФ. В настоящее время сотрудничаем с <strong>Федеральной службой войск национальной гвардии РФ (Росгвардия)</strong>. Реализуем проекты под ключ: от проектирования и производства БВЗ до капитального ремонта социальных объектов с полным техническим оснащением.</p>
 				<div style="margin-top:18px;display:flex;flex-wrap:wrap;gap:10px">
-					<a class="btn-sun" href="/uslugi">Все услуги</a>
-					<a class="btn-outline" href="/portfolio">Смотреть объекты</a>
+					<a class="btn-sun" href="/uslugi" title="Все услуги">Все услуги</a>
+					<a class="btn-outline" href="/portfolio" title="Смотреть объекты">Смотреть объекты</a>
 				</div>
 			</div>
 		</section>
@@ -174,7 +174,7 @@
 				</article>
 				<article class="security-card security-support">
 					<h3>Нужна<br>смета?</h3>
-					<a href="/#contact" style="color:#171310;font-weight:700;font-size:15px;text-decoration:underline;text-underline-offset:4px;text-decoration-color:#F97316">Получить за 15 минут</a>
+					<a href="/#contact" title="Получить за 15 минут" style="color:#171310;font-weight:700;font-size:15px;text-decoration:underline;text-underline-offset:4px;text-decoration-color:#F97316">Получить за 15 минут</a>
 				</article>
 			</div>
 		</section>
@@ -280,17 +280,17 @@
 			<div class="section-heading"><h2>Реквизиты</h2><span class="heading-divider" aria-hidden="true"></span><p>Как нас найти и связаться</p></div>
 			<div class="card-prem" style="padding:clamp(24px,4vw,40px);display:grid;gap:14px;font-size:15px;color:#44403C">
 				<div><i class="fa-solid fa-location-dot" style="color:#EA580C;margin-right:10px"></i><?= htmlspecialchars((string)seo_config('address')['postal'] . ', ' . seo_config('address')['locality'] . ', ' . seo_config('address')['street']) ?></div>
-				<div><i class="fa-solid fa-phone" style="color:#EA580C;margin-right:10px"></i><a href="tel:<?= htmlspecialchars(preg_replace('/\D/', '', (string)seo_config('phone'))) ?>" style="color:#171310;font-weight:700"><?= htmlspecialchars((string)seo_config('phone_display')) ?></a></div>
+				<div><i class="fa-solid fa-phone" style="color:#EA580C;margin-right:10px"></i><a href="tel:<?= htmlspecialchars(preg_replace('/\D/', '', (string)seo_config('phone'))) ?>" title="Позвонить" style="color:#171310;font-weight:700"><?= htmlspecialchars((string)seo_config('phone_display')) ?></a></div>
 				<div><i class="fa-solid fa-envelope" style="color:#EA580C;margin-right:10px"></i><?= htmlspecialchars((string)seo_config('email')) ?></div>
 			</div>
 		</section>
 		<section class="cta-band view">
-			<img src="/public/assets/image/Components/banner/hero.jpg" alt="ФАВОРИТ-СТРОЙ-СНАБ — строим то, что ведёт вас вперёд" loading="lazy" decoding="async" onerror="this.style.display='none'">
+			<img src="/public/assets/image/Components/banner/hero.jpg" alt="ФАВОРИТ-СТРОЙ-СНАБ — строим то, что ведёт вас вперёд" title="ФАВОРИТ-СТРОЙ-СНАБ" loading="lazy" decoding="async" onerror="this.style.display='none'">
 			<div class="cta-in">
 				<span class="cta-eyebrow"><i></i>Ваш проект — наше дело</span>
 				<h2>Строим то,<br>что ведёт вас вперёд</h2>
 				<p>Оставьте заявку — рассчитаем смету за 15 минут и зафиксируем цену в договоре.</p>
-				<a href="/#contact" class="cta-pill">Построить с нами <i class="fa-solid fa-arrow-right"></i></a>
+				<a href="/#contact" class="cta-pill" title="Построить с нами">Построить с нами <i class="fa-solid fa-arrow-right"></i></a>
 			</div>
 		</section>
 	</main>

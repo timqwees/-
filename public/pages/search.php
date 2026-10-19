@@ -32,7 +32,7 @@ if ($q !== '') {
 	<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap"></noscript>
 	<style> body { font-family: 'Wix Madefor Display', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
 
-	<title>Поиск<?= $q !== '' ? ' — ' . htmlspecialchars($q) : '' ?> | <?= htmlspecialchars(seo_config('brand')) ?></title>
+	<title>Поиск по услугам<?= $q !== '' ? ' — ' . htmlspecialchars($q) : '' ?> | <?= htmlspecialchars(seo_config('brand')) ?></title>
 	<meta name="description" content="Поиск по услугам <?= htmlspecialchars(seo_config('brand')) ?>: склады, ангары, АБК, общежития, капремонт, спецтехника.">
 	<meta name="robots" content="noindex, follow">
 	<link rel="icon" type="image/png" href="/public/assets/image/logo/favicon-96x96.png" sizes="96x96" />
@@ -71,7 +71,7 @@ if ($q !== '') {
 			<?php if ($results): ?>
 				<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 					<?php foreach ($results as $r): ?>
-						<a href="/services/<?= htmlspecialchars($r['slug']) ?>" class="pcard">
+						<a href="/services/<?= htmlspecialchars($r['slug']) ?>" title="<?= htmlspecialchars($r['title']) ?>" class="pcard">
 							<span class="pcard-ico"><i class="fa-solid fa-cube"></i></span>
 							<h3><?= htmlspecialchars($r['title']) ?></h3>
 							<p><?= htmlspecialchars(mb_substr($r['description'], 0, 160)) ?>…</p>
@@ -79,7 +79,7 @@ if ($q !== '') {
 					<?php endforeach; ?>
 				</div>
 			<?php else: ?>
-				<p class="sec-sub">Ничего не найдено. Позвоните <a href="tel:<?= htmlspecialchars(preg_replace('/\D/', '', seo_config('phone'))) ?>" class="text-[#C2410C] font-semibold"><?= htmlspecialchars(seo_config('phone_display')) ?></a> — подберём решение за <?= htmlspecialchars(seo_config('callback_minutes')) ?> минут.</p>
+				<p class="sec-sub">Ничего не найдено. Позвоните <a href="tel:<?= htmlspecialchars(preg_replace('/\D/', '', seo_config('phone'))) ?>" title="Позвонить" class="text-[#C2410C] font-semibold"><?= htmlspecialchars(seo_config('phone_display')) ?></a> — подберём решение за <?= htmlspecialchars(seo_config('callback_minutes')) ?> минут.</p>
 			<?php endif; ?>
 		<?php endif; ?>
 

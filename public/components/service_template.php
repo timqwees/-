@@ -23,6 +23,7 @@ $geoKey = (string)($GLOBALS['fss_service_geo'] ?? '');
 $geoAll = function_exists('seo_geo') ? seo_geo() : ['geo' => [], 'priority_services' => []];
 $geo = ($geoKey !== '' && isset($geoAll['geo'][$geoKey])) ? $geoAll['geo'][$geoKey] : null;
 $geoName = (string)($geo['name'] ?? '');
+$geoIn = (string)($geo['in'] ?? $geoName);
 $svcType = (string)($svc['service_type'] ?? $svc['title']);
 $h = function ($s) { return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); };
 $phone = (string)seo_config('phone_display');
@@ -83,11 +84,18 @@ $priceNum = !empty($svc['price_from']) ? number_format((int)$svc['price_from'], 
 $priceDesc = $priceNum !== '' ? 'Ориентир — от ' . $priceNum . ', точную смету даём за 15 минут. Цена в договоре не растёт.' : 'Смету считаем за 15 минут по вашей задаче. Цена в договоре не растёт.';
 
 // --- SEO-поля с учётом гео-посадочной (/services/{slug}/{geo}) ---
-$seoTitle = $title;
+// Заголовок вкладки: краткий заголовок услуги (до «—») + бренд, укладываемся в 60 символов.
+// Для гео-страниц город ставим в конец и НЕ даём ему обрезаться (иначе titles дублируются).
+$titleSuffix = ' | ФАВОРИТ-СТРОЙ-СНАБ';
+$seoTitle = seo_clip($h1a, 60 - mb_strlen($titleSuffix)) . $titleSuffix;
 $seoDesc = (string)$svc['description'];
 if ($geo) {
-	$h1b = 'в ' . $geoName;
-	$seoTitle = trim($h1a) . ' в ' . $geoName;
+	$h1b = 'в ' . $geoIn;
+	// Гео-посадочная: полное название услуги + город; бренд добавляем, только если укладываемся в 60 символов.
+	$seoTitle = seo_clip($h1a . ' в ' . $geoIn, 60);
+	if (mb_strlen($seoTitle) + mb_strlen($titleSuffix) <= 60) {
+		$seoTitle .= $titleSuffix;
+	}
 	$seoDesc = $geoName . ' — ' . (string)$svc['description'];
 }
 $basePrice = !empty($svc['price_from']) ? (int)$svc['price_from'] : 0;
@@ -104,7 +112,7 @@ for ($k = 0; $k < $wn; $k++) { $works[] = $pool[($off + 5 + $k) % $pn]; }
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?= $h(seo_clip($seoTitle, 46)) ?> | ФАВОРИТ-СТРОЙ-СНАБ</title>
+<title><?= $h($seoTitle) ?></title>
 <meta name="description" content="<?= $h(seo_clip($seoDesc, 130)) ?> ☎ <?= $h($phone) ?>">
 	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
@@ -118,7 +126,7 @@ for ($k = 0; $k < $wn; $k++) { $works[] = $pool[($off + 5 + $k) % $pn]; }
 	<link rel="manifest" href="/public/assets/image/logo/site.webmanifest" />
 <?= seo_canonical_tags() ?>
 <?= seo_verify_tags() ?>
-<?= seo_og_tags($seoTitle . ' | ФАВОРИТ-СТРОЙ-СНАБ', $seoDesc, $pick(0)) ?>
+<?= seo_og_tags($seoTitle, $seoDesc, $pick(0)) ?>
 <link rel="search" type="application/opensearchdescription+xml" title="ФАВОРИТ-СТРОЙ-СНАБ" href="/opensearch.xml">
 <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -297,25 +305,25 @@ html.lenis,html.lenis body{height:auto;}
 		<svg class="svh-surface" viewBox="0 0 1600 760" preserveAspectRatio="none" aria-hidden="true"><path d="M150 0H1290Q1318 0 1323 28Q1328 56 1356 56H1560Q1600 56 1600 96V720Q1600 760 1560 760H350Q325 760 325 735Q325 710 300 710H170Q145 710 145 735Q145 760 120 760H40Q0 760 0 720V430Q0 400 30 400H45Q115 400 115 370V40Q115 0 150 0Z"/>
 		<div class="svh-pricetab"><?= $h($price) ?> <small>смета за 15 минут</small></div></svg>
 		<div class="svh-circles">
-			<a href="tel:<?= $h($phoneHref) ?>" aria-label="Позвонить"><i class="fa-solid fa-phone"></i></a>
-			<a href="https://t.me/fss_rus" target="_blank" rel="noopener" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
-			<a href="https://vk.com/fss_rus" target="_blank" rel="noopener" aria-label="ВКонтакте"><i class="fa-brands fa-vk"></i></a>
+			<a href="tel:<?= $h($phoneHref) ?>" title="Позвонить" aria-label="Позвонить"><i class="fa-solid fa-phone"></i></a>
+			<a href="https://t.me/fss_rus" target="_blank" rel="noopener" title="Telegram" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
+			<a href="https://vk.com/fss_rus" target="_blank" rel="noopener" title="ВКонтакте" aria-label="ВКонтакте"><i class="fa-brands fa-vk"></i></a>
 		</div>
 		<div class="svh-grid">
 			<div>
 				<div class="svh-eyebrow">С <?= seo_config('founded_market') ?> года • Под ключ • Допуск СРО</div>
 				<h1 class="svh-h1"><?= $h($h1a) ?><?= $h1b !== '' ? ' <span class="acc">' . $h($h1b) . '</span>' : '' ?></h1>
 				<p class="svh-lead"><?= $h($svc['description']) ?></p>
-				<?php if ($geo): ?><p style="margin-top:10px"><?= $h($svcType) ?> в <?= $h($geoName) ?> (<?= $h($geo['region']) ?>): доставка конструкций <?= $h($geo['route']) ?> — <?= $h($geo['eta']) ?>. Работаем с юрлицами по договору, цена фиксируется.</p><?php endif; ?>
+				<?php if ($geo): ?><p style="margin-top:10px"><?= $h($svcType) ?> в <?= $h($geoIn) ?> (<?= $h($geo['region']) ?>): доставка конструкций <?= $h($geo['route']) ?> — <?= $h($geo['eta']) ?>. Работаем с юрлицами по договору, цена фиксируется.</p><?php endif; ?>
 				<div class="svh-cta">
-					<a class="svh-pill" href="#lead" data-goal="svc_hero_cta"><span class="svh-pill-label">Рассчитать стоимость</span><span class="svh-pill-arrow"><svg viewBox="0 0 384 512" aria-hidden="true"><path d="M328 96h24v288h-48V177.9L81 401l-17 17-33.9-34 17-17 223-223H64V96h264z"/></svg></span></a>
-					<a class="svh-phone" href="tel:<?= $h($phoneHref) ?>"><?= $h($phone) ?></a>
+					<a class="svh-pill" href="#lead" data-goal="svc_hero_cta" title="Рассчитать стоимость"><span class="svh-pill-label">Рассчитать стоимость</span><span class="svh-pill-arrow"><svg viewBox="0 0 384 512" aria-hidden="true"><path d="M328 96h24v288h-48V177.9L81 401l-17 17-33.9-34 17-17 223-223H64V96h264z"/></svg></span></a>
+					<a class="svh-phone" href="tel:<?= $h($phoneHref) ?>" title="Позвонить: <?= $h($phone) ?>"><?= $h($phone) ?></a>
 				</div>
 				<nav class="svh-toc" aria-label="Разделы страницы">
-					<a href="#aud">Кому подойдёт</a><a href="#ceny">Цены</a><a href="#lead">Смета</a><a href="#steps">Этапы</a><a href="#works">Работы</a><a href="#adv">Преимущества</a><a href="#faq">Вопросы</a>
+					<a href="#aud" title="Кому подойдёт">Кому подойдёт</a><a href="#ceny" title="Цены">Цены</a><a href="#lead" title="Смета">Смета</a><a href="#steps" title="Этапы работы">Этапы</a><a href="#works" title="Наши работы">Работы</a><a href="#adv" title="Преимущества">Преимущества</a><a href="#faq" title="Частые вопросы">Вопросы</a>
 				</nav>
 				<?php $isPriority = in_array($slug, (array)($geoAll['priority_services'] ?? []), true); if (!$geo && $isPriority && !empty($geoAll['geo'])): ?>
-				<nav aria-label="Гео-направления" style="margin-top:12px;font-size:13px;line-height:1.9;color:#fff"><span style="opacity:.7">Строим в городах:</span> <?php $gi = 0; foreach ($geoAll['geo'] as $gk => $gv): echo $gi++ ? ' · ' : ''; ?><a style="color:#fff;text-decoration:underline;text-underline-offset:2px" href="/services/<?= $h($slug) ?>/<?= $h($gk) ?>"><?= $h($gv['name']) ?></a><?php endforeach; ?></nav>
+				<nav aria-label="Гео-направления" style="margin-top:12px;font-size:13px;line-height:1.9;color:#fff"><span style="opacity:.7">Строим в городах:</span> <?php $gi = 0; foreach ($geoAll['geo'] as $gk => $gv): echo $gi++ ? ' · ' : ''; ?><a style="color:#fff;text-decoration:underline;text-underline-offset:2px" href="/services/<?= $h($slug) ?>/<?= $h($gk) ?>" title="<?= $h($gv['name']) ?>"><?= $h($gv['name']) ?></a><?php endforeach; ?></nav>
 </div>
 	</section>
 	<!-- E-E-A-T Credentials Section -->
@@ -359,9 +367,9 @@ html.lenis,html.lenis body{height:auto;}
 	<?php endif; ?>
 			</div>
 			<div class="svh-media">
-				<img src="<?= $h($pick(0)) ?>"<?= seo_img_attrs((string)$pick(0)) ?> alt="<?= $h($title) ?> — фото объекта" fetchpriority="high" decoding="async" onerror="this.style.display='none'">
+				<img src="<?= $h($pick(0)) ?>"<?= seo_img_attrs((string)$pick(0)) ?> alt="<?= $h($title) ?> — фото объекта" title="<?= $h($title) ?> — фото объекта" fetchpriority="high" decoding="async" onerror="this.style.display='none'">
 				<span class="svh-tag">Смета за <b>15 минут</b></span>
-				<a class="svh-mphoto" href="#aud" aria-label="Смотреть дальше"><i class="fa-solid fa-arrow-down"></i></a>
+				<a class="svh-mphoto" href="#aud" title="Смотреть дальше" aria-label="Смотреть дальше"><i class="fa-solid fa-arrow-down"></i></a>
 			</div>
 		</div>
 		<p class="svh-under">EST. <?= seo_config('founded_market') ?> — Москва · работаем по России</p>
@@ -378,7 +386,7 @@ html.lenis,html.lenis body{height:auto;}
 	<section class="page-section view" id="aud">
 		<div class="section-heading"><h2>Кому подойдёт</h2><span class="heading-divider" aria-hidden="true"></span><p>Если узнали свою задачу — рассчитаем точную смету за 15 минут</p></div>
 		<div class="sv-aud" style="margin-top:22px">
-			<div class="sv-tall"><img src="<?= $h($pick(4)) ?>" alt="<?= $h($aud[0]) ?>" loading="lazy" decoding="async" onerror="this.style.display='none'"><span><?= $h($aud[0]) ?><small><?= $h($svcType) ?> под ключ</small></span></div>
+			<div class="sv-tall"><img src="<?= $h($pick(4)) ?>" alt="<?= $h($aud[0]) ?>" title="<?= $h($aud[0]) ?>" loading="lazy" decoding="async" onerror="this.style.display='none'"><span><?= $h($aud[0]) ?><small><?= $h($svcType) ?> под ключ</small></span></div>
 			<?php $audDesc = ['Замер, проект и точная смета за 15 минут', 'Фиксированная цена в договоре', 'Сдача с документами и гарантией', 'Работаем по Москве, МО и всей России']; ?>
 			<?php for ($i = 1; $i <= 4; $i++): ?>
 			<div class="sv-flat<?= in_array($i, [2, 3]) ? ' cream' : '' ?>"><h3><?= $h($aud[$i]) ?></h3><p><?= $h($audDesc[($i - 1) % 4]) ?></p></div>
@@ -407,7 +415,7 @@ html.lenis,html.lenis body{height:auto;}
 					<input type="hidden" name="message" value="<?= $h($title) ?> — нужны сроки и цена">
 					<label class="sv-check"><input type="checkbox" name="checkbox" required> <span>Согласен(а) на обработку персональных данных</span></label>
 					<button type="submit" class="sv-send">Отправить</button>
-					<div class="sv-consent">Нажимая на кнопку, я соглашаюсь на <a href="/politika">обработку персональных данных</a></div>
+					<div class="sv-consent">Нажимая на кнопку, я соглашаюсь на <a href="/politika" title="Политика конфиденциальности">обработку персональных данных</a></div>
 				</form>
 			</div>
 		</div>
@@ -432,7 +440,7 @@ html.lenis,html.lenis body{height:auto;}
 		<div class="sv-flow">
 			<?php $pct = [33, 66, 100]; foreach ($steps as $k => $st): ?>
 			<div class="sv-fcol">
-				<img src="<?= $h($pick($k + 1)) ?>" alt="<?= $h($st[0]) ?> — ФСС" loading="lazy" decoding="async" onerror="this.style.display='none'">
+				<img src="<?= $h($pick($k + 1)) ?>" alt="<?= $h($st[0]) ?> — ФСС" title="<?= $h($st[0]) ?> — ФСС" loading="lazy" decoding="async" onerror="this.style.display='none'">
 				<h3><?= $h($st[0]) ?></h3>
 				<p><?= $h($st[1]) ?></p>
 				<div class="sv-fbar"><span><?= $pct[$k] ?>%</span><i><b style="width:<?= $pct[$k] ?>%"></b></i></div>
@@ -444,7 +452,7 @@ html.lenis,html.lenis body{height:auto;}
 		<div class="section-heading"><h2>Примеры работ</h2><span class="heading-divider" aria-hidden="true"></span><p><?= $h($svcType) ?> — реальные фото с объектов ФСС</p></div>
 		<div class="sv-works" id="svWorks">
 			<?php foreach ($works as $wi => $wf): ?>
-			<figure class="sv-work" style="margin:0"><img src="/public/assets/image/services/<?= $h($wf) ?>" alt="<?= $h($svcType) ?> — пример работ <?= $wi + 1 ?>" loading="lazy" decoding="async" onerror="this.closest('.sv-work').style.display='none'"><span>Фото <?= $wi + 1 ?></span></figure>
+			<figure class="sv-work" style="margin:0"><img src="/public/assets/image/services/<?= $h($wf) ?>" alt="<?= $h($svcType) ?> — пример работ <?= $wi + 1 ?>" title="<?= $h($svcType) ?> — пример работ <?= $wi + 1 ?>" loading="lazy" decoding="async" onerror="this.closest('.sv-work').style.display='none'"><span>Фото <?= $wi + 1 ?></span></figure>
 			<?php endforeach; ?>
 		</div>
 		<div class="sv-wnav"><button type="button" data-wv="-1" aria-label="Назад"><i class="fa-solid fa-arrow-left"></i></button><button type="button" data-wv="1" aria-label="Вперёд"><i class="fa-solid fa-arrow-right"></i></button></div>
@@ -452,7 +460,7 @@ html.lenis,html.lenis body{height:auto;}
 	</section>
 	<?php if ($basePrice > 0 && $areaBased): ?>
 	<section class="page-section view" id="ceny">
-		<div class="section-heading"><h2>Цены<?= $geo ? ' в ' . $h($geoName) : '' ?></h2><span class="heading-divider" aria-hidden="true"></span><p>Ориентировочные цены «под ключ» по площади<?= $geo ? ' в ' . $h($geoName) : '' ?> — точную смету считаем за 15 минут</p></div>
+		<div class="section-heading"><h2>Цены<?= $geo ? ' в ' . $h($geoIn) : '' ?></h2><span class="heading-divider" aria-hidden="true"></span><p>Ориентировочные цены «под ключ» по площади<?= $geo ? ' в ' . $h($geoIn) : '' ?> — точную смету считаем за 15 минут</p></div>
 		<div style="overflow-x:auto;margin-top:22px">
 			<table style="width:100%;border-collapse:collapse;font-size:15px;background:#fff;border-radius:16px;overflow:hidden">
 				<thead><tr style="background:#171310;color:#fff;text-align:left">
@@ -493,7 +501,7 @@ html.lenis,html.lenis body{height:auto;}
 			</div>
 			<div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:16px;align-items:center">
 				<div style="font-size:15px">Ориентировочная стоимость: <b data-calc-out style="font-size:26px;color:#F97316">—</b></div>
-				<a href="#lead" class="btn-outline" data-calc-send>Отправить расчёт инженеру</a>
+				<a href="#lead" class="btn-outline" data-calc-send title="Отправить расчёт инженеру">Отправить расчёт инженеру</a>
 			</div>
 		</div>
 		<script>(function(){var box=document.querySelector('#calc [data-base]');if(!box)return;var base=parseInt(box.getAttribute('data-base'),10)||0;var area=box.querySelector('[data-calc-area]'),type=box.querySelector('[data-calc-type]'),out=document.querySelector('#calc [data-calc-out]');function fmt(n){return n.toLocaleString('ru-RU')+' ₽';}function calc(){var a=Math.max(0,parseFloat(area.value)||0),k=parseFloat(type.value)||1,lo=a*base*k,hi=lo*1.15;out.textContent=lo?'≈ '+fmt(Math.round(lo))+' – '+fmt(Math.round(hi)):'—';}area.addEventListener('input',calc);type.addEventListener('change',calc);calc();var send=document.querySelector('#calc [data-calc-send]');if(send)send.addEventListener('click',function(){var lf=document.querySelector('#lead input[name="area"]');if(lf)lf.value=area.value;});})();</script>
@@ -501,12 +509,12 @@ html.lenis,html.lenis body{height:auto;}
 	<?php endif; ?>
 	<?php if ($faq): ?>
 	<section class="cta-band view">
-		<img src="/public/assets/image/Components/banner/hero.jpg" alt="Быстровозводимые здания ФСС — строим то, что ведёт вас вперёд" loading="lazy" decoding="async" onerror="this.style.display='none'">
+		<img src="/public/assets/image/Components/banner/hero.jpg" alt="Быстровозводимые здания ФСС — строим то, что ведёт вас вперёд" title="Быстровозводимые здания ФСС" loading="lazy" decoding="async" onerror="this.style.display='none'">
 		<div class="cta-in">
 			<span class="cta-eyebrow"><i></i>Ваш проект — наше дело</span>
 			<h2>Строим то,<br>что ведёт вас вперёд</h2>
 			<p><?= $h($svcType) ?> под ключ: проектируем, производим и монтируем — с фиксированной ценой в договоре.</p>
-			<a href="#lead" class="cta-pill" data-goal="svc_band_cta">Построить с нами <i class="fa-solid fa-arrow-right"></i></a>
+			<a href="#lead" class="cta-pill" data-goal="svc_band_cta" title="Построить с нами">Построить с нами <i class="fa-solid fa-arrow-right"></i></a>
 		</div>
 	</section>
 	<section class="security-section view" id="adv">
@@ -544,7 +552,7 @@ html.lenis,html.lenis body{height:auto;}
 			</article>
 			<article class="security-card security-support">
 				<h3>Нужна<br>смета?</h3>
-				<a class="sv-sup" href="#lead">Получить за 15 минут</a>
+				<a class="sv-sup" href="#lead" title="Получить за 15 минут">Получить за 15 минут</a>
 			</article>
 		</div>
 	</section>
@@ -558,7 +566,7 @@ html.lenis,html.lenis body{height:auto;}
 			</details>
 			<?php endforeach; ?>
 		</div>
-		<div style="margin-top:14px"><a class="btn-outline" href="#lead">Получить консультацию по другим вопросам</a></div>
+		<div style="margin-top:14px"><a class="btn-outline" href="#lead" title="Получить консультацию">Получить консультацию по другим вопросам</a></div>
 	</section>
 	<?php endif; ?>
 
@@ -566,9 +574,9 @@ html.lenis,html.lenis body{height:auto;}
 	<section class="page-section view" id="geo">
 		<div class="section-heading"><h2>Другие направления <?= $h(trim($h1a)) ?></h2><span class="heading-divider" aria-hidden="true"></span><p>Строим и доставляем по Москве и Московской области</p></div>
 		<nav aria-label="Гео-направления" style="margin-top:18px;display:flex;flex-wrap:wrap;gap:10px;font-size:14px">
-			<a class="btn-outline" href="/services/<?= $h($slug) ?>">Все направления</a>
+			<a class="btn-outline" href="/services/<?= $h($slug) ?>" title="Все направления">Все направления</a>
 			<?php foreach ($geoAll['geo'] as $gk => $gv): if ($gk === $geoKey) continue; ?>
-			<a class="btn-outline" href="/services/<?= $h($slug) ?>/<?= $h($gk) ?>"><?= $h($gv['name']) ?></a>
+			<a class="btn-outline" href="/services/<?= $h($slug) ?>/<?= $h($gk) ?>" title="<?= $h($gv['name']) ?>"><?= $h($gv['name']) ?></a>
 			<?php endforeach; ?>
 		</nav>
 	</section>

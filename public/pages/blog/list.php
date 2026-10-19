@@ -374,7 +374,7 @@ $description = 'Экспертные статьи о строительстве 
 					</div>
 					<div class="blog-cta-actions">
 						<a href="/#contact" title="Рассчитать смету" class="blog-cta-btn blog-cta-btn--primary">Рассчитать смету <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-						<a href="tel:+<?= preg_replace('/\D/', '', (string)seo_config('phone')) ?>" class="blog-cta-btn blog-cta-btn--phone"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> <?= htmlspecialchars((string)seo_config('phone_display')) ?></a>
+						<a href="tel:+<?= preg_replace('/\D/', '', (string)seo_config('phone')) ?>" title="Позвонить" class="blog-cta-btn blog-cta-btn--phone"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> <?= htmlspecialchars((string)seo_config('phone_display')) ?></a>
 					</div>
 				</div>
 			</div>
@@ -410,6 +410,7 @@ $description = 'Экспертные статьи о строительстве 
 			--shadow-md: 0 8px 24px rgba(23,19,16,.08);
 			--shadow-lg: 0 20px 40px rgba(23,19,16,.1);
 			--shadow-sun: 0 10px 30px rgba(249,115,22,.25);
+			--shadow-sun-lg: 0 20px 40px rgba(249,115,22,.3);
 			--transition: .25s cubic-bezier(.4, 0, .2, 1);
 			--font-heading: 'Wix Madefor Display', 'Manrope', system-ui, sans-serif;
 			--font-body: 'Manrope', system-ui, sans-serif;

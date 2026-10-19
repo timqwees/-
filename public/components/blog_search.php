@@ -83,7 +83,7 @@ $bs_link = static function (array $over = []) use ($bs_action, $bs_query, $bs_ca
 	<div class="bsearch-filter-group">
 		<span class="bsearch-filter-label">Категория:</span>
 		<?php foreach ($bs_categories as $bs_slug => $bs_name): ?>
-		<a href="<?= $bs_e($bs_link(['cat' => $bs_slug])) ?>"
+		<a href="<?= $bs_e($bs_link(['cat' => $bs_slug])) ?>" title="Категория: <?= $bs_e($bs_name) ?>"
 			class="bsearch-chip<?= $bs_cat === $bs_slug ? ' active' : '' ?>"><?= $bs_e($bs_name) ?></a>
 		<?php endforeach; ?>
 	</div>
@@ -93,7 +93,7 @@ $bs_link = static function (array $over = []) use ($bs_action, $bs_query, $bs_ca
 	<div class="bsearch-filter-group">
 		<span class="bsearch-filter-label">Теги:</span>
 		<?php foreach ($bs_tags as $bs_t): ?>
-		<a href="<?= $bs_e($bs_link(['tag' => $bs_t])) ?>"
+		<a href="<?= $bs_e($bs_link(['tag' => $bs_t])) ?>" title="Тег: #<?= $bs_e($bs_t) ?>"
 			class="bsearch-chip<?= $bs_tag === $bs_t ? ' active' : '' ?>">#<?= $bs_e($bs_t) ?></a>
 		<?php endforeach; ?>
 	</div>

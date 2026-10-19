@@ -37,6 +37,22 @@ if (!function_exists('seo_ver')) {
 	}
 }
 
+if (!function_exists('seo_url_path')) {
+	/**
+	 * Безопасное извлечение пути из URL/пути.
+	 * НЕ используем parse_url(): он портит байты кириллицы (например «АБК» → «П_П_П_»),
+	 * из-за чего is_file() не находил реальные файлы с не-ASCII именами.
+	 */
+	function seo_url_path(string $url): string
+	{
+		if (preg_match('#^https?://#i', $url)) {
+			$url = (string)preg_replace('#^https?://[^/]+#i', '', $url);
+		}
+		$cut = strcspn($url, '?#');
+		return rawurldecode(substr($url, 0, $cut));
+	}
+}
+
 if (!function_exists('seo_url')) {
 	/**
 	 * Чистый (ЧПУ) путь текущей страницы.
@@ -118,8 +134,7 @@ if (!function_exists('seo_og_tags')) {
 		$brand = seo_config('brand');
 		$default = '/public/assets/image/og/og-blog-1200x630.jpg';
 		$img = $image !== '' ? $image : $default;
-		$path = preg_match('#^https?://#i', $img) ? (string)parse_url($img, PHP_URL_PATH) : $img;
-		$path = '/' . ltrim(rawurldecode($path), '/');
+		$path = '/' . ltrim(seo_url_path($img), '/');
 		if (!is_file(dirname(__DIR__, 2) . $path)) {
 			$img = $default;
 		}
@@ -162,7 +177,11 @@ if (!function_exists('seo_clip')) {
 		if ($sp !== false && $sp > (int)($max * 0.6)) {
 			$cut = mb_substr($cut, 0, $sp);
 		}
-		return rtrim($cut, " .,;:—-") . '…';
+		// ВАЖНО: trim только UTF-8-безопасно. Побайтовый rtrim с «—» рвал многобайтные
+		// последовательности (0x80 входит в UTF-8-продолжение) → htmlspecialchars(...,'UTF-8')
+		// возвращал пустую строку, и <title>/description оказывались пустыми.
+		$cut = (string)preg_replace('/[\s.,;:—–-]+$/u', '', $cut);
+		return $cut . '…';
 	}
 }
 
@@ -170,8 +189,7 @@ if (!function_exists('seo_img_attrs')) {
 	/** width/height из реального файла (борьба с CLS). Пусто, если размер не определён. */
 	function seo_img_attrs(string $src): string
 	{
-		$path = preg_match('#^https?://#i', $src) ? (string)parse_url($src, PHP_URL_PATH) : $src;
-		$file = dirname(__DIR__, 2) . '/' . ltrim(rawurldecode($path), '/');
+		$file = dirname(__DIR__, 2) . '/' . ltrim(seo_url_path($src), '/');
 		if (!is_file($file)) {
 			return '';
 		}
@@ -338,7 +356,7 @@ if (!function_exists('seo_breadcrumbs_html')) {
 		foreach ($items as $it) {
 			$out .= '<li class="fss-bc-item">';
 			if (!empty($it['item'])) {
-				$out .= '<a href="' . htmlspecialchars($it['item'], ENT_QUOTES) . '" class="fss-bc-link">' . htmlspecialchars($it['name'], ENT_QUOTES) . '</a>';
+				$out .= '<a href="' . htmlspecialchars($it['item'], ENT_QUOTES) . '" title="' . htmlspecialchars($it['name'], ENT_QUOTES) . '" class="fss-bc-link">' . htmlspecialchars($it['name'], ENT_QUOTES) . '</a>';
 			} else {
 				$out .= '<span class="fss-bc-current">' . htmlspecialchars($it['name'], ENT_QUOTES) . '</span>';
 			}
@@ -540,12 +558,16 @@ if (!function_exists('seo_service_jsonld')) {
 	}
 }
 
-if (!function_exists('seo_analytics')) {
+	if (!function_exists('seo_analytics')) {
 	function seo_analytics(): string
 	{
 		$ym = (string)seo_config('ym_id');
 		$ga4 = (string)seo_config('ga4_id');
 		$gtm = (string)seo_config('gtm_id');
+		// Отсекаем пустые и плейсхолдерные (XXXX) значения — не выводим мусорные счётчики.
+		if (!preg_match('/^\d{6,}$/', $ym)) { $ym = ''; }
+		if (!preg_match('/^G-[A-Z0-9]{8,}$/i', $ga4) || str_contains(strtoupper($ga4), 'XXXX')) { $ga4 = ''; }
+		if (!preg_match('/^GTM-[A-Z0-9]{6,}$/i', $gtm) || str_contains(strtoupper($gtm), 'XXXX')) { $gtm = ''; }
 		$out = '';
 		if ($ym !== '') {
 			$out .= <<<HTML
@@ -556,7 +578,7 @@ if (!function_exists('seo_analytics')) {
 					(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 				ym({$ym}, "init", { clickmap: true, trackLinks: true, accurateTrackBounce: true, webvisor: true, ecommerce: false });
 			</script>
-			<noscript><div><img src="https://mc.yandex.ru/watch/{$ym}" style="position:absolute;left:-9999px" alt="" /></div></noscript>
+			<noscript><div><img src="https://mc.yandex.ru/watch/{$ym}" title="Яндекс.Метрика" style="position:absolute;left:-9999px" alt="" /></div></noscript>
 			HTML;
 		}
 		if ($ga4 !== '') {
