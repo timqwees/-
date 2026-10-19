@@ -66,7 +66,6 @@ class Messenger
 					}
 				}
 			}
-			curl_close($ch);
 
 			if ($ok) {
 				$successCount++;

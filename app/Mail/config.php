@@ -57,6 +57,7 @@ define('TELEGRAM_CHAT_IDS', serialize($telegramChats));
 // Mail
 $mailDomain = preg_match('/^xn--/', $httpHost) ? idn_to_utf8($httpHost, IDNA_NONTRANSITIONAL_TO_ASCII, INTL_IDNA_VARIANT_UTS46) : $httpHost;
 define('MAIL_TO', fss_env('MAIL_TO', 'order@' . $mailDomain));
+define('MAIL_TO_PUNY', fss_env('MAIL_TO_PUNY', 'order@' . (preg_match('/^xn--/', $httpHost) ? $httpHost : idn_to_ascii($mailDomain, IDNA_NONTRANSITIONAL_TO_ASCII, INTL_IDNA_VARIANT_UTS46))));
 define('MAIL_FROM', fss_env('MAIL_FROM'));
 define('MAIL_PASS', fss_env('MAIL_PASS')); // App password Gmail
 define('MAIL_FROM_NAME', 'Новое обращение ФСС.РУС');
