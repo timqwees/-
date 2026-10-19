@@ -32,6 +32,9 @@ unset($__caller, $__real, $__index, $__ctrl);
 
 require_once __DIR__ . '/Seo/seo.php';
 
+// Глобальный обработчик форм (должен быть до роутинга, как в pkvartira)
+require_once __DIR__ . '/Mail/component_mail.php';
+
 if (!headers_sent()) {
 	header_remove('X-Powered-By');
 	header_remove('Server');
