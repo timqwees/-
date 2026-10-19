@@ -60,6 +60,45 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 	<script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 	<script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+	<script defer>
+		// Lenis Smooth Scroll — exact Protenance settings
+		if (typeof Lenis !== 'undefined') {
+			const lenis = new Lenis({
+				duration: 1.12,
+				smoothWheel: true,
+				syncTouch: false,
+				anchors: { offset: -105 },
+				prevent: e => e.closest('#nav-panel') !== null,
+				easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+				direction: 'vertical',
+				gestureDirection: 'vertical',
+				smooth: true,
+				smoothTouch: false,
+				touchMultiplier: 2,
+				infinite: false,
+			});
+			function raf(time) {
+				lenis.raf(time);
+				requestAnimationFrame(raf);
+			}
+			requestAnimationFrame(raf);
+			// Expose for debugging
+			window.lenis = lenis;
+
+			// Anchor scroll — exact Protenance: duration 1.05, offset -105
+			document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+				anchor.addEventListener('click', function(e) {
+					var targetId = this.getAttribute('href');
+					if (targetId === '#') return;
+					var target = document.querySelector(targetId);
+					if (target) {
+						e.preventDefault();
+						lenis.scrollTo(target, { offset: -105, duration: 1.05 });
+					}
+				});
+			});
+		}
+	</script>
 	<script defer src="/public/assets/distJS/main.js"></script>
 	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261018">
 	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261018">
@@ -71,8 +110,8 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 
 </head>
 
-<body class="font-sans text-gray-800">
-		@keyframes floatRightIcon {
+<style>
+	@keyframes floatRightIcon {
 			0% {
 				transform: translateY(0) scale(.9) rotateZ(0deg);
 			}
@@ -268,19 +307,31 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 			#process .step3 { transition: none; }
 		}
 
-		/* Cinema Hero Styles */
+		/* Cinema Hero Styles — exact Protenance copy */
 		.hero { isolation: isolate; }
-		.cinema-image { object-fit: cover; object-position: 58% 50%; transition: opacity 0.8s cubic-bezier(.2,.8,.2,1); }
+		.cinema-image { object-fit: cover; object-position: 58% 50%; opacity: 0; width: 100%; height: 100%; position: absolute; transition: opacity 0.8s cubic-bezier(.2,.8,.2,1); }
 		.cinema-image.is-active { opacity: 1; }
 		.hero-shade { pointer-events: none; }
 		.cinema-pagination button { opacity: .5; transition: opacity 0.3s; }
 		.cinema-pagination button[aria-pressed=true] { opacity: 1; }
 		.cinema-pagination button span { transition: width 0.6s cubic-bezier(.2,.8,.2,1); }
-		.hero-project { transition: background 0.4s; }
+		.hero-project { backdrop-filter: blur(22px); border-radius: 8px; background: #16161794; border: 1px solid #ffffff4d; flex-direction: column; gap: 9px; padding: 24px 75px 24px 24px; transition: background .4s; display: flex; position: relative; }
 		.hero-project:hover { background: #24211ecc; }
-		.hero-cta { transition: background 0.3s; }
-		.hero-cta:hover { background: #fff; }
+		.hero-project .eyebrow { opacity: .7; font-size: 8px; }
+		.hero-project strong { letter-spacing: -.02em; font-size: 18px; font-weight: 500; }
+		.hero-project>span[data-cinema-caption] { opacity: .7; font-size: 10px; }
+		.hero-project-arrow { position: absolute; top: 50%; right: 24px; transform: translateY(-50%); }
+		.hero-controls { padding-bottom: 16px; }
+		.cinema-pagination { align-items: center; gap: 16px; display: flex; }
+		.cinema-pagination button { opacity: .5; align-items: center; gap: 12px; min-height: 44px; font-size: 10px; display: flex; background: none; border: none; color: inherit; cursor: pointer; padding: 0; }
+		.cinema-pagination button span { width: 20px; height: 1px; transition: width .6s cubic-bezier(.2,.8,.2,1); background: #fff; display: block; }
+		.cinema-pagination button[aria-pressed=true] { opacity: 1; }
 		.cinema-pagination button[aria-pressed=true] span { width: 65px; }
+		.hero-controls>.eyebrow { opacity: .65; font-size: 8px; }
+		.hero-cta { color: #1b1c1d; border-radius: 8px; background: #f0efed; align-items: center; gap: 45px; margin-bottom: 15px; padding: 22px 26px; font-size: 12px; transition: background .3s; display: flex; }
+		.hero-cta:hover { background: #fff; }
+		.hero-cta svg { transition: transform .4s cubic-bezier(.2,.8,.2,1); flex-shrink: 0; }
+		.hero-cta:hover svg { transform: translate(2px,-2px); }
 
 		@media (width>=1600px) {
 			.hero h1 { font-size: 155px; }
@@ -330,53 +381,14 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 			.hero-cta { display: none; }
 		}
 
-		/* Video mute/unmute control (hero) */
-		.hero-video-control {
-			position: absolute;
-			bottom: 16px;
-			right: 16px;
-			z-index: 20;
-			display: inline-flex;
-			align-items: center;
-			justify-content: center;
-			width: 44px;
-			height: 44px;
-			border-radius: 50%;
-			border: none;
-			background: rgba(255, 255, 255, 0.15);
-			backdrop-filter: blur(8px);
-			color: #fff;
-			cursor: pointer;
-			transition: background-color 0.2s ease, transform 0.1s ease;
+		@media (hover: hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+			.hero-cta svg { transition: transform .4s cubic-bezier(.2,.8,.2,1); flex-shrink: 0; }
+			.hero-cta:hover svg { transform: translate(2px,-2px); }
 		}
-		.hero-video-control:hover {
-			background: rgba(255, 255, 255, 0.25);
-		}
-		.hero-video-control:active {
-			transform: scale(0.92);
-		}
-		.hero-video-control:focus-visible {
-			outline: 2px solid rgba(255, 255, 255, 0.6);
-			outline-offset: 2px;
-		}
-		.hero-video-control__sound { display: inline-block; }
-		.hero-video-control__muted { display: none; }
-		.hero-video-control[aria-pressed="true"] .hero-video-control__sound { display: none; }
-		.hero-video-control[aria-pressed="true"] .hero-video-control__muted { display: inline-block; }
 
-		/* Hero: чипсы-фильтры категорий */
-		.hero-chips { position: relative; z-index: 10; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 26px; }
-		.hero-chip { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,.72); border: 1px solid rgba(23,19,16,.1); color: #171310; border-radius: 999px; padding: 9px 18px; font-size: 14px; font-weight: 600; text-decoration: none; white-space: nowrap; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); transition: background-color .2s, color .2s, border-color .2s, transform .2s; }
-		.hero-chip:hover { background: #171310; color: #fff; border-color: #171310; transform: translateY(-2px); }
-		.hero-chip i { font-size: 12px; color: #F97316; }
-		.hero-chip:hover i { color: #fff; }
-		.hero-chip--hot { background: linear-gradient(135deg,#FB923C,#EA580C); color: #fff; border-color: transparent; box-shadow: 0 8px 20px rgba(234,88,12,.3); }
-		.hero-chip--hot i { color: #fff; }
-		.hero-chip--hot:hover { background: linear-gradient(135deg,#EA580C,#C2410C); color: #fff; }
-		@media (max-width: 767px) {
-			.hero-chips { flex-wrap: nowrap; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; margin-top: 18px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-			.hero-chips::-webkit-scrollbar { display: none; }
-			.hero-chip { scroll-snap-align: start; flex: 0 0 auto; }
+		@media (prefers-reduced-motion:reduce) {
+			.cinema-image { transition: none; }
+			.cinema-pagination button span { transition: none; }
 		}
 	</style>
 	<?php include_once __DIR__ . '/../components/sheoma.php'; ?>
@@ -394,56 +406,56 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 
 	<?php include_once __DIR__ . '/../components/header.php'; ?>
 
-	<!-- CINEMA HERO -->
-	<section class="hero relative isolate overflow-hidden" aria-labelledby="hero-title" style="height:100svh;min-height:750px;max-height:1200px;background:#363636;color:#fff;">
-		<div class="hero-visual absolute inset-0" data-hero-frame="">
-			<img src="/public/assets/image/swiper/1.jpeg.webp" srcset="/public/assets/image/swiper/1.jpeg.webp 720w, /public/assets/image/swiper/1.jpeg.webp 1200w, /public/assets/image/swiper/1.jpeg.webp 1672w" alt="Склад под ключ — Химки" sizes="100vw" loading="eager" fetchpriority="high" decoding="async" width="1672" height="941" class="cinema-image absolute inset-0 w-full h-full object-cover object-center is-active" style="opacity:1;object-position:58% 50%;" data-cinema-image="0">
-			<img src="/public/assets/image/swiper/2.jpg.webp" srcset="/public/assets/image/swiper/2.jpg.webp 720w, /public/assets/image/swiper/2.jpg.webp 1200w, /public/assets/image/swiper/2.jpg.webp 1672w" alt="Ангар под ключ — Мытищи" sizes="100vw" loading="lazy" fetchpriority="auto" decoding="async" width="1672" height="941" class="cinema-image absolute inset-0 w-full h-full object-cover object-center" style="opacity:0;object-position:58% 50%;" data-cinema-image="1">
-			<img src="/public/assets/image/swiper/3.jpeg.webp" srcset="/public/assets/image/swiper/3.jpeg.webp 720w, /public/assets/image/swiper/3.jpeg.webp 1200w, /public/assets/image/swiper/3.jpeg.webp 1672w" alt="АБК под ключ — Подольск" sizes="100vw" loading="lazy" fetchpriority="auto" decoding="async" width="1672" height="941" class="cinema-image absolute inset-0 w-full h-full object-cover object-center" style="opacity:0;object-position:58% 50%;" data-cinema-image="2">
+	<!-- CINEMA HERO — exact Protenance copy -->
+	<section class="hero" aria-labelledby="hero-title" style="isolation: isolate; color: #fff; background: #363636; height: 100svh; min-height: 750px; max-height: 1200px; position: relative; overflow: hidden;">
+		<div class="hero-visual" data-hero-frame="" style="position: absolute; inset: 0;">
+			<img src="/public/assets/image/Components/banner/hero.jpg.webp" srcset="/public/assets/image/Components/banner/hero.jpg.webp 720w, /public/assets/image/Components/banner/hero.jpg.webp 1200w, /public/assets/image/Components/banner/hero.jpg.webp 1672w" alt="" sizes="100vw" loading="eager" fetchpriority="high" data-cinema-image="0" decoding="async" width="1672" height="941" class="cinema-image" style="object-fit: cover; object-position: 58% 50%; opacity: 1; width: 100%; height: 100%; position: absolute; opacity: 1; object-position: 58% 50%;">
+			<img src="/public/assets/image/swiper/2.jpg.webp" srcset="/public/assets/image/swiper/2.jpg.webp 720w, /public/assets/image/swiper/2.jpg.webp 1200w, /public/assets/image/swiper/2.jpg.webp 1672w" alt="" sizes="100vw" loading="lazy" fetchpriority="auto" data-cinema-image="1" decoding="async" width="1672" height="941" class="cinema-image" style="object-fit: cover; object-position: 58% 50%; opacity: 0; width: 100%; height: 100%; position: absolute; opacity: 0; object-position: 58% 50%;">
+			<img src="/public/assets/image/swiper/3.jpeg.webp" srcset="/public/assets/image/swiper/3.jpeg.webp 720w, /public/assets/image/swiper/3.jpeg.webp 1200w, /public/assets/image/swiper/3.jpeg.webp 1672w" alt="" sizes="100vw" loading="lazy" fetchpriority="auto" data-cinema-image="2" decoding="async" width="1672" height="941" class="cinema-image" style="object-fit: cover; object-position: 58% 50%; opacity: 0; width: 100%; height: 100%; position: absolute; opacity: 0; object-position: 58% 50%;">
 		</div>
-		<div class="hero-shade absolute inset-0 pointer-events-none" aria-hidden="true" style="background:linear-gradient(90deg,#0f0e0dad,#0f0e0d14 85%),linear-gradient(#0f0e0d2e,#0000 55%,#0f0e0dcc);"></div>
-		<div class="hero-content absolute left-[clamp(24px,4.4vw,96px)] right-[clamp(24px,4.4vw,96px)]" style="top:clamp(155px,22vh,260px);">
-			<p class="eyebrow flex items-center gap-3" style="color:#ffffffc7;letter-spacing:.12em;text-transform:uppercase;font-size:10px;font-weight:500;line-height:1.5;">
-				<span class="live-dot" style="background:currentColor;border-radius:50%;width:6px;height:6px;display:inline-block;" aria-hidden="true"></span>
-				<span>Строительство · Производство · Монтаж</span>
+		<div class="hero-shade" aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, #0f0e0dad, #0f0e0d14 85%), linear-gradient(#0f0e0d2e, #0000 55%, #0f0e0dcc);"></div>
+		<div class="hero-content" style="position: absolute; top: clamp(155px, 22vh, 260px); left: clamp(24px, 4.4vw, 96px); right: clamp(24px, 4.4vw, 96px);">
+			<p class="eyebrow" style="color: #ffffffc7; letter-spacing: .12em; text-transform: uppercase; font-size: 10px; font-weight: 500; line-height: 1.5; display: flex; align-items: center; gap: 12px;">
+				<span class="live-dot" style="background: currentColor; border-radius: 50%; width: 6px; height: 6px; margin-right: 12px; display: inline-block;" aria-hidden="true"></span>
+				Geotechnical · Structural · Contracting
 			</p>
-			<h1 id="hero-title" style="letter-spacing:-.066em;margin-top:32px;font-size:clamp(72px,9.6vw,170px);font-weight:450;line-height:.98;">
-				<span style="display:block;">Сила для</span>
-				<span style="display:block;">следующего этапа<span class="accent-dot" style="color:#c7ab94;">.</span></span>
+			<h1 id="hero-title" style="letter-spacing: -.066em; text-wrap: initial; margin-top: 32px; font-size: clamp(72px, 9.6vw, 170px); font-weight: 450; line-height: .98;">
+				<span style="display: block;">Strength for</span>
+				<span style="display: block;">what&#8217;s next<span class="accent-dot" style="color: #c7ab94;">.</span></span>
 			</h1>
-			<div class="hero-intro flex items-end gap-[85px]" style="margin-top:40px;">
-				<p style="color:#fffc;font-size:15px;line-height:1.5;">От фундамента до сдачи.<br>Сила для каждого нового этапа.</p>
-				<a class="text-link flex items-center gap-[25px] border-b border-white/50" href="#about" style="border-color:#ffffff80;font-size:11px;line-height:1.4;padding-block:10px;display:inline-flex;align-items:center;gap:25px;">Узнать о ФСС <span>↓</span></a>
+			<div class="hero-intro" style="align-items: end; gap: 85px; margin-top: 40px; display: flex;">
+				<p style="color: #fffc; font-size: 15px; line-height: 1.5;">From the ground up.<br>Strength for every next chapter.</p>
+				<a class="text-link" href="#about" style="border-bottom: 1px solid; align-items: center; gap: 25px; padding-block: 10px; font-size: 11px; line-height: 1.4; display: inline-flex; border-color: #ffffff80; font-size: 11px; line-height: 1.4; display: inline-flex; align-items: center; gap: 25px;">Discover Protenance <span>&#8595;</span></a>
 			</div>
 		</div>
-		<div class="hero-bottom absolute bottom-32 left-[clamp(24px,4.4vw,96px)] right-[clamp(24px,4.4vw,96px)]" style="display:grid;grid-template-columns:1.1fr 1fr auto;align-items:end;gap:40px;">
-			<a href="/portfolio" class="hero-project group relative flex flex-col gap-9 rounded-[8px] p-6" style="background:#16161794;border:1px solid #ffffff4d;padding:24px 75px 24px 24px;backdrop-filter:blur(22px);border-radius:8px;background:#16161794;border:1px solid #ffffff4d;transition:background .4s;display:flex;flex-direction:column;gap:9px;" data-cinema-link="">
-				<span class="eyebrow flex items-center gap-2" style="opacity:.7;font-size:8px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;line-height:1.5;">Избранный проект / <span data-cinema-number="">01</span></span>
-				<strong data-cinema-name="" style="letter-spacing:-.02em;font-size:18px;font-weight:500;">Склад под ключ — Химки</strong>
-				<span data-cinema-caption="" style="opacity:.7;font-size:10px;">Московская область / Логистика</span>
-				<span class="hero-project-arrow absolute top-1/2 -translate-y-1/2 right-6" style="position:absolute;top:50%;right:24px;transform:translateY(-50%);">
+		<div class="hero-bottom" style="grid-template-columns: 1.1fr 1fr auto; align-items: end; gap: 40px; display: grid; position: absolute; bottom: 32px; left: clamp(24px, 4.4vw, 96px); right: clamp(24px, 4.4vw, 96px);">
+			<a href="/projects/jewel-of-the-creek" class="hero-project" data-cinema-link="" style="backdrop-filter: blur(22px); border-radius: 8px; background: #16161794; border: 1px solid #ffffff4d; flex-direction: column; gap: 9px; padding: 24px 75px 24px 24px; transition: background .4s; display: flex; position: relative;">
+				<span class="eyebrow" style="opacity: .7; font-size: 8px; letter-spacing: .12em; text-transform: uppercase; font-weight: 500; line-height: 1.5; display: flex; align-items: center; gap: 2px;">Featured project / <span data-cinema-number="">01</span></span>
+				<strong data-cinema-name="" style="letter-spacing: -.02em; font-size: 18px; font-weight: 500;">Jewel of the Creek</strong>
+				<span data-cinema-caption="" style="opacity: .7; font-size: 10px;">Dubai / Hospitality & mixed use</span>
+				<span class="hero-project-arrow" style="position: absolute; top: 50%; right: 24px; transform: translateY(-50%);">
 					<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 						<path d="M7 7h10v10"></path>
 						<path d="M7 17 17 7"></path>
 					</svg>
 				</span>
 			</a>
-			<div class="hero-controls" style="display:flex;flex-direction:column;gap:16px;translate:none;rotate:none;scale:none;opacity:1;visibility:inherit;transform:translate(0px,0px);">
-				<div class="cinema-pagination flex items-center gap-16" role="group" aria-label="Избранные проекты">
-					<button type="button" data-cinema-select="0" data-name="Склад под ключ — Химки" data-caption="Московская область / Логистика" data-project="warehouse-himki" aria-label="Показать Склад под ключ — Химки" aria-pressed="true" class="flex items-center gap-12 min-h-[44px] text-[10px]" style="opacity:1;">
-						01<span style="width:65px;height:1px;background:#fff;transition:width .6s cubic-bezier(.2,.8,.2,1);display:block;"></span>
+			<div class="hero-controls" style="translate: none; rotate: none; scale: none; opacity: 1; visibility: inherit; transform: translate(0px, 0px); display: flex; flex-direction: column; gap: 16px;">
+				<div class="cinema-pagination" role="group" aria-label="Featured projects" style="align-items: center; gap: 16px; display: flex;">
+					<button type="button" data-cinema-select="0" data-name="Jewel of the Creek" data-caption="Dubai / Hospitality & mixed use" data-project="jewel-of-the-creek" aria-label="Show Jewel of the Creek" aria-pressed="true" style="opacity: 1; align-items: center; gap: 12px; min-height: 44px; font-size: 10px; display: flex; background: none; border: none; color: inherit; cursor: pointer; padding: 0;">
+						01<span style="width: 65px; height: 1px; transition: width .6s cubic-bezier(.2, .8, .2, 1); background: #fff; display: block;"></span>
 					</button>
-					<button type="button" data-cinema-select="1" data-name="Ангар под ключ — Мытищи" data-caption="Московская область / Производство" data-project="hangar-mytishchi" aria-label="Показать Ангар под ключ — Мытищи" aria-pressed="false" class="flex items-center gap-12 min-h-[44px] text-[10px]" style="opacity:.5;">
-						02<span style="width:20px;height:1px;background:#fff;transition:width .6s cubic-bezier(.2,.8,.2,1);display:block;"></span>
+					<button type="button" data-cinema-select="1" data-name="Sheikh Khalifa Medical City" data-caption="Abu Dhabi / Healthcare" data-project="sheikh-khalifa-medical-city" aria-label="Show Sheikh Khalifa Medical City" aria-pressed="false" style="opacity: .5; align-items: center; gap: 12px; min-height: 44px; font-size: 10px; display: flex; background: none; border: none; color: inherit; cursor: pointer; padding: 0;">
+						02<span style="width: 20px; height: 1px; transition: width .6s cubic-bezier(.2, .8, .2, 1); background: #fff; display: block;"></span>
 					</button>
-					<button type="button" data-cinema-select="2" data-name="АБК под ключ — Подольск" data-caption="Московская область / Образование" data-project="abk-podolsk" aria-label="Показать АБК под ключ — Подольск" aria-pressed="false" class="flex items-center gap-12 min-h-[44px] text-[10px]" style="opacity:.5;">
-						03<span style="width:20px;height:1px;background:#fff;transition:width .6s cubic-bezier(.2,.8,.2,1);display:block;"></span>
+					<button type="button" data-cinema-select="2" data-name="Sunmarke School" data-caption="Dubai / Education" data-project="sunmarke-school" aria-label="Show Sunmarke School" aria-pressed="false" style="opacity: .5; align-items: center; gap: 12px; min-height: 44px; font-size: 10px; display: flex; background: none; border: none; color: inherit; cursor: pointer; padding: 0;">
+						03<span style="width: 20px; height: 1px; transition: width .6s cubic-bezier(.2, .8, .2, 1); background: #fff; display: block;"></span>
 					</button>
 				</div>
-				<p class="eyebrow" data-cinema-status="" aria-live="polite" style="opacity:.65;font-size:8px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;line-height:1.5;">01 / 03 — Склад под ключ — Химки</p>
+				<p class="eyebrow" data-cinema-status="" aria-live="polite" style="opacity: .65; font-size: 8px; letter-spacing: .12em; text-transform: uppercase; font-weight: 500; line-height: 1.5;">01 / 03 — Jewel of the Creek</p>
 			</div>
-			<a href="/portfolio" class="hero-cta flex items-center gap-[45px] justify-center" style="color:#1b1c1d;border-radius:8px;background:#f0efed;padding:22px 26px;font-size:12px;transition:background .3s;display:flex;align-items:center;gap:45px;color:#1b1c1d;border-radius:8px;background:#f0efed;margin-bottom:15px;">
-				Изучить проекты
+			<a href="/projects" class="hero-cta" style="color: #1b1c1d; border-radius: 8px; background: #f0efed; align-items: center; gap: 45px; margin-bottom: 15px; padding: 22px 26px; font-size: 12px; transition: background .3s; display: flex; align-items: center; gap: 45px;">
+				Explore our work
 				<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 					<path d="M7 7h10v10"></path>
 					<path d="M7 17 17 7"></path>
@@ -451,8 +463,6 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 			</a>
 		</div>
 	</section>
-
-	<!-- Тёмная секция услуг по референсу -->
 	<section id="showcase" class="px-3 sm:px-5">
 		<img src="/public/assets/image/Components/bg.png" alt="Фон секции услуг" title="Фон секции услуг" aria-hidden="true" loading="lazy" decoding="async" class="showcase-bg">
 		<div class="showcase-light view max-w-[1240px] mx-auto px-5 py-8 md:p-10 relative overflow-hidden">
@@ -1470,7 +1480,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 		}
 	</script>
 
-	<!-- Cinema Hero JS -->
+<!-- Cinema Hero JS — exact Protenance copy -->
 	<script>
 	(function () {
 		"use strict";
@@ -1503,7 +1513,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 			if (projectName) projectName.textContent = buttons[index].getAttribute('data-name') || '';
 			if (projectCaption) projectCaption.textContent = buttons[index].getAttribute('data-caption') || '';
 			if (projectNumber) projectNumber.textContent = String(index + 1).padStart(2, '0');
-			if (projectLink) projectLink.setAttribute('href', '/' + (buttons[index].getAttribute('data-project') || 'portfolio'));
+			if (projectLink) projectLink.setAttribute('href', '/' + (buttons[index].getAttribute('data-project') || 'projects'));
 			if (statusEl) statusEl.textContent = String(index + 1).padStart(2, '0') + ' / ' + String(buttons.length).padStart(2, '0') + ' \u2014 ' + (buttons[index].getAttribute('data-name') || '');
 		}
 
