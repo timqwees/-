@@ -137,7 +137,7 @@ for ($k = 0; $k < $wn; $k++) { $works[] = $pool[($off + 5 + $k) % $pn]; }
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
 <link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261018">
-<script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<link rel="stylesheet" href="/public/assets/distCSS/protenance.css?v=20261018">
 <script defer src="/public/assets/distJS/main.js?v=20261018"></script>
 <meta name="yandex-verification" content="27e0ba9980498150" />
 <?php include_once __DIR__ . '/sheoma.php'; ?>
