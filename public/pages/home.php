@@ -95,6 +95,13 @@ if (file_exists($componentMailPath)) {
 			overflow: hidden;
 		}
 
+		/* Секция «Мы выполняем» — одинаковые скругления, паддинги и высота карточек */
+		#advantages .services-grid > * {
+			min-height: 180px;
+			padding: 20px;
+			border-radius: 30px;
+		}
+
 		/* Video mute/unmute control (hero) */
 		.hero-video-control {
 			position: absolute;
@@ -294,7 +301,7 @@ if (file_exists($componentMailPath)) {
 				<p>18 услуг — от проекта и завода до монтажа и сервиса</p>
 			</div>
 			<div class="mx-auto max-w-[1280px]">
-			<div class="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+			<div class="services-grid mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 				<a href="/services/kapital" class="view group" title="Капитальное строительство и ремонт под ключ" bg-white rounded-[30px] border border-[#e7e7db] p-5 hover:shadow-[0_20px_40px_rgba(15,23,42,.12)] hover:border-gray-200 hover:-translate-y-1 transition text-left">
 					<div class="w-12 h-12 rounded-xl bg-[#f5f5f4] border border-[#e7e5e4] grid place-items-center text-[#171310]"><i class="fa-solid fa-screwdriver-wrench text-lg"></i></div>
 					<div class="mt-3 text-base font-bold leading-tight text-gray-900">Капитальный ремонт</div>
@@ -319,7 +326,7 @@ if (file_exists($componentMailPath)) {
 					<div class="text-xs text-gray-500 mt-1">Для офисов, школ, общежитий</div>
 
 				</a>
-				<div class="view flex flex-col justify-center rounded-[30px] bg-[#3d5951] p-6" style="min-height:180px">
+				<div class="view flex flex-col justify-center rounded-[30px] bg-[#3d5951] p-5">
 					<div class="font-black leading-none text-[#ddf47a]" style="font-size:34px">180+</div>
 					<div class="mt-2 text-xs font-semibold text-white">сданных объектов</div>
 				</div>
@@ -347,7 +354,7 @@ if (file_exists($componentMailPath)) {
 					<div class="text-xs text-gray-500 mt-1">ДГУ, энергокомплексы</div>
 
 				</a>
-				<div class="view flex flex-col justify-center rounded-[30px] bg-[#3d5951] p-6" style="min-height:180px">
+				<div class="view flex flex-col justify-center rounded-[30px] bg-[#3d5951] p-5">
 					<div class="font-black leading-none text-[#ddf47a]" style="font-size:34px">14 лет</div>
 					<div class="mt-2 text-xs font-semibold text-white">на рынке с <?= seo_config('founded_market') ?> года</div>
 				</div>
@@ -375,7 +382,7 @@ if (file_exists($componentMailPath)) {
 					<div class="text-xs text-gray-500 mt-1">Логистические центры</div>
 
 				</a>
-				<div class="view flex flex-col justify-center rounded-[30px] bg-[#3d5951] p-6" style="min-height:180px">
+				<div class="view flex flex-col justify-center rounded-[30px] bg-[#3d5951] p-5">
 					<div class="font-black leading-none text-[#ddf47a]" style="font-size:34px">50+ лет</div>
 					<div class="mt-2 text-xs font-semibold text-white">гарантии на конструкции</div>
 				</div>
@@ -403,14 +410,14 @@ if (file_exists($componentMailPath)) {
 					<div class="text-xs text-gray-500 mt-1">Здания и сооружения</div>
 
 				</a>
-				<div class="view flex flex-col justify-center rounded-[30px] bg-[#3d5951] p-6" style="min-height:180px">
+				<div class="view flex flex-col justify-center rounded-[30px] bg-[#3d5951] p-5">
 					<div class="font-black leading-none text-[#ddf47a]" style="font-size:34px">15 минут</div>
 					<div class="mt-2 text-xs font-semibold text-white">на точную смету</div>
 				</div>
 			</div>
 			<div class="mt-10 flex flex-col items-center sm:flex-row gap-[20px] justify-center">
 							<a href="#contact" data-goal="cta_advantages_contact" title="Смета за 15 минут" class="flex h-[56px] w-[250px] items-center justify-center rounded-full border-2 border-[#3d5951] text-[18px] font-medium transition-colors hover:bg-[#3d5951] hover:text-white">Смета за 15 минут</a>
-				<a href="/uslugi" class="flex h-[54px]" title="Все услуги ФСС: производство, монтаж, ремонт, спецтехника" w-[250px] items-center justify-center rounded-full bg-[#ddf47a] text-[18px] font-medium text-[#18251e] transition-colors hover:bg-[#cce968]">Все услуги</a>
+				<a href="/uslugi" title="Все услуги ФСС: производство, монтаж, ремонт, спецтехника" class="flex h-[54px] w-[250px] items-center justify-center rounded-full bg-[#ddf47a] text-[18px] font-medium text-[#18251e] transition-colors hover:bg-[#cce968]">Все услуги</a>
 			</div>
 			</div>
 		</div>
