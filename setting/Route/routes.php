@@ -36,7 +36,7 @@ Routes::get('/services/{slug}', function (string $slug) {
 Routes::get('/services/{slug}/{geo}', function (string $slug, string $geo) {
 	PageController::serviceGeo($slug, $geo);
 });
-//==================================================================================================//FORMS (POST на тот же URL — обрабатывает app/Mail/componet_mail.php в шаблоне)
+//==================================================================================================//FORMS (POST на тот же URL — обрабатывает app/Mail/component_mail.php в шаблоне)
 Routes::post('/', [PageController::class, 'home']);
 Routes::post('/uslugi', [PageController::class, 'uslugi']);
 Routes::post('/portfolio', [PageController::class, 'portfolio']);

@@ -1,7 +1,6 @@
 <?php
-/**
- * Security & Validation helper
- */
+namespace App\Mail;
+
 class Security {
 
     public static function sanitizeString($str, $maxLen = 500) {

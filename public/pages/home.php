@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../../app/bootstrap.php';
-$componentMailPath = __DIR__ . '/../../app/Mail/componet_mail.php';
+$componentMailPath = __DIR__ . '/../../app/Mail/component_mail.php';
 if (file_exists($componentMailPath)) {
 	include_once $componentMailPath;
 }
@@ -167,7 +167,7 @@ if (file_exists($componentMailPath)) {
 				<h1 class="hero-title">Быстровозводимые <span class="text-brand font-medium">здания,</span><br>под ключ от 14 дней</h1>
 			</div>
 			<div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[510px] h-[255px] max-w-[80vw] rounded-t-full bg-[#ffad70]" aria-hidden="true"></div>
-			<img class="portrait" src="/public/assets/image/Components/avatar/1.png"<?= seo_img_attrs('/public/assets/image/Components/avatar/1.png') ?> alt="Быстровозводимые здания под ключ — ФСС" fetchpriority="high" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'">
+			<img class="portrait" src="/public/assets/image/Components/avatar/1.png"<?= seo_img_attrs('/public/assets/image/Components/avatar/1.png') ?> alt="Быстровозводимые здания под ключ — ФСС" title="Быстровозводимые здания под ключ — ФСС" fetchpriority="high" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'">
 			<div class="quote">
 				<div class="qmark" aria-hidden="true">❝</div>
 				<p><b>180+ сданных объектов</b> — склады, ангары, АБК и общежития. Москва, МО и вся Россия</p>
@@ -187,7 +187,7 @@ if (file_exists($componentMailPath)) {
 
 	<!-- Тёмная секция услуг по референсу -->
 	<section id="showcase" class="px-3 sm:px-5">
-		<img src="/public/assets/image/Components/bg.png" alt="Фон секции услуг" aria-hidden="true" loading="lazy" decoding="async" class="showcase-bg">
+		<img src="/public/assets/image/Components/bg.png" alt="Фон секции услуг" title="Фон секции услуг" aria-hidden="true" loading="lazy" decoding="async" class="showcase-bg">
 		<div class="showcase-light view max-w-[1240px] mx-auto px-5 py-8 md:p-10 relative overflow-hidden">
 			<div class="show-head view">
 				<span class="show-pill">18 услуг</span>
@@ -237,19 +237,19 @@ if (file_exists($componentMailPath)) {
 
 			<div class="steps3">
 				<article class="step3">
-					<img class="step3-img" src="/public/assets/image/services/капстроение/10.JPG" alt="Заявка и смета на модульное здание" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'">
+					<img class="step3-img" src="/public/assets/image/services/капстроение/10.JPG" alt="Заявка и смета на модульное здание" title="Заявка и смета на модульное здание" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'">
 					<h3>Заявка и смета</h3>
 					<p>Оставляете заявку — инженер перезвонит за 15 минут и рассчитает фиксированную смету.</p>
 					<span class="step3-n">01</span>
 				</article>
 				<article class="step3">
-					<img class="step3-img" src="/public/assets/image/swiper/2.jpg" alt="Проектирование модульного здания" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'">
+					<img class="step3-img" src="/public/assets/image/swiper/2.jpg" alt="Проектирование модульного здания" title="Проектирование модульного здания" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'">
 					<h3>Проектирование</h3>
 					<p>Готовим чертежи, рассчитываем нагрузку и согласовываем проект с вами.</p>
 					<span class="step3-n">02</span>
 				</article>
 				<article class="step3 step3-photo">
-					<img src="/public/assets/image/banner.jpeg" alt="Производство модулей на заводе" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'">
+					<img src="/public/assets/image/banner.jpeg" alt="Производство модулей на заводе" title="Производство модулей на заводе" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'">
 					<div class="step3-ovl">
 						<h3>Фундамент</h3>
 						<p>Устраиваем основание: свайное, ленточное или столбчатое под модули.</p>
@@ -257,13 +257,13 @@ if (file_exists($componentMailPath)) {
 					</div>
 				</article>
 				<article class="step3">
-					<img class="step3-img" src="/public/assets/image/swiper/1.jpeg" alt="Производство модулей из сэндвич-панелей" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'">
+					<img class="step3-img" src="/public/assets/image/swiper/1.jpeg" alt="Производство модулей из сэндвич-панелей" title="Производство модулей из сэндвич-панелей" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'">
 					<h3>Производство</h3>
 					<p>Изготавливаем модули из сэндвич-панелей на собственном заводе БВЗ.</p>
 					<span class="step3-n">04</span>
 				</article>
 				<article class="step3">
-					<img class="step3-img" src="/public/assets/image/swiper/3.jpeg" alt="Монтаж и сдача модульного здания" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'">
+					<img class="step3-img" src="/public/assets/image/swiper/3.jpeg" alt="Монтаж и сдача модульного здания" title="Монтаж и сдача модульного здания" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'">
 					<h3>Монтаж и сдача</h3>
 					<p>Собираем, подключаем коммуникации и сдаём объект под ключ.</p>
 					<span class="step3-n">05</span>
@@ -276,7 +276,7 @@ if (file_exists($componentMailPath)) {
 
 	<!-- CTA-баннер: попробуйте -->
 	<section class="view cta-band">
-		<img src="/public/assets/image/Components/banner/hero.jpg" alt="Быстровозводимые здания ФСС — строим то, что ведёт вас вперёд" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'">
+		<img src="/public/assets/image/Components/banner/hero.jpg" alt="Быстровозводимые здания ФСС — строим то, что ведёт вас вперёд" title="Быстровозводимые здания ФСС — строим то, что ведёт вас вперёд" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'">
 		<div class="cta-in">
 			<span class="cta-eyebrow"><i></i>Ваш проект — наше дело</span>
 			<h2>Строим то,<br>что ведёт вас вперёд</h2>
@@ -409,7 +409,7 @@ if (file_exists($componentMailPath)) {
 				</div>
 			</div>
 			<div class="mt-10 flex flex-col items-center sm:flex-row gap-[20px] justify-center">
-				<a href="#contact" data-goal="cta_advantages_contact" class="flex h-[56px] w-[250px] items-center justify-center rounded-full border-2 border-[#3d5951] text-[18px] font-medium transition-colors hover:bg-[#3d5951] hover:text-white">Смета за 15 минут</a>
+							<a href="#contact" data-goal="cta_advantages_contact" title="Смета за 15 минут" class="flex h-[56px] w-[250px] items-center justify-center rounded-full border-2 border-[#3d5951] text-[18px] font-medium transition-colors hover:bg-[#3d5951] hover:text-white">Смета за 15 минут</a>
 				<a href="/uslugi" class="flex h-[54px]" title="Все услуги ФСС: производство, монтаж, ремонт, спецтехника" w-[250px] items-center justify-center rounded-full bg-[#ddf47a] text-[18px] font-medium text-[#18251e] transition-colors hover:bg-[#cce968]">Все услуги</a>
 			</div>
 			</div>
@@ -449,6 +449,7 @@ if (file_exists($componentMailPath)) {
 					<img
 						src="/public/assets/image/Components/avatar/1.png"
 						alt="Ваш менеджер — ФСС"
+						title="Ваш менеджер — ФСС"
 						loading="lazy" decoding="async" onerror="this.style.display='none'"
 						class="hidden h-16 w-16 shrink-0 rounded-full object-cover sm:block"
 					>
@@ -541,7 +542,7 @@ if (file_exists($componentMailPath)) {
 							>
 							<span>
 								Я согласен
-								<a href="/politika" class="text-[#F97316] underline underline-offset-4 hover:text-[#D95C00]">
+								<a href="/politika" title="Политика конфиденциальности" class="text-[#F97316] underline underline-offset-4 hover:text-[#D95C00]">
 									с условиями политики конфиденциальности
 								</a>
 							</span>
@@ -556,7 +557,7 @@ if (file_exists($componentMailPath)) {
 							>
 							<span>
 								Я согласен
-								<a href="/soglasie" class="text-[#F97316] underline underline-offset-4 hover:text-[#D95C00]">
+								<a href="/soglasie" title="Согласие на обработку данных" class="text-[#F97316] underline underline-offset-4 hover:text-[#D95C00]">
 									на обработку моих персональных данных
 								</a>
 							</span>
@@ -644,14 +645,14 @@ if (file_exists($componentMailPath)) {
 					</div>
 					<div class="works-foot">
 						<span class="works-count" id="worksCount">01/03</span>
-						<a href="/portfolio" class="works-all">Смотреть все объекты <i class="fa-solid fa-arrow-right"></i></a>
+						<a href="/portfolio" title="Смотреть все объекты" class="works-all">Смотреть все объекты <i class="fa-solid fa-arrow-right"></i></a>
 					</div>
 				</div>
 				<div class="works-right">
 					<div class="works-stack" id="worksStack">
-						<div class="works-card back"><img id="worksBack" src="/public/assets/image/swiper/2.jpg" alt="Склад из сэндвич-панелей — объект ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'"></div>
-						<div class="works-card mid"><img id="worksMid" src="/public/assets/image/banner.jpeg" alt="Модульные здания — производство ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'"></div>
-						<div class="works-card front"><img id="worksFront" src="/public/assets/image/swiper/1.jpeg" alt="Модульное общежитие из сэндвич-панелей — объект ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'"></div>
+						<div class="works-card back"><img id="worksBack" src="/public/assets/image/swiper/2.jpg" alt="Склад из сэндвич-панелей — объект ФСС" title="Склад из сэндвич-панелей — объект ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'"></div>
+						<div class="works-card mid"><img id="worksMid" src="/public/assets/image/banner.jpeg" alt="Модульные здания — производство ФСС" title="Модульные здания — производство ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'"></div>
+						<div class="works-card front"><img id="worksFront" src="/public/assets/image/swiper/1.jpeg" alt="Модульное общежитие из сэндвич-панелей — объект ФСС" title="Модульное общежитие из сэндвич-панелей — объект ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/logo.svg'"></div>
 					</div>
 				</div>
 			</div>
@@ -1035,7 +1036,7 @@ if (file_exists($componentMailPath)) {
 					<div class="swiper-paginations flex-1 flex justify-center"></div>
 				</div>
 				<div class="relative w-full flex items-center justify-between mt-6">
-					<a href="/portfolio"
+					<a href="/portfolio" title="Посмотреть все проекты"
 						class="inline-flex items-center gap-2 bg-gray-900 hover:bg-black text-white px-7 py-3 rounded-full font-semibold shadow viewLeft mx-auto">Посмотреть
 						все проекты</a>
 				</div>
@@ -1108,7 +1109,7 @@ if (file_exists($componentMailPath)) {
 	<div id="sticky-cta" class="fixed bottom-0 inset-x-0 z-40 md:hidden bg-white/95 backdrop-blur-md border-t border-gray-200 px-3 py-2 safe-pb">
 		<div class="flex gap-2">
 			<a href="tel:<?= htmlspecialchars(preg_replace("/\D/", "", seo_config("phone"))) ?>" title="Позвонить: +7 938 018-00-06" class="flex-1 inline-flex items-center justify-center gap-2 bg-white border border-gray-200 text-gray-900 rounded-full py-3 font-semibold"><i class="fa-solid fa-phone text-emerald-600"></i> Позвонить</a>
-			<a href="#contact" class="flex-1 inline-flex items-center justify-center gap-2 bg-emerald-600 text-white rounded-full py-3 font-semibold shadow">Рассчитать <i class="fa-solid fa-arrow-right text-xs"></i></a>
+			<a href="#contact" title="Рассчитать стоимость" class="flex-1 inline-flex items-center justify-center gap-2 bg-emerald-600 text-white rounded-full py-3 font-semibold shadow">Рассчитать <i class="fa-solid fa-arrow-right text-xs"></i></a>
 		</div>
 		<div class="text-center text-[11px] text-gray-500 mt-1">Отвечаем за 7 минут • Без спама</div>
 	</div>

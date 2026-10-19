@@ -13,5 +13,10 @@
 *.log
 error_log
 
+# Secrets / окружение
+.env
+.env.local
+.env.*.local
+
 # Temp
 *.tmp

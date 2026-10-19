@@ -201,7 +201,7 @@ $d = 'ООО «ФАВОРИТ-СТРОЙ-СНАБ» (ИНН ' . $inn . ', ОГР
 				<div class="xl-about-lbl">О нас</div>
 				<div>
 					<h2>ФАВОРИТ-СТРОЙ-СНАБ — команда профессионалов на рынке с <?= $foundedMarket ?> года, <span class="dim">сфокусирована на интегрированных, надёжных и экономичных решениях, где 100% удовлетворённость клиента — привилегия.</span></h2>
-					<a href="/uslugi" class="xl-btn">Наши услуги <i class="fa-solid fa-arrow-right"></i></a>
+					<a href="/uslugi" title="Наши услуги" class="xl-btn">Наши услуги <i class="fa-solid fa-arrow-right"></i></a>
 				</div>
 			</div>
 		</section>
@@ -211,7 +211,7 @@ $d = 'ООО «ФАВОРИТ-СТРОЙ-СНАБ» (ИНН ' . $inn . ', ОГР
 			<div class="xl-why-grid">
 				<div class="xl-why-r">
 					<p class="txt">Мы ценим, что вы рассматриваете ФАВОРИТ-СТРОЙ-СНАБ как стратегического партнёра. Наша команда создаёт уникальные решения под ваши задачи и поддерживает на всех этапах реализации. Мы внедряем новые возможности, модернизируем подход и обеспечиваем эффективность ваших объектов.</p>
-					<a href="/#contact" class="xl-btn">Обсудить проект <i class="fa-solid fa-arrow-right"></i></a>
+					<a href="/#contact" title="Обсудить проект" class="xl-btn">Обсудить проект <i class="fa-solid fa-arrow-right"></i></a>
 				</div>
 				<div class="xl-why-l">
 					<div class="xl-why-tag">Ваш партнёр</div>

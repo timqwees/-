@@ -98,8 +98,8 @@
 					<span class="bi-eyebrow">О компании</span>
 					<h1 class="bi-h1">Строим <span class="pill"><img src="/public/assets/image/services/капстроение/10.JPG" alt="Объект ФСС" fetchpriority="high" decoding="async" onerror="this.style.display='none'"></span>на рынке с <?= htmlspecialchars((string)seo_config('founded_market')) ?> <span class="acc">года</span></h1>
 					<div class="bi-cta">
-						<a href="/#contact" class="bi-btn"><span class="clip"><span class="roll">Рассчитать смету<br>Рассчитать смету</span></span></a>
-						<a href="/portfolio" class="bi-btn ghost"><span class="clip"><span class="roll">Наши объекты<br>Наши объекты</span></span></a>
+						<a href="/#contact" title="Рассчитать смету" class="bi-btn"><span class="clip"><span class="roll">Рассчитать смету<br>Рассчитать смету</span></span></a>
+						<a href="/portfolio" title="Наши объекты" class="bi-btn ghost"><span class="clip"><span class="roll">Наши объекты<br>Наши объекты</span></span></a>
 					</div>
 					<div class="bi-stats">
 						<div><b>180<i>+</i></b><span>сданных объектов</span></div>
@@ -122,7 +122,7 @@
 		<section class="page-section view">
 			<div class="section-heading"><h2>Для кого строим</h2><span class="heading-divider" aria-hidden="true"></span><p>Четыре сегмента — один стандарт качества</p></div>
 			<div class="bi-aud" style="margin-top:22px">
-				<article class="bi-card"><img src="/public/assets/image/services/капстроение/5.JPG" alt="Производство ФСС" loading="lazy" decoding="async" onerror="this.style.display='none'"><div><h3>Производство</h3><p>Цеха, склады и ангары для бизнеса — под ключ за 14 дней.</p><a href="/services/proizvodim_modul">Подробнее →</a></div></article>
+				<article class="bi-card"><img src="/public/assets/image/services/капстроение/5.JPG" alt="Производство ФСС" title="Производство ФСС" loading="lazy" decoding="async" onerror="this.style.display='none'"><div><h3>Производство</h3><p>Цеха, склады и ангары для бизнеса — под ключ за 14 дней.</p><a href="/services/proizvodim_modul" title="Модульные здания">Подробнее →</a></div></article>
 				<article class="bi-card"><img src="/public/assets/image/services/Грузоперевозки/2.jpg" alt="Логистика ФСС" loading="lazy" decoding="async" onerror="this.style.display='none'"><div><h3>Логистика</h3><p>Склады и логистика с доставкой и спецтехникой.</p><a href="/services/sclad">Подробнее →</a></div></article>
 				<article class="bi-card"><img src="/public/assets/image/services/АБК/04d8caee-f083-42f8-8be2-64e7e461cace.JPG" alt="АБК ФСС" loading="lazy" decoding="async" onerror="this.style.display='none'"><div><h3>Госзаказ и юрлица</h3><p>Договор, НДС, допуск СРО и закрывающие документы.</p><a href="/services/kapstroenie">Подробнее →</a></div></article>
 				<article class="bi-card"><img src="/public/assets/image/services/Генераторные/017C294C-9AF3-4638-ADC2-476CD4C3A7ED.JPG" alt="Энергетика ФСС" loading="lazy" decoding="async" onerror="this.style.display='none'"><div><h3>Энергетика</h3><p>ДГУ и компрессоры: подбор, поставка, монтаж и сервис.</p><a href="/services/generatornae">Подробнее →</a></div></article>

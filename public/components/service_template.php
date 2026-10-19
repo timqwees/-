@@ -7,7 +7,7 @@
  * цифры и контакты: app/Config/site.php. Фото — только существующие файлы.
  */
 require_once __DIR__ . '/../../app/bootstrap.php';
-$componentMailPath = __DIR__ . '/../../app/Mail/componet_mail.php';
+$componentMailPath = __DIR__ . '/../../app/Mail/component_mail.php';
 if (file_exists($componentMailPath)) {
 	include_once $componentMailPath;
 }
