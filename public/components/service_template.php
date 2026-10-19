@@ -316,7 +316,47 @@ html.lenis,html.lenis body{height:auto;}
 				</nav>
 				<?php $isPriority = in_array($slug, (array)($geoAll['priority_services'] ?? []), true); if (!$geo && $isPriority && !empty($geoAll['geo'])): ?>
 				<nav aria-label="Гео-направления" style="margin-top:12px;font-size:13px;line-height:1.9;color:#fff"><span style="opacity:.7">Строим в городах:</span> <?php $gi = 0; foreach ($geoAll['geo'] as $gk => $gv): echo $gi++ ? ' · ' : ''; ?><a style="color:#fff;text-decoration:underline;text-underline-offset:2px" href="/services/<?= $h($slug) ?>/<?= $h($gk) ?>"><?= $h($gv['name']) ?></a><?php endforeach; ?></nav>
-				<?php endif; ?>
+</div>
+	</section>
+	<!-- E-E-A-T Credentials Section -->
+	<section class="page-section view" id="credentials" style="background:#FFF7EF;border-top:1px solid #F5E6D3;border-bottom:1px solid #F5E6D3">
+		<div class="container">
+			<div class="section-heading"><h2>Почему доверяют нам госзаказчики и бизнес</h2><span class="heading-divider" aria-hidden="true"></span><p>Экспертиза, подтверждённая Росгвардией, Минпросвещением и 180+ сданными объектами</p></div>
+			<div class="credentials-grid" style="margin-top:22px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px">
+				<article class="credential-card" style="background:#fff;border:1px solid #F5E6D3;border-radius:20px;padding:24px;text-align:center;transition:transform .3s ease,box-shadow .3s ease;">
+					<div style="width:56px;height:56px;background:#F97316;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px"><i class="fa-solid fa-shield-halved" style="color:#fff;font-size:24px"></i></div>
+					<h3 style="margin:0 0 8px;font-size:18px;font-weight:800;color:#171310">Партнёр Росгвардии</h3>
+					<p style="margin:0;font-size:14px;color:#44403C;line-height:1.5">Официальный поставщик Федеральной службы войск национальной гвардии РФ. Обеспечиваем нужды силовых структур РФ.</p>
+				</article>
+				<article class="credential-card" style="background:#fff;border:1px solid #F5E6D3;border-radius:20px;padding:24px;text-align:center;transition:transform .3s ease,box-shadow .3s ease;">
+					<div style="width:56px;height:56px;background:#F97316;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px"><i class="fa-solid fa-school" style="color:#fff;font-size:24px"></i></div>
+					<h3 style="margin:0 0 8px;font-size:18px;font-weight:800;color:#171310">Стандарты Минпросвещения</h3>
+					<p style="margin:0;font-size:14px;color:#44403C;line-height:1.5">Комплексное оснащение 13+ школ по стандартам Минпросвещения РФ: мебель, оборудование, лаборатории, мультимедиа.</p>
+				</article>
+				<article class="credential-card" style="background:#fff;border:1px solid #F5E6D3;border-radius:20px;padding:24px;text-align:center;transition:transform .3s ease,box-shadow .3s ease;">
+					<div style="width:56px;height:56px;background:#F97316;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px"><i class="fa-solid fa-certificate" style="color:#fff;font-size:24px"></i></div>
+					<h3 style="margin:0 0 8px;font-size:18px;font-weight:800;color:#171310">СРО и допуски</h3>
+					<p style="margin:0;font-size:14px;color:#44403C;line-height:1.5">Член СРО проектирования и строительства. Работаем по 44-ФЗ и 223-ФЗ. Полный пакет закрывающих документов.</p>
+				</article>
+				<article class="credential-card" style="background:#fff;border:1px solid #F5E6D3;border-radius:20px;padding:24px;text-align:center;transition:transform .3s ease,box-shadow .3s ease;">
+					<div style="width:56px;height:56px;background:#F97316;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px"><i class="fa-solid fa-building" style="color:#fff;font-size:24px"></i></div>
+					<h3 style="margin:0 0 8px;font-size:18px;font-weight:800;color:#171310">180+ сданных объектов</h3>
+					<p style="margin:0;font-size:14px;color:#44403C;line-height:1.5">С 2011 года сдаём объекты под ключ: общежития, школы, ангары, АБК, склады, БВЗ под ключ.</p>
+				</article>
+				<article class="credential-card" style="background:#fff;border:1px solid #F5E6D3;border-radius:20px;padding:24px;text-align:center;transition:transform .3s ease,box-shadow .3s ease;">
+					<div style="width:56px;height:56px;background:#F97316;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px"><i class="fa-solid fa-shield-halved" style="color:#fff;font-size:24px"></i></div>
+					<h3 style="margin:0 0 8px;font-size:18px;font-weight:800;color:#171310">Гарантия 50+ лет</h3>
+					<p style="margin:0;font-size:14px;color:#44403C;line-height:1.5">Официальная гарантия на несущие конструкции 50+ лет. Фиксированная цена и сроки в договоре.</p>
+				</article>
+				<article class="credential-card" style="background:#fff;border:1px solid #F5E6D3;border-radius:20px;padding:24px;text-align:center;transition:transform .3s ease,box-shadow .3s ease;">
+					<div style="width:56px;height:56px;background:#F97316;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px"><i class="fa-solid fa-truck-fast" style="color:#fff;font-size:24px"></i></div>
+					<h3 style="margin:0 0 8px;font-size:18px;font-weight:800;color:#171310">Своя логистика и техника</h3>
+					<p style="margin:0;font-size:14px;color:#44403C;line-height:1.5">Свой автопарк, манипуляторы, спецтехника. Доставка и монтаж по Москве, МО и всей России.</p>
+				</article>
+			</div>
+		</div>
+	</section>
+	<?php endif; ?>
 			</div>
 			<div class="svh-media">
 				<img src="<?= $h($pick(0)) ?>"<?= seo_img_attrs((string)$pick(0)) ?> alt="<?= $h($title) ?> — фото объекта" fetchpriority="high" decoding="async" onerror="this.style.display='none'">
