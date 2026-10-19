@@ -1,9 +1,18 @@
 <?php
-require_once __DIR__ . '/../../app/bootstrap.php';
-$componentMailPath = __DIR__ . '/../../app/Mail/component_mail.php';
-if (file_exists($componentMailPath)) {
-	include_once $componentMailPath;
-}
+$site = Setting\Route\Functions\TheFunction::site();
+
+$seo = Setting\Route\Functions\TheFunction::seo([
+    'title' => 'ФАВОРИТ-СТРОЙ-СНАБ — быстровозводимые здания под ключ',
+    'description' => 'Строительство БВЗ под ключ в Москве: склады, ангары, АБК, общежития. Капремонт, спецтехника. От 14 дней, гарантия 50 лет. Смета за 15 минут.',
+    'keywords' => 'ФАВОРИТ-СТРОЙ-СНАБ, БВЗ, быстровозводимые здания, ангары, склады, АБК, капитальный ремонт, Москва',
+    'image' => $site['shareImageUrl'],
+    'url' => $site['baseUrl'] . '/',
+    'type' => 'website',
+    'pageType' => 'WebPage',
+    'breadcrumbs' => [
+        ['name' => 'Главная', 'url' => $site['baseUrl'] . '/'],
+    ],
+]);
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -11,14 +20,18 @@ if (file_exists($componentMailPath)) {
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>ФАВОРИТ-СТРОЙ-СНАБ — быстровозводимые здания под ключ</title>
-	<meta name="description" content="Быстровозводимые здания под ключ в Москве: склады, ангары, АБК, общежития. Капремонт, спецтехника. От 14 дней, гарантия 50 лет. ☎ <?= htmlspecialchars((string)seo_config('phone_display')) ?>">
+
+	<title><?= htmlspecialchars($seo['title']); ?> | ФСС.РУС</title>
+	<meta name="description" content="<?= htmlspecialchars($seo['description']); ?>">
 	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 	<meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
 	<meta name="theme-color" content="#F97316">
 	<meta name="format-detection" content="telephone=yes">
 	<meta name="yandex-verification" content="27e0ba9980498150" />
-	<!-- Preconnect for performance -->
+	<link rel="canonical" href="<?= htmlspecialchars($seo['canonical']); ?>">
+
+	<?= seo_og_tags($seo['title'], $seo['description'], $seo['og']['image']) ?>
+
 	<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 		<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
@@ -31,11 +44,6 @@ if (file_exists($componentMailPath)) {
 	<meta name="apple-mobile-web-app-title" content="ФСС" />
 	<link rel="manifest" href="/public/assets/image/logo/favicon/site.webmanifest" />
 	<link rel="mask-icon" href="/public/assets/image/logo/favicon/favicon-96x96.png" color="#F97316">
-	<!-- Canonical / hreflang / OG / Twitter — единый генератор (app/Seo/seo.php) -->
-<?= seo_canonical_tags() ?>
-<?= seo_verify_tags() ?>
-
-<?= seo_og_tags('ФАВОРИТ-СТРОЙ-СНАБ — быстровозводимые здания под ключ в Москве', 'Строительство БВЗ от 14 дней, капитальный ремонт, грузоперевозки, спецтехника. Смета за 15 минут, фиксируем цену в договоре.', '/public/assets/image/og/og-home-1200x630.jpg') ?>
 
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -53,8 +61,17 @@ if (file_exists($componentMailPath)) {
 	<script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 	<script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
 	<script defer src="/public/assets/distJS/main.js"></script>
+	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261018">
+	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261018">
 
-	<style>
+<?php include_once __DIR__ . '/../components/sheoma.php'; ?>
+<?= seo_analytics() ?>
+<?= seo_utm_script() ?>
+<?= seo_goals_script() ?>
+
+</head>
+
+<body class="font-sans text-gray-800">
 		@keyframes floatRightIcon {
 			0% {
 				transform: translateY(0) scale(.9) rotateZ(0deg);
@@ -251,6 +268,68 @@ if (file_exists($componentMailPath)) {
 			#process .step3 { transition: none; }
 		}
 
+		/* Cinema Hero Styles */
+		.hero { isolation: isolate; }
+		.cinema-image { object-fit: cover; object-position: 58% 50%; transition: opacity 0.8s cubic-bezier(.2,.8,.2,1); }
+		.cinema-image.is-active { opacity: 1; }
+		.hero-shade { pointer-events: none; }
+		.cinema-pagination button { opacity: .5; transition: opacity 0.3s; }
+		.cinema-pagination button[aria-pressed=true] { opacity: 1; }
+		.cinema-pagination button span { transition: width 0.6s cubic-bezier(.2,.8,.2,1); }
+		.hero-project { transition: background 0.4s; }
+		.hero-project:hover { background: #24211ecc; }
+		.hero-cta { transition: background 0.3s; }
+		.hero-cta:hover { background: #fff; }
+		.cinema-pagination button[aria-pressed=true] span { width: 65px; }
+
+		@media (width>=1600px) {
+			.hero h1 { font-size: 155px; }
+			.hero-content { top: 24%; }
+		}
+
+		@media (width<=1100px) {
+			.hero { min-height: 800px; }
+			.hero h1 { font-size: 11vw; }
+			.hero-content { top: 195px; }
+			.hero-bottom { grid-template-columns: 1fr auto; gap: 25px; }
+			.hero-controls { grid-column: 2; }
+			.hero-cta { display: none; }
+		}
+
+		@media (width<=992px) {
+			.hero-content { top: 190px; }
+			.hero h1 { font-size: 11.7vw; }
+			.hero-intro { gap: 45px; }
+			.hero-controls { grid-column: 1; justify-content: space-between; align-items: center; gap: 15px; padding: 0; display: flex; }
+			.hero-controls>.eyebrow { text-align: right; max-width: 90px; font-size: 7px; }
+			.cinema-pagination { gap: 10px; }
+			.cinema-pagination button { gap: 8px; font-size: 9px; }
+			.cinema-pagination button[aria-pressed=true] span { width: 40px; }
+			.cinema-pagination button span { width: 15px; }
+			.hero-bottom { grid-template-columns: 1fr; gap: 12px; bottom: 22px; }
+			.hero-project { padding: 18px 65px 18px 18px; }
+			.hero-project strong { font-size: 17px; }
+			.hero-cta { display: none; }
+		}
+
+		@media (width<=576px) {
+			.hero { height: 100svh; min-height: 735px; max-height: 1000px; }
+			.hero-content { top: 150px; }
+			.hero-content>.eyebrow { letter-spacing: .06em; max-width: 260px; font-size: 8px; }
+			.hero h1 { margin-top: 26px; font-size: 14vw; line-height: 1.02; }
+			.hero-intro { margin-top: 28px; display: block; }
+			.hero-intro p { font-size: 13px; }
+			.hero-intro .text-link { margin-top: 15px; }
+			.hero-visual .cinema-image { object-position: 62% 50%; }
+			.hero-shade { background: linear-gradient(90deg,#0f0e0d99,#0f0e0d33),linear-gradient(#0000 30%,#0f0e0dcc); }
+			.hero-bottom { grid-template-columns: 1fr; gap: 12px; bottom: 22px; }
+			.hero-project { padding: 18px 65px 18px 18px; }
+			.hero-project strong { font-size: 17px; }
+			.cinema-pagination button[aria-pressed=true] span { width: 40px; }
+			.cinema-pagination button span { width: 15px; }
+			.hero-cta { display: none; }
+		}
+
 		/* Video mute/unmute control (hero) */
 		.hero-video-control {
 			position: absolute;
@@ -315,29 +394,61 @@ if (file_exists($componentMailPath)) {
 
 	<?php include_once __DIR__ . '/../components/header.php'; ?>
 
-	<!-- HERO: точная копия JCREA-референса -->
-	<section class="jc-hero view" id="home">
-		<div class="hero-main">
-			<div class="relative z-10 hero-top">
-				<div class="hello-wrap"><span class="hello-pill">Привет — это ФСС</span><span class="hello-burst" aria-hidden="true">〃</span></div>
-				<h1 class="hero-title">Быстровозводимые <span class="text-brand font-medium">здания,</span><br>под ключ от 14 дней</h1>
+	<!-- CINEMA HERO -->
+	<section class="hero relative isolate overflow-hidden" aria-labelledby="hero-title" style="height:100svh;min-height:750px;max-height:1200px;background:#363636;color:#fff;">
+		<div class="hero-visual absolute inset-0" data-hero-frame="">
+			<img src="/public/assets/image/swiper/1.jpeg.webp" srcset="/public/assets/image/swiper/1.jpeg.webp 720w, /public/assets/image/swiper/1.jpeg.webp 1200w, /public/assets/image/swiper/1.jpeg.webp 1672w" alt="Склад под ключ — Химки" sizes="100vw" loading="eager" fetchpriority="high" decoding="async" width="1672" height="941" class="cinema-image absolute inset-0 w-full h-full object-cover object-center is-active" style="opacity:1;object-position:58% 50%;" data-cinema-image="0">
+			<img src="/public/assets/image/swiper/2.jpg.webp" srcset="/public/assets/image/swiper/2.jpg.webp 720w, /public/assets/image/swiper/2.jpg.webp 1200w, /public/assets/image/swiper/2.jpg.webp 1672w" alt="Ангар под ключ — Мытищи" sizes="100vw" loading="lazy" fetchpriority="auto" decoding="async" width="1672" height="941" class="cinema-image absolute inset-0 w-full h-full object-cover object-center" style="opacity:0;object-position:58% 50%;" data-cinema-image="1">
+			<img src="/public/assets/image/swiper/3.jpeg.webp" srcset="/public/assets/image/swiper/3.jpeg.webp 720w, /public/assets/image/swiper/3.jpeg.webp 1200w, /public/assets/image/swiper/3.jpeg.webp 1672w" alt="АБК под ключ — Подольск" sizes="100vw" loading="lazy" fetchpriority="auto" decoding="async" width="1672" height="941" class="cinema-image absolute inset-0 w-full h-full object-cover object-center" style="opacity:0;object-position:58% 50%;" data-cinema-image="2">
+		</div>
+		<div class="hero-shade absolute inset-0 pointer-events-none" aria-hidden="true" style="background:linear-gradient(90deg,#0f0e0dad,#0f0e0d14 85%),linear-gradient(#0f0e0d2e,#0000 55%,#0f0e0dcc);"></div>
+		<div class="hero-content absolute left-[clamp(24px,4.4vw,96px)] right-[clamp(24px,4.4vw,96px)]" style="top:clamp(155px,22vh,260px);">
+			<p class="eyebrow flex items-center gap-3" style="color:#ffffffc7;letter-spacing:.12em;text-transform:uppercase;font-size:10px;font-weight:500;line-height:1.5;">
+				<span class="live-dot" style="background:currentColor;border-radius:50%;width:6px;height:6px;display:inline-block;" aria-hidden="true"></span>
+				<span>Строительство · Производство · Монтаж</span>
+			</p>
+			<h1 id="hero-title" style="letter-spacing:-.066em;margin-top:32px;font-size:clamp(72px,9.6vw,170px);font-weight:450;line-height:.98;">
+				<span style="display:block;">Сила для</span>
+				<span style="display:block;">следующего этапа<span class="accent-dot" style="color:#c7ab94;">.</span></span>
+			</h1>
+			<div class="hero-intro flex items-end gap-[85px]" style="margin-top:40px;">
+				<p style="color:#fffc;font-size:15px;line-height:1.5;">От фундамента до сдачи.<br>Сила для каждого нового этапа.</p>
+				<a class="text-link flex items-center gap-[25px] border-b border-white/50" href="#about" style="border-color:#ffffff80;font-size:11px;line-height:1.4;padding-block:10px;display:inline-flex;align-items:center;gap:25px;">Узнать о ФСС <span>↓</span></a>
 			</div>
-			<div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[510px] h-[255px] max-w-[80vw] rounded-t-full bg-[#ffad70]" aria-hidden="true"></div>
-			<img class="portrait" src="/public/assets/image/Components/avatar/1.png"<?= seo_img_attrs('/public/assets/image/Components/avatar/1.png') ?> alt="Быстровозводимые здания под ключ — ФСС" title="Быстровозводимые здания под ключ — ФСС" fetchpriority="high" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
-			<div class="quote">
-				<div class="qmark" aria-hidden="true">❝</div>
-				<p><b>180+ сданных объектов</b> — склады, ангары, АБК и общежития. Москва, МО и вся Россия</p>
+		</div>
+		<div class="hero-bottom absolute bottom-32 left-[clamp(24px,4.4vw,96px)] right-[clamp(24px,4.4vw,96px)]" style="display:grid;grid-template-columns:1.1fr 1fr auto;align-items:end;gap:40px;">
+			<a href="/portfolio" class="hero-project group relative flex flex-col gap-9 rounded-[8px] p-6" style="background:#16161794;border:1px solid #ffffff4d;padding:24px 75px 24px 24px;backdrop-filter:blur(22px);border-radius:8px;background:#16161794;border:1px solid #ffffff4d;transition:background .4s;display:flex;flex-direction:column;gap:9px;" data-cinema-link="">
+				<span class="eyebrow flex items-center gap-2" style="opacity:.7;font-size:8px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;line-height:1.5;">Избранный проект / <span data-cinema-number="">01</span></span>
+				<strong data-cinema-name="" style="letter-spacing:-.02em;font-size:18px;font-weight:500;">Склад под ключ — Химки</strong>
+				<span data-cinema-caption="" style="opacity:.7;font-size:10px;">Московская область / Логистика</span>
+				<span class="hero-project-arrow absolute top-1/2 -translate-y-1/2 right-6" style="position:absolute;top:50%;right:24px;transform:translateY(-50%);">
+					<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+						<path d="M7 7h10v10"></path>
+						<path d="M7 17 17 7"></path>
+					</svg>
+				</span>
+			</a>
+			<div class="hero-controls" style="display:flex;flex-direction:column;gap:16px;translate:none;rotate:none;scale:none;opacity:1;visibility:inherit;transform:translate(0px,0px);">
+				<div class="cinema-pagination flex items-center gap-16" role="group" aria-label="Избранные проекты">
+					<button type="button" data-cinema-select="0" data-name="Склад под ключ — Химки" data-caption="Московская область / Логистика" data-project="warehouse-himki" aria-label="Показать Склад под ключ — Химки" aria-pressed="true" class="flex items-center gap-12 min-h-[44px] text-[10px]" style="opacity:1;">
+						01<span style="width:65px;height:1px;background:#fff;transition:width .6s cubic-bezier(.2,.8,.2,1);display:block;"></span>
+					</button>
+					<button type="button" data-cinema-select="1" data-name="Ангар под ключ — Мытищи" data-caption="Московская область / Производство" data-project="hangar-mytishchi" aria-label="Показать Ангар под ключ — Мытищи" aria-pressed="false" class="flex items-center gap-12 min-h-[44px] text-[10px]" style="opacity:.5;">
+						02<span style="width:20px;height:1px;background:#fff;transition:width .6s cubic-bezier(.2,.8,.2,1);display:block;"></span>
+					</button>
+					<button type="button" data-cinema-select="2" data-name="АБК под ключ — Подольск" data-caption="Московская область / Образование" data-project="abk-podolsk" aria-label="Показать АБК под ключ — Подольск" aria-pressed="false" class="flex items-center gap-12 min-h-[44px] text-[10px]" style="opacity:.5;">
+						03<span style="width:20px;height:1px;background:#fff;transition:width .6s cubic-bezier(.2,.8,.2,1);display:block;"></span>
+					</button>
+				</div>
+				<p class="eyebrow" data-cinema-status="" aria-live="polite" style="opacity:.65;font-size:8px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;line-height:1.5;">01 / 03 — Склад под ключ — Химки</p>
 			</div>
-			<div class="experience">
-				<div class="exp-stars" aria-hidden="true">★★★★★</div>
-				<div class="exp-big">14 лет</div>
-				<div class="exp-small">на рынке</div>
-			</div>
-			<div class="portfolio-pill">
-				<a href="/portfolio" class="pp-main" title="Портфолио сданных объектов ФСС">Смотреть объекты <span aria-hidden="true">↗</span></a><a href="#contact" class="pp-text" data-goal="cta_hero_contact" title="Получить бесплатную консультацию и расчёт сметы">Смета за 15 минут</a>
-			</div>
-
-			<span class="hero-tilde" aria-hidden="true">〰</span>
+			<a href="/portfolio" class="hero-cta flex items-center gap-[45px] justify-center" style="color:#1b1c1d;border-radius:8px;background:#f0efed;padding:22px 26px;font-size:12px;transition:background .3s;display:flex;align-items:center;gap:45px;color:#1b1c1d;border-radius:8px;background:#f0efed;margin-bottom:15px;">
+				Изучить проекты
+				<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+					<path d="M7 7h10v10"></path>
+					<path d="M7 17 17 7"></path>
+				</svg>
+			</a>
 		</div>
 	</section>
 
@@ -1355,6 +1466,82 @@ if (file_exists($componentMailPath)) {
 			document.addEventListener('DOMContentLoaded', sync);
 		} else {
 			sync();
+}
+		}
+	</script>
+
+	<!-- Cinema Hero JS -->
+	<script>
+	(function () {
+		"use strict";
+		var hero = document.querySelector('.hero');
+		if (!hero) return;
+
+		var images = Array.prototype.slice.call(hero.querySelectorAll('.cinema-image'));
+		var buttons = Array.prototype.slice.call(hero.querySelectorAll('[data-cinema-select]'));
+		var statusEl = hero.querySelector('[data-cinema-status]');
+		var projectLink = hero.querySelector('[data-cinema-link]');
+		var projectName = hero.querySelector('[data-cinema-name]');
+		var projectCaption = hero.querySelector('[data-cinema-caption]');
+		var projectNumber = hero.querySelector('[data-cinema-number]');
+
+		if (!images.length || !buttons.length) return;
+
+		var activeIndex = 0;
+		var timer = null;
+		var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+		function setActive(index) {
+			if (index === activeIndex) return;
+			activeIndex = index;
+			images.forEach(function (img, i) {
+				img.classList.toggle('is-active', i === index);
+			});
+			buttons.forEach(function (btn, i) {
+				btn.setAttribute('aria-pressed', i === index ? 'true' : 'false');
+			});
+			if (projectName) projectName.textContent = buttons[index].getAttribute('data-name') || '';
+			if (projectCaption) projectCaption.textContent = buttons[index].getAttribute('data-caption') || '';
+			if (projectNumber) projectNumber.textContent = String(index + 1).padStart(2, '0');
+			if (projectLink) projectLink.setAttribute('href', '/' + (buttons[index].getAttribute('data-project') || 'portfolio'));
+			if (statusEl) statusEl.textContent = String(index + 1).padStart(2, '0') + ' / ' + String(buttons.length).padStart(2, '0') + ' \u2014 ' + (buttons[index].getAttribute('data-name') || '');
+		}
+
+		function next() {
+			setActive((activeIndex + 1) % images.length);
+		}
+
+		function startTimer() {
+			if (reduced.matches) return;
+			timer = setInterval(next, 6000);
+		}
+
+		function stopTimer() {
+			if (timer) clearInterval(timer);
+			timer = null;
+		}
+
+		buttons.forEach(function (btn, i) {
+			btn.addEventListener('click', function () {
+				setActive(i);
+				stopTimer();
+				startTimer();
+			});
+		});
+
+		hero.addEventListener('mouseenter', stopTimer);
+		hero.addEventListener('mouseleave', startTimer);
+		hero.addEventListener('focusin', stopTimer);
+		hero.addEventListener('focusout', startTimer);
+
+		if (document.readyState === 'loading') {
+			document.addEventListener('DOMContentLoaded', function () {
+				setActive(0);
+				startTimer();
+			});
+		} else {
+			setActive(0);
+			startTimer();
 		}
 	})();
 	</script>
