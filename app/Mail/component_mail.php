@@ -1,19 +1,18 @@
 <?php
 /**
  * Обработчик POST-форм сайта ФАВОРИТ-СТРОЙ-СНАБ.
+ * Использует App\Controllers\MailController (QweesCore style).
  */
 
 require_once dirname(__DIR__, 1) . '/../vendor/autoload.php';
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/Security.php';
 require_once __DIR__ . '/Antibot.php';
-require_once __DIR__ . '/telegram/Messenger.php';
+require_once __DIR__ . '/../Controllers/MailController.php';
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+use App\Controllers\MailController;
 use App\Mail\Security;
 use App\Mail\Antibot;
-use App\Mail\Telegram\Messenger;
 
 function setFormSuccessCookie(string $formType): void
 {
@@ -30,138 +29,98 @@ function setFormSuccessCookie(string $formType): void
     ]);
 }
 
-class FormMailer
-{
-    private string $to = MAIL_TO_PUNY;
-    private string $from = MAIL_FROM;
-    private string $pass = MAIL_PASS;
-    private string $fromName = MAIL_FROM_NAME;
-    private int $port = MAIL_PORT;
-
-    public function send(array $array): bool
-    {
-        $type  = $array['type'] ?? 'form';
-        $name  = $array['name']  ?? '';
-        $phone = $array['phone'] ?? '';
-        $email = $array['email'] ?? '';
-        $msg   = $array['message'] ?? '';
-        $form  = $array['форма'] ?? $type;
-
-        $logoUrl   = SITE_DOMAIN_PUNY . '/public/assets/image/logo/favicon/favicon.svg';
-        $mainColor = '#22c5be';
-        $bgColor   = '#ffffff';
-        $border    = '#e5e7eb';
-        $font      = 'Segoe UI, Arial, sans-serif';
-        $dateStr   = date('d.m.Y H:i');
-
-        $header = "
-            <div style='background: $bgColor; border-radius: 12px 12px 0 0; padding: 32px 32px 16px 32px; text-align: center; border-bottom: 1px solid $border;'>
-                <img src='$logoUrl' alt='Логотип' style='width: 64px; height: 64px; margin-bottom: 12px;'>
-                <h2 style='color: $mainColor; font-family: $font; margin: 0; font-size: 1.6rem;'>Новая заявка с сайта ФСС.РУС</h2>
-            </div>
-        ";
-
-        $footer = "
-            <div style='background: $bgColor; border-radius: 0 0 12px 12px; padding: 18px 32px 24px 32px; text-align: center; border-top: 1px solid $border; color: #6b7280; font-size: 0.95rem; font-family: $font;'>
-                <small>Это автоматическое письмо, не отвечайте на него.</small>
-            </div>
-        ";
-
-        $bodyRows = '';
-        if ($name)  $bodyRows .= "<tr><td style='padding:8px 0;color:#374151;font-weight:500'>Имя:</td><td style='padding:8px 0;color:$mainColor;font-weight:600'>" . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . "</td></tr>";
-        if ($phone) $bodyRows .= "<tr><td style='padding:8px 0;color:#374151;font-weight:500'>Телефон:</td><td style='padding:8px 0;color:$mainColor;font-weight:600'>+" . htmlspecialchars($phone, ENT_QUOTES, 'UTF-8') . "</td></tr>";
-        if ($email) $bodyRows .= "<tr><td style='padding:8px 0;color:#374151;font-weight:500'>Email:</td><td style='padding:8px 0;color:$mainColor;font-weight:600'>" . htmlspecialchars($email, ENT_QUOTES, 'UTF-8') . "</td></tr>";
-        if ($msg)   $bodyRows .= "<tr><td style='padding:8px 0;color:#374151;font-weight:500;vertical-align:top'>Сообщение:</td><td style='padding:8px 0;color:$mainColor;font-weight:500;background:#f0fdf4;border-radius:6px'>" . nl2br(htmlspecialchars($msg, ENT_QUOTES, 'UTF-8')) . "</td></tr>";
-        $bodyRows .= "<tr><td style='padding:8px 0;color:#374151;font-weight:500'>Форма:</td><td style='padding:8px 0;color:$mainColor;font-weight:600'>" . htmlspecialchars($form, ENT_QUOTES, 'UTF-8') . "</td></tr>";
-        $bodyRows .= "<tr><td style='padding:8px 0;color:#374151;font-weight:500'>Дата:</td><td style='padding:8px 0;color:$mainColor;font-weight:600'>$dateStr</td></tr>";
-
-        $utmRows = '';
-        foreach (['utm_source','utm_medium','utm_campaign','utm_term','utm_content','yclid','gclid','landing_page','referrer'] as $p) {
-            if (!empty($array[$p])) {
-                $utmRows .= "<tr><td style='padding:6px 0;color:#374151;font-weight:500'>" . htmlspecialchars($p, ENT_QUOTES, 'UTF-8') . ":</td><td style='padding:6px 0;color:#6b7280'>" . htmlspecialchars($array[$p], ENT_QUOTES, 'UTF-8') . "</td></tr>";
-            }
-        }
-
-        $utmSection = $utmRows !== ''
-            ? "<tr><td colspan='2' style='padding-top:12px'><hr style='border:none;border-top:1px solid $border'></td></tr>
-                <tr><td colspan='2' style='padding:8px 0;color:#374151;font-weight:600'>UTM / трекинг</td></tr>$utmRows"
-            : '';
-
-        $body = "
-            <div style='max-width:520px;margin:0 auto;background:$bgColor;border-radius:12px;box-shadow:0 4px 24px rgba(34,197,94,0.08);border:1px solid $border;font-family:$font;'>
-                $header
-                <div style='padding:28px 32px 18px 32px;'>
-                    <table style='width:100%;border-collapse:collapse;font-size:1.08rem;'>
-                        $bodyRows
-                        $utmSection
-                    </table>
-                </div>
-                $footer
-            </div>
-        ";
-
-        if ($this->port == 465) {
-            $smtpSecure = PHPMailer::ENCRYPTION_SMTPS;
-        } elseif ($this->port == 25) {
-            $smtpSecure = '';
-        } else {
-            $smtpSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        }
-
-        $mail = new PHPMailer(true);
-
-        try {
-            $mail->CharSet    = 'UTF-8';
-            $mail->Encoding   = 'base64';
-            $mail->isSMTP();
-            $mail->SMTPAuth   = true;
-            $mail->SMTPDebug  = 2; // Включаем дебаг
-            $mail->Debugoutput = function($str, $level) {
-                error_log("PHPMailer DEBUG [$level]: $str");
-            };
-            $mail->Host       = 'smtp.gmail.com';
-            $mail->SMTPSecure = $smtpSecure;
-            $mail->Port       = $this->port;
-            $mail->Username   = $this->from;
-            $mail->Password   = $this->pass;
-            $mail->setFrom($this->from, $this->fromName);
-            $mail->addAddress($this->to);
-            $mail->Subject    = "Новая заявка с ФСС.РУС — форма: $form";
-            $mail->msgHTML($body);
-            $mail->send();
-            error_log("PHPMailer SUCCESS: Email sent to {$this->to} from {$this->from}");
-            return true;
-        } catch (Exception $e) {
-            error_log("PHPMailer ERROR: " . $e->getMessage() . " | Code: " . $e->getCode() . " | File: " . $e->getFile() . ":" . $e->getLine());
-            error_log("PHPMailer ErrorInfo: " . $mail->ErrorInfo);
-            return false;
-        }
-    }
-}
-
-function deliverLead(FormMailer $formMailer, Messenger $messenger, array $array): void
+function deliverLead(array $array): void
 {
     $type = $array['type'] ?? 'form';
 
-    $mailOk = $formMailer->send($array);
-    $tgOk = $messenger->sendToTelegram($array);
+    // Отправляем письмо через MailController (QweesCore style)
+    $mailController = new MailController();
+    $mailOk = $mailController->onMail(
+        EMAIL_TO,
+        "Новая заявка с ФСС.РУС — форма: " . ($array['форма'] ?? $type),
+        buildEmailBody($array)
+    );
 
+    // Сохраняем результат в сессию для показа после редиректа
     if (session_status() === PHP_SESSION_NONE) {
         @session_start();
     }
     $_SESSION['fss_form_success'] = [
         'type' => $type,
         'mail' => $mailOk,
-        'tg' => $tgOk,
         'time' => time(),
     ];
 
     session_write_close();
 
+    // PRG: редирект на тот же URL (GET)
     $redirectUrl = $_SERVER['REQUEST_URI'] ?? '/';
     $redirectUrl = parse_url($redirectUrl, PHP_URL_PATH) ?: '/';
     header('Location: ' . $redirectUrl, true, 303);
     exit;
+}
+
+function buildEmailBody(array $array): string
+{
+    $type  = $array['type'] ?? 'form';
+    $name  = $array['name']  ?? '';
+    $phone = $array['phone'] ?? '';
+    $email = $array['email'] ?? '';
+    $msg   = $array['message'] ?? '';
+    $form  = $array['форма'] ?? $type;
+
+    $logoUrl   = (defined('SITE_DOMAIN_PUNY') ? SITE_DOMAIN_PUNY : 'https://xn--h1aafj.xn--p1ai') . '/public/assets/image/logo/favicon/favicon.svg';
+    $mainColor = '#22c5be';
+    $bgColor   = '#ffffff';
+    $border    = '#e5e7eb';
+    $font      = 'Segoe UI, Arial, sans-serif';
+    $dateStr   = date('d.m.Y H:i');
+
+    $header = "
+        <div style='background: $bgColor; border-radius: 12px 12px 0 0; padding: 32px 32px 16px 32px; text-align: center; border-bottom: 1px solid $border;'>
+            <img src='$logoUrl' alt='Логотип' style='width: 64px; height: 64px; margin-bottom: 12px;'>
+            <h2 style='color: $mainColor; font-family: $font; margin: 0; font-size: 1.6rem;'>Новая заявка с сайта ФСС.РУС</h2>
+        </div>
+    ";
+
+    $footer = "
+        <div style='background: $bgColor; border-radius: 0 0 12px 12px; padding: 18px 32px 24px 32px; text-align: center; border-top: 1px solid $border; color: #6b7280; font-size: 0.95rem; font-family: $font;'>
+            <small>Это автоматическое письмо, не отвечайте на него.</small>
+        </div>
+    ";
+
+    $bodyRows = '';
+    if ($name)  $bodyRows .= "<tr><td style='padding:8px 0;color:#374151;font-weight:500'>Имя:</td><td style='padding:8px 0;color:$mainColor;font-weight:600'>" . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . "</td></tr>";
+    if ($phone) $bodyRows .= "<tr><td style='padding:8px 0;color:#374151;font-weight:500'>Телефон:</td><td style='padding:8px 0;color:$mainColor;font-weight:600'>+" . htmlspecialchars($phone, ENT_QUOTES, 'UTF-8') . "</td></tr>";
+    if ($email) $bodyRows .= "<tr><td style='padding:8px 0;color:#374151;font-weight:500'>Email:</td><td style='padding:8px 0;color:$mainColor;font-weight:600'>" . htmlspecialchars($email, ENT_QUOTES, 'UTF-8') . "</td></tr>";
+    if ($msg)   $bodyRows .= "<tr><td style='padding:8px 0;color:#374151;font-weight:500;vertical-align:top'>Сообщение:</td><td style='padding:8px 0;color:$mainColor;font-weight:500;background:#f0fdf4;border-radius:6px'>" . nl2br(htmlspecialchars($msg, ENT_QUOTES, 'UTF-8')) . "</td></tr>";
+    $bodyRows .= "<tr><td style='padding:8px 0;color:#374151;font-weight:500'>Форма:</td><td style='padding:8px 0;color:$mainColor;font-weight:600'>" . htmlspecialchars($form, ENT_QUOTES, 'UTF-8') . "</td></tr>";
+    $bodyRows .= "<tr><td style='padding:8px 0;color:#374151;font-weight:500'>Дата:</td><td style='padding:8px 0;color:$mainColor;font-weight:600'>$dateStr</td></tr>";
+
+    $utmRows = '';
+    foreach (['utm_source','utm_medium','utm_campaign','utm_term','utm_content','yclid','gclid','landing_page','referrer'] as $p) {
+        if (!empty($array[$p])) {
+            $utmRows .= "<tr><td style='padding:6px 0;color:#374151;font-weight:500'>" . htmlspecialchars($p, ENT_QUOTES, 'UTF-8') . ":</td><td style='padding:6px 0;color:#6b7280'>" . htmlspecialchars($array[$p], ENT_QUOTES, 'UTF-8') . "</td></tr>";
+        }
+    }
+
+    $utmSection = $utmRows !== ''
+        ? "<tr><td colspan='2' style='padding-top:12px'><hr style='border:none;border-top:1px solid $border'></td></tr>
+            <tr><td colspan='2' style='padding:8px 0;color:#374151;font-weight:600'>UTM / трекинг</td></tr>$utmRows"
+        : '';
+
+    return "
+        <div style='max-width:520px;margin:0 auto;background:$bgColor;border-radius:12px;box-shadow:0 4px 24px rgba(34,197,94,0.08);border:1px solid $border;font-family:$font;'>
+            $header
+            <div style='padding:28px 32px 18px 32px;'>
+                <table style='width:100%;border-collapse:collapse;font-size:1.08rem;'>
+                    $bodyRows
+                    $utmSection
+                </table>
+            </div>
+            $footer
+        </div>
+    ";
 }
 
 $utmParams = [];
@@ -189,8 +148,6 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' &
     $isMini = isset($_POST['mini-forma']);
     $isContent = isset($_POST['content_form']);
 
-    $formMailer = new FormMailer();
-    $messenger = new Messenger();
     $err = '';
 
     if ($isMailer) {
@@ -214,7 +171,7 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' &
             'форма' => 'modal',
         ] + $utmParams;
 
-        deliverLead($formMailer, $messenger, $array);
+        deliverLead($array);
 
     } elseif ($isMini) {
         $nameV = Security::validateName($_POST['name'] ?? '', $err);
@@ -228,7 +185,7 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' &
             'форма' => 'mini-forma',
         ] + $utmParams;
 
-        deliverLead($formMailer, $messenger, $array);
+        deliverLead($array);
 
     } elseif ($isContent) {
         $nameV = Security::validateName($_POST['name'] ?? '', $err);
@@ -248,6 +205,6 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST' &
             'форма' => 'content_form',
         ] + $utmParams;
 
-        deliverLead($formMailer, $messenger, $array);
+        deliverLead($array);
     }
 }

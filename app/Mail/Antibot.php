@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Mail;
 
 require_once __DIR__ . '/config.php';

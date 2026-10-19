@@ -1,97 +1,101 @@
 <?php
+
 namespace App\Mail;
 
-class Security {
-
-    public static function sanitizeString($str, $maxLen = 500) {
-        $str = trim((string)$str);
+class Security
+{
+    public static function sanitizeString(string $str, int $maxLen = 500): string
+    {
+        $str = trim($str);
         $str = strip_tags($str);
-        // Remove null bytes
-        $str = str_replace("\0", "", $str);
-        // Limit length
-        if (mb_strlen($str) > $maxLen) $str = mb_substr($str, 0, $maxLen);
-        return $str;
+        $str = str_replace("\0", '', $str);
+        return mb_substr($str, 0, $maxLen, 'UTF-8');
     }
 
-    public static function validateName($name, &$err) {
+    public static function validateName(string $name, ?string &$error = null): string|false
+    {
         $name = self::sanitizeString($name, 100);
-        if (mb_strlen($name) < 2) { $err = 'Имя слишком короткое (минимум 2 символа).'; return false; }
-        if (mb_strlen($name) > 100) { $err = 'Имя слишком длинное.'; return false; }
-        // Разрешаем буквы, пробел, дефис, апостроф, точку (рус/англ)
-        if (!preg_match('/^[\p{L}\s\-\.\'’`]+$/u', $name)) { $err = 'Имя содержит недопустимые символы.'; return false; }
-        if (preg_match('/https?:|www\./i', $name)) { $err = 'Имя не должно содержать ссылки.'; return false; }
+        if (mb_strlen($name, 'UTF-8') < 2) {
+            $error = 'Имя слишком короткое (минимум 2 символа).';
+            return false;
+        }
+        if (!preg_match('/^[\p{L}\s\-\.\']+$/u', $name)) {
+            $error = 'Имя содержит недопустимые символы.';
+            return false;
+        }
         return $name;
     }
 
-    public static function validatePhone($phone, &$err) {
-        $phone = trim((string)$phone);
-        // Очищаем кроме + и цифр
-        $clean = preg_replace('/[^\d\+]/', '', $phone);
-        // Российcкий формат
-        // Допускаем +7XXXXXXXXXX, 8XXXXXXXXXX, 7XXXXXXXXXX
-        $digits = preg_replace('/\D/', '', $clean);
-        if (strlen($digits) < 10 || strlen($digits) > 12) { $err = 'Укажите корректный телефон (10-12 цифр).'; return false; }
-        // Если начинается с 8 -> 7
-        if (strlen($digits) == 11 && $digits[0] == '8') $digits = '7'.substr($digits,1);
-        // Форматируем
-        $formatted = '+' . $digits;
-        // Проверка на повторяющиеся цифры 7777777
-        if (preg_match('/(\d)\1{6,}/', $digits)) { $err = 'Некорректный номер телефона.'; return false; }
-        return $formatted;
+    public static function validatePhone(string $phone, ?string &$error = null): string|false
+    {
+        $digits = preg_replace('/\D/', '', $phone);
+        if (strlen($digits) < 10 || strlen($digits) > 15) {
+            $error = 'Укажите корректный телефон (10-15 цифр).';
+            return false;
+        }
+        if (preg_match('/^(\d)\1+$/', $digits)) {
+            $error = 'Некорректный номер телефона.';
+            return false;
+        }
+        return $digits;
     }
 
-    public static function validateEmail($email, &$err, $required = true) {
-        $email = trim((string)$email);
-        if (empty($email)) {
-            if ($required) { $err = 'Email обязателен.'; return false; }
+    public static function validateEmail(string $email, ?string &$error = null, bool $required = true): string|false
+    {
+        $email = trim($email);
+        if ($email === '') {
+            if ($required) {
+                $error = 'Email обязателен.';
+                return false;
+            }
             return '';
         }
-        if (strlen($email) > 254) { $err = 'Email слишком длинный.'; return false; }
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) { $err = 'Некорректный email.'; return false; }
-        if (preg_match('/https?:|www\./i', $email)) { $err = 'Email не должен содержать ссылки.'; return false; }
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $error = 'Некорректный email.';
+            return false;
+        }
+        if (strlen($email) > 254) {
+            $error = 'Email слишком длинный.';
+            return false;
+        }
         return strtolower($email);
     }
 
-    public static function validateMessage($msg, &$err, $required = true, $min = 10) {
-        $msg = self::sanitizeString($msg, 2000);
-        if (empty($msg)) {
-            if ($required) { $err = 'Сообщение обязательно.'; return false; }
+    public static function validateMessage(string $message, ?string &$error = null, bool $required = true, int $minLen = 10): string|false
+    {
+        $message = trim($message);
+        if ($message === '') {
+            if ($required) {
+                $error = 'Сообщение обязательно.';
+                return false;
+            }
             return '';
         }
-        if (mb_strlen($msg) < $min) { $err = "Сообщение слишком короткое (минимум $min символов)."; return false; }
-        return $msg;
+        if (mb_strlen($message, 'UTF-8') < $minLen) {
+            $error = "Сообщение слишком короткое (минимум $minLen символов).";
+            return false;
+        }
+        return self::sanitizeString($message, 5000);
     }
 
-    public static function esc($str) {
-        return htmlspecialchars($str, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-    }
-
-    /** Очередь уведомлений: выводим их в футере, чтобы не ломать DOCTYPE. */
-    private static array $alerts = [];
     private static array $scripts = [];
 
-    public static function showAlert($type, $message) {
-        $key = $type . '|' . $message;
-        self::$alerts[$key] = ['type' => $type, 'message' => $message];
+    public static function pushScript(string $script): void
+    {
+        self::$scripts[] = $script;
     }
 
-    public static function pushScript(string $js): void {
-        self::$scripts[] = $js;
-    }
-
-    public static function renderAlerts(): void {
-        if (!self::$alerts && !self::$scripts) return;
-        foreach (self::$alerts as $a) {
-            self::renderAlert($a['type'], $a['message']);
+    public static function printScripts(): void
+    {
+        if (empty(self::$scripts)) return;
+        echo '<script>' . "\n";
+        foreach (self::$scripts as $s) {
+            echo $s . "\n";
         }
-        self::$alerts = [];
-        foreach (self::$scripts as $js) {
-            echo '<script>' . $js . '</script>';
-        }
-        self::$scripts = [];
+        echo '</script>' . "\n";
     }
 
-    private static function renderAlert($type, $message): void
+    public static function showAlert(string $type, string $message): void
     {
         $isSuccess = $type === 'success';
         $bg = $isSuccess ? '#ecfdf5' : '#fef2f2';
@@ -124,7 +128,7 @@ class Security {
         ">
             <div style="flex-shrink:0; width:36px; height:36px; border-radius:10px; background:' . $iconBg . '; display:flex; align-items:center; justify-content:center; color:white; margin-top:1px;">' . $icon . '</div>
             <div style="flex:1; min-width:0;">
-                <div style="font-weight:600; font-size:14px; color:' . $text . '; line-height:1.4;">' . self::esc($message) . '</div>
+                <div style="font-weight:600; font-size:14px; color:' . $text . '; line-height:1.4;">' . self::sanitizeString($message) . '</div>
             </div>
             <button type="button" onclick="document.getElementById(\'' . $id . '\').style.display=\'none\'" aria-label="Закрыть" style="
                 flex-shrink:0;

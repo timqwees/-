@@ -44,8 +44,7 @@ if (!empty($_SESSION['fss_form_success'])) {
 	unset($_SESSION['fss_form_success']);
 	$type = $success['type'] ?? 'form';
 	$mailOk = $success['mail'] ?? false;
-	$tgOk = $success['tg'] ?? false;
-	if ($mailOk || $tgOk) {
+	if ($mailOk) {
 		setFormSuccessCookie($type);
 		\App\Mail\Security::pushScript('if(window.dataLayer) dataLayer.push({event:"form_success", form_type:"' . addslashes($type) . '"});');
 		\App\Mail\Security::showAlert('success', 'Вы успешно оставили заявку! Мы свяжемся с вами в ближайшее время.');
