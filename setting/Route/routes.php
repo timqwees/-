@@ -126,6 +126,7 @@ Routes::get('/pages', function () {
 Routes::get('/{key}.txt', function (string $key) {
 	$want = (string)seo_config('indexnow_key');
 	if ($want !== '' && hash_equals($want, $key)) {
+		SecurityHeaders::sendSecurity();
 		header('Content-Type: text/plain; charset=utf-8');
 		if (SecurityHeaders::isDev()) { SecurityHeaders::sendNoCache(); } else { header('Cache-Control: public, max-age=3600'); }
 		echo $want;

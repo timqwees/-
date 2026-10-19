@@ -1,0 +1,74 @@
+RewriteEngine On
+RewriteBase /
+
+# Редирект robots.txt на динамический генератор (файл в public/)
+RewriteRule ^robots\.txt$ public/robots.php [L]
+
+# Дубли служебных файлов: прямые /public/* → канонические URL (301)
+RewriteRule ^public/llms\.txt$ /llms.txt [R=301,L]
+RewriteRule ^public/llms-full\.txt$ /llms-full.txt [R=301,L]
+RewriteRule ^public/opensearch\.xml$ /opensearch.xml [R=301,L]
+RewriteRule ^public/robots\.php$ /robots.txt [R=301,L]
+
+# 0. Редирект с портом :443 на URL без порта (301)
+RewriteCond %{HTTP_HOST} ^(www\.)?pkvartira\.ru:443$ [NC]
+RewriteRule ^(.*)$ https://%1pkvartira.ru/$1 [R=301,L]
+
+# 0.1. Редирект www → без www (301)
+RewriteCond %{HTTP_HOST} ^www\.pkvartira\.ru$ [NC]
+RewriteRule ^(.*)$ https://pkvartira.ru/$1 [R=301,L]
+
+# 0.2. Принудительный HTTPS для pkvartira.ru (главное зеркало https://pkvartira.ru)
+# Совместимо с прокси (Cloudflare, nginx): проверяем и HTTPS и X-Forwarded-Proto
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP_HOST} ^(www\.)?pkvartira\.ru$ [NC]
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# 1. Редирект с двойного слэша на одинарный (301)
+RewriteCond %{REQUEST_URI} ^(.*)//(.*)$
+RewriteRule . %1/%2 [R=301,L]
+
+# 3. Редирект со слэша на без слэша для НЕ директорий (301)
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.+)/$ /$1 [R=301,L]
+
+# Сжатие — только если модули доступны (безопасно для shared-хостинга)
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json application/xml image/svg+xml font/woff2
+</IfModule>
+
+# ETag для условных запросов (304 Not Modified) — фиксит оценку enterno «ETag 0/15»
+FileETag MTime Size
+
+# Кэш статики — только если mod_expires доступен (без директив Header:
+# reg.ru на shared-хостинге ругается на Header, поэтому ВСЕ заголовки,
+# включая Cache-Control для HTML и security-заголовки, ставятся из PHP
+# через Setting\Route\Functions\SecurityHeaders).
+# Здесь — только Expires для статики (HTML этот блок не трогает,
+# т.к. для text/html правила нет — дубля Cache-Control не будет).
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/avif "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType text/javascript "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType font/woff "access plus 1 year"
+</IfModule>
+
+# RSS: всегда через PHP-роут (там файловый кэш rss.xml с TTL).
+# Без этого Apache отдал бы лежащий в корне статический rss.xml напрямую и навсегда протухший.
+RewriteRule ^rss\.xml$ index.php?route=rss.xml [QSA,L]
+
+# Если файл или директория существуют, используем их напрямую
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Внутренне переписываем запрос на index.php
+RewriteRule ^(.*)$ index.php?route=$1 [QSA,L]

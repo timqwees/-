@@ -34,6 +34,7 @@ require_once __DIR__ . '/Seo/seo.php';
 
 if (!headers_sent()) {
 	header_remove('X-Powered-By');
+	header_remove('Server');
 }
 // Сессии (формы/антибот) не должны перебивать Cache-Control владельца — SecurityHeaders
 ini_set('session.cache_limiter', '');
