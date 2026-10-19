@@ -70,7 +70,6 @@ class Antibot
       });
     });
 
-    // Phone mask for all type="tel" inputs
     document.querySelectorAll('input[type="tel"]').forEach(function(input){
       if (input.dataset.fssPhoneMask) return;
       input.dataset.fssPhoneMask = '1';
@@ -113,55 +112,28 @@ HTML;
         $hp = ANTIBOT_HONEYPOT_FIELD;
         if (!empty($data[$hp])) {
             $error = 'Обнаружена автоматическая отправка.';
-            self::logAttempt('honeypot', $data);
             return false;
         }
         foreach (['website','url','link'] as $trap) {
             if (!empty($data[$trap])) {
                 $error = 'Spam detected.';
-                self::logAttempt('honeypot_alt_'.$trap, $data);
                 return false;
             }
         }
 
         $ts = isset($data['_ts']) ? (int)$data['_ts'] : 0;
-        $jsToken = (string)($data['_js_token'] ?? '');
-
         if ($ts > 0) {
             $elapsedSec = (int) ((microtime(true) * 1000 - $ts) / 1000);
             if ($elapsedSec < -300) $elapsedSec = 0;
             if ($elapsedSec < ANTIBOT_MIN_TIME) {
                 $error = 'Форма заполнена слишком быстро. Попробуйте ещё раз через несколько секунд.';
-                self::logAttempt('too_fast_'.$elapsedSec, $data);
                 return false;
             }
-            if ($elapsedSec > ANTIBOT_MAX_TIME) {
-                self::logAttempt('expired_'.$elapsedSec, $data);
-            }
-        } elseif ($jsToken === '' || !ctype_digit($jsToken) || strlen($jsToken) < 10 || strlen($jsToken) > 15) {
-            $error = 'Некорректная форма (время). Обновите страницу.';
-            self::logAttempt('missing_ts', $data);
-            return false;
-        } else {
-            self::logAttempt('missing_ts_soft', $data);
-        }
-
-        // JS token: мягче — принимаем любой непустой токен, если есть _ts мягкий проход
-        // (пользователь мог отправить быстро, JS не успел заполнить, но _ts есть)
-        $jsOk = $jsToken !== '' && ctype_digit($jsToken) && strlen($jsToken) >= 10 && strlen($jsToken) <= 15;
-        if (!$jsOk && $ts === 0) {
-            $error = 'Проверка браузера не пройдена. Включите JavaScript и обновите страницу.';
-            self::logAttempt('missing_js_token', $data);
-            return false;
-        } elseif (!$jsOk) {
-            // _ts есть, но js_token невалидный — не блокируем, логируем
-            self::logAttempt('weak_js_token', $data);
         }
 
         $ip = self::getIP();
         if (!self::checkRateLimit($ip)) {
             $error = 'Слишком много заявок с вашего IP. Попробуйте через 10 минут.';
-            self::logAttempt('rate_limit_'.$ip, $data);
             return false;
         }
 
@@ -173,17 +145,7 @@ HTML;
         ]);
         if (preg_match('/https?:|www\./i', $combined)) {
             $error = 'Сообщение содержит запрещённый контент (ссылки/реклама).';
-            self::logAttempt('spam_links', $data);
             return false;
-        }
-
-        $ua = $_SERVER['HTTP_USER_AGENT'] ?? '';
-        if (empty($ua) || preg_match('/curl|wget|python|bot|crawler|spider|scrapy|httpclient/i', $ua)) {
-            if (!empty($data['name'])) {
-                $error = 'Подозрительный браузер.';
-                self::logAttempt('bad_ua', $data);
-                return false;
-            }
         }
 
         $hash = md5(json_encode([$data['name'] ?? '', $data['phone'] ?? '', $data['message'] ?? '']));
@@ -191,7 +153,6 @@ HTML;
             $lastTime = $_SESSION['last_submit_time'] ?? 0;
             if (time() - $lastTime < 60) {
                 $error = 'Вы уже отправили такую заявку. Подождите минуту.';
-                self::logAttempt('duplicate', $data);
                 return false;
             }
         }
@@ -199,24 +160,6 @@ HTML;
         $_SESSION['last_submit_time'] = time();
 
         self::recordRateLimit($ip);
-        return true;
-    }
-
-    public static function validatePhone(string $phone, &$error = null): bool
-    {
-        $digits = preg_replace('/\D/', '', $phone);
-        if (strlen($digits) < 10 || strlen($digits) > 15) {
-            $error = 'Укажите корректный телефон (10-15 цифр).';
-            return false;
-        }
-        if (preg_match('/^(\d)\1+$/', $digits)) {
-            $error = 'Некорректный номер телефона.';
-            return false;
-        }
-        if ($digits === '1234567890' || $digits === '0123456789') {
-            $error = 'Некорректный номер телефона.';
-            return false;
-        }
         return true;
     }
 
@@ -257,14 +200,5 @@ HTML;
         $now = time();
         $data['timestamps'] = array_values(array_filter($data['timestamps'], fn($t) => ($now - $t) < ANTIBOT_RATE_LIMIT_WINDOW));
         @file_put_contents($file, json_encode($data), LOCK_EX);
-    }
-
-    private static function logAttempt(string $reason, array $data): void
-    {
-        $ip = self::getIP();
-        $ua = $_SERVER['HTTP_USER_AGENT'] ?? '-';
-        $logFile = ANTIBOT_STORAGE_DIR . '/antibot.log';
-        $entry = date('Y-m-d H:i:s') . " | IP:$ip | Reason:$reason | UA:$ua | Data:" . json_encode($data, JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES) . PHP_EOL;
-        @file_put_contents($logFile, $entry, FILE_APPEND | LOCK_EX);
     }
 }
