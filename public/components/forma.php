@@ -21,10 +21,6 @@
 			<?php
 				$antibotPath = __DIR__ . '/antibot_fields.php';
 				if (file_exists($antibotPath)) include $antibotPath;
-				else {
-					$alt = dirname(__DIR__, 2) . '/app/Mail/Antibot.php';
-					if (file_exists($alt)) { require_once $alt; echo \App\Mail\Antibot::generateFields(); }
-				}
 			?>
 			<div>
 				<label for="mini_name" class="sr-only">Ваше имя</label>
