@@ -115,7 +115,10 @@ class FormMailer
             $mail->Encoding   = 'base64';
             $mail->isSMTP();
             $mail->SMTPAuth   = true;
-            $mail->SMTPDebug  = 0;
+            $mail->SMTPDebug  = 2; // Включаем дебаг
+            $mail->Debugoutput = function($str, $level) {
+                error_log("PHPMailer DEBUG [$level]: $str");
+            };
             $mail->Host       = 'smtp.gmail.com';
             $mail->SMTPSecure = $smtpSecure;
             $mail->Port       = $this->port;
@@ -126,8 +129,11 @@ class FormMailer
             $mail->Subject    = "Новая заявка с ФСС.РУС — форма: $form";
             $mail->msgHTML($body);
             $mail->send();
+            error_log("PHPMailer SUCCESS: Email sent to {$this->to} from {$this->from}");
             return true;
         } catch (Exception $e) {
+            error_log("PHPMailer ERROR: " . $e->getMessage() . " | Code: " . $e->getCode() . " | File: " . $e->getFile() . ":" . $e->getLine());
+            error_log("PHPMailer ErrorInfo: " . $mail->ErrorInfo);
             return false;
         }
     }
