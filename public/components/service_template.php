@@ -299,8 +299,8 @@ html.lenis,html.lenis body{height:auto;}
 <body class="font-sans text-gray-800">
 <?php include_once __DIR__ . '/header.php'; ?>
 <main>
-<?= seo_breadcrumbs_html() ?>
 	<div class="svh-wrap">
+	<?= seo_breadcrumbs_html() ?>
 	<section class="svh-panel view">
 		<svg class="svh-surface" viewBox="0 0 1600 760" preserveAspectRatio="none" aria-hidden="true"><path d="M150 0H1290Q1318 0 1323 28Q1328 56 1356 56H1560Q1600 56 1600 96V720Q1600 760 1560 760H350Q325 760 325 735Q325 710 300 710H170Q145 710 145 735Q145 760 120 760H40Q0 760 0 720V430Q0 400 30 400H45Q115 400 115 370V40Q115 0 150 0Z"/>
 		<div class="svh-pricetab"><?= $h($price) ?> <small>смета за 15 минут</small></div></svg>
