@@ -43,7 +43,7 @@
 			<div class="text-xs text-gray-500">Или позвоните:</div>
 			<?php $fssPhone = preg_replace('/\D/', '', (string)seo_config('phone')); ?>
 			<div class="fss-widget-phone">
-				<a href="tel:+<?= $fssPhone ?>" class="fss-widget-phone-link">
+				<a href="tel:+<?= $fssPhone ?>" title="Позвонить: <?= htmlspecialchars((string)seo_config('phone_display')) ?>" class="fss-widget-phone-link">
 					<span class="fss-widget-phone-icon"><i class="fa-solid fa-phone"></i></span>
 					<span class="fss-widget-phone-num"><?= htmlspecialchars((string)seo_config('phone_display')) ?></span>
 				</a>

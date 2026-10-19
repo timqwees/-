@@ -12,6 +12,7 @@ $env = fn(string $key, string $default = '') => $_ENV[$key] ?? getenv($key) ?: $
 $httpHost = $_SERVER['HTTP_HOST'] ?? 'www.xn--h1aafj.xn--p1ai';
 $httpHost = strtolower(trim($httpHost));
 $httpHost = preg_replace('/^www\./', '', $httpHost);
+$httpHost = preg_replace('/:\d+$/', '', $httpHost);
 
 // Определяем схему (HTTP/HTTPS)
 $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || 
@@ -49,6 +50,7 @@ return [
 	'phone_8800_tel' => '88000000000',
 	'phone_8800_display' => '8 800 000 00 00',
 	'email' => 'fss@' . (preg_match('/^xn--/', $baseHost) ? idn_to_utf8($baseHost, IDNA_NONTRANSITIONAL_TO_ASCII, INTL_IDNA_VARIANT_UTS46) : $baseHost),
+	'email_puny' => 'fss@' . $baseHost,
 	'telegram' => 'https://t.me/fss_rus',
 	'vk' => 'https://vk.com/fss_rus',
 
@@ -75,11 +77,12 @@ return [
 	'callback_minutes' => '7',
 	'area_served' => ['Москва', 'Московская область', 'Россия'],
 
-	// --- Аналитика (из .env) ---
-	'ym_id' => $env('YM_ID', 'XXXXXXXX'),
-	'ga4_id' => $env('GA4_ID', 'G-XXXXXXXXXX'),
-	'gtm_id' => $env('GTM_ID', 'GTM-XXXXXXX'),
-	'gtag_id' => $env('GADS_ID', 'AW-XXXXXXXXX'),
+	// --- Аналитика (из .env). По умолчанию ПУСТО: иначе плейсхолдеры (G-XXXX/M-XXXX)
+	// попадали бы в HTML как «живые» счётчики. Заполните .env реальными ID. ---
+	'ym_id' => $env('YM_ID', ''),
+	'ga4_id' => $env('GA4_ID', ''),
+	'gtm_id' => $env('GTM_ID', ''),
+	'gtag_id' => $env('GADS_ID', ''),
 	'yandex_verification' => $env('YWEB_ID', ''),
 	'google_verification' => $env('GSC_ID', ''),
 	'indexnow_key' => $env('INDEXNOW_KEY', 'b339c4d027c523c5aa5bed28703c94bd'),

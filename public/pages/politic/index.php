@@ -17,7 +17,7 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
 	<style> body { font-family: 'Wix Madefor Display', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
 
 	<title>Политика конфиденциальности — ФАВОРИТ-СТРОЙ-СНАБ</title>
-	<meta name="description" content="Политика конфиденциальности ФАВОРИТ-СТРОЙ-СНАБ: как мы собираем, обрабатываем и защищаем персональные данные клиентов при заказе БВЗ, капремонта, спецтехники. Права субъектов данных, сроки хранения, контакты ДПО.">
+	<meta name="description" content="Политика конфиденциальности ФАВОРИТ-СТРОЙ-СНАБ: порядок обработки и защиты персональных данных клиентов сайта. Права субъектов, сроки хранения, контакты.">
 	<meta name="robots" content="noindex, follow">
 	<meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
 	<?= seo_verify_tags() ?>
@@ -97,8 +97,8 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
 			</p>
 			<h2 class="text-xl font-semibold mt-6 mb-2 text-gray-800">7. Контактная информация</h2>
 			<p class="mb-4 text-gray-700">
-				По вопросам, связанным с обработкой персональных данных, вы можете обратиться по электронной почте: <a
-					href="mailto:<?= htmlspecialchars((string)seo_config('email')) ?>" class="text-green-600 underline"><?= htmlspecialchars((string)seo_config('email')) ?></a>
+				По вопросам, связанным с обработкой персональных данных, вы можете обратиться по электронной почте: 				<a
+					href="mailto:<?= htmlspecialchars((string)seo_config('email_puny')) ?>" title="Написать на email" class="text-green-600 underline"><?= htmlspecialchars((string)seo_config('email')) ?></a>
 			</p>
 			<p class="text-gray-600 text-sm mt-8">Последнее обновление: <?php echo date('d.m.Y'); ?></p>
 		</div>

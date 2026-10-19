@@ -57,6 +57,7 @@ $activeFilters = ($q !== '' || $tag !== '' || $cat !== '');
 	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/apple-touch-icon.png" />
 	<link rel="manifest" href="/public/assets/image/logo/site.webmanifest" />
 	<?= seo_canonical_tags() ?>
+	<?= seo_og_tags('Поиск статей — Блог | ' . seo_config('brand'), 'Поиск по блогу ФАВОРИТ-СТРОЙ-СНАБ: статьи о строительстве БВЗ, материалах, ценах и рекомендациях.') ?>
 	<?= seo_verify_tags() ?>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -184,14 +185,14 @@ $activeFilters = ($q !== '' || $tag !== '' || $cat !== '');
 					<svg class="blog-empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
 					<h3 class="blog-empty-title">Ничего не найдено</h3>
 					<p class="blog-empty-desc">По вашему запросу «<strong><?= htmlspecialchars($q, ENT_QUOTES) ?></strong>» материалов нет. Попробуйте изменить запрос или очистить фильтры.</p>
-					<a href="/blog" class="blog-empty-btn">Все статьи блога</a>
+					<a href="/blog" title="Все статьи блога" class="blog-empty-btn">Все статьи блога</a>
 				</div>
 				<?php else: ?>
 				<div class="blog-empty-state" role="status">
 					<svg class="blog-empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
 					<h3 class="blog-empty-title">Начните поиск</h3>
 					<p class="blog-empty-desc">Введите запрос в строке выше или выберите категорию/тег — найдём нужную статью за секунды.</p>
-					<a href="/blog" class="blog-empty-btn">Все статьи блога</a>
+					<a href="/blog" title="Все статьи блога" class="blog-empty-btn">Все статьи блога</a>
 				</div>
 				<?php endif; ?>
 			</div>
@@ -208,7 +209,7 @@ $activeFilters = ($q !== '' || $tag !== '' || $cat !== '');
 					</div>
 					<div class="blog-cta-actions">
 						<a href="/#contact" title="Получить консультацию" class="blog-cta-btn blog-cta-btn--primary">Получить консультацию <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-						<a href="tel:+<?= preg_replace('/\D/', '', (string)seo_config('phone')) ?>" class="blog-cta-btn blog-cta-btn--phone"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> <?= htmlspecialchars((string)seo_config('phone_display')) ?></a>
+						<a href="tel:+<?= preg_replace('/\D/', '', (string)seo_config('phone')) ?>" title="Позвонить" class="blog-cta-btn blog-cta-btn--phone"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> <?= htmlspecialchars((string)seo_config('phone_display')) ?></a>
 					</div>
 				</div>
 			</div>
@@ -220,6 +221,21 @@ $activeFilters = ($q !== '' || $tag !== '' || $cat !== '');
 
 	<?php include_once __DIR__ . '/../../components/footer.php'; ?>
 	<style>
+		:root {
+			--sun: #F97316;
+			--sun-deep: #EA580C;
+			--sun-light: #FB923C;
+			--cream-2: #FFF1E3;
+			--ink: #171310;
+			--ink-soft: #44403C;
+			--border: #efe7da;
+			--white: #fff;
+			--radius-full: 999px;
+			--shadow-sm: 0 2px 8px rgba(23,19,16,.06);
+			--shadow-sun: 0 10px 30px rgba(249,115,22,.25);
+			--shadow-sun-lg: 0 20px 40px rgba(249,115,22,.3);
+			--transition: .25s cubic-bezier(.4, 0, .2, 1);
+		}
 		/* Search page specific styles */
 		.blog-search-page .blog-hero { padding: clamp(3rem, 5vw, 4rem) 0; }
 		.blog-search-hero .blog-hero-content { max-width: 720px; }

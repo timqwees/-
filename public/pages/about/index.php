@@ -163,7 +163,7 @@ $d = 'ООО «ФАВОРИТ-СТРОЙ-СНАБ» (ИНН ' . $inn . ', ОГР
 			<div class="xl-hero-grid">
 				<div>
 					<h1>Реализуем успешную стратегию строительства и инновационные решения для любых задач</h1>
-					<a href="/#contact" class="xl-btn">Обсудить проект <i class="fa-solid fa-arrow-right"></i></a>
+					<a href="/#contact" title="Обсудить проект" class="xl-btn">Обсудить проект <i class="fa-solid fa-arrow-right"></i></a>
 					<div class="xl-scroll">
 						<span class="xl-scroll ar"><i class="fa-solid fa-arrow-down"></i></span>
 						<span class="t">Смотрите дальше</span>
@@ -273,8 +273,8 @@ $d = 'ООО «ФАВОРИТ-СТРОЙ-СНАБ» (ИНН ' . $inn . ', ОГР
 						<p class="txt">ИНН <?= htmlspecialchars($inn) ?> / КПП <?= htmlspecialchars((string)seo_config('kpp')) ?> / ОГРН <?= htmlspecialchars($ogrn) ?></p>
 						<p class="txt">Дата регистрации: <?= htmlspecialchars(date('d.m.Y', strtotime($regDate))) ?> г.</p>
 						<p class="txt">Адрес: <?= htmlspecialchars(seo_config('address')['street']) ?>, <?= htmlspecialchars(seo_config('address')['locality']) ?>, <?= htmlspecialchars(seo_config('address')['postal']) ?></p>
-						<p class="txt">Телефон: <a href="tel:<?= preg_replace('/\D/', '', seo_config('phone')) ?>"><?= htmlspecialchars(seo_config('phone_display')) ?></a></p>
-						<p class="txt">Email: <a href="mailto:<?= htmlspecialchars(seo_config('email')) ?>"><?= htmlspecialchars(seo_config('email')) ?></a></p>
+						<p class="txt">Телефон: <a href="tel:<?= preg_replace('/\D/', '', seo_config('phone')) ?>" title="Позвонить"><?= htmlspecialchars(seo_config('phone_display')) ?></a></p>
+						<p class="txt">Email: <a href="mailto:<?= htmlspecialchars((string)seo_config('email_puny')) ?>" title="Написать на email"><?= htmlspecialchars(seo_config('email')) ?></a></p>
 						<p class="txt" style="font-size:12px;color:#71717A;margin-top:16px">Данные подтверждены выпиской из ЕГРЮЛ / rusprofile.ru (регистрация с <?= $founded ?> года, выручка 2025 — 522 млн руб., участник госзакупок на 829 млн руб.).</p>
 					</div>
 				</div>

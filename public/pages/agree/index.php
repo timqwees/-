@@ -16,8 +16,8 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
 	<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap"></noscript>
 	<style> body { font-family: 'Wix Madefor Display', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
 
-	<title>Согласие на обработку персональных данных — ФАВОРИТ-СТРОЙ-СНАБ</title>
-	<meta name="description" content="Согласие на обработку персональных данных ФАВОРИТ-СТРОЙ-СНАБ: порядок сбора, хранения и защиты данных клиентов при заказе строительства БВЗ, капремонта, спецтехники. Права субъектов, сроки, контакты.">
+	<title>Согласие на обработку данных — ФАВОРИТ-СТРОЙ-СНАБ</title>
+	<meta name="description" content="Согласие на обработку персональных данных ФАВОРИТ-СТРОЙ-СНАБ: порядок сбора, хранения и защиты данных клиентов сайта. Права субъектов данных.">
 	<meta name="robots" content="noindex, follow">
 	<meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
 	<?= seo_verify_tags() ?>
@@ -47,7 +47,7 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
 
 <body class="font-sans text-gray-800 bg-gray-50">
 	<?php include_once __DIR__ . '/../../components/header.php'; ?>
-	<nav class="w-full px-6 md:px-10 py-3 bg-[#f0fdf4]/30 border-b border-emerald-100 text-xs text-gray-500 flex items-center gap-1.5"><a href="/" class="hover:text-emerald-700">Главная</a><span class="opacity-40">/</span><span class="text-gray-900 font-medium">Согласие на обработку данных</span></nav>
+	<nav class="w-full px-6 md:px-10 py-3 bg-[#f0fdf4]/30 border-b border-emerald-100 text-xs text-gray-500 flex items-center gap-1.5"><a href="/" title="Главная" class="hover:text-emerald-700">Главная</a><span class="opacity-40">/</span><span class="text-gray-900 font-medium">Согласие на обработку данных</span></nav>
 
 	<section class="py-16 px-4 lg:px-20">
 		<div class="container mx-auto bg-white rounded-lg shadow-lg p-8">
@@ -98,8 +98,8 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
 			</p>
 			<h2 class="text-xl font-semibold mt-6 mb-2 text-gray-800">7. Контактная информация</h2>
 			<p class="mb-4 text-gray-700">
-				По вопросам, связанным с обработкой персональных данных, вы можете обратиться по электронной почте: <a
-					href="mailto:<?= htmlspecialchars((string)seo_config('email')) ?>" class="text-green-600 underline"><?= htmlspecialchars((string)seo_config('email')) ?></a>
+				По вопросам, связанным с обработкой персональных данных, вы можете обратиться по электронной почте: 				<a
+					href="mailto:<?= htmlspecialchars((string)seo_config('email_puny')) ?>" title="Написать на email" class="text-green-600 underline"><?= htmlspecialchars((string)seo_config('email')) ?></a>
 			</p>
 			<p class="text-gray-600 text-sm mt-8">Последнее обновление: <?php echo date('d.m.Y'); ?></p>
 		</div>

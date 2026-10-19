@@ -27,7 +27,7 @@ $__base = rtrim(seo_config('base_url'), '/');
 					<summary><span class="faq-mark" aria-hidden="true"></span><span><?= htmlspecialchars($item['q']) ?></span></summary>
 					<div class="faq-content">
 						<p class="faq-a"><?= htmlspecialchars($item['a']) ?></p>
-						<a href="<?= $__base ?>/services/<?= htmlspecialchars($item['slug']) ?>" class="mt-3 inline-block text-xs font-semibold text-emerald-700 underline" style="margin-left:24px">Подробнее об услуге</a>
+						<a href="<?= $__base ?>/services/<?= htmlspecialchars($item['slug']) ?>" title="Подробнее об услуге" class="mt-3 inline-block text-xs font-semibold text-emerald-700 underline" style="margin-left:24px">Подробнее об услуге</a>
 					</div>
 				</details>
 			<?php endforeach; ?>

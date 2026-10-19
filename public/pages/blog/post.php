@@ -148,7 +148,7 @@ if (count($related) < 4) {
 					<?php if (!empty($post['author'])): ?>
 					<section class="author-bio" style="margin-top:48px;padding:28px;background:#FFF7EF;border:1px solid #F5E6D3;border-radius:24px">
 						<div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
-							<img src="<?= $h($post['author']['photo']) ?>" alt="<?= $h($post['author']['name']) ?>" class="article-author-avatar" loading="lazy" width="64" height="64" style="width:64px;height:64px;border-radius:50%;object-fit:cover">
+							<img src="<?= $h($post['author']['photo']) ?>" alt="<?= $h($post['author']['name']) ?>" title="<?= $h($post['author']['name']) ?> — <?= $h($post['author']['role']) ?>" class="article-author-avatar" loading="lazy" width="64" height="64" style="width:64px;height:64px;border-radius:50%;object-fit:cover">
 							<div>
 								<div style="font-size:18px;font-weight:800;color:#171310"><?= $h($post['author']['name']) ?></div>
 								<div style="font-size:14px;color:#EA580C;font-weight:600"><?= $h($post['author']['role']) ?></div>
@@ -172,7 +172,7 @@ if (count($related) < 4) {
 						</ol>
 						<div class="article-expert__btns">
 							<a href="/#contact" title="Рассчитать смету" class="article-expert__btn article-expert__btn--order">Рассчитать смету →</a>
-							<a href="tel:+<?= $phone_tel ?>" class="article-expert__btn article-expert__btn--phone">Позвонить: <?= $h($phone) ?></a>
+							<a href="tel:+<?= $phone_tel ?>" title="Позвонить" class="article-expert__btn article-expert__btn--phone">Позвонить: <?= $h($phone) ?></a>
 						</div>
 						<p class="article-expert__note">Работаем по всей России · Гарантия 50+ лет · СРО</p>
 					</aside>
@@ -219,7 +219,7 @@ if (count($related) < 4) {
 						<div class="article-sidebar-body">
 							<h4>Бесплатная консультация</h4>
 							<p>Рассчитаем смету, подберём материалы и определим сроки для вашего проекта.</p>
-							<a href="tel:+<?= $phone_tel ?>" class="article-sidebar-card--cta-btn article-sidebar-card--cta-btn--phone">Позвонить: <?= $h($phone) ?></a>
+							<a href="tel:+<?= $phone_tel ?>" title="Позвонить" class="article-sidebar-card--cta-btn article-sidebar-card--cta-btn--phone">Позвонить: <?= $h($phone) ?></a>
 							<a href="/#contact" title="Получить расчёт" class="article-sidebar-card--cta-btn article-sidebar-card--cta-btn--primary">Получить расчёт</a>
 						</div>
 					</div>
