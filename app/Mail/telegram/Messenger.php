@@ -8,9 +8,6 @@ use App\Mail\Security;
 
 class Messenger
 {
-	/**
-	 * Форматируем и отправляем сообщение в Telegram
-	 */
 	public function sendToTelegram(array $arr): bool
 	{
 		$token = TELEGRAM_BOT_TOKEN;
@@ -32,53 +29,57 @@ class Messenger
 		}
 		$message .= "⏰ Время: " . date('d.m.Y H:i:s');
 
-		$successCount = 0;
-		$failCount = 0;
-		$errors = [];
+		// Parallel requests via curl_multi
+		$mh = curl_multi_init();
+		$handles = [];
 
 		foreach ($chat_ids as $chat_id) {
 			$ch = curl_init("https://api.telegram.org/bot{$token}/sendMessage");
-
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_POST, true);
-			curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 5);        // reduced from 10
+			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3); // reduced from 5
 			curl_setopt($ch, CURLOPT_POSTFIELDS, [
 				'chat_id' => $chat_id,
 				'parse_mode' => 'html',
 				'text' => $message
 			]);
+			curl_multi_add_handle($mh, $ch);
+			$handles[$chat_id] = $ch;
+		}
 
-			$response = curl_exec($ch);
+		// Execute all in parallel
+		$running = null;
+		do {
+			curl_multi_exec($mh, $running);
+			if ($running) {
+				curl_multi_select($mh, 0.1); // wait for activity
+			}
+		} while ($running > 0);
+
+		$successCount = 0;
+		foreach ($handles as $chat_id => $ch) {
+			$response = curl_multi_getcontent($ch);
 			$ok = false;
-			$err = null;
-
-			if (curl_errno($ch)) {
-				$err = 'cURL: ' . curl_error($ch);
-			} else {
+			if (!curl_errno($ch)) {
 				$response_data = json_decode($response, true);
 				if (isset($response_data['ok']) && $response_data['ok'] === true) {
 					$ok = true;
-				} else {
-					$err = $response;
-					if (strpos($response, 'blocked') !== false || strpos($response, 'Forbidden') !== false) {
-						$err = "chat $chat_id blocked bot";
-					}
 				}
 			}
-
 			if ($ok) {
 				$successCount++;
 			} else {
-				$failCount++;
-				$errors[] = "chat $chat_id: $err";
+				$err = curl_errno($ch) ? 'cURL: ' . curl_error($ch) : $response;
+				if (strpos($response, 'blocked') !== false || strpos($response, 'Forbidden') !== false) {
+					$err = "chat $chat_id blocked bot";
+				}
 				@file_put_contents(ANTIBOT_STORAGE_DIR . '/telegram_errors.log', date('Y-m-d H:i:s') . " | chat $chat_id | $err | " . json_encode($arr, JSON_UNESCAPED_UNICODE) . PHP_EOL, FILE_APPEND | LOCK_EX);
 			}
+			curl_multi_remove_handle($mh, $ch);
 		}
+		curl_multi_close($mh);
 
-		if ($failCount > 0) {
-			error_log("Telegram: success $successCount fail $failCount " . implode('; ', $errors));
-		}
 		return $successCount > 0;
 	}
 }

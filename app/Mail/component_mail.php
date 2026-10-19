@@ -152,16 +152,28 @@ class FormMailer
 
 function deliverLead(FormMailer $formMailer, Messenger $messenger, array $array): void
 {
-    $mailOk = $formMailer->send($array);
-    $tgOk = $messenger->sendToTelegram($array);
     $type = $array['type'] ?? 'form';
 
-    if ($mailOk || $tgOk) {
-        setFormSuccessCookie($type);
-        Security::pushScript('if(window.dataLayer) dataLayer.push({event:"form_success", form_type:"' . addslashes($type) . '"});');
-        Security::showAlert('success', 'Вы успешно оставили заявку! Мы свяжемся с вами в ближайшее время.');
-    } else {
-        Security::showAlert('error', 'Не удалось отправить заявку. Пожалуйста, позвоните нам +7 938 018-00-06 или попробуйте позже.');
+    // Отдаём пользователю ответ СРАЗУ (async)
+    setFormSuccessCookie($type);
+    Security::pushScript('if(window.dataLayer) dataLayer.push({event:"form_success", form_type:"' . addslashes($type) . '"});');
+    Security::showAlert('success', 'Вы успешно оставили заявку! Мы свяжемся с вами в ближайшее время.');
+
+    // Если PHP-FPM — закрываем соединение, продолжаем в фоне
+    if (function_exists('fastcgi_finish_request')) {
+        fastcgi_finish_request();
+    } elseif (!headers_sent()) {
+        // Fallback: flush buffers
+        while (ob_get_level()) ob_end_flush();
+        flush();
+    }
+
+    // Фоновая отправка (после ответа пользователю)
+    $mailOk = $formMailer->send($array);
+    $tgOk = $messenger->sendToTelegram($array);
+
+    if (!$mailOk && !$tgOk) {
+        error_log("Both mail and telegram failed for form type: $type");
     }
 }
 
