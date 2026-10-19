@@ -46,7 +46,7 @@ class FormMailer
 
     public function __construct()
     {
-        $this->to       = MAIL_TO;
+        $this->to       = defined('MAIL_TO_PUNY') ? MAIL_TO_PUNY : MAIL_TO;
         $this->from     = MAIL_FROM;
         $this->pass     = MAIL_PASS;
         $this->fromName = MAIL_FROM_NAME;
