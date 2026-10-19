@@ -138,7 +138,7 @@ $description = 'Экспертные статьи о строительстве 
 				</header>
 				<article class="blog-featured-card" itemscope itemtype="https://schema.org/BlogPosting">
 					<meta itemprop="inLanguage" content="ru-RU">
-					<a href="/blog/<?= htmlspecialchars($featuredSlug, ENT_QUOTES) ?>" class="blog-featured-link" itemprop="url">
+					<a href="/blog/<?= htmlspecialchars($featuredSlug, ENT_QUOTES) ?>" title="<?= htmlspecialchars($f['title'], ENT_QUOTES) ?>" class="blog-featured-link" itemprop="url">
 						<div class="blog-featured-media">
 							<div class="blog-featured-img" style="background-image:url('<?= htmlspecialchars($cardImg($f['og_image']), ENT_QUOTES) ?>')" itemprop="image"></div>
 							<div class="blog-featured-overlay"></div>
@@ -176,7 +176,7 @@ $description = 'Экспертные статьи о строительстве 
 				<header class="section-header">
 					<h2 id="articles-title" class="section-title"><?= $isFiltered ? 'Статьи категории «' . htmlspecialchars($filterCat, ENT_QUOTES) . '»' : 'Все статьи блога' ?></h2>
 					<?php if ($isFiltered): ?>
-					<p class="section-desc">Найдено <strong><?= $total ?></strong> материалов. <a href="/blog#blog-list" class="reset-filter">Сбросить фильтр</a></p>
+					<p class="section-desc">Найдено <strong><?= $total ?></strong> материалов. <a href="/blog#blog-list" title="Сбросить фильтр" class="reset-filter">Сбросить фильтр</a></p>
 					<?php endif; ?>
 				</header>
 
@@ -184,12 +184,12 @@ $description = 'Экспертные статьи о строительстве 
 					<div class="blog-main">
 						<!-- Filters -->
 						<div class="blog-filters-bar" role="group" aria-label="Фильтр статей по категориям">
-							<a href="/blog#blog-list" class="blog-filter <?= $isFiltered ? '' : 'active' ?>" data-filter="all">
+							<a href="/blog#blog-list" title="Все статьи" class="blog-filter <?= $isFiltered ? '' : 'active' ?>" data-filter="all">
 								<span>Все статьи</span>
 								<span class="blog-filter__count"><?= $totalCount ?></span>
 							</a>
 							<?php foreach ($catCounts as $cat => $cnt): ?>
-							<a href="/blog?category=<?= urlencode($cat) ?>#blog-list" class="blog-filter <?= ($isFiltered && $filterCat === $cat) ? 'active' : '' ?>" data-filter="<?= htmlspecialchars($cat, ENT_QUOTES) ?>">
+							<a href="/blog?category=<?= urlencode($cat) ?>#blog-list" title="<?= htmlspecialchars($cat, ENT_QUOTES) ?>" class="blog-filter <?= ($isFiltered && $filterCat === $cat) ? 'active' : '' ?>" data-filter="<?= htmlspecialchars($cat, ENT_QUOTES) ?>">
 								<span><?= htmlspecialchars($cat, ENT_QUOTES) ?></span>
 								<span class="blog-filter__count"><?= (int)$cnt ?></span>
 							</a>
@@ -203,12 +203,12 @@ $description = 'Экспертные статьи о строительстве 
 								<svg class="blog-empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
 								<h3 class="blog-empty-title">Статьи не найдены</h3>
 								<p class="blog-empty-desc">В этой категории пока нет материалов. Попробуйте другую категорию или вернитесь позже.</p>
-								<a href="/blog#blog-list" class="blog-empty-btn">Все статьи</a>
+								<a href="/blog#blog-list" title="Все статьи" class="blog-empty-btn">Все статьи</a>
 							</div>
 							<?php else: foreach ($pageItems as $slug => $a): ?>
 							<article class="blog-card" itemscope itemtype="https://schema.org/BlogPosting" role="listitem">
 								<meta itemprop="inLanguage" content="ru-RU">
-								<a href="/blog/<?= htmlspecialchars($slug, ENT_QUOTES) ?>" class="blog-card-link" itemprop="url">
+								<a href="/blog/<?= htmlspecialchars($slug, ENT_QUOTES) ?>" title="<?= htmlspecialchars($a['title'], ENT_QUOTES) ?>" class="blog-card-link" itemprop="url">
 									<div class="blog-card-media">
 										<div class="blog-card-img" style="background-image:url('<?= htmlspecialchars($cardImg($a['og_image']), ENT_QUOTES) ?>')" itemprop="image"></div>
 										<div class="blog-card-img-overlay"></div>
@@ -248,7 +248,7 @@ $description = 'Экспертные статьи о строительстве 
 								$qp = static fn(int $n): string => '?page=' . $n . $qbase . '#blog-list';
 							?>
 							<?php if ($page > 1): ?>
-							<a href="<?= $qp($page - 1) ?>" class="blog-page-btn blog-page-btn--prev" aria-label="Предыдущая страница">
+							<a href="<?= $qp($page - 1) ?>" title="Предыдущая страница" class="blog-page-btn blog-page-btn--prev" aria-label="Предыдущая страница">
 								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg>
 								<span>Назад</span>
 							</a>
@@ -258,7 +258,7 @@ $description = 'Экспертные статьи о строительстве 
 								$showStart = max(1, $page - 1);
 								$showEnd = min($maxPages, $page + 1);
 								if ($showStart > 1) {
-									echo '<a href="' . $qp(1) . '" class="blog-page-btn">1</a>';
+									echo '<a href="' . $qp(1) . '" title="Страница 1" class="blog-page-btn">1</a>';
 									if ($showStart > 2) echo '<span class="blog-page-ellipsis" aria-hidden="true">…</span>';
 								}
 								for ($i = $showStart; $i <= $showEnd; $i++):
@@ -266,16 +266,16 @@ $description = 'Экспертные статьи о строительстве 
 									<?php if ($i === $page): ?>
 									<span class="blog-page-btn active" aria-current="page"><?= $i ?></span>
 									<?php else: ?>
-									<a href="<?= $qp($i) ?>" class="blog-page-btn"><?= $i ?></a>
+									<a href="<?= $qp($i) ?>" title="Страница <?= $i ?>" class="blog-page-btn"><?= $i ?></a>
 									<?php endif; ?>
 								<?php endfor; ?>
 								<?php if ($showEnd < $maxPages) {
 									if ($showEnd < $maxPages - 1) echo '<span class="blog-page-ellipsis" aria-hidden="true">…</span>';
-									echo '<a href="' . $qp($maxPages) . '" class="blog-page-btn">' . $maxPages . '</a>';
+									echo '<a href="' . $qp($maxPages) . '" title="Страница ' . $maxPages . '" class="blog-page-btn">' . $maxPages . '</a>';
 								} ?>
 							</div>
 							<?php if ($page < $maxPages): ?>
-							<a href="<?= $qp($page + 1) ?>" class="blog-page-btn blog-page-btn--next" aria-label="Следующая страница">
+							<a href="<?= $qp($page + 1) ?>" title="Следующая страница" class="blog-page-btn blog-page-btn--next" aria-label="Следующая страница">
 								<span>Вперёд</span>
 								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg>
 							</a>
@@ -309,7 +309,7 @@ $description = 'Экспертные статьи о строительстве 
 							</div>
 							<div class="blog-sidebar-body">
 								<?php foreach ($popular as $slug => $item): ?>
-								<a class="blog-popular-item" href="/blog/<?= htmlspecialchars($slug, ENT_QUOTES) ?>">
+								<a class="blog-popular-item" title="<?= htmlspecialchars($p['title'], ENT_QUOTES) ?>" href="/blog/<?= htmlspecialchars($slug, ENT_QUOTES) ?>">
 									<div class="blog-popular-img" style="background-image:url('<?= htmlspecialchars($cardImg($item['og_image']), ENT_QUOTES) ?>')"></div>
 									<div class="blog-popular-body">
 										<h4 class="blog-popular-title"><?= htmlspecialchars($item['title'], ENT_QUOTES) ?></h4>
@@ -328,7 +328,7 @@ $description = 'Экспертные статьи о строительстве 
 							</div>
 							<div class="blog-sidebar-body">
 								<?php foreach ($sidebarServices as $sslug => [$stitle, $sdesc]): ?>
-								<a class="blog-service-item" href="/services/<?= htmlspecialchars($sslug, ENT_QUOTES) ?>">
+								<a class="blog-service-item" title="<?= htmlspecialchars($service['title'] ?? '', ENT_QUOTES) ?>" href="/services/<?= htmlspecialchars($sslug, ENT_QUOTES) ?>">
 									<div class="blog-service-icon">
 										<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20 7l-8 9-4-4"/></svg>
 									</div>
@@ -338,7 +338,7 @@ $description = 'Экспертные статьи о строительстве 
 									</div>
 								</a>
 								<?php endforeach; ?>
-								<a href="/uslugi" class="blog-service-all">Все услуги <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+								<a href="/uslugi" title="Все услуги" class="blog-service-all">Все услуги <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
 							</div>
 						</div>
 
@@ -355,7 +355,7 @@ $description = 'Экспертные статьи о строительстве 
 									<input type="email" id="nl-email" name="email" placeholder="Ваш email" required autocomplete="email">
 									<button type="submit" class="blog-newsletter-btn">Подписаться</button>
 								</form>
-								<p class="blog-newsletter-note">Нажимая кнопку, вы соглашаетесь с <a href="/politika">политикой конфиденциальности</a></p>
+								<p class="blog-newsletter-note">Нажимая кнопку, вы соглашаетесь с <a href="/politika" title="Политика конфиденциальности">политикой конфиденциальности</a></p>
 							</div>
 						</div>
 					</aside>
@@ -373,7 +373,7 @@ $description = 'Экспертные статьи о строительстве 
 						<p class="blog-cta-desc">Получите бесплатную консультацию эксперта и расчёт сметы за 15 минут. Работаем по всей России.</p>
 					</div>
 					<div class="blog-cta-actions">
-						<a href="/#contact" class="blog-cta-btn blog-cta-btn--primary">Рассчитать смету <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+						<a href="/#contact" title="Рассчитать смету" class="blog-cta-btn blog-cta-btn--primary">Рассчитать смету <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
 						<a href="tel:+<?= preg_replace('/\D/', '', (string)seo_config('phone')) ?>" class="blog-cta-btn blog-cta-btn--phone"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> <?= htmlspecialchars((string)seo_config('phone_display')) ?></a>
 					</div>
 				</div>

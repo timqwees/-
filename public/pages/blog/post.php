@@ -87,12 +87,12 @@ if (count($related) < 4) {
 
 					<section class="article-hero">
 						<nav class="article-breadcrumbs">
-								<a href="/">Главная</a>
-								<span class="article-bc-sep">→</span>
-								<a href="/blog">Блог</a>
-								<span class="article-bc-sep">→</span>
-								<span><?= $h($post['category_name']) ?></span>
-							</nav>
+							<a href="/" title="Главная">Главная</a>
+							<span class="article-bc-sep">→</span>
+							<a href="/blog" title="Блог">Блог</a>
+							<span class="article-bc-sep">→</span>
+							<span><?= $h($post['category_name']) ?></span>
+						</nav>
 							<div class="article-meta-top">
 								<div class="article-meta-left">
 									<?php if (!empty($post['author'])): ?>
@@ -171,7 +171,7 @@ if (count($related) < 4) {
 							<li><strong>Реализуйте проект</strong> — мы поможем с доставкой и монтажом под ключ.</li>
 						</ol>
 						<div class="article-expert__btns">
-							<a href="/#contact" class="article-expert__btn article-expert__btn--order">Рассчитать смету →</a>
+							<a href="/#contact" title="Рассчитать смету" class="article-expert__btn article-expert__btn--order">Рассчитать смету →</a>
 							<a href="tel:+<?= $phone_tel ?>" class="article-expert__btn article-expert__btn--phone">Позвонить: <?= $h($phone) ?></a>
 						</div>
 						<p class="article-expert__note">Работаем по всей России · Гарантия 50+ лет · СРО</p>
@@ -188,9 +188,9 @@ if (count($related) < 4) {
 						<h3 class="article-cta-title">Нужна помощь с проектом?</h3>
 						<p class="article-cta-desc">Оставьте заявку — рассчитаем стоимость, сроки и подберём оптимальное решение для вашего объекта.</p>
 						<div class="article-cta-btns">
-							<a href="/#contact" class="article-cta-btn">Получить расчёт</a>
-							<a href="tel:+<?= $phone_tel ?>" class="article-cta-btn article-cta-btn--phone">Позвонить</a>
-							<a href="/#contact" class="article-cta-btn article-cta-btn--outline">Написать нам</a>
+						<a href="/#contact" title="Получить расчёт" class="article-cta-btn">Получить расчёт</a>
+						<a href="tel:+<?= $phone_tel ?>" title="Позвонить: <?= $h($phone) ?>" class="article-cta-btn article-cta-btn--phone">Позвонить</a>
+						<a href="/#contact" title="Написать нам" class="article-cta-btn article-cta-btn--outline">Написать нам</a>
 						</div>
 					</div>
 
@@ -203,7 +203,7 @@ if (count($related) < 4) {
 						<div class="article-sidebar-header">Читайте также</div>
 						<div class="article-sidebar-body">
 							<?php foreach ($related as [$rSlug, $rPost]): ?>
-							<a class="article-popular-item" href="/blog/<?= $rSlug ?>">
+							<a class="article-popular-item" title="<?= htmlspecialchars($rPost['title'], ENT_QUOTES) ?>" href="/blog/<?= $rSlug ?>">
 								<div class="article-popular-img" style="background-image:url('<?= $rPost['og_image'] ?>')"></div>
 								<div class="article-popular-body">
 									<span class="article-popular-title"><?= $h($rPost['title']) ?></span>
@@ -220,7 +220,7 @@ if (count($related) < 4) {
 							<h4>Бесплатная консультация</h4>
 							<p>Рассчитаем смету, подберём материалы и определим сроки для вашего проекта.</p>
 							<a href="tel:+<?= $phone_tel ?>" class="article-sidebar-card--cta-btn article-sidebar-card--cta-btn--phone">Позвонить: <?= $h($phone) ?></a>
-							<a href="/#contact" class="article-sidebar-card--cta-btn article-sidebar-card--cta-btn--primary">Получить расчёт</a>
+							<a href="/#contact" title="Получить расчёт" class="article-sidebar-card--cta-btn article-sidebar-card--cta-btn--primary">Получить расчёт</a>
 						</div>
 					</div>
 				</aside>

@@ -3,16 +3,39 @@
  * SEO/GEO-конфигурация — единый источник правды (NAP, цифры, счётчики).
  * Меняешь здесь — обновляется везде: канониклы, schema, sitemap, rss, llms.txt.
  * Значения берутся из .env (через $_ENV, загруженное vlucas/phpdotenv в bootstrap.php)
- * с фоллбэками на плейсхолдеры.
+ * с фоллбэками на плейсхолдерами.
  */
 
 $env = fn(string $key, string $default = '') => $_ENV[$key] ?? getenv($key) ?: $default;
 
+// Автоопределение текущего хоста
+$httpHost = $_SERVER['HTTP_HOST'] ?? 'www.xn--h1aafj.xn--p1ai';
+$httpHost = strtolower(trim($httpHost));
+$httpHost = preg_replace('/^www\./', '', $httpHost);
+
+// Определяем схему (HTTP/HTTPS)
+$scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || 
+          (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')
+    ? 'https' : 'http';
+
+// base_host в punycode (для каноникалов и schema)
+$baseHost = $httpHost;
+// Если хост в IDN (кириллица), конвертируем в punycode
+if (preg_match('/[^\x00-\x7F]/', $baseHost)) {
+    $baseHost = idn_to_ascii($baseHost, IDNA_NONTRANSITIONAL_TO_ASCII, INTL_IDNA_VARIANT_UTS46);
+}
+
+// base_url — всегда с www в punycode
+$baseUrl = $scheme . '://www.' . $baseHost;
+
+// base_idn — IDN версия для отображения
+$baseIdn = $scheme . '://www.' . (preg_match('/^xn--/', $httpHost) ? idn_to_utf8($httpHost, IDNA_NONTRANSITIONAL_TO_ASCII, INTL_IDNA_VARIANT_UTS46) : $httpHost);
+
 return [
-	// Домен-канон (punycode — одинаково понимается всеми парсерами)
-	'base_url' => 'https://www.xn--h1aafj.xn--p1ai',
-	'base_idn' => 'https://www.фсс.рус',
-	'base_host' => 'www.xn--h1aafj.xn--p1ai',
+	// Домен-канон (автоопределяется от текущего хоста)
+	'base_url' => $baseUrl,
+	'base_idn' => $baseIdn,
+	'base_host' => 'www.' . $baseHost,
 
 	'brand' => 'ФАВОРИТ-СТРОЙ-СНАБ',
 	'brand_short' => 'ФСС',
@@ -25,7 +48,7 @@ return [
 	'phone_8800' => '8 800 000 00 00',
 	'phone_8800_tel' => '88000000000',
 	'phone_8800_display' => '8 800 000 00 00',
-	'email' => 'fss@фсс.рус',
+	'email' => 'fss@' . (preg_match('/^xn--/', $baseHost) ? idn_to_utf8($baseHost, IDNA_NONTRANSITIONAL_TO_ASCII, INTL_IDNA_VARIANT_UTS46) : $baseHost),
 	'telegram' => 'https://t.me/fss_rus',
 	'vk' => 'https://vk.com/fss_rus',
 

@@ -52,7 +52,7 @@ if ($q !== '') {
 
 	<section class="page-hero">
 		<div class="page-hero-inner">
-			<nav class="page-crumb"><a href="/">Главная</a><span class="sep">/</span><a href="/uslugi">Услуги</a><span class="sep">/</span><span>Поиск</span></nav>
+			<nav class="page-crumb"><a href="/" title="Главная">Главная</a><span class="sep">/</span><a href="/uslugi" title="Услуги">Услуги</a><span class="sep">/</span><span>Поиск</span></nav>
 			<span class="page-eyebrow"><i class="fa-solid fa-magnifying-glass"></i> Поиск по сайту</span>
 			<h1 class="pg-h1">Найдите нужную услугу</h1>
 			<form action="/search" method="get" role="search" class="search-form">
@@ -60,7 +60,7 @@ if ($q !== '') {
 				<button type="submit" class="btn-sun"><i class="fa-solid fa-magnifying-glass"></i> Найти</button>
 			</form>
 			<p class="page-lead">Популярно:
-				<a href="/search?q=ангар">ангар</a>, <a href="/search?q=склад">склад</a>, <a href="/search?q=АБК">АБК</a>, <a href="/search?q=общежитие">общежитие</a>, <a href="/search?q=спецтехника">спецтехника</a>
+				<a href="/search?q=ангар" title="Поиск: ангар">ангар</a>, <a href="/search?q=склад" title="Поиск: склад">склад</a>, <a href="/search?q=АБК" title="Поиск: АБК">АБК</a>, <a href="/search?q=общежитие" title="Поиск: общежитие">общежитие</a>, <a href="/search?q=спецтехника" title="Поиск: спецтехника">спецтехника</a>
 			</p>
 		</div>
 	</section>
@@ -84,9 +84,9 @@ if ($q !== '') {
 		<?php endif; ?>
 
 		<div class="mt-8 flex gap-3">
-			<a href="/uslugi" class="btn-outline"><i class="fa-solid fa-list"></i> Все услуги</a>
-			<a href="/portfolio" class="btn-outline"><i class="fa-solid fa-images"></i> Портфолио</a>
-			<a href="/search/blog" class="btn-outline"><i class="fa-solid fa-magnifying-glass"></i> Поиск по блогу</a>
+			<a href="/uslugi" title="Все услуги" class="btn-outline"><i class="fa-solid fa-list"></i> Все услуги</a>
+			<a href="/portfolio" title="Портфолио" class="btn-outline"><i class="fa-solid fa-images"></i> Портфолио</a>
+			<a href="/search/blog" title="Поиск по блогу" class="btn-outline"><i class="fa-solid fa-magnifying-glass"></i> Поиск по блогу</a>
 		</div>
 	</main>
 

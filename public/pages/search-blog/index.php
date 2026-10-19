@@ -107,23 +107,23 @@ $activeFilters = ($q !== '' || $tag !== '' || $cat !== '');
 						<?php if ($q): ?>
 						<span class="blog-filter-tag">
 							Запрос: <strong><?= htmlspecialchars($q, ENT_QUOTES) ?></strong>
-							<a href="/search/blog?cat=<?= urlencode($cat) ?>&tag=<?= urlencode($tag) ?>" class="blog-filter-tag-remove" aria-label="Убрать фильтр запроса">×</a>
+							<a href="/search/blog?cat=<?= urlencode($cat) ?>&tag=<?= urlencode($tag) ?>" title="Убрать фильтр запроса" class="blog-filter-tag-remove" aria-label="Убрать фильтр запроса">×</a>
 						</span>
 						<?php endif; ?>
 						<?php if ($cat): ?>
 						<span class="blog-filter-tag">
 							Категория: <strong><?= htmlspecialchars($cat, ENT_QUOTES) ?></strong>
-							<a href="/search/blog?q=<?= urlencode($q) ?>&tag=<?= urlencode($tag) ?>" class="blog-filter-tag-remove" aria-label="Убрать фильтр категории">×</a>
+							<a href="/search/blog?q=<?= urlencode($q) ?>&tag=<?= urlencode($tag) ?>" title="Убрать фильтр категории" class="blog-filter-tag-remove" aria-label="Убрать фильтр категории">×</a>
 						</span>
 						<?php endif; ?>
 						<?php if ($tag): ?>
 						<span class="blog-filter-tag">
 							Тег: <strong>#<?= htmlspecialchars($tag, ENT_QUOTES) ?></strong>
-							<a href="/search/blog?q=<?= urlencode($q) ?>&cat=<?= urlencode($cat) ?>" class="blog-filter-tag-remove" aria-label="Убрать фильтр тега">×</a>
+							<a href="/search/blog?q=<?= urlencode($q) ?>&cat=<?= urlencode($cat) ?>" title="Убрать фильтр тега" class="blog-filter-tag-remove" aria-label="Убрать фильтр тега">×</a>
 						</span>
 						<?php endif; ?>
 						<?php if ($activeFilters): ?>
-						<a href="/search/blog" class="blog-filters-clear">Сбросить все</a>
+						<a href="/search/blog" title="Сбросить все фильтры" class="blog-filters-clear">Сбросить все</a>
 						<?php endif; ?>
 					</div>
 					<?php endif; ?>
@@ -159,7 +159,7 @@ $activeFilters = ($q !== '' || $tag !== '' || $cat !== '');
 					?>
 					<article class="blog-card" itemscope itemtype="https://schema.org/BlogPosting" role="listitem">
 						<meta itemprop="inLanguage" content="ru-RU">
-						<a href="/blog/<?= $p['slug'] ?>" class="blog-card-link" itemprop="url">
+						<a href="/blog/<?= $p['slug'] ?>" title="<?= htmlspecialchars($p['title'], ENT_QUOTES) ?>" class="blog-card-link" itemprop="url">
 							<div class="blog-card-media">
 								<div class="blog-card-img" style="background-image:url('<?= $cardImg ?>')" itemprop="image"></div>
 								<div class="blog-card-img-overlay"></div>
@@ -207,7 +207,7 @@ $activeFilters = ($q !== '' || $tag !== '' || $cat !== '');
 						<p class="blog-cta-desc">Задайте вопрос экспертам ФСС — получите консультацию и расчёт сметы за 15 минут.</p>
 					</div>
 					<div class="blog-cta-actions">
-						<a href="/#contact" class="blog-cta-btn blog-cta-btn--primary">Получить консультацию <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+						<a href="/#contact" title="Получить консультацию" class="blog-cta-btn blog-cta-btn--primary">Получить консультацию <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
 						<a href="tel:+<?= preg_replace('/\D/', '', (string)seo_config('phone')) ?>" class="blog-cta-btn blog-cta-btn--phone"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg> <?= htmlspecialchars((string)seo_config('phone_display')) ?></a>
 					</div>
 				</div>
