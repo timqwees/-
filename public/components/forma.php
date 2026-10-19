@@ -1,8 +1,8 @@
 <div class="fixed bottom-6 right-6 z-50">
 	<button id="forma_toggle" type="button"
-		class="text-white w-[56px] h-[56px] rounded-[14px] shadow-[0_8px_24px_rgba(249,115,22,.40)] flex items-center justify-center transition-all duration-200 bg-gradient-to-br from-[#FB923C] via-[#EA580C] to-[#C2410C] hover:from-[#F97316] hover:to-[#A03A0E] hover:scale-105 hover:shadow-[0_12px_36px_rgba(249,115,22,.55)] active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#F97316] focus:ring-offset-2 relative overflow-hidden">
+		class="text-white w-[56px] h-[56px] rounded-full shadow-[0_8px_24px_rgba(249,115,22,.40)] flex items-center justify-center transition-all duration-200 bg-gradient-to-br from-[#FB923C] via-[#EA580C] to-[#C2410C] hover:from-[#F97316] hover:to-[#A03A0E] hover:scale-105 hover:shadow-[0_12px_36px_rgba(249,115,22,.55)] active:scale-95 focus:outline-none focus:ring-2 focus:ring-[#F97316] focus:ring-offset-2 relative overflow-hidden">
 		<i class="fa-solid fa-comment-dots text-xl relative z-10"></i>
-		<span class="ripple-effect absolute inset-0 rounded-[14px] pointer-events-none"></span>
+		<span class="ripple-effect absolute inset-0 rounded-full pointer-events-none"></span>
 	</button>
 	<!-- Forma Popup — modern -->
 	<div id="forma_wrapper" class="hidden absolute bottom-20 right-0 w-[340px] max-w-[92vw] bg-white rounded-[24px] shadow-[0_24px_64px_rgba(15,23,42,.22)] border border-gray-100 p-5">
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
 }
 #forma_wrapper > * { position: relative; z-index: 1; }
 /* Фон кнопки-лаунчера виджета: лёгкий блик + точечный паттерн поверх градиента */
-#forma_toggle { border-radius: 14px; background: linear-gradient(135deg, #F97316 0%, #ff8038 55%, #A03A0E 100%); }
+#forma_toggle { border-radius: 50%; background: linear-gradient(135deg, #F97316 0%, #ff8038 55%, #A03A0E 100%); }
 #forma_toggle:hover { background: linear-gradient(135deg, #EA580C 0%, #F97316 55%, #8A2E0A 100%); }
 #forma_toggle::before { content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0; border-radius: inherit;
 	background:
