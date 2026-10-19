@@ -10,23 +10,23 @@
   "categories": ["business", "construction"],
   "icons": [
     {
-      "src": "/public/assets/image/favicon/android-chrome-192x192.png",
+      "src": "/public/assets/image/logo/favicon/web-app-manifest-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/public/assets/image/favicon/android-chrome-512x512.png",
+      "src": "/public/assets/image/logo/favicon/web-app-manifest-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     },
     {
-      "src": "/public/assets/image/favicon/apple-touch-icon.png",
+      "src": "/public/assets/image/logo/favicon/apple-touch-icon.png",
       "sizes": "180x180",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/public/assets/image/favicon/favicon.ico",
+      "src": "/public/assets/image/logo/favicon/favicon.ico",
       "sizes": "32x32 16x16",
       "type": "image/x-icon",
       "purpose": "any"

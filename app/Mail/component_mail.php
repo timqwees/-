@@ -68,7 +68,7 @@ class FormMailer
 		$msg   = $array['message'] ?? '';
 		$form  = $array['форма'] ?? $type;
 
-		$logoUrl   = SITE_DOMAIN_PUNY . '/public/assets/image/logo/logo.svg';
+		$logoUrl   = SITE_DOMAIN_PUNY . '/public/assets/image/logo/favicon/favicon.svg';
 		$mainColor = '#22c5be';
 		$bgColor   = '#ffffff';
 		$border    = '#e5e7eb';

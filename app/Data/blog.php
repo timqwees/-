@@ -20,7 +20,7 @@ return [
 		'author' => [
 			'name' => 'Алексей Соколов',
 			'role' => 'Технический директор ФСС',
-			'photo' => '/public/assets/image/logo/logo.svg',
+			'photo' => '/public/assets/image/logo/favicon/favicon.svg',
 			'experience' => '14 лет в БВЗ',
 		],
 	],
@@ -39,7 +39,7 @@ return [
 		'author' => [
 			'name' => 'Дмитрий Воробьёв',
 			'role' => 'Ведущий сметчик ФСС',
-			'photo' => '/public/assets/image/logo/logo.svg',
+			'photo' => '/public/assets/image/logo/favicon/favicon.svg',
 			'experience' => '10 лет сметчика',
 		],
 	],
@@ -58,7 +58,7 @@ return [
 		'author' => [
 			'name' => 'Сергей Козлов',
 			'role' => 'Главный инженер ФСС',
-			'photo' => '/public/assets/image/logo/logo.svg',
+			'photo' => '/public/assets/image/logo/favicon/favicon.svg',
 			'experience' => '12 лет проектирования',
 		],
 	],
@@ -77,7 +77,7 @@ return [
 		'author' => [
 			'name' => 'Иван Петров',
 			'role' => 'Технолог производства БВЗ',
-			'photo' => '/public/assets/image/logo/logo.svg',
+			'photo' => '/public/assets/image/logo/favicon/favicon.svg',
 			'experience' => '8 лет технологи',
 		],
 	],
@@ -96,7 +96,7 @@ return [
 		'author' => [
 			'name' => 'Алексей Соколов',
 			'role' => 'Технический директор ФСС',
-			'photo' => '/public/assets/image/logo/logo.svg',
+			'photo' => '/public/assets/image/logo/favicon/favicon.svg',
 			'experience' => '14 лет в БВЗ',
 		],
 	],
@@ -115,7 +115,7 @@ return [
 		'author' => [
 			'name' => 'Дмитрий Воробьёв',
 			'role' => 'Ведущий сметчик ФСС',
-			'photo' => '/public/assets/image/logo/logo.svg',
+			'photo' => '/public/assets/image/logo/favicon/favicon.svg',
 			'experience' => '10 лет сметчика',
 		],
 	],
@@ -134,7 +134,7 @@ return [
 		'author' => [
 			'name' => 'Елена Морозова',
 			'role' => 'Юридический советник ФСС',
-			'photo' => '/public/assets/image/logo/logo.svg',
+			'photo' => '/public/assets/image/logo/favicon/favicon.svg',
 			'experience' => '9 лет строительного права',
 		],
 	],
@@ -153,7 +153,7 @@ return [
 		'author' => [
 			'name' => 'Иван Петров',
 			'role' => 'Технолог производства БВЗ',
-			'photo' => '/public/assets/image/logo/logo.svg',
+			'photo' => '/public/assets/image/logo/favicon/favicon.svg',
 			'experience' => '8 лет технологи',
 		],
 	],
@@ -172,7 +172,7 @@ return [
 		'author' => [
 			'name' => 'Елена Морозова',
 			'role' => 'Юридический советник ФСС',
-			'photo' => '/public/assets/image/logo/logo.svg',
+			'photo' => '/public/assets/image/logo/favicon/favicon.svg',
 			'experience' => '9 лет строительного права',
 		],
 	],
@@ -191,7 +191,7 @@ return [
 		'author' => [
 			'name' => 'Сергей Козлов',
 			'role' => 'Главный инженер ФСС',
-			'photo' => '/public/assets/image/logo/logo.svg',
+			'photo' => '/public/assets/image/logo/favicon/favicon.svg',
 			'experience' => '12 лет проектирования',
 		],
 	],
@@ -210,7 +210,7 @@ return [
 		'author' => [
 			'name' => 'Андрей Волков',
 			'role' => 'Руководитель логистики ФСС',
-			'photo' => '/public/assets/image/logo/logo.svg',
+			'photo' => '/public/assets/image/logo/favicon/favicon.svg',
 			'experience' => '11 лет логистики',
 		],
 	],
@@ -229,7 +229,7 @@ return [
 		'author' => [
 			'name' => 'Андрей Волков',
 			'role' => 'Руководитель логистики ФСС',
-			'photo' => '/public/assets/image/logo/logo.svg',
+			'photo' => '/public/assets/image/logo/favicon/favicon.svg',
 			'experience' => '11 лет логистики',
 		],
 	],
@@ -248,7 +248,7 @@ return [
 		'author' => [
 			'name' => 'Дмитрий Воробьёв',
 			'role' => 'Ведущий сметчик ФСС',
-			'photo' => '/public/assets/image/logo/logo.svg',
+			'photo' => '/public/assets/image/logo/favicon/favicon.svg',
 			'experience' => '10 лет сметчика',
 		],
 	],
@@ -267,7 +267,7 @@ return [
 		'author' => [
 			'name' => 'Сергей Козлов',
 			'role' => 'Главный инженер ФСС',
-			'photo' => '/public/assets/image/logo/logo.svg',
+			'photo' => '/public/assets/image/logo/favicon/favicon.svg',
 			'experience' => '12 лет проектирования',
 		],
 	],
@@ -286,7 +286,7 @@ return [
 		'author' => [
 			'name' => 'Иван Петров',
 			'role' => 'Технолог производства БВЗ',
-			'photo' => '/public/assets/image/logo/logo.svg',
+			'photo' => '/public/assets/image/logo/favicon/favicon.svg',
 			'experience' => '8 лет технологи',
 		],
 	],
@@ -305,7 +305,7 @@ return [
 		'author' => [
 			'name' => 'Иван Петров',
 			'role' => 'Технолог производства БВЗ',
-			'photo' => '/public/assets/image/logo/logo.svg',
+			'photo' => '/public/assets/image/logo/favicon/favicon.svg',
 			'experience' => '8 лет технологи',
 		],
 	],
@@ -324,7 +324,7 @@ return [
 		'author' => [
 			'name' => 'Сергей Козлов',
 			'role' => 'Главный инженер ФСС',
-			'photo' => '/public/assets/image/logo/logo.svg',
+			'photo' => '/public/assets/image/logo/favicon/favicon.svg',
 			'experience' => '12 лет проектирования',
 		],
 	],
@@ -343,7 +343,7 @@ return [
 		'author' => [
 			'name' => 'Дмитрий Воробьёв',
 			'role' => 'Ведущий сметчик ФСС',
-			'photo' => '/public/assets/image/logo/logo.svg',
+			'photo' => '/public/assets/image/logo/favicon/favicon.svg',
 			'experience' => '10 лет сметчика',
 		],
 	],
@@ -362,7 +362,7 @@ return [
 		'author' => [
 			'name' => 'Алексей Соколов',
 			'role' => 'Технический директор ФСС',
-			'photo' => '/public/assets/image/logo/logo.svg',
+			'photo' => '/public/assets/image/logo/favicon/favicon.svg',
 			'experience' => '14 лет в БВЗ',
 		],
 	],
@@ -381,7 +381,7 @@ return [
 		'author' => [
 			'name' => 'Елена Морозова',
 			'role' => 'Юридический советник ФСС',
-			'photo' => '/public/assets/image/logo/logo.svg',
+			'photo' => '/public/assets/image/logo/favicon/favicon.svg',
 			'experience' => '9 лет строительного права',
 		],
 	],

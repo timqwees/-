@@ -52,10 +52,10 @@ $activeFilters = ($q !== '' || $tag !== '' || $cat !== '');
 	<meta name="robots" content="noindex, follow">
 	<meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
 	<meta name="theme-color" content="#F97316">
-	<link rel="icon" type="image/svg+xml" href="/public/assets/image/logo/favicon.svg" />
-	<link rel="shortcut icon" href="/public/assets/image/logo/favicon.ico" />
-	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/apple-touch-icon.png" />
-	<link rel="manifest" href="/public/assets/image/logo/site.webmanifest" />
+	<link rel="icon" type="image/svg+xml" href="/public/assets/image/logo/favicon/favicon.svg" />
+	<link rel="shortcut icon" href="/public/assets/image/logo/favicon/favicon.ico" />
+	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/favicon/apple-touch-icon.png" />
+	<link rel="manifest" href="/public/assets/image/logo/favicon/site.webmanifest" />
 	<?= seo_canonical_tags() ?>
 	<?= seo_og_tags('Поиск статей — Блог | ' . seo_config('brand'), 'Поиск по блогу ФАВОРИТ-СТРОЙ-СНАБ: статьи о строительстве БВЗ, материалах, ценах и рекомендациях.') ?>
 	<?= seo_verify_tags() ?>
