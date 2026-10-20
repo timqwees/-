@@ -2,69 +2,108 @@
 
 namespace Setting\Route\Functions;
 
-use App\Models\Router\Routes;
 use App\Controllers\MailController;
-use App\Models\Network\Network;
-use App\Models\Network\Message;
 use Exception;
 
+/**
+ * Обработчик POST-форм сайта.
+ * Маршрут: POST /send/email → self::sendMail()
+ * Письмо: MailController::onMail() → Network::onPHPMailer()
+ */
 class FormHandler
 {
-    private static function redirect(string $path): void
+    /**
+     * Редирект на текущую страницу + запись результата в сессию
+     * (её читает app/bootstrap.php и показывает уведомление).
+     */
+    private static function redirect(bool $success, string $message, string $formType = 'modal'): void
     {
-        $url = "https://фсс.рус" . $path;
-        header("Location: $url", true, 303);
+        if (session_status() === PHP_SESSION_NONE) {
+            @session_start();
+        }
+        $_SESSION['fss_form_success'] = [
+            'type' => $formType,
+            'mail' => $success,
+            'message' => $message,
+            'time' => time(),
+        ];
+
+        // Возвращаемся на страницу, с которой отправлена форма
+        $path = '/';
+        $referer = (string)($_SERVER['HTTP_REFERER'] ?? '');
+        if ($referer !== '') {
+            $refPath = parse_url($referer, PHP_URL_PATH);
+            if (is_string($refPath) && $refPath !== '') {
+                $path = $refPath;
+            }
+        }
+
+        $host = (string)($_SERVER['HTTP_HOST'] ?? 'xn--q1aah.xn--p1acf');
+        $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+            || (($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https') ? 'https' : 'http';
+
+        header("Location: {$scheme}://{$host}{$path}", true, 303);
         exit;
     }
 
     public static function sendMail(): void
     {
+        $type = self::getFormType();
+        if (!$type) {
+            self::redirect(false, 'Неизвестный тип формы.');
+            return;
+        }
+
         // === АНТИ-БОТ: уровень 1 — rate limit по IP ===
         if (!self::antiBotRateLimit()) {
-            self::redirect("/?message_status=error&message_msg=" . urlencode('Слишком много заявок. Попробуйте позже или позвоните нам.'));
+            self::redirect(false, 'Слишком много заявок. Попробуйте позже или позвоните нам.', $type);
             return;
         }
 
         // === АНТИ-БОТ: уровень 2 — honeypot ===
-        if (!empty($_POST['website']) || !empty($_POST['url']) || !empty($_POST['link'])) {
-            error_log('Honeypot trap triggered: ' . ($_POST['website'] ?? $_POST['url'] ?? $_POST['link'] ?? ''));
-            self::redirect("/?message_status=success&message_msg=" . urlencode('Спасибо, мы свяжемся с вами!'));
-            return;
+        // Поле из public/components/antibot_fields.php — скрытое, человек его не видит
+        $honeypotFields = ['fax_number', 'website', 'url', 'link'];
+        foreach ($honeypotFields as $trap) {
+            if (!empty($_POST[$trap])) {
+                error_log('Honeypot trap triggered: ' . $trap);
+                self::redirect(true, 'Спасибо, мы свяжемся с вами!', $type);
+                return;
+            }
         }
 
         // === АНТИ-БОТ: уровень 3 — time-check (отправка быстрее 3 секунд) ===
-        $ts = (int) ($_POST['_ts'] ?? 0);
+        $ts = (int)($_POST['_ts'] ?? 0);
         if ($ts > 0) {
-            $elapsed = (int) ((microtime(true) * 1000 - $ts) / 1000);
+            $elapsed = (int)((microtime(true) * 1000 - $ts) / 1000);
             if ($elapsed < 3) {
                 error_log("Anti-bot: form submitted in {$elapsed}s — likely bot");
-                self::redirect("/?message_status=success&message_msg=" . urlencode('Спасибо, мы свяжемся с вами!'));
+                self::redirect(true, 'Спасибо, мы свяжемся с вами!', $type);
                 return;
             }
         }
 
         // === АНТИ-БОТ: уровень 4 — JS-токен ===
         if (!self::antiBotJsToken()) {
-            self::redirect("/?message_status=success&message_msg=" . urlencode('Спасибо, мы свяжемся с вами!'));
+            self::redirect(true, 'Спасибо, мы свяжемся с вами!', $type);
             return;
         }
 
         // === ВАЛИДАЦИЯ ===
-        $type = self::getFormType();
-        if (!$type) {
-            self::redirect("/?message_status=error&message_msg=" . urlencode('Неизвестный тип формы.'));
+        $name = trim(strip_tags($_POST['name'] ?? ''));
+        if (mb_strlen($name, 'UTF-8') < 2 || !preg_match('/^[\p{L}\s\-\.\']+$/u', $name)) {
+            self::redirect(false, 'Некорректное имя.', $type);
             return;
         }
 
-        $name = trim(strip_tags($_POST['name'] ?? ''));
-        if (mb_strlen($name, 'UTF-8') < 2 || !preg_match('/^[\p{L}\s\-\.\']+$/u', $name)) {
-            self::redirect("/?message_status=error&message_msg=" . urlencode('Некорректное имя.'));
+        $company = trim(strip_tags($_POST['company'] ?? ''));
+        if ($company !== '' && mb_strlen($company, 'UTF-8') > 120) {
+            self::redirect(false, 'Название компании слишком длинное.', $type);
             return;
         }
 
         $phone = self::normalizePhone($_POST['phone'] ?? '');
         if ($phone === '' || !self::antiBotPhoneCheck($phone)) {
-            self::redirect("/?message_status=error&message_msg=" . urlencode('Укажите корректный номер телефона.'));
+            self::redirect(false, 'Укажите корректный номер телефона.', $type);
             return;
         }
 
@@ -72,25 +111,33 @@ class FormHandler
         if ($type === 'modal') {
             $email = trim($_POST['email'] ?? '');
             if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                self::redirect("/?message_status=error&message_msg=" . urlencode('Некорректный email.'));
+                self::redirect(false, 'Некорректный email.', $type);
                 return;
             }
         }
 
-        $msg = trim(strip_tags($_POST['message'] ?? ''));
-        if (($type === 'modal' || $type === 'content_form') && mb_strlen($msg, 'UTF-8') < 10) {
-            self::redirect("/?message_status=error&message_msg=" . urlencode('Сообщение слишком короткое.'));
+        $location = trim(strip_tags($_POST['location'] ?? ''));
+        if (mb_strlen($location, 'UTF-8') > 120) {
+            self::redirect(false, 'Название локации слишком длинное.', $type);
             return;
         }
 
-        if (isset($_POST['checkbox']) && $_POST['checkbox'] !== 'on') {
-            self::redirect("/?message_status=error&message_msg=" . urlencode('Необходимо согласие на обработку персональных данных.'));
+        $msg = trim(strip_tags($_POST['message'] ?? ''));
+        if (($type === 'modal' || $type === 'content_form') && mb_strlen($msg, 'UTF-8') < 10) {
+            self::redirect(false, 'Сообщение слишком короткое.', $type);
+            return;
+        }
+
+        // Согласие на обработку данных — обязательно для полных форм.
+        // Быстрый виджет (mini-forma) оставляет только имя и телефон — согласие там не запрашивается.
+        if ($type !== 'mini-forma' && (string)($_POST['checkbox'] ?? '') !== 'on') {
+            self::redirect(false, 'Необходимо согласие на обработку персональных данных.', $type);
             return;
         }
 
         // === BUILD EMAIL ===
-        $subject = "Новая заявка с ФСС.РУС — форма: $type";
-        $body = self::buildEmailBody($name, $phone, $email, $msg, $type);
+        $subject = "Новая заявка с ФСС.РУС — форма: {$type}";
+        $body = self::buildEmailBody($name, $phone, $email, $msg, $type, $company, $location);
 
         // === SEND ===
         $success = false;
@@ -102,9 +149,11 @@ class FormHandler
             error_log('Mail Error: ' . $e->getMessage());
         }
 
-        $status = $success ? 'success' : 'error';
-        $msg = $success ? 'Вы успешно оставили заявку! Мы свяжемся с вами в ближайшее время.' : 'Не удалось отправить заявку. Пожалуйста, позвоните нам +7 938 018-00-06 или попробуйте позже.';
-        self::redirect("/?message_status={$status}&message_msg=" . urlencode($msg));
+        $message = $success
+            ? 'Вы успешно оставили заявку! Мы свяжемся с вами в ближайшее время.'
+            : 'Не удалось отправить заявку. Пожалуйста, позвоните нам +7 938 018-00-06 или попробуйте позже.';
+
+        self::redirect($success, $message, $type);
     }
 
     private static function getFormType(): ?string
@@ -129,8 +178,8 @@ class FormHandler
 
         $history = [];
         if (is_file($file)) {
-            $history = json_decode((string) file_get_contents($file), true) ?: [];
-            $history = array_values(array_filter($history, fn($t) => ($now - (int) $t) < $window));
+            $history = json_decode((string)file_get_contents($file), true) ?: [];
+            $history = array_values(array_filter($history, fn($t) => ($now - (int)$t) < $window));
         }
 
         if (count($history) >= $maxRequests) {
@@ -139,13 +188,13 @@ class FormHandler
         }
 
         $history[] = $now;
-        file_put_contents($file, json_encode($history));
+        @file_put_contents($file, json_encode($history));
         return true;
     }
 
     private static function antiBotJsToken(): bool
     {
-        $token = (string) ($_POST['_js_token'] ?? '');
+        $token = (string)($_POST['_js_token'] ?? '');
         if ($token === '') {
             error_log('Anti-bot: missing _js_token — likely bot without JS');
             return false;
@@ -172,7 +221,7 @@ class FormHandler
         return true;
     }
 
-private static function normalizePhone(string $phone): string
+    private static function normalizePhone(string $phone): string
     {
         $digits = preg_replace('/[^0-9]/', '', $phone);
         if ($digits === '') {
@@ -180,28 +229,46 @@ private static function normalizePhone(string $phone): string
         }
         if (strlen($digits) === 10) {
             return '+7' . $digits;
-        } elseif (strlen($digits) === 11 && $digits[0] === '8') {
-            return '+7' . substr($digits, 1);
-        } else {
-            return '+' . ltrim($digits, '+');
         }
+        if (strlen($digits) === 11 && $digits[0] === '8') {
+            return '+7' . substr($digits, 1);
+        }
+        return '+' . $digits;
     }
 
-    private static function buildEmailBody(string $name, string $phone, string $email, string $msg, string $type): string
-    {
+    private static function buildEmailBody(
+        string $name,
+        string $phone,
+        string $email,
+        string $msg,
+        string $type,
+        string $company = '',
+        string $location = ''
+    ): string {
         $mainColor = '#22c5be';
         $bgColor = '#ffffff';
         $border = '#e5e7eb';
         $font = 'Segoe UI, Arial, sans-serif';
         $date = date('d.m.Y H:i');
-        $logo = 'https://фсс.рус/public/assets/image/logo/favicon/favicon.svg';
+        $logo = 'https://xn--q1aah.xn--p1acf/public/assets/image/logo/favicon/favicon.svg';
 
-        $rows = "<tr><td style='padding:8px 0;color:#374151;font-weight:500'>Имя:</td><td style='padding:8px 0;color:$mainColor;font-weight:600'>" . htmlspecialchars($name) . "</td></tr>";
-        $rows .= "<tr><td style='padding:8px 0;color:#374151;font-weight:500'>Телефон:</td><td style='padding:8px 0;color:$mainColor;font-weight:600'>" . htmlspecialchars($phone) . "</td></tr>";
-        if ($email) $rows .= "<tr><td style='padding:8px 0;color:#374151;font-weight:500'>Email:</td><td style='padding:8px 0;color:$mainColor;font-weight:600'>" . htmlspecialchars($email) . "</td></tr>";
-        if ($msg) $rows .= "<tr><td style='padding:8px 0;color:#374151;font-weight:500;vertical-align:top'>Сообщение:</td><td style='padding:8px 0;color:#374151;background:#f0fdf4;border-radius:6px'>" . nl2br(htmlspecialchars($msg)) . "</td></tr>";
-        $rows .= "<tr><td style='padding:8px 0;color:#374151;font-weight:500'>Форма:</td><td style='padding:8px 0;color:$mainColor;font-weight:600'>" . htmlspecialchars($type) . "</td></tr>";
-        $rows .= "<tr><td style='padding:8px 0;color:#374151;font-weight:500'>Дата:</td><td style='padding:8px 0;color:$mainColor;font-weight:600'>$date</td></tr>";
+        $row = function (string $label, string $value) use ($mainColor): string {
+            if ($value === '') return '';
+            return "<tr><td style='padding:8px 0;color:#374151;font-weight:500'>" . htmlspecialchars($label) . ":</td>"
+                . "<td style='padding:8px 0;color:" . $mainColor . ";font-weight:600'>" . htmlspecialchars($value) . "</td></tr>";
+        };
+
+        $rows = $row('Имя', $name);
+        $rows .= $row('Компания', $company);
+        $rows .= $row('Телефон', $phone);
+        $rows .= $row('Email', $email);
+        $rows .= $row('Локация', $location);
+        if ($msg !== '') {
+            $rows .= "<tr><td style='padding:8px 0;color:#374151;font-weight:500;vertical-align:top'>Сообщение:</td>"
+                . "<td style='padding:8px 0;color:#374151;background:#f0fdf4;border-radius:6px'>" . nl2br(htmlspecialchars($msg)) . "</td></tr>";
+        }
+        $rows .= $row('Форма', $type);
+        $rows .= $row('Дата', $date);
 
         return "
             <div style='max-width:520px;margin:0 auto;background:$bgColor;border-radius:12px;box-shadow:0 4px 24px rgba(34,197,94,0.08);border:1px solid $border;font-family:$font;'>
@@ -212,7 +279,7 @@ private static function normalizePhone(string $phone): string
                 <div style='padding:28px 32px 18px 32px;'>
                     <table style='width:100%;border-collapse:collapse;font-size:1.08rem;'>$rows</table>
                 </div>
-                <div style='background: $bgColor; border-radius: 0 0 12px 12px; padding: 18px 32px 24px 32px; text-align: center; border-top: 1px solid $border; color: #6b7280; font-size: 0.95rem; font-family: $font;'>
+                <div style='background: $bgColor; border-radius: 0 0 12px 12px; padding: 18px 32px 24px 32px; text-align: center; border-top: 1px solid $border; color: #6b7280; font-size: 0.95rem; font-family:$font;'>
                     <small>Это автоматическое письмо, не отвечайте на него.</small>
                 </div>
             </div>";

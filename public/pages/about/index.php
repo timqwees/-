@@ -153,7 +153,7 @@ $d = 'ООО «ФАВОРИТ-СТРОЙ-СНАБ» (ИНН ' . $inn . ', ОГР
   .fss-bc-current { color: #17191d; font-weight: 600; }
 </style>
 </head>
-<body>
+<body data-page="inner">
 	<?php include_once __DIR__ . '/../../components/header.php'; ?>
 	<main>
 	<?= seo_breadcrumbs_html() ?>

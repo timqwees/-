@@ -54,6 +54,7 @@ if (!empty($_SESSION['fss_form_success'])) {
 
 	$__type = $__success['type'] ?? 'form';
 	$__mailOk = $__success['mail'] ?? false;
+	$__message = trim((string)($__success['message'] ?? ''));
 
 	if ($__mailOk) {
 		if (!headers_sent()) {
@@ -68,11 +69,11 @@ if (!empty($_SESSION['fss_form_success'])) {
 			]);
 		}
 		\App\Mail\Security::pushScript('if(window.dataLayer) dataLayer.push({event:"form_success", form_type:"' . addslashes($__type) . '"});');
-		\App\Mail\Security::showAlert('success', 'Вы успешно оставили заявку! Мы свяжемся с вами в ближайшее время.');
+		\App\Mail\Security::showAlert('success', $__message !== '' ? $__message : 'Вы успешно оставили заявку! Мы свяжемся с вами в ближайшее время.');
 	} else {
-		\App\Mail\Security::showAlert('error', 'Не удалось отправить заявку. Пожалуйста, позвоните нам +7 938 018-00-06 или попробуйте позже.');
+		\App\Mail\Security::showAlert('error', $__message !== '' ? $__message : 'Не удалось отправить заявку. Пожалуйста, позвоните нам +7 938 018-00-06 или попробуйте позже.');
 	}
-	unset($__success, $__type, $__mailOk);
+	unset($__success, $__type, $__mailOk, $__message);
 }
 
 // --- Заголовки ---

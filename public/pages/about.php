@@ -42,7 +42,7 @@
 	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261018">
 </head>
 
-<body class="font-sans text-gray-800">
+<body class="font-sans text-gray-800" data-page="inner">
 	<?php include_once __DIR__ . '/../components/header.php'; ?>
 	<style>
 	.bi-hero{background:#171310;border-radius:32px;margin:104px auto 0;max-width:1408px;overflow:hidden;position:relative;}

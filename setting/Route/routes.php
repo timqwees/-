@@ -24,6 +24,7 @@ Routes::get('/uslugi', [PageController::class, 'uslugi']);
 //==================================================================================================//PORTFOLIO + PROJECTS
 Routes::get('/portfolio', [PageController::class, 'portfolio']);
 Routes::get('/about', [PageController::class, 'about']);
+Routes::get('/contact', [PageController::class, 'contact']);
 Routes::get('/projects', function () { Routes::redirect('/portfolio'); });
 //==================================================================================================//LEGAL
 Routes::get('/politika', [PageController::class, 'politika']);

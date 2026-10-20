@@ -31,6 +31,25 @@
 	};
 
 	/* ============================================================
+	   ПОЛОСА ПРОГРЕССА СКРОЛЛА (ProMaintenance site-progress)
+	   ============================================================ */
+	function initScrollProgress() {
+		var bar = document.querySelector('.site-progress');
+		if (!bar) return;
+
+		var update = function () {
+			var doc = document.documentElement;
+			var max = doc.scrollHeight - doc.clientHeight;
+			var progress = max > 0 ? (window.scrollY || doc.scrollTop) / max : 0;
+			bar.style.setProperty('--scroll-progress', Math.min(1, Math.max(0, progress)));
+		};
+
+		window.addEventListener('scroll', update, { passive: true });
+		window.addEventListener('resize', update, { passive: true });
+		update();
+	}
+
+	/* ============================================================
 	   1. LENIS + GSAP TICKER SYNC
 	   ============================================================ */
 	function initLenis() {
@@ -53,7 +72,6 @@
 		lenis.on('scroll', function () {
 			if (window.ScrollTrigger) window.ScrollTrigger.update();
 		});
-
 		/* GSAP ticker → Lenis raf (единый цикл кадров) */
 		if (window.gsap) {
 			window.gsap.ticker.add(function (time) {
@@ -109,7 +127,7 @@
 	   3. CINEMA SLIDER — ручное переключение, без автопрокрутки
 	   ============================================================ */
 	function initCinema() {
-		var root = document.querySelector('[data-cinema]');
+		var root = document.querySelector('[data-cinema]') || document.querySelector('.hero');
 		if (!root) return;
 
 		var buttons = Array.prototype.slice.call(root.querySelectorAll('[data-cinema-select]'));
@@ -206,7 +224,7 @@
 		].join(',');
 
 		document.querySelectorAll(selectors).forEach(function (el) {
-			var text = el.innerText.replace(/\s+/g, ' ').trim();
+			var text = ((el.textContent || el.innerText || '') + '').replace(/\s+/g, ' ').trim();
 			SplitText.create(el, {
 				type: 'lines',
 				mask: 'lines',
@@ -214,18 +232,22 @@
 				autoSplit: true,
 				onSplit: function (self) {
 					el.setAttribute('aria-label', text);
-					gsap.from(self.lines, {
-						yPercent: 105,
-						opacity: 0,
-						duration: 1,
-						stagger: 0.085,
-						ease: 'power3.out',
-						scrollTrigger: {
-							trigger: el,
-							start: 'top 91%',
-							toggleActions: 'play none none none'
+					gsap.fromTo(self.lines,
+						{ yPercent: 105, opacity: 0 },
+						{
+							yPercent: 0,
+							opacity: 1,
+							duration: 1,
+							stagger: 0.085,
+							ease: 'power3.out',
+							immediateRender: false,
+							scrollTrigger: {
+								trigger: el,
+								start: 'top 91%',
+								toggleActions: 'play none none none'
+							}
 						}
-					});
+					);
 				}
 			});
 		});
@@ -240,19 +262,31 @@
 
 		var reveal = function (elements, trigger, delay) {
 			if (!elements.length) return;
-			gsap.from(elements, {
-				y: 22,
-				opacity: 0,
-				duration: 0.85,
-				stagger: 0.075,
-				delay: delay || 0,
-				ease: 'power3.out',
-				scrollTrigger: {
-					trigger: trigger,
-					start: 'top 91%',
-					toggleActions: 'play none none none'
-				}
+			/* Элементы с SplitText-строками анимирует сам SplitText — не дублируем */
+			elements = elements.filter(function (el) {
+				return !el.querySelector('.motion-line');
 			});
+			if (!elements.length) return;
+			/* fromTo + immediateRender:false — элемент виден до срабатывания триггера.
+			   gsap.from() применяет from-состояние сразу и без триггера оставляет
+			   элемент навсегда невидимым (opacity 0). */
+			gsap.fromTo(elements,
+				{ y: 22, opacity: 0 },
+				{
+					y: 0,
+					opacity: 1,
+					duration: 0.85,
+					stagger: 0.075,
+					delay: delay || 0,
+					ease: 'power3.out',
+					immediateRender: false,
+					scrollTrigger: {
+						trigger: trigger,
+						start: 'top 91%',
+						toggleActions: 'play none none none'
+					}
+				}
+			);
 		};
 
 		var revealIn = function (selector, childSelector, delay) {
@@ -279,19 +313,17 @@
 		revealIn('.footer-top', ':scope > *');
 
 		/* ФСС */
-		revealIn('.show-head', ':scope > *', 0.1);
 		revealIn('.section-heading', ':scope > p', 0.1);
-		revealIn('.cta-in', ':scope > *', 0.15);
 
 		/* ProMaintenance */
-		revealIn('.division-grid', ':scope > a', 0.1);
-		revealIn('.site-gallery-grid', ':scope > figure', 0.1);
-		revealIn('.service-list', ':scope > details', 0.1);
-		revealIn('.process-steps', ':scope > details', 0.1);
-		revealIn('.enquiry-lead', ':scope > p, :scope > a, :scope > .enquiry-location', 0.1);
 		revealIn('.works-preview-copy', ':scope > *', 0.1);
-		revealIn('.about-grid', ':scope > *', 0.1);
-		revealIn('.about-stats', ':scope > div');
+
+		/* Элементы с data-reveal — появление снизу вверх (ProMaintenance).
+		   Заголовки (h1-h3) анимирует SplitText — не дублируем. */
+		document.querySelectorAll('[data-reveal]').forEach(function (el) {
+			if (el.matches('h1, h2, h3')) return;
+			reveal([el], el);
+		});
 
 		document.querySelectorAll('.assessment-disclosure, .enquiry-panel').forEach(function (el) {
 			reveal([el], el, 0.12);
@@ -310,23 +342,32 @@
 
 			tl.fromTo(el,
 				{ clipPath: 'inset(6% 0% 0% 0% round 8px)', opacity: 0.25 },
-				{ clipPath: 'inset(0% 0% 0% 0% round 8px)', opacity: 1, duration: 1.15 }
+				{
+					clipPath: 'inset(0% 0% 0% 0% round 8px)',
+					opacity: 1,
+					duration: 1.15,
+					immediateRender: false
+				}
 			);
 
 			if (!el.matches('.expertise-image')) {
 				var img = el.querySelector('img');
-				if (img) tl.from(img, { scale: 1.065, duration: 1.35 }, 0);
+				if (img) tl.fromTo(img,
+					{ scale: 1.065 },
+					{ scale: 1, duration: 1.35, immediateRender: false }, 0);
 			}
 
 			var card = el.closest('.project-card');
 			if (card) {
-				tl.from(card.querySelectorAll('.project-card__meta, h3, p'),
-					{ y: 16, opacity: 0, duration: 0.75, stagger: 0.065 }, 0.15);
+				tl.fromTo(card.querySelectorAll('.project-card__meta, h3, p'),
+					{ y: 16, opacity: 0 },
+					{ y: 0, opacity: 1, duration: 0.75, stagger: 0.065, immediateRender: false }, 0.15);
 			}
 
 			if (el.closest('.project-next')) {
-				tl.from(el.querySelectorAll('div > *'),
-					{ y: 18, opacity: 0, duration: 0.8, stagger: 0.075 }, 0.15);
+				tl.fromTo(el.querySelectorAll('div > *'),
+					{ y: 18, opacity: 0 },
+					{ y: 0, opacity: 1, duration: 0.8, stagger: 0.075, immediateRender: false }, 0.15);
 			}
 		});
 	}
@@ -340,14 +381,149 @@
 
 		var gsap = window.gsap;
 		var stages = Array.prototype.slice.call(form.querySelectorAll('[data-form-stage]'));
-		var counter = form.querySelector('[data-form-counter]');
+		/* Счётчик и индикаторы лежат ВНЕ формы (в .form-heading) — ищем глобально */
+		var counter = document.querySelector('[data-form-counter]');
 		var nextBtn = form.querySelector('[data-form-next]');
 		var backBtn = form.querySelector('[data-form-back]');
-		var progress = form.querySelector('[data-form-progress]');
 		var errorsBox = form.querySelector('[data-error-summary]');
+		var errorsList = form.querySelector('[data-error-summary-list]');
 		if (stages.length < 2) return;
 
 		var current = 0;
+
+		/* Правила валидации (по ProMaintenance) */
+		var RULES = {
+			name:     { min: 2, max: 100, label: 'Имя' },
+			company:  { min: 2, max: 120, label: 'Компания' },
+			email:    { max: 254, label: 'Email', required: true },
+			phone:    { min: 10, max: 15, label: 'Телефон', required: true },
+			product:  { label: 'Услуга', required: true },
+			location: { max: 120, label: 'Локация' },
+			message:  { min: 10, max: 2000, label: 'Описание', required: true }
+		};
+
+		var fieldOf = function (name) {
+			return form.querySelector('[name="' + name + '"]');
+		};
+
+		var errorOf = function (name) {
+			return form.querySelector('[data-error-for="' + name + '"]');
+		};
+
+		/* Проверка одного поля — возвращает текст ошибки или null */
+		var checkField = function (name) {
+			var rule = RULES[name];
+			if (!rule) return null;
+			var field = fieldOf(name);
+			if (!field) return null;
+			var value = (field.value || '').trim();
+
+			if (rule.required && !value) {
+				return rule.label + ' — обязательное поле';
+			}
+			if (!value) return null;
+			if (rule.min && value.length < rule.min) {
+				return rule.label + ' — минимум ' + rule.min + ' символов';
+			}
+			if (rule.max && value.length > rule.max) {
+				return rule.label + ' — максимум ' + rule.max + ' символов';
+			}
+			if (name === 'email' && !/^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/.test(value)) {
+				return 'Введите корректный email, например name@company.ru';
+			}
+			if (name === 'phone') {
+				var digits = value.replace(/\D/g, '');
+				if (!/^[0-9+\-().\s]+$/.test(value)) {
+					return 'Телефон — только цифры, пробелы и + ( ) -';
+				}
+				if (digits.length < 7 || digits.length > 15) {
+					return 'Телефон — введите номер полностью';
+				}
+			}
+			return null;
+		};
+
+		/* Показать/скрыть ошибки поля */
+		var setFieldError = function (name, message) {
+			var field = fieldOf(name);
+			var target = errorOf(name);
+			if (field) {
+				if (message) field.setAttribute('aria-invalid', 'true');
+				else field.removeAttribute('aria-invalid');
+			}
+			if (target) {
+				target.textContent = message || '';
+				target.hidden = !message;
+			}
+		};
+
+		var clearErrors = function () {
+			Object.keys(RULES).forEach(function (name) { setFieldError(name, null); });
+			form.querySelectorAll('[data-error-for]').forEach(function (el) {
+				el.textContent = '';
+				el.hidden = true;
+			});
+			if (errorsBox) errorsBox.hidden = true;
+			if (errorsList) errorsList.replaceChildren();
+		};
+
+		/* Собрать ошибки текущего этапа */
+		var collectErrors = function (index) {
+			var errors = {};
+			var stage = stages[index];
+
+			/* обычные поля */
+			stage.querySelectorAll('input[required], select[required], textarea[required]').forEach(function (field) {
+				var name = field.getAttribute('name');
+				if (!name || errors[name]) return;
+				if (field.type === 'checkbox') {
+					if (!field.checked) errors[name] = 'Отметьте согласие';
+					return;
+				}
+				var message = checkField(name);
+				if (message) errors[name] = message;
+			});
+
+			/* поля с minlength/maxlength/pattern, но не required */
+			stage.querySelectorAll('input, select, textarea').forEach(function (field) {
+				var name = field.getAttribute('name');
+				if (!name || errors[name] || field.type === 'checkbox' || field.type === 'hidden') return;
+				var message = checkField(name);
+				if (message) errors[name] = message;
+			});
+
+			return errors;
+		};
+
+		var showErrors = function (errors) {
+			var names = Object.keys(errors);
+			if (!names.length) return;
+
+			Object.keys(errors).forEach(function (name) {
+				setFieldError(name, errors[name]);
+			});
+
+			if (errorsBox) errorsBox.hidden = false;
+			if (errorsList) {
+				errorsList.replaceChildren();
+				names.forEach(function (name) {
+					var li = document.createElement('li');
+					var a = document.createElement('a');
+					a.href = '#field-' + name;
+					a.textContent = errors[name];
+					a.addEventListener('click', function (e) {
+						e.preventDefault();
+						var field = fieldOf(name);
+						if (field) {
+							field.focus({ preventScroll: true });
+							field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+						}
+					});
+					li.appendChild(a);
+					errorsList.appendChild(li);
+				});
+			}
+		};
 
 		var showStage = function (index, focus) {
 			current = index;
@@ -355,14 +531,12 @@
 				stage.hidden = i !== index;
 			});
 
-			/* Индикаторы шагов */
 			form.querySelectorAll('[data-step-indicator]').forEach(function (el, i) {
 				el.classList.toggle('is-current', i === index);
 			});
 
 			if (counter) counter.textContent = '0' + (index + 1) + ' / 0' + stages.length;
 
-			/* Плавный переход */
 			if (gsap && !reduceMotion()) {
 				gsap.fromTo(stages[index],
 					{ opacity: 0, y: 12 },
@@ -371,39 +545,21 @@
 			}
 
 			if (focus) {
-				var field = stages[index].querySelector('input:not([type=hidden]), select, textarea');
+				var field = stages[index].querySelector('input:not([type=hidden]):not([type=checkbox]), select, textarea');
 				if (field) field.focus({ preventScroll: true });
 			}
 			refreshScroll();
 		};
 
-		/* Валидация текущего этапа */
+		/* Валидация этапа + показ ошибок */
 		var validateStage = function (index) {
-			var stage = stages[index];
-			var invalid = [];
-
-			stage.querySelectorAll('input[required], select[required], textarea[required]').forEach(function (field) {
-				if (field.type === 'checkbox') {
-					if (!field.checked) invalid.push(field);
-				} else if (!field.value.trim()) {
-					invalid.push(field);
-				}
-			});
-
-			invalid.forEach(function (field) {
-				field.setAttribute('aria-invalid', 'true');
-			});
-
-			if (invalid.length && errorsBox) {
-				errorsBox.hidden = false;
-				errorsBox.textContent = 'Заполните обязательные поля: ' + invalid.length;
-			}
-
-			if (invalid.length) {
-				invalid[0].focus({ preventScroll: true });
-				return false;
-			}
-			return true;
+			clearErrors();
+			var errors = collectErrors(index);
+			if (!Object.keys(errors).length) return true;
+			showErrors(errors);
+			var first = fieldOf(Object.keys(errors)[0]);
+			if (first) first.focus({ preventScroll: true });
+			return false;
 		};
 
 		if (nextBtn) {
@@ -415,19 +571,36 @@
 
 		if (backBtn) {
 			backBtn.addEventListener('click', function () {
+				clearErrors();
 				if (current > 0) showStage(current - 1, true);
 			});
 		}
 
-		/* Снимаем ошибки при вводе */
+		/* Снимаем ошибку при вводе */
 		form.addEventListener('input', function (e) {
-			if (e.target && e.target.getAttribute('aria-invalid') === 'true') {
-				e.target.removeAttribute('aria-invalid');
-				if (errorsBox) errorsBox.hidden = true;
+			var t = e.target;
+			if (!t || !t.getAttribute || t.getAttribute('aria-invalid') !== 'true') return;
+			var name = t.getAttribute('name');
+			var message = name ? checkField(name) : null;
+			if (!message) {
+				setFieldError(name, null);
+				if (errorsBox) {
+					var remaining = form.querySelectorAll('[aria-invalid="true"]').length;
+					if (!remaining) errorsBox.hidden = true;
+				}
 			}
 		});
 
-		/* Отправка только со второго этапа */
+		form.addEventListener('change', function (e) {
+			var t = e.target;
+			if (!t || !t.getAttribute || t.getAttribute('aria-invalid') !== 'true') return;
+			var name = t.getAttribute('name');
+			if (t.type === 'checkbox' ? t.checked : !checkField(name)) {
+				setFieldError(name, null);
+			}
+		});
+
+		/* Отправка — только со второго этапа */
 		form.addEventListener('submit', function (e) {
 			if (current < stages.length - 1) {
 				e.preventDefault();
@@ -741,12 +914,17 @@
 		initAssessment();
 		initMultiStepForm();
 		initAnchors();
+		initScrollProgress();
 
 		refreshScroll();
 		if (document.fonts && document.fonts.ready) {
 			document.fonts.ready.then(refreshScroll);
 		}
 		window.addEventListener('load', refreshScroll, { once: true });
+
+		/* Страховка: элементы, оказавшиеся в зоне видимости, но не проигранные
+		   ScrollTrigger (layout shift, отсутствие триггера) — показываем принудительно */
+		setTimeout(forceRevealVisible, 700);
 
 		/* Страховка: если через 3 сек элементы hero всё ещё скрыты —
 		   значит GSAP не отработал (нет сети/ошибка) — показываем принудительно */
@@ -761,6 +939,27 @@
 					}
 				});
 		}, 3000);
+	}
+
+	function forceRevealVisible() {
+		if (!window.gsap) return;
+		var vh = window.innerHeight;
+		var tweens = [];
+		try {
+			tweens = window.gsap.globalTimeline.getChildren(false, true, true) || [];
+		} catch (e) {
+			return;
+		}
+		tweens.forEach(function (tw) {
+			if (!tw.scrollTrigger) return;
+			var targets = tw.targets ? tw.targets() : [];
+			var el = targets[0];
+			if (!el || !el.getBoundingClientRect) return;
+			var r = el.getBoundingClientRect();
+			if (r.top < vh && r.bottom > 0 && tw.progress() < 0.05) {
+				tw.progress(1);
+			}
+		});
 	}
 
 	if (document.readyState === 'loading') {

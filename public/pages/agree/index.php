@@ -45,7 +45,7 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
 	<script defer src="/public/assets/distJS/main.js?v=<?= seo_ver() ?>"></script>
 </head>
 
-<body class="font-sans text-gray-800 bg-gray-50">
+<body class="font-sans text-gray-800 bg-gray-50" data-page="inner">
 	<?php include_once __DIR__ . '/../../components/header.php'; ?>
 	<nav class="w-full px-6 md:px-10 py-3 bg-[#f0fdf4]/30 border-b border-emerald-100 text-xs text-gray-500 flex items-center gap-1.5"><a href="/" title="Главная" class="hover:text-emerald-700">Главная</a><span class="opacity-40">/</span><span class="text-gray-900 font-medium">Согласие на обработку данных</span></nav>
 
