@@ -47,7 +47,6 @@ if (count($related) < 4) {
 	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 	<meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
 	<meta name="theme-color" content="#F97316">
-	<link rel="icon" type="image/svg+xml" href="/public/assets/image/logo/favicon/favicon.svg" />
 	<link rel="shortcut icon" href="/public/assets/image/logo/favicon/favicon.ico" />
 	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/favicon/apple-touch-icon.png" />
 	<link rel="manifest" href="/public/assets/image/logo/favicon/site.webmanifest" />
@@ -64,16 +63,15 @@ if (count($related) < 4) {
 	<meta property="article:tag" content="<?= $h(implode('", "', $post['tags'] ?? [])) ?>">
 	<link rel="preload" href="/public/assets/distCSS/style.css?v=<?= seo_ver() ?>" as="style">
 	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=<?= seo_ver() ?>">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
-	<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css">
+	<noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css"></noscript>
 	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=<?= seo_ver() ?>">
 	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=<?= seo_ver() ?>">
 	<link rel="stylesheet" href="/public/assets/distCSS/article.css?v=<?= seo_ver() ?>">
 	<?php include_once __DIR__ . '/../../components/sheoma.php'; ?>
-	<script defer src="/public/assets/distJS/main.js?v=<?= seo_ver() ?>"></script>
 </head>
 
-<body class="blog-post-page">
+<body class="blog-post-page" data-page="inner">
 	<?php include_once __DIR__ . '/../../components/header.php'; ?>
 
 	<div id="reading-bar"></div>

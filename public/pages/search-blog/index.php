@@ -52,27 +52,24 @@ $activeFilters = ($q !== '' || $tag !== '' || $cat !== '');
 	<meta name="robots" content="noindex, follow">
 	<meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
 	<meta name="theme-color" content="#F97316">
-	<link rel="icon" type="image/svg+xml" href="/public/assets/image/logo/favicon/favicon.svg" />
 	<link rel="shortcut icon" href="/public/assets/image/logo/favicon/favicon.ico" />
 	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/favicon/apple-touch-icon.png" />
 	<link rel="manifest" href="/public/assets/image/logo/favicon/site.webmanifest" />
 	<?= seo_canonical_tags() ?>
 	<?= seo_og_tags('Поиск статей — Блог | ' . seo_config('brand'), 'Поиск по блогу ФАВОРИТ-СТРОЙ-СНАБ: статьи о строительстве БВЗ, материалах, ценах и рекомендациях.') ?>
 	<?= seo_verify_tags() ?>
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap"></noscript>
-	<style> body { font-family: 'Wix Madefor Display', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
+	<link rel="preload" as="font" type="font/woff2" href="/public/assets/vendor/fonts/Manrope-latin.woff2" crossorigin><link rel="preload" as="font" type="font/woff2" href="/public/assets/vendor/fonts/Manrope-cyrillic.woff2" crossorigin><link rel="preload" as="font" type="font/woff2" href="/public/assets/fonts/WixMadeforDisplay/WixMadeforDisplay-Variable.woff2" crossorigin><link rel="stylesheet" href="/public/assets/vendor/fonts/fonts.css">
+	<style> body { font-family: 'DM Sans Variable', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
 	<link rel="preload" href="/public/assets/distCSS/style.css?v=<?= seo_ver() ?>" as="style">
 	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=<?= seo_ver() ?>">
 	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=<?= seo_ver() ?>">
 	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=<?= seo_ver() ?>">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css">
 	<?php include_once __DIR__ . '/../../components/sheoma.php'; ?>
 	<script defer src="/public/assets/distJS/main.js?v=<?= seo_ver() ?>"></script>
 </head>
 
-<body class="blog-page blog-search-page">
+<body class="blog-page blog-search-page" data-page="inner">
 	<?php include_once __DIR__ . '/../../components/header.php'; ?>
 
 	<main class="main">
@@ -237,7 +234,7 @@ $activeFilters = ($q !== '' || $tag !== '' || $cat !== '');
 			--transition: .25s cubic-bezier(.4, 0, .2, 1);
 		}
 		/* Search page specific styles */
-		.blog-search-page .blog-hero { padding: clamp(3rem, 5vw, 4rem) 0; }
+		.blog-search-page .blog-hero { padding: max(clamp(3rem, 5vw, 4rem), calc(var(--fss-header-h, 90px) + 12px)) 0 0; }
 		.blog-search-hero .blog-hero-content { max-width: 720px; }
 		.blog-search-form--hero { margin-top: 24px; max-width: 640px; margin-inline: auto; }
 		.blog-search-form--hero input { height: 52px; padding: 0 20px; font-size: 16px; border-radius: var(--radius-full); border: 1px solid var(--border); background: var(--white); box-shadow: var(--shadow-sm); transition: all var(--transition); }

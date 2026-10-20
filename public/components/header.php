@@ -1,14 +1,29 @@
 <?php
-// Header — точная копия ProMaintenance (стили в CSS, логика в animations.js → initHeader)
-$__n = (function_exists('seo_url') ? seo_url() : '/') ?: '/';
+// Header — единый компонент для ВСЕХ страниц (стили в CSS, логика в animations.js → initHeader).
+//
+// Контракт шапки:
+//   • прозрачная (поверх hero) — ТОЛЬКО на главной: data-nav-mode="transparent";
+//   • тёмный фон — на всех остальных страницах: data-nav-mode="solid";
+//   • внутренние цвета заданы локальными переменными --h-*, поэтому шапка
+//     выглядит одинаково на любой странице (не зависит от подключённых CSS).
+$__hasUrl = function_exists('seo_url');
+$__n = ($__hasUrl ? (string)seo_url() : '/') ?: '/';
 $__act = function (bool $on): string { return $on ? ' is-active' : ''; };
-$__onHome = $__n === '/';
+// Главная определяется по реальному файлу страницы (а не только по URL):
+// так прозрачная шапка не «включится» на 404/500 и любых служебных страницах.
+$__pf = str_replace('\\', '/', (string)($GLOBALS['fss_page_file'] ?? ''));
+$__isHomeFile = $__pf !== '' && str_ends_with($__pf, '/home.php');
+$__onHome = $__isHomeFile || ($__pf === '' && $__hasUrl && $__n === '/');
+$__navMode = $__onHome ? 'transparent' : 'solid';
 ?>
-<header id="site-header" data-header="">
+<header id="site-header" data-header="" data-nav-mode="<?= $__navMode ?>">
+	<!-- Полоса прогресса скролла (ProMaintenance site-progress) -->
+	<div class="site-progress" aria-hidden="true"></div>
+
 	<div class="site-navigation" data-header-bar="">
 		<!-- Brand -->
 		<a href="/" class="brand" aria-label="ФАВОРИТ-СТРОЙ-СНАБ — на главную">
-			<img src="/public/assets/image/logo/favicon/favicon.svg" alt="" loading="lazy" decoding="async" width="28" height="34">
+			<img src="/public/assets/image/logo/favicon/logo-64.png" alt="" loading="lazy" decoding="async" width="28" height="34">
 			<span>ФСС</span><span class="brand-plus">+</span>
 		</a>
 
@@ -61,26 +76,83 @@ $__onHome = $__n === '/';
 </header>
 <style>
 	/* ============================================================
-	   HEADER — точная копия ProMaintenance
+	   HEADER — единый компонент для всех страниц (ProMaintenance)
 	   ============================================================ */
+	:root {
+		/* Высота шапки (90 / 78 / 74) — общий контракт с контентом страниц */
+		--fss-header-h: 90px;
+		/* Локальная палитра шапки: одинакова на всех страницах */
+		--h-paper: #f0efed;
+		--h-ink: #171310;
+		--h-muted: #b2ada8;
+		--h-line: #ffffff29;
+		--h-accent: #c7ab94;
+		--h-ease: cubic-bezier(.2, .8, .2, 1);
+		--h-radius: 6px;
+	}
+
+	@media (width<=992px) {
+		:root {
+			--fss-header-h: 78px;
+		}
+	}
+
+	@media (width<=576px) {
+		:root {
+			--fss-header-h: 74px;
+		}
+	}
+
 	#site-header {
 		z-index: 90;
 		position: fixed;
 		inset: 0 0 auto;
 	}
 
+	/* Полоса прогресса скролла (ProMaintenance site-progress) */
+	.site-progress {
+		z-index: 101;
+		background: var(--h-accent);
+		height: 2px;
+		transform: scaleX(var(--scroll-progress, 0));
+		transform-origin: 0;
+		pointer-events: none;
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+	}
+
+	/* Базовая (тёмная) шапка — все страницы, кроме главной */
 	.site-navigation {
-		height: 90px;
-		color: var(--paper, #f0efed);
+		height: var(--fss-header-h);
+		color: var(--h-paper);
 		backdrop-filter: blur(24px);
 		background: #171718db;
-		border-bottom: 1px solid #0000;
+		border-bottom: 1px solid var(--h-line);
 		justify-content: space-between;
 		align-items: center;
 		gap: 30px;
 		padding-inline: clamp(24px, 4.4vw, 96px);
 		transition: background .5s, color .4s, border-color .4s;
 		display: flex;
+	}
+
+	/* Прозрачная шапка — ТОЛЬКО главная (hero просвечивает) */
+	#site-header[data-nav-mode="transparent"] .site-navigation,
+	[data-page=home] .site-navigation {
+		background: rgb(23 23 24 / var(--nav-opacity, .02));
+		color: #fff;
+		backdrop-filter: blur(var(--nav-blur, 1px));
+		border-bottom-color: var(--h-line);
+	}
+
+	/* Прокрутили главную — шапка становится тёмной */
+	#site-header[data-nav-mode="transparent"] .site-navigation[data-stuck] {
+		color: #fff;
+		backdrop-filter: blur(24px);
+		background: #171718d1;
+		border-bottom-color: var(--h-line);
 	}
 
 	.brand {
@@ -93,6 +165,7 @@ $__onHome = $__n === '/';
 	.brand>img {
 		filter: invert();
 		mix-blend-mode: screen;
+		border-radius: 8px;
 		width: auto;
 		height: 30px;
 	}
@@ -124,7 +197,7 @@ $__onHome = $__n === '/';
 		content: "";
 		transform-origin: 100%;
 		height: 1px;
-		transition: transform .5s var(--ease, cubic-bezier(.2, .8, .2, 1));
+		transition: transform .5s var(--h-ease);
 		background: currentColor;
 		position: absolute;
 		bottom: 0;
@@ -148,20 +221,6 @@ $__onHome = $__n === '/';
 		display: flex;
 	}
 
-	.site-navigation[data-stuck] {
-		color: var(--paper, #f0efed);
-		backdrop-filter: blur(24px);
-		background: #171718d1;
-		border-bottom-color: #ffffff29;
-	}
-
-	[data-page=home] .site-navigation {
-		background: rgb(23 23 24 / var(--nav-opacity, .02));
-		color: #fff;
-		backdrop-filter: blur(var(--nav-blur, 1px));
-		border-bottom-color: #ffffff29;
-	}
-
 	#nav-toggle {
 		align-items: center;
 		gap: 14px;
@@ -174,17 +233,17 @@ $__onHome = $__n === '/';
 	}
 
 	#nav-panel {
-		--line: #ffffff29;
-		--muted: #b2ada8;
+		--line: var(--h-line);
+		--muted: var(--h-muted);
 		backdrop-filter: blur(28px);
-		color: var(--paper, #f0efed);
+		color: var(--h-paper);
 		background: #181819f0;
-		max-height: calc(100svh - 74px);
+		max-height: calc(100svh - var(--fss-header-h));
 		padding: 12px 24px 32px;
 		overflow-y: auto;
 		box-shadow: 0 24px 40px #1b1c1d15;
 		position: fixed;
-		top: 74px;
+		top: var(--fss-header-h);
 		left: 0;
 		right: 0;
 		z-index: 99;
@@ -227,9 +286,9 @@ $__onHome = $__n === '/';
 
 	/* Кнопки (ProMaintenance .button / .pill) */
 	.button {
-		background: var(--ink, #1b1c1d);
+		background: var(--h-ink, #171310);
 		color: #fff;
-		border-radius: var(--radius-control, 6px);
+		border-radius: var(--h-radius, 6px);
 		border: 1px solid transparent;
 		justify-content: space-between;
 		align-items: center;
@@ -249,7 +308,7 @@ $__onHome = $__n === '/';
 	}
 
 	.button svg {
-		transition: transform .4s var(--ease, cubic-bezier(.2, .8, .2, 1));
+		transition: transform .4s var(--h-ease);
 		flex-shrink: 0;
 	}
 
@@ -258,7 +317,7 @@ $__onHome = $__n === '/';
 	}
 
 	#nav-panel>.button {
-		color: var(--ink, #1b1c1d);
+		color: var(--h-ink, #171310);
 		background: #f0efed;
 	}
 
@@ -275,21 +334,12 @@ $__onHome = $__n === '/';
 			display: flex;
 		}
 
-		.site-navigation {
-			height: 78px;
-		}
-
 		.nav-enquire {
 			margin-left: auto;
 		}
 	}
 
 	@media (width<=576px) {
-		.site-navigation {
-			gap: 15px;
-			height: 74px;
-		}
-
 		.brand>span {
 			font-size: 19px;
 		}
@@ -307,3 +357,25 @@ $__onHome = $__n === '/';
 		}
 	}
 </style>
+
+<!-- Fallback ResizeObserver (нужен GSAP ScrollTrigger/SplitText) — ДО загрузки библиотек -->
+<script>
+	if (typeof window.ResizeObserver === 'undefined') {
+		window.ResizeObserver = function () {
+			this.observe = function () {};
+			this.unobserve = function () {};
+			this.disconnect = function () {};
+		};
+	}
+</script>
+
+<!-- Стек анимаций (ProMaintenance): Lenis + GSAP 3.15 + ScrollTrigger + SplitText -->
+<script defer src="/public/assets/vendor/lenis/lenis.min.js"></script>
+<script defer src="/public/assets/vendor/gsap/gsap.min.js"></script>
+<script defer src="/public/assets/vendor/gsap/ScrollTrigger.min.js"></script>
+<script defer src="/public/assets/vendor/gsap/SplitText.min.js"></script>
+<script defer src="/public/assets/distJS/main.js"></script>
+<script defer src="/public/assets/distJS/animations.js"></script>
+<!-- Подсказки по локации (город/район): DaData + Photon через /api/suggest/location -->
+<script defer src="/public/assets/distJS/hot-cities.js"></script>
+<script defer src="/public/assets/distJS/location-suggest.js"></script>

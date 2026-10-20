@@ -353,9 +353,14 @@ if (!function_exists('seo_breadcrumbs_html')) {
 		$base = rtrim(seo_config('base_url'), '/');
 		$items = $bc['itemListElement'];
 		$out = '<nav aria-label="Хлебные крошки" class="fss-breadcrumbs"><ol class="fss-bc-list">';
-		foreach ($items as $it) {
+		$last = count($items) - 1;
+		foreach ($items as $i => $it) {
 			$out .= '<li class="fss-bc-item">';
-			if (!empty($it['item'])) {
+			/* Последняя крошка — текущая страница: без ссылки, с aria-current.
+			   В JSON-LD URL остаётся (там так и положено). */
+			if ($i === $last) {
+				$out .= '<span class="fss-bc-current" aria-current="page">' . htmlspecialchars($it['name'], ENT_QUOTES) . '</span>';
+			} elseif (!empty($it['item'])) {
 				$out .= '<a href="' . htmlspecialchars($it['item'], ENT_QUOTES) . '" title="' . htmlspecialchars($it['name'], ENT_QUOTES) . '" class="fss-bc-link">' . htmlspecialchars($it['name'], ENT_QUOTES) . '</a>';
 			} else {
 				$out .= '<span class="fss-bc-current">' . htmlspecialchars($it['name'], ENT_QUOTES) . '</span>';
@@ -568,27 +573,61 @@ if (!function_exists('seo_service_jsonld')) {
 		if (!preg_match('/^\d{6,}$/', $ym)) { $ym = ''; }
 		if (!preg_match('/^G-[A-Z0-9]{8,}$/i', $ga4) || str_contains(strtoupper($ga4), 'XXXX')) { $ga4 = ''; }
 		if (!preg_match('/^GTM-[A-Z0-9]{6,}$/i', $gtm) || str_contains(strtoupper($gtm), 'XXXX')) { $gtm = ''; }
-		$out = '';
+
+		$counters = '';
+
 		if ($ym !== '') {
-			$out .= <<<HTML
-			<!-- Yandex.Metrika -->
-			<script type="text/javascript">
-				(function (m, e, t, r, i, k, a) { m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) };
-					m[i].l = 1 * new Date(); for (var j = 0; j < e.length; j++) { k = e[j]; if (!m[i].k) { a = document.createElement("script"), a.async = 1, a.src = t + "?" + (m[i].v = 2), document.head.appendChild(a); } } })
-					(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
-				ym({$ym}, "init", { clickmap: true, trackLinks: true, accurateTrackBounce: true, webvisor: true, ecommerce: false });
-			</script>
-			<noscript><div><img src="https://mc.yandex.ru/watch/{$ym}" title="Яндекс.Метрика" style="position:absolute;left:-9999px" alt="" /></div></noscript>
-			HTML;
+			// ВАЖНО: в оригинальном сниппете Метрики цикл for(j<e.length) не выполнялся
+			// (e = document, document.length === undefined) — tag.js никогда не подключался,
+			// счётчик молча не работал. Подключаем скрипт явно.
+			$counters .= "\n<!-- Yandex.Metrika -->"
+				. "\n<script>(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};"
+				. "m[i].l=1*new Date();var s=document.createElement('script');s.async=1;"
+				. "s.src='https://mc.yandex.ru/metrika/tag.js';document.head.appendChild(s);"
+				. "})(window,document,'script','https://mc.yandex.ru/metrika/tag.js','ym');"
+				. "ym({$ym},'init',{clickmap:true,trackLinks:true,"
+				. "accurateTrackBounce:true,webvisor:true,ecommerce:false});</script>"
+				. "\n<noscript><div><img src=\"https://mc.yandex.ru/watch/{$ym}\" title=\"Яндекс.Метрика\" "
+				. "style=\"position:absolute;left:-9999px\" alt=\"\" /></div></noscript>";
 		}
+
 		if ($ga4 !== '') {
-			$out .= "\n\t\t<!-- GA4 -->\n\t\t<script async src=\"https://www.googletagmanager.com/gtag/js?id={$ga4}\"></script>
-			<script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '{$ga4}');</script>";
+			$counters .= "\n<!-- GA4 -->"
+				. "\n<script async src=\"https://www.googletagmanager.com/gtag/js?id={$ga4}\"></script>"
+				. "\n<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}"
+				. "gtag('js',new Date());gtag('config','{$ga4}');</script>";
 		}
+
 		if ($gtm !== '') {
-			$out .= "\n\t\t<!-- GTM -->\n\t\t<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','{$gtm}');</script>";
+			$counters .= "\n<!-- GTM -->"
+				. "\n<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),"
+				. "event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),"
+				. "dl=l!=='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;"
+				. "f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','{$gtm}');</script>";
 		}
-		return $out;
+
+		if ($counters === '') {
+			return '';
+		}
+
+		// Счётчики грузим ОТЛОЖЕННО (после load, но не позже 3 секунд):
+		// так они не занимают канал и не мешают отрисовке на медленном мобильном интернете.
+		// Скрипты, разобранные через innerHTML, не выполняются — пересоздаём их,
+		// иначе счётчики просто молча не заработают.
+		// "</script>" внутри строки обрывает инлайн-скрипт — экранируем
+		$countersJson = str_replace('</', '<\\/', json_encode($counters, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+		$js = "(function(){var c=" . $countersJson
+			. ";var done=false;function load(){if(done)return;done=true;var d=document.createElement('div');"
+			. "d.innerHTML=c;var list=d.querySelectorAll('script');"
+			. "for(var i=0;i<list.length;i++){var o=list[i],s=document.createElement('script');"
+			. "for(var a=0;a<o.attributes.length;a++){s.setAttribute(o.attributes[a].name,o.attributes[a].value);}"
+			. "if(!o.getAttribute('src')){s.text=o.textContent;}"
+			. "document.head.appendChild(s);}}"
+			. "if(document.readyState==='complete'){load();}else{window.addEventListener('load',load,{once:true});"
+			. "setTimeout(load,3000);}})();";
+
+		return "\n<!-- Счётчики: отложенная загрузка (не блокируют рендер) -->"
+			. "\n<script>" . $js . "</script>";
 	}
 }
 

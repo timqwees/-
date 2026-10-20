@@ -5,8 +5,18 @@
 (function () {
 	'use strict';
 
+	/* Fallback для браузеров без ResizeObserver (нужен GSAP ScrollTrigger/SplitText) */
+	if (typeof window.ResizeObserver === 'undefined') {
+		window.ResizeObserver = function () {
+			this.observe = function () {};
+			this.unobserve = function () {};
+			this.disconnect = function () {};
+		};
+	}
+
 	/* --- Утилиты --- */
 	var reduceMotion = function () {
+		if (!window.matchMedia) return false;
 		return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 	};
 
@@ -30,6 +40,21 @@
 		});
 	};
 
+	/* Выполнить колбэк, когда шрифты готовы (или по таймауту).
+	   Нужен там, где действие меняет высоту блока: пока шрифт не пришёл,
+	   метрики другие → после подмены шрифта высота меняется → «уезжает» секция. */
+	var whenFontsReady = function (cb) {
+		if (!document.fonts || !document.fonts.ready) {
+			cb();
+			return;
+		}
+		var timer = setTimeout(cb, 2000);
+		document.fonts.ready.then(function () {
+			clearTimeout(timer);
+			cb();
+		});
+	};
+
 	/* ============================================================
 	   ПОЛОСА ПРОГРЕССА СКРОЛЛА (ProMaintenance site-progress)
 	   ============================================================ */
@@ -37,15 +62,35 @@
 		var bar = document.querySelector('.site-progress');
 		if (!bar) return;
 
-		var update = function () {
+		/* Высота документа кэшируется: чтение scrollHeight на каждом кадре
+		   вызывает forced reflow (принудительный пересчёт layout) — тормозит скролл */
+		var maxScroll = 0;
+
+		var measure = function () {
 			var doc = document.documentElement;
-			var max = doc.scrollHeight - doc.clientHeight;
-			var progress = max > 0 ? (window.scrollY || doc.scrollTop) / max : 0;
+			maxScroll = doc.scrollHeight - doc.clientHeight;
+		};
+
+		var update = function () {
+			if (!maxScroll) {
+				measure();
+				if (!maxScroll) return;
+			}
+			var progress = (window.scrollY || document.documentElement.scrollTop) / maxScroll;
 			bar.style.setProperty('--scroll-progress', Math.min(1, Math.max(0, progress)));
 		};
 
+		/* Обновляем кэш при изменении размеров/содержимого */
+		var refresh = function () {
+			measure();
+			update();
+		};
+
 		window.addEventListener('scroll', update, { passive: true });
-		window.addEventListener('resize', update, { passive: true });
+		window.addEventListener('resize', refresh, { passive: true });
+		window.addEventListener('load', refresh, { once: true });
+
+		measure();
 		update();
 	}
 
@@ -67,6 +112,9 @@
 
 		document.documentElement.dataset.motionEngine = 'gsap-lenis';
 		window.lenisInstance = lenis;
+		/* Единственный экземпляр Lenis на странице. main.js тоже обращается к нему
+		   (window.__lenis.start()), поэтому публикуем под обоими именами. */
+		window.__lenis = lenis;
 
 		/* Lenis → GSAP: обновляем ScrollTrigger при скролле */
 		lenis.on('scroll', function () {
@@ -98,29 +146,52 @@
 		if (!hero) return;
 
 		var gsap = window.gsap;
-		gsap.defaults({ ease: 'power3.out' });
 
-		/* Hero Reveal — scale фона 1.07 → 1, текст снизу вверх */
+		/* При «уменьшить движение» — показываем сразу, без анимации */
+		if (reduceMotion()) {
+			gsap.set(['.hero-content > .eyebrow', '.hero h1 > span', '.hero-intro > *', '.hero-bottom > *'],
+				{ opacity: 1, y: 0, yPercent: 0, visibility: 'visible' });
+			return;
+		}
+
+
+		/* Hero Reveal — точная копия ProMaintenance:
+		   фон scale 1.07 → 1 (2s), затем текст снизу вверх со stagger */
 		gsap.timeline({ defaults: { ease: 'power3.out' } })
 			.from('.hero-visual', { scale: 1.07, duration: 2 }, 0)
 			.from('.hero-content > .eyebrow', { y: 12, autoAlpha: 0, duration: 0.8 }, 0.12)
 			.from('.hero h1 > span', { yPercent: 25, autoAlpha: 0, stagger: 0.12, duration: 1.2 }, 0.25)
 			.from('.hero-intro > *', { y: 18, autoAlpha: 0, stagger: 0.08, duration: 0.9 }, 0.6)
 			.from('.hero-bottom > *', { y: 20, autoAlpha: 0, duration: 0.9, stagger: 0.08 }, 0.85);
+	}
 
-		/* Parallax: фон уходит вниз медленнее контента (yPercent 12) */
-		if (window.matchMedia('(min-width: 993px) and (prefers-reduced-motion: no-preference)').matches && window.ScrollTrigger) {
-			gsap.to('.hero-visual', {
-				yPercent: 12,
+	/* ============================================================
+	   ПАРАЛЛАКС (ProMaintenance) — фон уходит вниз медленнее контента
+	   ============================================================ */
+	function initParallax() {
+		if (!window.gsap || !window.ScrollTrigger) return;
+
+		var gsap = window.gsap;
+		var mq = window.matchMedia
+			? window.matchMedia('(min-width: 993px) and (prefers-reduced-motion: no-preference)')
+			: { matches: true };
+		if (!mq.matches) return;
+
+		[['.hero', '.hero-visual', 12], ['.process-section', '.process-photo', 7]].forEach(function (row) {
+			var trigger = document.querySelector(row[0]);
+			var target = document.querySelector(row[1]);
+			if (!trigger || !target) return;
+			gsap.to(target, {
+				yPercent: row[2],
 				ease: 'none',
 				scrollTrigger: {
-					trigger: '.hero',
+					trigger: trigger,
 					start: 'top top',
 					end: 'bottom top',
 					scrub: 0.65
 				}
 			});
-		}
+		});
 	}
 
 	/* ============================================================
@@ -196,6 +267,7 @@
 	   ============================================================ */
 	function initHeadings() {
 		if (!window.gsap || !window.SplitText) return;
+		if (reduceMotion()) return;
 		var gsap = window.gsap;
 		var SplitText = window.SplitText;
 		gsap.registerPlugin(SplitText);
@@ -220,7 +292,17 @@
 			'.section-heading h2',
 			'.cta-in h2',
 			'.security-title',
-			'.svh-h1'
+			'.svh-h1',
+			/* Портфолио */
+			'.esp-h1',
+			/* Блог */
+			'.blog-hero-title',
+			'.section-title',
+			'.blog-cta-title',
+			/* О компании */
+			'.xl-hero-grid h1',
+			'.xl-about-grid h2',
+			'.xl-why-l h2'
 		].join(',');
 
 		document.querySelectorAll(selectors).forEach(function (el) {
@@ -232,22 +314,18 @@
 				autoSplit: true,
 				onSplit: function (self) {
 					el.setAttribute('aria-label', text);
-					gsap.fromTo(self.lines,
-						{ yPercent: 105, opacity: 0 },
-						{
-							yPercent: 0,
-							opacity: 1,
-							duration: 1,
-							stagger: 0.085,
-							ease: 'power3.out',
-							immediateRender: false,
-							scrollTrigger: {
-								trigger: el,
-								start: 'top 91%',
-								toggleActions: 'play none none none'
-							}
+					gsap.from(self.lines, {
+						yPercent: 105,
+						opacity: 0,
+						duration: 1,
+						stagger: 0.085,
+						ease: 'power3.out',
+						scrollTrigger: {
+							trigger: el,
+							start: 'top 91%',
+							toggleActions: 'play none none none'
 						}
-					);
+					});
 				}
 			});
 		});
@@ -258,6 +336,7 @@
 	   ============================================================ */
 	function initReveals() {
 		if (!window.gsap || !window.ScrollTrigger) return;
+		if (reduceMotion()) return;
 		var gsap = window.gsap;
 
 		var reveal = function (elements, trigger, delay) {
@@ -267,26 +346,22 @@
 				return !el.querySelector('.motion-line');
 			});
 			if (!elements.length) return;
-			/* fromTo + immediateRender:false — элемент виден до срабатывания триггера.
-			   gsap.from() применяет from-состояние сразу и без триггера оставляет
-			   элемент навсегда невидимым (opacity 0). */
-			gsap.fromTo(elements,
-				{ y: 22, opacity: 0 },
-				{
-					y: 0,
-					opacity: 1,
-					duration: 0.85,
-					stagger: 0.075,
-					delay: delay || 0,
-					ease: 'power3.out',
-					immediateRender: false,
-					scrollTrigger: {
-						trigger: trigger,
-						start: 'top 91%',
-						toggleActions: 'play none none none'
-					}
+			/* gsap.from() применяет from-состояние сразу — элемент ждёт своего
+			   момента в зоне видимости и плавно появляется (как в ProMaintenance).
+			   Если ScrollTrigger не сработает — элемент покажет forceRevealVisible(). */
+			gsap.from(elements, {
+				y: 22,
+				opacity: 0,
+				duration: 0.85,
+				stagger: 0.075,
+				delay: delay || 0,
+				ease: 'power3.out',
+				scrollTrigger: {
+					trigger: trigger,
+					start: 'top 91%',
+					toggleActions: 'play none none none'
 				}
-			);
+			});
 		};
 
 		var revealIn = function (selector, childSelector, delay) {
@@ -313,10 +388,21 @@
 		revealIn('.footer-top', ':scope > *');
 
 		/* ФСС */
+		revealIn('.show-head', ':scope > *', 0.1);
 		revealIn('.section-heading', ':scope > p', 0.1);
+		revealIn('.cta-in', ':scope > *', 0.15);
 
 		/* ProMaintenance */
 		revealIn('.works-preview-copy', ':scope > *', 0.1);
+
+		/* Портфолио / Блог / О компании */
+		revealIn('.esp-top', ':scope > *', 0.1);
+		revealIn('.esp-item', ':scope > figcaption', 0.05);
+		revealIn('.xl-hero-grid', ':scope > *', 0.1);
+		revealIn('.xl-about-grid', ':scope > *', 0.1);
+		revealIn('.xl-why-l', ':scope > *', 0.1);
+		revealIn('.blog-card', ':scope > *', 0.05);
+		revealIn('.blog-feature', ':scope > *', 0.1);
 
 		/* Элементы с data-reveal — появление снизу вверх (ProMaintenance).
 		   Заголовки (h1-h3) анимирует SplitText — не дублируем. */
@@ -330,7 +416,7 @@
 		});
 
 		/* Изображения: раскрытие через clip-path + zoom */
-		document.querySelectorAll('.project-card__image, .expertise-image, .project-detail-hero, .project-next > a').forEach(function (el) {
+		document.querySelectorAll('.project-card__image, .expertise-image, .project-detail-hero, .project-next > a, .esp-item .ph, .blog-card-img').forEach(function (el) {
 			var tl = gsap.timeline({
 				defaults: { ease: 'power3.out' },
 				scrollTrigger: {
@@ -345,29 +431,24 @@
 				{
 					clipPath: 'inset(0% 0% 0% 0% round 8px)',
 					opacity: 1,
-					duration: 1.15,
-					immediateRender: false
+					duration: 1.15
 				}
 			);
 
 			if (!el.matches('.expertise-image')) {
 				var img = el.querySelector('img');
-				if (img) tl.fromTo(img,
-					{ scale: 1.065 },
-					{ scale: 1, duration: 1.35, immediateRender: false }, 0);
+				if (img) tl.from(img, { scale: 1.065, duration: 1.35 }, 0);
 			}
 
 			var card = el.closest('.project-card');
 			if (card) {
-				tl.fromTo(card.querySelectorAll('.project-card__meta, h3, p'),
-					{ y: 16, opacity: 0 },
-					{ y: 0, opacity: 1, duration: 0.75, stagger: 0.065, immediateRender: false }, 0.15);
+				tl.from(card.querySelectorAll('.project-card__meta, h3, p'),
+					{ y: 16, opacity: 0, duration: 0.75, stagger: 0.065 }, 0.15);
 			}
 
 			if (el.closest('.project-next')) {
-				tl.fromTo(el.querySelectorAll('div > *'),
-					{ y: 18, opacity: 0 },
-					{ y: 0, opacity: 1, duration: 0.8, stagger: 0.075, immediateRender: false }, 0.15);
+				tl.from(el.querySelectorAll('div > *'),
+					{ y: 18, opacity: 0, duration: 0.8, stagger: 0.075 }, 0.15);
 			}
 		});
 	}
@@ -609,6 +690,18 @@
 		});
 
 		showStage(0, false);
+	}
+
+	/* ============================================================
+	   6.1 ЭКРАН «ЗАЯВКА ПРИНЯТА» (ProMaintenance enquiry-success)
+	   Кнопка «Отправить ещё одну заявку» возвращает чистую форму
+	   ============================================================ */
+	function initEnquiryReset() {
+		var reset = document.querySelector('[data-enquiry-reset]');
+		if (!reset) return;
+		reset.addEventListener('click', function () {
+			window.location.reload();
+		});
 	}
 
 	/* ============================================================
@@ -854,7 +947,17 @@
 			update();
 		}, { passive: true });
 
-		window.addEventListener('scroll', update, { passive: true });
+		var ticking = false;
+		var onScroll = function () {
+			if (ticking) return;
+			ticking = true;
+			requestAnimationFrame(function () {
+				ticking = false;
+				update();
+			});
+		};
+
+		window.addEventListener('scroll', onScroll, { passive: true });
 		update();
 	}
 
@@ -895,26 +998,40 @@
 	}
 
 	/* ============================================================
-	   INIT
+	   MOTION — анимационная система.
+	   ВНИМАНИЕ: не оборачиваем в matchMedia('no-preference') —
+	   при включённом «уменьшить движение» отключалось ВСЁ,
+	   включая Lenis (плавный скролл) и hero-анимацию.
+	   Каждый модуль сам проверяет reduceMotion().
 	   ============================================================ */
-	function init() {
+	function initMotion() {
 		lenisInstance = initLenis();
 
 		if (window.gsap && window.ScrollTrigger) {
 			window.gsap.registerPlugin(window.ScrollTrigger);
+
+			/* ProMaintenance: игнорировать resize на мобильных (появление адресной
+			   строки вызывало пересчёт триггеров и «прыжок» секций) */
+			window.ScrollTrigger.config({
+				limitCallbacks: true,
+				ignoreMobileResize: true,
+				autoRefreshEvents: 'visibilitychange,DOMContentLoaded,load,resize'
+			});
 		}
 
-		initHeader();
 		initHero();
-		initCinema();
-		initHeadings();
+		/* SplitText — только после готовности шрифтов: иначе autoSplit пересобирает
+		   строки после подмены шрифта и высота заголовка меняется на ходу (CLS). */
+		whenFontsReady(function () {
+			try {
+				initHeadings();
+			} catch (e) {
+				console.error('[FSS] Ошибка инициализации модуля headings:', e);
+			}
+			refreshScroll();
+		});
 		initReveals();
-		initDetails();
-		initExpertise();
-		initAssessment();
-		initMultiStepForm();
-		initAnchors();
-		initScrollProgress();
+		initParallax();
 
 		refreshScroll();
 		if (document.fonts && document.fonts.ready) {
@@ -922,16 +1039,42 @@
 		}
 		window.addEventListener('load', refreshScroll, { once: true });
 
-		/* Страховка: элементы, оказавшиеся в зоне видимости, но не проигранные
-		   ScrollTrigger (layout shift, отсутствие триггера) — показываем принудительно */
-		setTimeout(forceRevealVisible, 700);
+		setTimeout(forceRevealVisible, 2500);
+	}
+
+	/* ============================================================
+	   INIT
+	   ============================================================ */
+	function init() {
+		/* Каждый модуль изолирован: ошибка в одном не ломает остальные */
+		var safe = function (name, fn) {
+			try {
+				fn();
+			} catch (e) {
+				console.error('[FSS] Ошибка инициализации модуля ' + name + ':', e);
+			}
+		};
+
+		/* Функциональные модули — работают всегда */
+		safe('header', initHeader);
+		safe('cinema', initCinema);
+		safe('details', initDetails);
+		safe('expertise', initExpertise);
+		safe('assessment', initAssessment);
+		safe('form', initMultiStepForm);
+		safe('enquiry-reset', initEnquiryReset);
+		safe('anchors', initAnchors);
+		safe('progress', initScrollProgress);
+
+		/* Анимационная система */
+		safe('motion', initMotion);
 
 		/* Страховка: если через 3 сек элементы hero всё ещё скрыты —
 		   значит GSAP не отработал (нет сети/ошибка) — показываем принудительно */
 		setTimeout(function () {
 			document.querySelectorAll('.hero-content > .eyebrow, .hero h1 > span, .hero-intro > *, .hero-bottom > *')
 				.forEach(function (el) {
-					var opacity = parseFloat(getComputedStyle(el).opacity);
+					var opacity = parseFloat(window.getComputedStyle(el).opacity);
 					if (opacity < 0.05) {
 						el.style.opacity = '1';
 						el.style.visibility = 'visible';
@@ -941,23 +1084,22 @@
 		}, 3000);
 	}
 
+	/* Страховка: элементы, оказавшиеся в зоне видимости, но не проигранные
+	   ScrollTrigger (layout shift, отсутствие триггера) — показываем.
+	   Проверяем только элементы В viewport, иначе сломаем эффект появления
+	   для секций ниже экрана. */
 	function forceRevealVisible() {
-		if (!window.gsap) return;
+		if (!window.gsap || !window.ScrollTrigger) return;
+		var triggers = window.ScrollTrigger.getAll ? window.ScrollTrigger.getAll() : [];
 		var vh = window.innerHeight;
-		var tweens = [];
-		try {
-			tweens = window.gsap.globalTimeline.getChildren(false, true, true) || [];
-		} catch (e) {
-			return;
-		}
-		tweens.forEach(function (tw) {
-			if (!tw.scrollTrigger) return;
-			var targets = tw.targets ? tw.targets() : [];
-			var el = targets[0];
+		triggers.forEach(function (st) {
+			var anim = st.animation;
+			if (!anim || typeof anim.progress !== 'function') return;
+			var el = st.trigger;
 			if (!el || !el.getBoundingClientRect) return;
 			var r = el.getBoundingClientRect();
-			if (r.top < vh && r.bottom > 0 && tw.progress() < 0.05) {
-				tw.progress(1);
+			if (r.top < vh && r.bottom > 0 && anim.progress() < 0.05) {
+				anim.progress(1);
 			}
 		});
 	}

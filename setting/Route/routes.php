@@ -2,6 +2,7 @@
 
 use App\Controllers\PageController;
 use App\Controllers\MailController;
+use App\Controllers\SuggestController;
 use App\Models\Router\Routes;
 use Setting\Route\Functions\Llms;
 use Setting\Route\Functions\Robots;
@@ -13,6 +14,8 @@ use Setting\Route\Functions\YmlFeed;
 
 //==================================================================================================//FORMS (POST - единый endpoint для всех форм)
 Routes::post('/send/email', [\Setting\Route\Functions\FormHandler::class, 'sendMail']);
+//==================================================================================================//ПОДСКАЗКИ ПО ЛОКАЦИИ (DaData / Photon)
+Routes::post('/api/suggest/location', [SuggestController::class, 'location']);
 //==================================================================================================//MAIN
 Routes::get('/', [PageController::class, 'home']);
 // Служебный маркер DEV-режима наружу не отдаём (на Apache закрыт ещё и .htaccess)

@@ -20,7 +20,7 @@ $__popular = array_slice(seo_services(), 0, 6, true);
 	<link rel="icon" type="image/png" sizes="32x32" href="/public/assets/image/logo/favicon/favicon-32x32.png">
 	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261009">
 	<style>
-		body{font-family:Manrope,Inter,system-ui,sans-serif;background:#f8fafc;color:#0f172a;margin:0}
+		body{font-family:Manrope,Inter,system-ui,sans-serif;background:#f8fafc;color:#0f172a;margin:0;padding:calc(var(--fss-header-h, 90px) + 20px) 20px 20px}
 		.wrap{max-width:900px;margin:0 auto;padding:64px 20px}
 		.card{background:#fff;border:1px solid #e2e8f0;border-radius:24px;padding:40px;box-shadow:0 10px 40px rgba(15,23,42,.06)}
 		h1{font-size:64px;margin:0;color:#059669;font-weight:800}
@@ -31,7 +31,8 @@ $__popular = array_slice(seo_services(), 0, 6, true);
 	</style>
 	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261009">
 </head>
-<body>
+<body data-page="inner">
+	<?php include_once dirname(__DIR__, 5) . '/public/components/header.php'; ?>
 	<div class="wrap">
 		<div class="card">
 			<h1>404</h1>

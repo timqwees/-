@@ -190,7 +190,33 @@ h3 {
 }
 
 /* ============================================================
-   ABOUT (Protenance about-section)
+   HERO — служебные элементы (ProMaintenance)
+   ============================================================ */
+.accent-dot {
+	color: var(--accent);
+}
+
+.live-dot {
+	background: currentColor;
+	border-radius: 50%;
+	width: 6px;
+	height: 6px;
+	margin-right: 12px;
+	display: inline-block;
+}
+
+/* Honeypot — скрытое поле (на случай, если inline-стиль не применится) */
+.fss-hp {
+	position: absolute;
+	left: -9999px;
+	top: auto;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+/* ============================================================
+   ABOUT (ProMaintenance about-section)
    ============================================================ */
 .about-section {
 	padding-top: 80px;
@@ -483,7 +509,7 @@ h3 {
 
 .process-content h2 {
 	margin-block: 32px 65px;
-	font-size: clamp(40px, 5vw, 78px);
+	font-size: clamp(34px, 4.2vw, 64px);
 }
 
 .process-content h2 span {
@@ -522,13 +548,12 @@ h3 {
 
 .process-steps h3 {
 	letter-spacing: -.03em;
-	font-size: 21px;
+	font-size: 18px;
 	line-height: 1.1;
 }
 
 .process-steps summary svg {
 	opacity: .6;
-	transition: transform .4s var(--ease);
 }
 
 .process-steps details[open] summary svg {
@@ -757,7 +782,7 @@ h3 {
 	align-self: start;
 	min-width: 0;
 	padding: 32px 36px;
-	box-shadow: 0 10px 35px rgba(0, 0, 0, .21);
+	box-shadow: 0 10px 35px rgba(0, 0, 0, .208);
 }
 
 /* Отдельная страница контактов (ProMaintenance enquiry-section--standalone) */
@@ -823,8 +848,8 @@ h3 {
 	min-width: 0;
 }
 
-.form-field--full,
-[data-form-stage="0"] .form-field:first-child {
+[data-form-stage="0"] .form-field,
+.form-field--full {
 	grid-column: 1 / -1;
 }
 
@@ -852,7 +877,7 @@ h3 {
 }
 
 .form-field [aria-invalid=true] {
-	border-bottom-color: #e5b09f !important;
+	border-color: #e5b09f !important;
 }
 
 .form-demo-note {
@@ -860,6 +885,55 @@ h3 {
 	margin-top: 20px;
 	font-size: 9px;
 	line-height: 1.5;
+}
+
+/* Экран «Заявка принята» — как в оригинале */
+#enquiry-success {
+	padding-top: 36px;
+}
+
+.success-icon {
+	color: var(--ink);
+	background: var(--accent);
+	place-items: center;
+	width: 58px;
+	height: 58px;
+	margin-bottom: 26px;
+	display: grid;
+	border-radius: var(--radius-control);
+}
+
+#enquiry-success h3 {
+	overflow-wrap: anywhere;
+	margin-block: 22px;
+	font-size: 42px;
+}
+
+#enquiry-success>p:not(.eyebrow) {
+	color: var(--muted);
+	font-size: 13px;
+}
+
+#enquiry-success dl {
+	margin-top: 24px;
+}
+
+#enquiry-success dl>div {
+	border-top: 1px solid var(--line);
+	justify-content: space-between;
+	gap: 24px;
+	padding-block: 12px;
+	font-size: 11px;
+	display: flex;
+}
+
+#enquiry-success dd {
+	text-align: right;
+	overflow-wrap: anywhere;
+}
+
+#enquiry-success .button {
+	margin-top: 25px;
 }
 
 .enquiry-experience {
@@ -884,58 +958,120 @@ h3 {
 
 /* ============================================================
    ФОРМА В ТЁМНОЙ ПАНЕЛИ (ProMaintenance enquiry-panel)
-   Поля становятся тёмными с подчёркиванием — читаемо на тёмном фоне
+   Поля — аккуратный тонкий бордер по периметру, без outline
    ============================================================ */
-.enquiry-panel input:not([type=checkbox]):not([type=hidden]),
-.enquiry-panel select,
-.enquiry-panel textarea {
-	background: transparent !important;
-	border: 0 !important;
-	border-bottom: 1px solid #756f69 !important;
-	border-radius: 0 !important;
-	color: #f0efed !important;
-	font-size: 16px !important;
-	min-height: 52px !important;
-	padding: 14px 0 !important;
-	box-shadow: none !important;
-	outline-offset: 3px;
-	transition: border-color .3s;
+.form-field input,
+.form-field select,
+.form-field textarea {
+	color-scheme: dark;
+	color: var(--paper);
+	outline: none;
+	background-color: rgba(255, 255, 255, .03) !important;
+	border: 1px solid rgba(255, 255, 255, .16);
+	border-radius: 6px;
+	width: 100%;
+	min-height: 44px;
+	padding: 11px 14px;
+	font-size: 13px;
+	transition: border-color .2s, background-color .2s;
 }
 
-.enquiry-panel input::placeholder,
-.enquiry-panel textarea::placeholder {
+.form-field textarea {
+	resize: vertical;
+	min-height: 95px;
+}
+
+.form-field input::placeholder,
+.form-field textarea::placeholder {
 	color: #a6a09a;
 }
 
-.enquiry-panel input:focus,
-.enquiry-panel select:focus,
-.enquiry-panel textarea:focus {
-	border-bottom-color: var(--accent) !important;
+.form-field input:hover,
+.form-field select:hover,
+.form-field textarea:hover {
+	border-color: rgba(255, 255, 255, .3);
 }
 
-.enquiry-panel select {
-	color-scheme: dark;
-	appearance: none;
-	padding-right: 32px !important;
-	cursor: pointer;
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+	outline: none;
+	border-color: var(--accent);
+	background-color: rgba(255, 255, 255, .05) !important;
 }
 
-.enquiry-panel select option {
+.form-field [aria-invalid=true] {
+	border-color: #e5b09f;
+}
+
+.form-field select {
+	padding-right: 34px;
+}
+
+.form-field select option {
 	color: #f0efed;
 	background: #242426;
 }
 
-.enquiry-panel input[type=checkbox] {
+/* ФСС: согласия на обработку данных */
+.form-consent {
+	margin-top: 22px;
+	display: grid;
+	gap: 10px;
+}
+
+.consent-item {
+	align-items: flex-start;
+	gap: 12px;
+	color: rgba(240, 239, 237, .78);
+	font-size: 12px;
+	line-height: 1.5;
+	cursor: pointer;
+	display: flex;
+}
+
+.consent-item input[type=checkbox] {
+	margin-top: 2px;
 	accent-color: var(--brand);
-	width: 20px;
-	height: 20px;
+	width: 16px;
+	height: 16px;
 	flex-shrink: 0;
 }
 
-.enquiry-panel label {
-	color: rgba(240, 239, 237, .78);
-	font-size: 14px;
-	line-height: 1.5;
+/* ФСС: чекбоксы согласия и ссылки в подписях */
+.enquiry-panel input[type=checkbox] {
+	appearance: none;
+	-webkit-appearance: none;
+	margin: 1px 0 0;
+	background-color: rgba(255, 255, 255, .03) !important;
+	border: 1px solid rgba(255, 255, 255, .3);
+	border-radius: 4px;
+	width: 18px;
+	height: 18px;
+	flex-shrink: 0;
+	display: grid;
+	place-content: center;
+	cursor: pointer;
+	transition: border-color .2s, background-color .2s;
+}
+
+.enquiry-panel input[type=checkbox]:hover {
+	border-color: rgba(255, 255, 255, .55);
+}
+
+.enquiry-panel input[type=checkbox]:checked {
+	background-color: var(--brand) !important;
+	border-color: var(--brand);
+}
+
+.enquiry-panel input[type=checkbox]:checked::after {
+	content: "";
+	border: 1.5px solid #fff;
+	border-top: 0;
+	border-right: 0;
+	width: 4px;
+	height: 8px;
+	transform: translateY(-1px) rotate(-45deg);
 }
 
 .enquiry-panel label a {
@@ -944,50 +1080,14 @@ h3 {
 	text-underline-offset: 4px;
 }
 
-.enquiry-panel .form-progress {
-	color: #9a938d;
+/* Кнопки формы — светлые (paper), как в оригинале */
+.enquiry-panel .button {
+	color: #1b1c1d;
+	background: #f0efed;
 }
 
-.enquiry-panel .form-progress .is-current {
-	color: #f0efed;
-}
-
-.enquiry-panel .form-step-count {
-	color: #b1aaa4;
-}
-
-.enquiry-panel .form-errors {
-	color: #f4cbbd;
-	background: #49352e;
-}
-
-.enquiry-panel .form-next,
-.enquiry-panel button[type=submit] {
-	background: var(--accent) !important;
-	color: var(--ink) !important;
-	border-radius: var(--radius-control);
-	font-weight: 500;
-	transition: background .3s, transform .3s;
-}
-
-.enquiry-panel .form-next:hover,
-.enquiry-panel button[type=submit]:hover {
-	background: #d8bda4;
-	transform: translateY(-2px);
-}
-
-.enquiry-panel button[type=button].form-back,
-.enquiry-panel [data-form-back] {
-	background: transparent !important;
-	border: 1px solid rgba(240, 239, 237, .3) !important;
-	color: #f0efed !important;
-	border-radius: var(--radius-control);
-}
-
-.enquiry-panel button[type=button].form-back:hover,
-.enquiry-panel [data-form-back]:hover {
-	border-color: var(--accent);
-	color: var(--accent);
+.enquiry-panel .button:hover {
+	background: #fff;
 }
 
 /* ============================================================
@@ -995,6 +1095,17 @@ h3 {
    ============================================================ */
 .section-shell {
 	padding-inline: clamp(24px, 4.4vw, 96px);
+}
+
+/* Шапка секции: линия сверху + два элемента в одну строку */
+.section-topline {
+	border-top: 1px solid var(--line);
+	justify-content: space-between;
+	align-items: center;
+	gap: 24px;
+	padding-top: 20px;
+	padding-bottom: 30px;
+	display: flex;
 }
 
 .selected-work {
@@ -1167,7 +1278,7 @@ h3 {
 	color: #9a938d;
 	align-items: center;
 	gap: 20px;
-	margin: 18px 0 26px;
+	margin: 24px 0 35px;
 	font-size: 10px;
 	display: flex;
 }
@@ -1183,21 +1294,35 @@ h3 {
 }
 
 .form-progress .is-current {
-	color: #333333;
+	color: var(--paper);
+}
+
+.form-stage h3 {
+	letter-spacing: -.035em;
+	margin-bottom: 30px;
+	font-size: 28px;
+}
+
+.form-next {
+	width: 100%;
+	margin-top: 30px;
+}
+
+.form-errors ul {
+	margin-top: 8px;
+}
+
+.form-stage+.form-stage:not([hidden]) {
+	margin-top: 24px;
 }
 
 .form-errors {
 	color: #f4cbbd;
 	background: #49352e;
-	margin-bottom: 20px;
+	margin-bottom: 24px;
 	padding: 14px;
 	font-size: 11px;
 	border-radius: var(--radius-control);
-}
-
-.form-stage {
-	display: grid;
-	gap: 12px;
 }
 
 .form-stage[hidden] {
@@ -1208,8 +1333,12 @@ h3 {
 	justify-content: space-between;
 	align-items: center;
 	gap: 20px;
-	margin-top: 24px;
+	margin-top: 30px;
 	display: flex;
+}
+
+.form-actions>.button {
+	margin-left: auto;
 }
 
 /* ============================================================
@@ -1290,7 +1419,7 @@ h3 {
 	}
 
 	.process-steps h3 {
-		font-size: 18px;
+		font-size: 16px;
 	}
 }
 
@@ -1346,7 +1475,7 @@ h3 {
 	}
 
 	.process-steps h3 {
-		font-size: 24px;
+		font-size: 20px;
 	}
 
 	.process-steps details {
@@ -1501,11 +1630,11 @@ h3 {
 
 	.process-content h2 {
 		margin-block: 26px 36px;
-		font-size: 39px;
+		font-size: 32px;
 	}
 
 	.process-steps h3 {
-		font-size: 22px;
+		font-size: 18px;
 	}
 
 	.assessment-section {
@@ -1578,6 +1707,30 @@ h3 {
 		width: 22px;
 	}
 
+	.form-progress>span>span {
+		margin-left: 5px;
+	}
+
+	.form-stage h3 {
+		margin-bottom: 24px;
+		font-size: 25px;
+	}
+
+	.form-fields {
+		grid-template-columns: 1fr;
+		gap: 23px;
+	}
+
+	.form-field input,
+	.form-field select,
+	.form-field textarea {
+		font-size: 16px;
+	}
+
+	.form-stage+.form-stage:not([hidden]) {
+		margin-top: 0;
+	}
+
 	.form-actions {
 		flex-direction: column-reverse;
 		align-items: stretch;
@@ -1586,6 +1739,15 @@ h3 {
 	.selected-work {
 		padding-top: 38px;
 		padding-bottom: 42px;
+	}
+
+	.section-topline {
+		padding-top: 17px;
+		padding-bottom: 22px;
+	}
+
+	.section-topline>.eyebrow:last-child:not(:first-child) {
+		display: none;
 	}
 
 	.work-heading {
@@ -1662,4 +1824,437 @@ h3 {
 		transition-duration: .01ms !important;
 		animation-duration: .01ms !important;
 	}
+}
+
+/* ============================================================
+   СЕКЦИИ ПОСЛЕ ФОРМЫ (ProMaintenance)
+   Отзывы · бегущая строка · почему мы · FAQ
+   ============================================================ */
+
+/* Шапка светлой секции — как works-preview */
+.head-row {
+	justify-content: space-between;
+	align-items: end;
+	gap: 30px;
+	padding-block: 25px 45px;
+	display: flex;
+}
+
+.head-row h2 {
+	font-size: clamp(40px, 4.5vw, 70px);
+}
+
+.head-row h2 span {
+	color: #8e8780;
+}
+
+.head-row p {
+	color: var(--muted);
+	font-size: 13px;
+	line-height: 1.7;
+}
+
+/* ---------- ОТЗЫВЫ ---------- */
+.reviews-section {
+	padding-block: clamp(64px, 7vw, 120px);
+}
+
+.reviews-grid {
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 46px 26px;
+	display: grid;
+}
+
+.review-card {
+	border-top: 1px solid var(--line);
+	padding-top: 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.review-card-top {
+	justify-content: space-between;
+	align-items: center;
+	display: flex;
+}
+
+.review-stars {
+	color: var(--line);
+	gap: 3px;
+	font-size: 12px;
+	line-height: 1;
+	display: flex;
+}
+
+.review-stars i {
+	font-style: normal;
+}
+
+.review-stars i.is-on {
+	color: var(--accent);
+}
+
+.review-index {
+	color: var(--muted);
+	letter-spacing: .12em;
+	font-size: 10px;
+}
+
+.review-text {
+	font-size: 15px;
+	line-height: 1.7;
+}
+
+.review-author {
+	margin-top: auto;
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+}
+
+.review-author strong {
+	font-weight: 500;
+	font-size: 13px;
+}
+
+.review-author span {
+	color: var(--muted);
+	font-size: 12px;
+}
+
+.review-author time {
+	color: var(--muted);
+	letter-spacing: .1em;
+	text-transform: uppercase;
+	font-size: 10px;
+}
+
+/* ---------- БЕГУЩАЯ СТРОКА ---------- */
+.marquee-band {
+	background: none;
+	color: var(--muted);
+	border-block: 1px solid var(--line);
+	overflow: hidden;
+	width: auto;
+	margin: 0;
+	transform: none;
+	position: relative;
+	z-index: auto;
+}
+
+.marquee-track {
+	animation-duration: 48s;
+}
+
+.marquee-item {
+	color: var(--muted);
+	font-weight: 500;
+	letter-spacing: .12em;
+	text-transform: uppercase;
+	font-size: 11px;
+	padding: 18px 24px;
+}
+
+.marquee-item::after {
+	content: "—";
+	opacity: .45;
+	margin-left: 24px;
+}
+
+/* ---------- ПОЧЕМУ МЫ ---------- */
+.pluses-section {
+	background: #e5e2de;
+	padding-block: clamp(64px, 7vw, 120px);
+}
+
+.pluses-grid {
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 42px 30px;
+	display: grid;
+}
+
+.plus-item {
+	border-top: 1px solid var(--line);
+	padding-top: 20px;
+}
+
+.plus-index {
+	color: var(--accent);
+	letter-spacing: .12em;
+	font-size: 10px;
+	display: block;
+}
+
+.plus-item h3 {
+	margin-top: 16px;
+	font-size: clamp(24px, 2vw, 30px);
+	line-height: 1.15;
+}
+
+.plus-item p {
+	color: var(--muted);
+	max-width: 36ch;
+	margin-top: 14px;
+	font-size: 14px;
+	line-height: 1.7;
+}
+
+.pluses-stats {
+	border-top: 1px solid var(--line);
+	grid-template-columns: repeat(4, 1fr);
+	margin-top: 68px;
+	padding-top: 28px;
+	display: grid;
+}
+
+.pluses-stats>div {
+	border-right: 1px solid var(--line);
+	padding-inline: 38px;
+}
+
+.pluses-stats>div:first-child {
+	padding-left: 0;
+}
+
+.pluses-stats>div:last-child {
+	border: 0;
+}
+
+.pluses-stats dd {
+	letter-spacing: -.05em;
+	font-size: 60px;
+	line-height: 1;
+}
+
+.pluses-stats dd>span {
+	vertical-align: top;
+	font-size: 26px;
+}
+
+.pluses-stats dt {
+	color: var(--muted);
+	margin-top: 18px;
+	font-size: 11px;
+}
+
+/* ---------- FAQ ---------- */
+.faq-section {
+	background: var(--paper) !important;
+	padding-block: clamp(64px, 7vw, 120px);
+}
+
+.faq-grid {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0 40px;
+	display: grid;
+}
+
+/* Снимаем старую «карточку» — остаётся тонкая линия, как в ProMaintenance */
+.faq-grid .faq-ex {
+	background: none;
+	border: 0;
+	border-top: 1px solid var(--line);
+	border-radius: 0;
+	padding: 0;
+	overflow: visible;
+	box-shadow: none;
+	transition: none;
+}
+
+.faq-grid .faq-ex:hover {
+	background: none;
+	box-shadow: none;
+}
+
+.faq-grid .faq-ex summary {
+	align-items: center;
+	gap: 20px;
+	padding: 22px 0;
+	list-style: none;
+	display: flex;
+	cursor: pointer;
+	position: static;
+	color: var(--ink);
+	letter-spacing: -.02em;
+	font-weight: 500;
+	font-size: 15px;
+}
+
+.faq-grid .faq-ex summary::after {
+	content: none;
+}
+
+.faq-grid .faq-ex summary:hover,
+.faq-grid .faq-ex[open] summary {
+	color: var(--ink);
+}
+
+.faq-grid .faq-mark {
+	opacity: 1;
+	margin-left: auto;
+	flex-shrink: 0;
+	font-size: 0;
+}
+
+.faq-grid .faq-content {
+	padding: 0 40px 24px 0;
+}
+
+.faq-grid .faq-content p {
+	color: var(--muted);
+	font-size: 14px;
+	line-height: 1.7;
+}
+
+.faq-grid .faq-content .faq-more {
+	color: var(--muted);
+	display: inline-block;
+	margin-top: 14px;
+	font-size: 11px;
+	letter-spacing: .04em;
+}
+
+.faq-grid .faq-content .faq-more:hover {
+	color: var(--brand);
+}
+
+/* ============================================================
+   АДАПТИВ
+   ============================================================ */
+@media (width <= 1100px) {
+	.reviews-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.pluses-stats dd {
+		font-size: 48px;
+	}
+
+	.pluses-stats dd>span {
+		font-size: 22px;
+	}
+}
+
+@media (width <= 992px) {
+	.head-row {
+		display: block;
+		padding-block: 10px 30px;
+	}
+
+	.head-row h2 {
+		font-size: 11vw;
+	}
+
+	.head-row p {
+		margin-top: 20px;
+	}
+
+	.pluses-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.pluses-stats {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 30px 0;
+	}
+
+	.pluses-stats>div {
+		border-right: 0;
+		padding-inline: 24px;
+	}
+
+	.faq-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (width <= 576px) {
+	.reviews-grid {
+		grid-template-columns: 1fr;
+		gap: 34px;
+	}
+
+	.pluses-grid {
+		grid-template-columns: 1fr;
+		gap: 32px;
+	}
+
+	.pluses-stats {
+		grid-template-columns: 1fr;
+		gap: 24px;
+	}
+
+	.pluses-stats>div {
+		padding-inline: 0;
+	}
+
+	.pluses-stats dd {
+		font-size: 43px;
+	}
+
+	.head-row h2 {
+		font-size: 12vw;
+	}
+}
+
+/* ============================================================
+   ПОДСКАЗКИ ПО ЛОКАЦИИ (DaData / Photon) — выпадающий список
+   ============================================================ */
+.form-field--location {
+	position: relative;
+}
+
+.location-suggestions {
+	position: absolute;
+	z-index: 60;
+	top: calc(100% + 6px);
+	left: 0;
+	right: 0;
+	max-height: 280px;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	padding: 6px;
+	border-radius: var(--radius-control);
+	background: rgba(20, 19, 18, .97);
+	border: 1px solid rgba(255, 255, 255, .16);
+	box-shadow: 0 18px 40px rgba(0, 0, 0, .45);
+	backdrop-filter: blur(20px);
+}
+
+.location-suggestions[hidden] {
+	display: none;
+}
+
+.location-suggestion {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	padding: 9px 12px;
+	border-radius: 5px;
+	cursor: pointer;
+	color: var(--paper);
+	transition: background-color .15s;
+}
+
+.location-suggestion:hover,
+.location-suggestion.is-active {
+	background: rgba(255, 255, 255, .09);
+}
+
+.location-suggestion__label {
+	font-size: 13px;
+	line-height: 1.3;
+}
+
+.location-suggestion__hint {
+	font-size: 11px;
+	line-height: 1.3;
+	color: #a6a09a;
+}
+
+.location-suggestion__loading {
+	padding: 10px 12px;
+	font-size: 12px;
+	color: #a6a09a;
 }

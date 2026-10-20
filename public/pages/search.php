@@ -27,25 +27,28 @@ if ($q !== '') {
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap"></noscript>
-	<style> body { font-family: 'Wix Madefor Display', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
+	<link rel="preload" as="font" type="font/woff2" href="/public/assets/vendor/fonts/Manrope-latin.woff2" crossorigin><link rel="preload" as="font" type="font/woff2" href="/public/assets/vendor/fonts/Manrope-cyrillic.woff2" crossorigin><link rel="preload" as="font" type="font/woff2" href="/public/assets/fonts/WixMadeforDisplay/WixMadeforDisplay-Variable.woff2" crossorigin><link rel="stylesheet" href="/public/assets/vendor/fonts/fonts.css">
+	<style> body { font-family: 'DM Sans Variable', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; }</style>
+	<style>
+		/* Отступ под фиксированную шапку (90 / 78 / 74) — иначе хлебные крошки
+		   и первый экран уезжают под header и остаются невидимыми. */
+		.page-hero {
+			padding-top: max(112px, calc(var(--fss-header-h, 90px) + 22px));
+		}
+	</style>
 
 	<title>Поиск по услугам<?= $q !== '' ? ' — ' . htmlspecialchars($q) : '' ?> | <?= htmlspecialchars(seo_config('brand')) ?></title>
 	<meta name="description" content="Поиск по услугам <?= htmlspecialchars(seo_config('brand')) ?>: склады, ангары, АБК, общежития, капремонт, спецтехника.">
 	<meta name="robots" content="noindex, follow">
 	<link rel="icon" type="image/png" href="/public/assets/image/logo/favicon/favicon-96x96.png" sizes="96x96" />
-	<link rel="icon" type="image/svg+xml" href="/public/assets/image/logo/favicon/favicon.svg" />
 	<link rel="shortcut icon" href="/public/assets/image/logo/favicon/favicon.ico" />
 	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/favicon/apple-touch-icon.png" />
 	<?= seo_canonical_tags() ?>
 	<?= seo_og_tags('Поиск по услугам — ' . seo_config('brand'), 'Поиск по каталогу услуг ФАВОРИТ-СТРОЙ-СНАБ: склады, ангары, АБК, общежития, капремонт, спецтехника.') ?>
 	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261018">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css"><noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css"></noscript>
 	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261018">
 	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261018">
-	<script defer src="/public/assets/distJS/main.js"></script>
 </head>
 <body class="font-sans text-gray-800" data-page="inner">
 	<?php include_once __DIR__ . '/../components/header.php'; ?>

@@ -44,7 +44,9 @@ if (!defined('EMAIL')) {
 }
 
 // --- Сессия + PRG-алерты после отправки форм ---
-if (session_status() === PHP_SESSION_NONE) {
+// Ленивый старт: файл сессии создаётся только если браузер уже прислал cookie.
+// Анонимные GET-запросы не пишут на диск session-файл → меньше I/O на каждый запрос.
+if (session_status() === PHP_SESSION_NONE && !empty($_COOKIE[session_name()])) {
 	@session_start();
 }
 
@@ -83,15 +85,11 @@ if (!headers_sent()) {
 }
 
 // --- Автоверсия статики (cache busting) ---
+// Финализация HTML (версия ассетов + размеры картинок) выполняется в index.php
+// через App\Models\Router\Html::finalize() — так страница не зависит от
+// output-buffer callback, который ломает аварийный рендер (500).
 if (!defined('FSS_ASSET_VER')) {
 	$__mt = @filemtime(dirname(__DIR__) . '/public/assets/distCSS/premium.css') ?: time();
 	define('FSS_ASSET_VER', date('YmdHi', $__mt));
 	unset($__mt);
-
-	ob_start(function ($__html) {
-		$__html = str_replace('?v=20261009', '?v=' . FSS_ASSET_VER, $__html);
-		$__html = str_replace('/public/assets/distJS/main.js"', '/public/assets/distJS/main.js?v=' . FSS_ASSET_VER . '"', $__html);
-		$__html = str_replace("/public/assets/distJS/main.js'", '/public/assets/distJS/main.js?v=' . FSS_ASSET_VER . "'", $__html);
-		return $__html;
-	});
 }

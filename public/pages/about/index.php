@@ -21,12 +21,9 @@ $d = 'ООО «ФАВОРИТ-СТРОЙ-СНАБ» (ИНН ' . $inn . ', ОГР
 	<meta name="format-detection" content="telephone=yes">
 	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 	<meta name="yandex-verification" content="27e0ba9980498150" />
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap"></noscript>
+	<link rel="preload" as="font" type="font/woff2" href="/public/assets/vendor/fonts/Manrope-latin.woff2" crossorigin><link rel="preload" as="font" type="font/woff2" href="/public/assets/vendor/fonts/Manrope-cyrillic.woff2" crossorigin><link rel="preload" as="font" type="font/woff2" href="/public/assets/fonts/WixMadeforDisplay/WixMadeforDisplay-Variable.woff2" crossorigin><link rel="stylesheet" href="/public/assets/vendor/fonts/fonts.css">
 	<!-- Favicon unified -->
 	<link rel="icon" type="image/png" href="/public/assets/image/logo/favicon/favicon-96x96.png" sizes="96x96" />
-	<link rel="icon" type="image/svg+xml" href="/public/assets/image/logo/favicon/favicon.svg" />
 	<link rel="shortcut icon" href="/public/assets/image/logo/favicon/favicon.ico" />
 	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/favicon/apple-touch-icon.png" />
 	<meta name="apple-mobile-web-app-title" content="ФСС" />
@@ -39,40 +36,44 @@ $d = 'ООО «ФАВОРИТ-СТРОЙ-СНАБ» (ИНН ' . $inn . ', ОГР
 	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 	<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 	<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
-	<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
-	<style> body { font-family: 'Wix Madefor Display', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
+	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css">
+	<noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css"></noscript>
+	<style> body { font-family: 'DM Sans Variable', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
 	<link rel="preload" href="/public/assets/distCSS/style.css?v=20261018" as="style">
 	<link rel="preload" href="/public/assets/distJS/main.js?v=20261018" as="script">
 	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261018">
 	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261018">
 	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261018">
-	<script defer src="/public/assets/distJS/main.js?v=20261018"></script>
 	<?php include_once __DIR__ . '/../../components/sheoma.php'; ?>
 	<?= seo_analytics() ?>
 	<?= seo_utm_script() ?>
 	<?= seo_goals_script() ?>
 	<style>
-		body{background:#fff;color:#171310;font-family:"Wix Madefor Display",Manrope,Inter,Arial,sans-serif;margin:0}
+		body{background:#fff;color:#171310;font-family: 'DM Sans Variable', Manrope, Inter,Arial,sans-serif;margin:0}
+		/* Отступ под фиксированную шапку (90px / 78px / 74px) — иначе хлебные крошки
+		   и первый экран уезжают под header и остаются невидимыми. */
+		main{padding-top:104px}
+		@media(max-width:992px){main{padding-top:92px}}
+		@media(max-width:576px){main{padding-top:88px}}
 		.xl{max-width:1280px;margin:0 auto;padding:0 24px}
 		.xl-eyebrow{font-size:11px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:#A1A1AA;margin-bottom:20px}
 		.xl-btn{display:inline-flex;align-items:center;gap:10px;background:#171310;color:#fff;border-radius:999px;border:0;padding:13px 24px;font-size:14px;font-weight:600;cursor:pointer;transition:background .25s,transform .25s;text-decoration:none}
 		.xl-btn:hover{background:#F97316;transform:translateY(-2px)}
 		.xl-btn i{font-size:11px}
 		/* HERO */
-		.xl-hero{padding:40px 0 24px}
+		.xl-hero{padding-block:40px 24px}
 		.xl-hero-grid{display:grid;grid-template-columns:1fr .78fr;gap:32px;align-items:center;min-height:480px}
 		.xl-hero h1{font-size:clamp(26px,3.2vw,42px);font-weight:700;line-height:1.12;letter-spacing:-1.2px;margin:0 0 32px;max-width:620px}
-		.xl-scroll{display:flex;gap:10px;align-items:center;margin-top:56px}
+		.xl-scroll{display:flex;gap:10px;align-items:center;margin-top:40px}
 		.xl-scroll.ar{width:30px;height:30px;border:1px solid #E4E4E7;border-radius:50%;display:grid;place-items:center;color:#71717A;font-size:10px}
 		.xl-scroll .t{font-size:11px;color:#A1A1AA;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
-		.xl-auto{margin-top:48px;text-align:right;max-width:220px;margin-left:auto}
+		.xl-auto{margin-top:44px;padding-top:20px;border-top:1px solid #EDEDEF;max-width:320px}
 		.xl-auto .n1{font-size:13px;font-weight:600;color:#171310}
 		.xl-auto .n2{font-size:12px;color:#A1A1AA;margin-top:4px}
 		/* 3D куб (CSS) */
 		.xl3{position:relative;width:100%;max-width:460px;aspect-ratio:1/.92;margin:0 auto}
 		.xl3 .cube{position:absolute;top:46%;left:52%;transform:translate(-50%,-50%) rotateX(-16deg) rotateY(34deg);width:210px;height:210px;transform-style:preserve-3d}
-		.xl3 .fc{position:absolute;width:210px;height:210px;border-radius:26px;background:linear-gradient(135deg,#fff,#fafafa);border:1px solid #ececef;box-shadow:inset 0 0 40px rgba(23,19,16,.03)}
+		.xl3 .fc{position:absolute;width:210px;height:210px;border-radius:26px;background:linear-gradient(135deg,#fff,#f7f7f8);border:1px solid #e2e2e6;box-shadow:inset 0 0 40px rgba(23,19,16,.04),0 18px 40px rgba(23,19,16,.07)}
 		.xl3 .a{transform:translateZ(105px)}
 		.xl3 .b{transform:rotateX(90deg) translateZ(105px);background:linear-gradient(135deg,#f6f6f7,#fff)}
 		.xl3 .c{transform:rotateY(90deg) translateZ(105px);background:linear-gradient(135deg,#fdf4ee,#fbe9da)}
@@ -88,16 +89,18 @@ $d = 'ООО «ФАВОРИТ-СТРОЙ-СНАБ» (ИНН ' . $inn . ', ОГР
 		.xl-marq .dim{color:#EAEAEA}
 		@keyframes xlscroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 		/* ABOUT */
-		.xl-about{padding:56px 0}
+		.xl-about{padding-block:56px}
 		.xl-about-grid{display:grid;grid-template-columns:auto 1fr;gap:48px;align-items:start}
 		.xl-about-lbl{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#A1A1AA;writing-mode:vertical-rl;transform:rotate(180deg);position:sticky;top:120px}
 		.xl-about h2{font-size:clamp(20px,2.4vw,30px);font-weight:600;line-height:1.3;letter-spacing:-.4px;margin:0 0 28px;max-width:720px}
-		.xl-about h2 .dim{color:#D4D4D8}
+		.xl-about h2 .dim{color:#71717A}
+		.xl-about .txt{font-size:14px;line-height:1.7;color:#52525B;margin:0 0 10px}
+		.xl-about .txt a{color:#171310;text-decoration:underline;text-underline-offset:3px;text-decoration-color:#F97316}
 		/* WHY CHOOSE (2 колонки) */
-		.xl-why{padding:56px 0}
-		.xl-why-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
-		.xl-why-l h2{font-size:clamp(38px,5vw,68px);font-weight:800;line-height:1.03;letter-spacing:-2.2px;margin:0}
-		.xl-why-l h2 .dim{color:#D4D4D8}
+		.xl-why{padding-block:56px}
+		.xl-why-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:48px;align-items:start}
+		.xl-why-l h2{font-size:clamp(32px,4vw,54px);font-weight:800;line-height:1.05;letter-spacing:-1.6px;margin:0}
+		.xl-why-l h2 .dim{color:#9A9AA2}
 		.xl-why-r .txt{font-size:14px;line-height:1.7;color:#71717A;margin:0 0 28px}
 		.xl-why-tag{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#A1A1AA;margin-bottom:16px}
 		/* FEATURE CARDS */
@@ -107,12 +110,9 @@ $d = 'ООО «ФАВОРИТ-СТРОЙ-СНАБ» (ИНН ' . $inn . ', ОГР
 		.xl-card .num{width:40px;height:40px;border-radius:50%;background:#fff;border:1px solid #E4E4E7;display:grid;place-items:center;font-size:12px;font-weight:700;color:#71717A;flex-shrink:0;transition:background .3s,border-color .3s,color .3s}
 		.xl-card:hover .num{background:#F97316;border-color:#F97316;color:#fff}
 		.xl-card h3{font-size:clamp(20px,2.2vw,26px);font-weight:700;line-height:1.14;letter-spacing:-.5px;color:#171310;margin:20px 0 0}
-		.xl-card:first-child h3{margin:0 0 16px;margin-top:auto;order:3}
-		.xl-card:first-child .x3{order:2;margin:auto 0}
-		.xl-card:first-child .num{order:1}
 		.xl-card .x3{margin-top:auto;width:100%;aspect-ratio:2/1;position:relative;flex-shrink:0}
 		/* STATS */
-		.xl-stats{padding:24px 0 64px}
+		.xl-stats{padding-block:24px 64px}
 		.xl-stats-h{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#A1A1AA;margin-bottom:28px}
 		.xl-stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border-top:1px solid #EDEDEF;border-bottom:1px solid #EDEDEF}
 		.xl-stat{padding:28px 20px;border-right:1px solid #EDEDEF}
@@ -139,12 +139,15 @@ $d = 'ООО «ФАВОРИТ-СТРОЙ-СНАБ» (ИНН ' . $inn . ', ОГР
 			.xl-about-lbl{writing-mode:horizontal-tb;transform:none;position:static}
 			.xl-why-grid{grid-template-columns:1fr;gap:24px}
 			.xl-why-l{order:-1}
+			.xl-why-l h2{font-size:clamp(26px,6vw,44px);letter-spacing:-1px}
 			.xl-cards{grid-template-columns:1fr}
+			.xl-marq .big{font-size:clamp(34px,10vw,44px);letter-spacing:-1.6px}
+			.xl-marq{padding-block:28px}
 			.xl-stats-row{grid-template-columns:repeat(2,1fr)}
 			.xl-stat{border-right:0}
 .xl-band{height:300px;border-radius:24px}
 		}
-  .fss-breadcrumbs { margin-bottom: 20px; }
+  .fss-breadcrumbs { max-width: 1280px; margin: 0 auto 20px; padding: 0 24px; }
   .fss-bc-list { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; font-size: 13px; color: #6b7078; }
   .fss-bc-item { display: flex; align-items: center; }
   .fss-bc-item:not(:last-child)::after { content: "/"; margin-left: 6px; color: #b0b3b8; }
@@ -190,8 +193,8 @@ $d = 'ООО «ФАВОРИТ-СТРОЙ-СНАБ» (ИНН ' . $inn . ', ОГР
 		<!-- MARQUEE -->
 		<section class="xl-marq" aria-hidden="true">
 			<div class="xl-marq-in">
-				<span class="big">Инновации — на каждом этапе</span> 			<span class="big dim">Строим с 2020</span>
-				<span class="big">Инновации — на каждом этапе</span> 			<span class="big dim">Строим с 2020</span>
+				<span class="big">Инновации — на каждом этапе</span>			<span class="big dim">Строим с <?= $foundedMarket ?></span>
+				<span class="big">Инновации — на каждом этапе</span>			<span class="big dim">Строим с <?= $foundedMarket ?></span>
 			</div>
 		</section>
 
@@ -222,8 +225,8 @@ $d = 'ООО «ФАВОРИТ-СТРОЙ-СНАБ» (ИНН ' . $inn . ', ОГР
 			<div class="xl-cards">
 				<div class="xl-card">
 					<div class="num">01</div>
-					<div class="x3 f3" aria-hidden="true"><span class="octa"></span><span class="gem"></span></div>
 					<h3>Внутренний контроль качества</h3>
+					<div class="x3 f3" aria-hidden="true"><span class="octa"></span><span class="gem"></span></div>
 				</div>
 				<div class="xl-card">
 					<div class="num">02</div>
@@ -242,10 +245,10 @@ $d = 'ООО «ФАВОРИТ-СТРОЙ-СНАБ» (ИНН ' . $inn . ', ОГР
 		<section class="xl xl-stats">
 			<div class="xl-stats-h">Компания в цифрах</div>
 			<div class="xl-stats-row">
-				<div class="xl-stat"><div class="num">6+</div><div class="lbl">лет на рынке</div></div>
-				<div class="xl-stat"><div class="num">14</div><div class="lbl">дней до сдачи модуля</div></div>
-				<div class="xl-stat"><div class="num">180+</div><div class="lbl">проектов сдано</div></div>
-				<div class="xl-stat"><div class="num">50+</div><div class="lbl">лет гарантии</div></div>
+				<div class="xl-stat"><div class="num"><?= htmlspecialchars((string)seo_config('market_years')) ?></div><div class="lbl">лет на рынке</div></div>
+				<div class="xl-stat"><div class="num"><?= htmlspecialchars((string)seo_config('deadline_days')) ?></div><div class="lbl">дней до сдачи модуля</div></div>
+				<div class="xl-stat"><div class="num"><?= htmlspecialchars((string)seo_config('objects')) ?></div><div class="lbl">проектов сдано</div></div>
+				<div class="xl-stat"><div class="num"><?= htmlspecialchars((string)seo_config('guarantee_years')) ?></div><div class="lbl">лет гарантии</div></div>
 				<div class="xl-stat"><div class="num">100%</div><div class="lbl">фиксированная цена</div></div>
 			</div>
 		</section>
@@ -253,7 +256,7 @@ $d = 'ООО «ФАВОРИТ-СТРОЙ-СНАБ» (ИНН ' . $inn . ', ОГР
 		<!-- ФОНОВОЕ ИЗОБРАЖЕНИЕ -->
 		<section class="xl">
 			<div class="xl-band">
-				<img src="/public/assets/image/banner.jpeg"<?= seo_img_attrs('/public/assets/image/banner.jpeg') ?> alt="Модульное строительство — ФСС" loading="lazy" onerror="this.style.display=.none." title="Модульное строительство — ФСС">
+				<img src="/public/assets/image/banner.webp"<?= seo_img_attrs('/public/assets/image/banner.webp') ?> alt="Модульное строительство — ФСС" loading="lazy" onerror="this.style.display=.none." title="Модульное строительство — ФСС">
 				<div class="ov"></div>
 				<div class="cap">
 					<div class="who">ФАВОРИТ-СТРОЙ-СНАБ</div>
