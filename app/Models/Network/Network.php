@@ -275,10 +275,10 @@ class Network
                 (string)($_ENV['EMAIL'] ?? getenv('EMAIL') ?? ''),
                 (string)($_ENV['EMAIL_NICKNAME'] ?? getenv('EMAIL_NICKNAME') ?? '')
             );
-            $mail->addAddress($data['to_email']);
-            $mail->Subject = $data['subject'];
+            $mail->addAddress(self::asciiEmail((string)($data['to_email'] ?? '')));
+            $mail->Subject = (string)($data['subject'] ?? '');
 
-            $mail->msgHTML($data['body']);
+            $mail->msgHTML((string)($data['body'] ?? ''));
 
             $mail->send();
             $mail->clearAddresses();
@@ -288,6 +288,31 @@ class Network
             Message::set('error', 'Ошибка при отправке письма: ' . $e->getMessage());
             return false;
         }
+    }
+
+    /**
+     * Конвертирует IDN-домен в punycode — SMTP принимает только ASCII.
+     * order@фсс.рус → order@xn--q1aah.xn--p1acf
+     */
+    private static function asciiEmail(string $email): string
+    {
+        $email = trim($email);
+        $at = strrpos($email, '@');
+        if ($at === false) {
+            return $email;
+        }
+        $domain = substr($email, $at + 1);
+        if (!preg_match('/[^\x00-\x7F]/', $domain)) {
+            return $email; // уже ASCII
+        }
+        if (!function_exists('idn_to_ascii')) {
+            return $email;
+        }
+        $ascii = idn_to_ascii($domain, IDNA_NONTRANSITIONAL_TO_ASCII, INTL_IDNA_VARIANT_UTS46);
+        if ($ascii === false || $ascii === '') {
+            return $email;
+        }
+        return substr($email, 0, $at + 1) . $ascii;
     }
 
     public static function handleInvalidCallback(string $path, $callback): void

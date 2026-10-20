@@ -4,9 +4,8 @@
    ============================================================ */
 
 :root {
-	/* Палитра (по Protenance) */
+	/* Палитра (по ProMaintenance) */
 	--paper: #f0efed;
-	--ink: #1b1c1d;
 	--muted: #6c6864;
 	--line: #d3cfcb;
 	--accent: #c7ab94;
@@ -19,13 +18,19 @@
 }
 
 /* ============================================================
-   ТИПОГРАФИКА
+   БАЗА — фон и текст (ProMaintenance body)
+   --ink берётся из premium.css (#171310), здесь не переопределяем
    ============================================================ */
 body {
+	background: var(--paper);
+	color: var(--ink);
 	font-family: var(--font-display);
 	-webkit-font-smoothing: antialiased;
 }
 
+/* ============================================================
+   ТИПОГРАФИКА
+   ============================================================ */
 h1,
 h2,
 h3 {
@@ -755,8 +760,238 @@ h3 {
 	box-shadow: 0 10px 35px rgba(0, 0, 0, .21);
 }
 
+/* Отдельная страница контактов (ProMaintenance enquiry-section--standalone) */
+.enquiry-section--standalone {
+	min-height: 850px;
+	padding-top: 155px;
+}
+
+/* Вспомогательные компоненты */
+.tracked {
+	letter-spacing: .12em;
+	text-transform: uppercase;
+	font-size: 10px;
+	font-weight: 500;
+	line-height: 1.5;
+}
+
+.pill {
+	background: var(--ink);
+	color: #fff;
+	border-radius: var(--radius-control);
+	border: 1px solid transparent;
+	justify-content: space-between;
+	align-items: center;
+	gap: 35px;
+	min-height: 52px;
+	padding: 15px 22px;
+	font-size: 13px;
+	font-weight: 500;
+	line-height: 1.2;
+	transition: background .3s, color .3s;
+	display: inline-flex;
+}
+
+.pill:hover {
+	background: #424244;
+}
+
+.round-link {
+	border: 1px solid var(--line);
+	place-items: center;
+	width: 60px;
+	height: 60px;
+	font-size: 24px;
+	display: grid;
+	transition: background .3s, color .3s, border-color .3s;
+}
+
+.round-link:hover {
+	background: var(--ink);
+	border-color: var(--ink);
+	color: #fff;
+}
+
+/* Формы (ProMaintenance form-fields) */
+.form-fields {
+	grid-template-columns: 1fr 1fr;
+	gap: 26px 22px;
+	display: grid;
+}
+
+.form-field {
+	min-width: 0;
+}
+
+.form-field--full,
+[data-form-stage="0"] .form-field:first-child {
+	grid-column: 1 / -1;
+}
+
+.form-field label {
+	align-items: baseline;
+	gap: 5px;
+	font-size: 10px;
+	display: flex;
+}
+
+.form-field label>span:not(.optional) {
+	color: var(--accent);
+}
+
+.form-field .optional {
+	color: #b1aaa4;
+	margin-left: auto;
+	font-size: 9px;
+}
+
+.form-field [data-error-for] {
+	color: #e5b09f;
+	margin-top: 8px;
+	font-size: 11px;
+}
+
+.form-field [aria-invalid=true] {
+	border-bottom-color: #e5b09f !important;
+}
+
+.form-demo-note {
+	color: #aaa49e;
+	margin-top: 20px;
+	font-size: 9px;
+	line-height: 1.5;
+}
+
+.enquiry-experience {
+	min-width: 0;
+}
+
 /* ============================================================
-   ИЗБРАННЫЕ ПРОЕКТЫ (Protenance selected-work)
+   ПОЛОСА ПРОГРЕССА СКРОЛЛА (ProMaintenance site-progress)
+   ============================================================ */
+.site-progress {
+	z-index: 101;
+	background: var(--accent);
+	height: 2px;
+	transform: scaleX(var(--scroll-progress, 0));
+	transform-origin: 0;
+	pointer-events: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+}
+
+/* ============================================================
+   ФОРМА В ТЁМНОЙ ПАНЕЛИ (ProMaintenance enquiry-panel)
+   Поля становятся тёмными с подчёркиванием — читаемо на тёмном фоне
+   ============================================================ */
+.enquiry-panel input:not([type=checkbox]):not([type=hidden]),
+.enquiry-panel select,
+.enquiry-panel textarea {
+	background: transparent !important;
+	border: 0 !important;
+	border-bottom: 1px solid #756f69 !important;
+	border-radius: 0 !important;
+	color: #f0efed !important;
+	font-size: 16px !important;
+	min-height: 52px !important;
+	padding: 14px 0 !important;
+	box-shadow: none !important;
+	outline-offset: 3px;
+	transition: border-color .3s;
+}
+
+.enquiry-panel input::placeholder,
+.enquiry-panel textarea::placeholder {
+	color: #a6a09a;
+}
+
+.enquiry-panel input:focus,
+.enquiry-panel select:focus,
+.enquiry-panel textarea:focus {
+	border-bottom-color: var(--accent) !important;
+}
+
+.enquiry-panel select {
+	color-scheme: dark;
+	appearance: none;
+	padding-right: 32px !important;
+	cursor: pointer;
+}
+
+.enquiry-panel select option {
+	color: #f0efed;
+	background: #242426;
+}
+
+.enquiry-panel input[type=checkbox] {
+	accent-color: var(--brand);
+	width: 20px;
+	height: 20px;
+	flex-shrink: 0;
+}
+
+.enquiry-panel label {
+	color: rgba(240, 239, 237, .78);
+	font-size: 14px;
+	line-height: 1.5;
+}
+
+.enquiry-panel label a {
+	color: var(--accent);
+	text-decoration: underline;
+	text-underline-offset: 4px;
+}
+
+.enquiry-panel .form-progress {
+	color: #9a938d;
+}
+
+.enquiry-panel .form-progress .is-current {
+	color: #f0efed;
+}
+
+.enquiry-panel .form-step-count {
+	color: #b1aaa4;
+}
+
+.enquiry-panel .form-errors {
+	color: #f4cbbd;
+	background: #49352e;
+}
+
+.enquiry-panel .form-next,
+.enquiry-panel button[type=submit] {
+	background: var(--accent) !important;
+	color: var(--ink) !important;
+	border-radius: var(--radius-control);
+	font-weight: 500;
+	transition: background .3s, transform .3s;
+}
+
+.enquiry-panel .form-next:hover,
+.enquiry-panel button[type=submit]:hover {
+	background: #d8bda4;
+	transform: translateY(-2px);
+}
+
+.enquiry-panel button[type=button].form-back,
+.enquiry-panel [data-form-back] {
+	background: transparent !important;
+	border: 1px solid rgba(240, 239, 237, .3) !important;
+	color: #f0efed !important;
+	border-radius: var(--radius-control);
+}
+
+.enquiry-panel button[type=button].form-back:hover,
+.enquiry-panel [data-form-back]:hover {
+	border-color: var(--accent);
+	color: var(--accent);
+}
+
+/* ============================================================
+   ИЗБРАННЫЕ ПРОЕКТЫ (ProMaintenance selected-work)
    ============================================================ */
 .section-shell {
 	padding-inline: clamp(24px, 4.4vw, 96px);

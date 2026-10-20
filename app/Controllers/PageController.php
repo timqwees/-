@@ -44,6 +44,11 @@ class PageController
 		self::show('about/index.php');
 	}
 
+	public static function contact(): void
+	{
+		self::show('contact.php');
+	}
+
 
 	public static function politika(): void
 	{

@@ -19,7 +19,7 @@ body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-se
 .btn:hover{background:#C2410C;transform:translateY(-2px)}
 </style>
 </head>
-<body>
+<body data-page="inner">
 <div class="container">
 <div class="code">404</div>
 <p class="message">Страница не найдена или перемещена</p>

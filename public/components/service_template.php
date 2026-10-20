@@ -292,7 +292,7 @@ html.lenis,html.lenis body{height:auto;}
   .fss-bc-current { color: #17191d; font-weight: 600; }
 </style>
 </head>
-<body class="font-sans text-gray-800">
+<body class="font-sans text-gray-800" data-page="inner">
 <?php include_once __DIR__ . '/header.php'; ?>
 <main>
 	<div class="svh-wrap">

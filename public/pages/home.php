@@ -363,30 +363,33 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 <link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261018">
 </head>
 
-<body class="font-sans text-gray-800">
+<body class="font-sans text-gray-800" data-page="home">
+
+	<!-- Полоса прогресса скролла (ProMaintenance) -->
+	<div class="site-progress" aria-hidden="true"></div>
 
 	<?php include_once __DIR__ . '/../components/header.php'; ?>
 
 	<!-- CINEMA HERO — exact Protenance copy -->
-	<section class="hero" aria-labelledby="hero-title" style="isolation: isolate; color: #fff; background: #363636; height: 100svh; min-height: 750px; max-height: 1200px; position: relative; overflow: hidden;">
+	<section id="hero" class="hero" aria-labelledby="hero-title" data-cinema style="isolation: isolate; color: #fff; background: #363636; height: 100svh; min-height: 750px; max-height: 1200px; position: relative; overflow: hidden;">
 		<div class="hero-visual" data-hero-frame="" style="position: absolute; inset: 0;">
-			<img src="/public/assets/image/Components/banner/hero.jpg.webp" srcset="/public/assets/image/Components/banner/hero.jpg.webp 720w, /public/assets/image/Components/banner/hero.jpg.webp 1200w, /public/assets/image/Components/banner/hero.jpg.webp 1672w" alt="" sizes="100vw" loading="eager" fetchpriority="high" data-cinema-image="0" decoding="async" width="1672" height="941" class="cinema-image" style="object-fit: cover; object-position: 58% 50%; opacity: 1; width: 100%; height: 100%; position: absolute; opacity: 1; object-position: 58% 50%;">
-			<img src="/public/assets/image/swiper/2.jpg.webp" srcset="/public/assets/image/swiper/2.jpg.webp 720w, /public/assets/image/swiper/2.jpg.webp 1200w, /public/assets/image/swiper/2.jpg.webp 1672w" alt="" sizes="100vw" loading="lazy" fetchpriority="auto" data-cinema-image="1" decoding="async" width="1672" height="941" class="cinema-image" style="object-fit: cover; object-position: 58% 50%; opacity: 0; width: 100%; height: 100%; position: absolute; opacity: 0; object-position: 58% 50%;">
-			<img src="/public/assets/image/swiper/3.jpeg.webp" srcset="/public/assets/image/swiper/3.jpeg.webp 720w, /public/assets/image/swiper/3.jpeg.webp 1200w, /public/assets/image/swiper/3.jpeg.webp 1672w" alt="" sizes="100vw" loading="lazy" fetchpriority="auto" data-cinema-image="2" decoding="async" width="1672" height="941" class="cinema-image" style="object-fit: cover; object-position: 58% 50%; opacity: 0; width: 100%; height: 100%; position: absolute; opacity: 0; object-position: 58% 50%;">
+			<img src="/public/assets/image/Components/banner/hero.jpg.webp" srcset="/public/assets/image/Components/banner/hero.jpg.webp 720w, /public/assets/image/Components/banner/hero.jpg.webp 1200w, /public/assets/image/Components/banner/hero.jpg.webp 1672w" alt="Склад под ключ — Химки" title="Склад под ключ — Химки" sizes="100vw" loading="eager" fetchpriority="high" data-cinema-image="0" decoding="async" width="1672" height="941" class="cinema-image is-active" style="object-fit: cover; object-position: 58% 50%; width: 100%; height: 100%; position: absolute;">
+			<img src="/public/assets/image/swiper/2.jpg.webp" srcset="/public/assets/image/swiper/2.jpg.webp 720w, /public/assets/image/swiper/2.jpg.webp 1200w, /public/assets/image/swiper/2.jpg.webp 1672w" alt="Ангар под ключ — Мытищи" title="Ангар под ключ — Мытищи" sizes="100vw" loading="lazy" fetchpriority="auto" data-cinema-image="1" decoding="async" width="1672" height="941" class="cinema-image" style="object-fit: cover; object-position: 58% 50%; width: 100%; height: 100%; position: absolute;">
+			<img src="/public/assets/image/swiper/3.jpeg.webp" srcset="/public/assets/image/swiper/3.jpeg.webp 720w, /public/assets/image/swiper/3.jpeg.webp 1200w, /public/assets/image/swiper/3.jpeg.webp 1672w" alt="АБК под ключ — Подольск" title="АБК под ключ — Подольск" sizes="100vw" loading="lazy" fetchpriority="auto" data-cinema-image="2" decoding="async" width="1672" height="941" class="cinema-image" style="object-fit: cover; object-position: 58% 50%; width: 100%; height: 100%; position: absolute;">
 		</div>
 		<div class="hero-shade" aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, #0f0e0dad, #0f0e0d14 85%), linear-gradient(#0f0e0d2e, #0000 55%, #0f0e0dcc);"></div>
 		<div class="hero-content" style="position: absolute; top: clamp(155px, 22vh, 260px); left: clamp(24px, 4.4vw, 96px); right: clamp(24px, 4.4vw, 96px);">
 			<p class="eyebrow" style="color: #ffffffc7; letter-spacing: .12em; text-transform: uppercase; font-size: 10px; font-weight: 500; line-height: 1.5; display: flex; align-items: center; gap: 12px;">
 				<span class="live-dot" style="background: currentColor; border-radius: 50%; width: 6px; height: 6px; margin-right: 12px; display: inline-block;" aria-hidden="true"></span>
-				Geotechnical · Structural · Contracting
+				Строительство · Производство · Монтаж
 			</p>
-			<h1 id="hero-title" style="letter-spacing: -.066em; text-wrap: initial; margin-top: 32px; font-size: clamp(72px, 9.6vw, 170px); font-weight: 450; line-height: .98;">
-				<span style="display: block;">Strength for</span>
-				<span style="display: block;">what&#8217;s next<span class="accent-dot" style="color: #c7ab94;">.</span></span>
+			<h1 id="hero-title" style="letter-spacing: -.066em; text-wrap: initial; margin-top: 32px; font-size: clamp(56px, 8vw, 130px); font-weight: 450; line-height: .98; font-family: 'DM Sans Variable', Arial, sans-serif;">
+				<span style="display: block;">Модульные здания</span>
+				<span style="display: block;">нового поколения<span class="accent-dot" style="color: #c7ab94;">.</span></span>
 			</h1>
 			<div class="hero-intro" style="align-items: end; gap: 85px; margin-top: 40px; display: flex;">
-				<p style="color: #fffc; font-size: 15px; line-height: 1.5;">From the ground up.<br>Strength for every next chapter.</p>
-				<a class="text-link" href="#about" style="border-bottom: 1px solid; align-items: center; gap: 25px; padding-block: 10px; font-size: 11px; line-height: 1.4; display: inline-flex; border-color: #ffffff80; font-size: 11px; line-height: 1.4; display: inline-flex; align-items: center; gap: 25px;">Discover Protenance <span>&#8595;</span></a>
+				<p style="color: #fffc; font-size: 15px; line-height: 1.5;">От фундамента до сдачи.<br>Сила для каждого нового этапа.</p>
+				<a class="text-link" href="#about" style="border-bottom: 1px solid; align-items: center; gap: 25px; padding-block: 10px; font-size: 11px; line-height: 1.4; display: inline-flex; border-color: #ffffff80; font-size: 11px; line-height: 1.4; display: inline-flex; align-items: center; gap: 25px;">Узнать о ФСС <span>&#8595;</span></a>
 			</div>
 		</div>
 		<div class="hero-bottom" style="grid-template-columns: 1.1fr 1fr auto; align-items: end; gap: 40px; display: grid; position: absolute; bottom: 32px; left: clamp(24px, 4.4vw, 96px); right: clamp(24px, 4.4vw, 96px);">
@@ -523,15 +526,15 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 		</div>
 
 		<div class="work-heading">
-			<h2>Места с будущим</h2>
+			<h2 data-reveal aria-label="Места с будущим.">Места с будущим.</h2>
 			<p>За каждым объектом — причина<br>сделать его надолго.</p>
 		</div>
 
 		<div class="featured-grid">
-			<article class="project-card" data-slug="sklad-1200">
-				<a href="/portfolio" class="project-card__link" title="Склад 1 200 м² из сэндвич-панелей — объект ФСС">
+			<article class="project-card" data-emirate="Московская область" data-search="Склад 1 200 м² из сэндвич-панелей Склад 1 200 м² из сэндвич-панелей Логистика Московская область Московская область Логистика" data-slug="sklad-1200">
+				<a href="/portfolio#obj-1" class="project-card__link" title="Склад 1 200 м² из сэндвич-панелей — объект ФСС">
 					<div class="project-card__image">
-						<img src="/public/assets/image/services/капстроение/10.JPG" alt="Склад 1 200 м² из сэндвич-панелей — объект ФСС" title="Склад 1 200 м² из сэндвич-панелей — объект ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
+						<img src="/public/assets/image/services/капстроение/10.JPG" srcset="/public/assets/image/services/капстроение/10.JPG 600w, /public/assets/image/services/капстроение/10.JPG 1000w, /public/assets/image/services/капстроение/10.JPG 1600w, /public/assets/image/services/капстроение/10.JPG 1672w" alt="Склад 1 200 м² из сэндвич-панелей — объект ФСС" title="Склад 1 200 м² из сэндвич-панелей — объект ФСС" sizes="92vw" loading="lazy" decoding="async" width="1672" height="941" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
 						<span class="project-card__number">01 — Логистика</span>
 						<span class="project-card__arrow">
 							<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
@@ -547,10 +550,10 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 				</a>
 			</article>
 
-			<article class="project-card" data-slug="obshchiezhie-120">
-				<a href="/portfolio" class="project-card__link" title="Модульное общежитие на 120 мест — объект ФСС">
+			<article class="project-card" data-emirate="Московская область" data-search="Модульное общежитие на 120 мест Модульное общежитие на 120 мест Жильё Московская область Московская область Жильё" data-slug="obshchiezhie-120">
+				<a href="/portfolio#obj-2" class="project-card__link" title="Модульное общежитие на 120 мест — объект ФСС">
 					<div class="project-card__image">
-						<img src="/public/assets/image/swiper/1.jpeg" alt="Модульное общежитие на 120 мест — объект ФСС" title="Модульное общежитие на 120 мест — объект ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
+						<img src="/public/assets/image/swiper/1.jpeg" srcset="/public/assets/image/swiper/1.jpeg 600w, /public/assets/image/swiper/1.jpeg 1000w, /public/assets/image/swiper/1.jpeg 1600w, /public/assets/image/swiper/1.jpeg 1672w" alt="Модульное общежитие на 120 мест — объект ФСС" title="Модульное общежитие на 120 мест — объект ФСС" sizes="(min-width: 993px) 46vw, 100vw" loading="lazy" decoding="async" width="1672" height="941" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
 						<span class="project-card__number">02 — Жильё</span>
 						<span class="project-card__arrow">
 							<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
@@ -566,10 +569,10 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 				</a>
 			</article>
 
-			<article class="project-card" data-slug="kapremont-shkoly">
-				<a href="/portfolio" class="project-card__link" title="Капремонт школы под ключ — объект ФСС">
+			<article class="project-card" data-emirate="Московская область" data-search="Капремонт школы под ключ Капремонт школы под ключ Образование Московская область Московская область Образование" data-slug="kapremont-shkoly">
+				<a href="/portfolio#obj-3" class="project-card__link" title="Капремонт школы под ключ — объект ФСС">
 					<div class="project-card__image">
-						<img src="/public/assets/image/swiper/3.jpeg" alt="Капремонт школы под ключ — объект ФСС" title="Капремонт школы под ключ — объект ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
+						<img src="/public/assets/image/swiper/3.jpeg" srcset="/public/assets/image/swiper/3.jpeg 600w, /public/assets/image/swiper/3.jpeg 1000w, /public/assets/image/swiper/3.jpeg 1600w, /public/assets/image/swiper/3.jpeg 1672w" alt="Капремонт школы под ключ — объект ФСС" title="Капремонт школы под ключ — объект ФСС" sizes="(min-width: 993px) 46vw, 100vw" loading="lazy" decoding="async" width="1672" height="941" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
 						<span class="project-card__number">03 — Образование</span>
 						<span class="project-card__arrow">
 							<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
@@ -597,7 +600,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 		</div>
 		<div class="expertise-layout">
 			<div class="expertise-visual">
-				<h2>Разные задачи.<br><span>Один сильный результат.</span></h2>
+				<h2>Разные задачи.<br>Один сильный результат.</h2>
 				<div class="expertise-image">
 					<img src="/public/assets/image/swiper/1.jpeg" alt="Модульное общежитие из сэндвич-панелей — объект ФСС" title="Модульное общежитие из сэндвич-панелей — объект ФСС" loading="lazy" data-expertise-image="moduli" decoding="async" class="is-active">
 					<img src="/public/assets/image/swiper/2.jpg" alt="Склад из сэндвич-панелей — объект ФСС" title="Склад из сэндвич-панелей — объект ФСС" loading="lazy" data-expertise-image="sklad" decoding="async">
@@ -697,8 +700,8 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 			<img src="/public/assets/image/banner.jpeg" alt="Модульные здания — производство ФСС" title="Модульные здания — производство ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
 		</div>
 		<div class="process-content section-shell">
-			<p class="eyebrow">03 / Как мы работаем</p>
-			<h2>Продуманно на каждом этапе.<br><span>Уверенно на каждом шаге.</span></h2>
+			<p class="eyebrow">04 / Как мы работаем</p>
+			<h2>Продуманно на каждом этапе.<br>Уверенно на каждом шаге.</h2>
 			<div class="process-steps">
 				<details data-phase="0" open>
 					<summary>
@@ -763,7 +766,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 	<section class="works-preview section-shell view">
 		<div class="works-preview-copy">
 			<p class="eyebrow">С наших объектов</p>
-			<h2>Построено в поле.<br><span>Увидено вблизи.</span></h2>
+			<h2>Построено в поле.<br>Увидено вблизи.</h2>
 			<p>Арматура, опалубка, сваи. Смотрите оригинальные фотографии наших объектов в процессе работ.</p>
 			<a href="/portfolio" class="text-link">Все наши объекты
 				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
@@ -860,208 +863,30 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 
 	<!-- Contact — High converting -->
 <div class="px-3 sm:px-5">
-	<section id="contact" class="view relative isolate z-[20] overflow-hidden rounded-[28px] bg-[#FFB77D] px-5 py-12 sm:px-8 lg:min-h-[760px] lg:px-12 lg:py-16">
-		<img src="/public/assets/image/Components/element.png" alt="Декоративный элемент" aria-hidden="true" loading="lazy" decoding="async" class="contact-element" title="Декоративный элемент">
-		<div class="pointer-events-none absolute -bottom-40 -left-24 h-[480px] w-[480px] rounded-full bg-[#FF9A45]/70 blur-[1px]" aria-hidden="true"></div>
-		<div class="pointer-events-none absolute -bottom-52 left-24 h-[440px] w-[440px] rounded-full bg-[#FFD0A7]" aria-hidden="true"></div>
-		<div class="pointer-events-none absolute -bottom-64 left-0 h-[350px] w-[350px] rotate-[-35deg] rounded-[80px] bg-gradient-to-br from-[#FFE2C8] via-[#FFB77D] to-[#FF8A2A] shadow-[inset_8px_8px_18px_rgba(255,255,255,0.6),inset_-8px_-8px_20px_rgba(205,80,0,0.15)]" aria-hidden="true"></div>
-		<div class="relative z-10 mx-auto grid max-w-[1440px] grid-cols-1 items-start gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-12">
-			<div class="enquiry-lead flex flex-col items-start pt-2 lg:pt-0">
-				<h2 class="max-w-[650px] text-4xl font-semibold leading-[1.02] tracking-[-0.055em] text-white sm:text-5xl lg:text-6xl xl:text-7xl">
-					Рассчитаем стоимость
-					<br class="hidden sm:block">
-					за 15 минут
-				</h2>
-				<p class="mt-7 max-w-[460px] text-base leading-relaxed text-white/95 sm:text-lg">
-					Оставьте контакты — инженер перезвонит, уточнит задачу и пришлёт смету с фиксированной ценой
-				</p>
-				<a href="tel:<?= htmlspecialchars(preg_replace("/\D/", "", seo_config("phone"))) ?>" title="Позвонить: +7 938 018-00-06" class="mt-8 inline-flex items-center gap-2 rounded-full bg-white/20 px-6 py-3 font-semibold text-white backdrop-blur transition hover:bg-white/30"><i class="fa-solid fa-phone"></i> <?= htmlspecialchars((string)seo_config('phone_display')) ?></a>
-			</div>
-			<div class="w-full rounded-[28px] bg-white p-6 shadow-[0_20px_60px_rgba(130,55,0,0.08)] sm:p-8 lg:p-10 xl:p-12">
-				<div class="mb-8 flex items-start justify-between gap-5">
-					<h3 class="max-w-[540px] text-2xl font-medium leading-tight tracking-[-0.035em] text-[#333333] sm:text-3xl">
-						Заполните форму, инженер перезвонит за 15 минут
-					</h3>
-					<img
-						src="/public/assets/image/Components/avatar/1.png"
-						alt="Ваш менеджер — ФСС"
-						title="Ваш менеджер — ФСС"
-						loading="lazy" decoding="async" onerror="this.style.display='none'"
-						class="hidden h-16 w-16 shrink-0 rounded-full object-cover sm:block"
-					>
-				</div>
-				<form method="POST" action="/send/email" novalidate class="space-y-3" data-form="contact" data-multistep>
-					<input type="hidden" name="mailer">
-					<?php include __DIR__ . '/../components/antibot_fields.php'; ?>
-					<input type="hidden" name="message" id="contact_message_hidden" value="Заявка с главной страницы">
-
-					<!-- Прогресс формы (Protenance) -->
-					<div class="form-heading" style="justify-content: space-between; align-items: center; gap: 20px; display: flex; margin-bottom: 4px;">
-						<span class="eyebrow" style="color: #b1aaa4; font-size: 10px;">Заявка на расчёт</span>
-						<span class="form-step-count" data-form-counter style="color: #b1aaa4; font-size: 10px;">01 / 02</span>
-					</div>
-					<div class="form-progress" data-form-progress style="color: #9a938d; align-items: center; gap: 20px; margin: 18px 0 26px; font-size: 10px; display: flex;">
-						<span data-step-indicator class="is-current" style="color: #fff;"><span>Контакты</span></span>
-						<i aria-hidden="true" style="background: #5b554f; width: 40px; height: 1px;"></i>
-						<span data-step-indicator style=""><span>Задача</span></span>
-					</div>
-					<div class="form-errors" data-error-summary hidden style="color: #f4cbbd; background: #49352e; margin-bottom: 20px; padding: 14px; font-size: 11px; border-radius: 6px;"></div>
-
-					<!-- ЭТАП 1: контакты -->
-					<div class="form-stage" data-form-stage="0" style="display: grid; gap: 12px;">
-						<input
-							type="text"
-							name="name"
-							id="contact_name"
-							placeholder="Ваше имя"
-							aria-label="Ваше имя"
-							autocomplete="name"
-							required
-							minlength="2"
-							maxlength="100"
-							pattern="^[A-Za-zА-Яа-яЁё\s\-\.\']+$"
-							class="h-[76px] w-full rounded-2xl border border-transparent bg-[#FFF7F1] px-7 text-base text-[#333333] outline-none transition placeholder:text-[#B8B8B8] focus:border-[#F97316] focus:bg-white focus:ring-4 focus:ring-[#F97316]/10"
-						>
-						<input
-							type="text"
-							name="company"
-							id="contact_company"
-							placeholder="Ваша компания"
-							aria-label="Ваша компания"
-							autocomplete="organization"
-							maxlength="100"
-							class="h-[76px] w-full rounded-2xl border border-transparent bg-[#FFF7F1] px-7 text-base text-[#333333] outline-none transition placeholder:text-[#B8B8B8] focus:border-[#F97316] focus:bg-white focus:ring-4 focus:ring-[#F97316]/10"
-						>
-						<input
-							type="email"
-							name="email"
-							id="contact_email"
-							placeholder="Email"
-							aria-label="Email"
-							autocomplete="email"
-							required
-							maxlength="254"
-							class="h-[76px] w-full rounded-2xl border border-transparent bg-[#FFF7F1] px-7 text-base text-[#333333] outline-none transition placeholder:text-[#B8B8B8] focus:border-[#F97316] focus:bg-white focus:ring-4 focus:ring-[#F97316]/10"
-						>
-						<input
-							type="tel"
-							name="phone"
-							id="phone"
-							placeholder="+7 (000) 000-00-00"
-							aria-label="Телефон"
-							autocomplete="tel"
-							inputmode="tel"
-							required
-							maxlength="18"
-							pattern="^\+?[0-9\s\-\(\)]{10,20}$"
-							class="h-[76px] w-full rounded-2xl border border-transparent bg-[#FFF7F1] px-7 text-base text-[#333333] outline-none transition placeholder:text-[#B8B8B8] focus:border-[#F97316] focus:bg-white focus:ring-4 focus:ring-[#F97316]/10"
-						>
-						<button
-							type="button"
-							data-form-next
-							class="form-next inline-flex min-h-[68px] w-full items-center justify-center rounded-full bg-[#F97316] px-10 py-4 text-base font-medium text-white shadow-[0_8px_24px_rgba(249,115,22,0.2)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#EA6508] hover:shadow-[0_12px_28px_rgba(249,115,22,0.28)] focus:outline-none focus:ring-4 focus:ring-[#F97316]/25 active:translate-y-0"
-						>
-							Дальше
-							<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
-						</button>
-					</div>
-
-					<!-- ЭТАП 2: задача -->
-					<div class="form-stage" data-form-stage="1" hidden style="display: grid; gap: 12px;">
-					<div class="relative">
-						<select
-							name="product"
-							id="contact_product"
-							aria-label="Какая услуга вас интересует"
-							required
-							class="h-[76px] w-full appearance-none rounded-2xl border border-transparent bg-[#FFF7F1] px-7 pr-14 text-base text-[#858585] outline-none transition focus:border-[#F97316] focus:bg-white focus:ring-4 focus:ring-[#F97316]/10"
-						>
-							<option value="" selected disabled>Какая услуга вас интересует?</option>
-							<option value="Быстровозводимые здания">Быстровозводимые здания</option>
-							<option value="Капитальный ремонт">Капитальный ремонт</option>
-							<option value="Модульные здания">Модульные здания</option>
-							<option value="Общежития">Общежития</option>
-							<option value="Спецтехника">Спецтехника</option>
-							<option value="Грузоперевозки">Грузоперевозки</option>
-							<option value="Другое">Другое</option>
-						</select>
-						<svg
-							class="pointer-events-none absolute right-7 top-1/2 h-4 w-4 -translate-y-1/2 text-[#888888]"
-							viewBox="0 0 20 20"
-							fill="currentColor"
-							aria-hidden="true"
-						>
-							<path d="m4 7 6 6 6-6H4Z"/>
-						</svg>
-					</div>
-					<div class="space-y-3 pt-1 text-sm leading-relaxed text-[#858585]">
-						<label class="flex cursor-pointer items-start gap-3">
-							<input
-								type="checkbox"
-								name="checkbox"
-								value="on"
-								required
-								class="mt-0.5 h-5 w-5 shrink-0 accent-[#F97316]"
-							>
-							<span>
-								Я согласен
-								<a href="/politika" title="Политика конфиденциальности" class="text-[#F97316] underline underline-offset-4 hover:text-[#D95C00]">
-									с условиями политики конфиденциальности
-								</a>
-							</span>
-						</label>
-						<label class="flex cursor-pointer items-start gap-3">
-							<input
-								type="checkbox"
-								name="personal_data"
-								value="on"
-								required
-								class="mt-0.5 h-5 w-5 shrink-0 accent-[#F97316]"
-							>
-							<span>
-								Я согласен
-								<a href="/soglasie" title="Согласие на обработку данных" class="text-[#F97316] underline underline-offset-4 hover:text-[#D95C00]">
-									на обработку моих персональных данных
-								</a>
-							</span>
-						</label>
-						<label class="flex cursor-pointer items-start gap-3">
-							<input
-								type="checkbox"
-								name="marketing"
-								value="on"
-								class="mt-0.5 h-5 w-5 shrink-0 accent-[#F97316]"
-							>
-							<span>
-								Я согласен на получение информационных и рекламных сообщений
-							</span>
-						</label>
-					</div>
-					<div class="pt-5">
-						<div class="form-actions" style="justify-content: space-between; align-items: center; gap: 20px; margin-top: 24px; display: flex;">
-							<button
-								type="button"
-								data-form-back
-								class="inline-flex min-h-[68px] items-center justify-center rounded-full border border-[#E5E7EB] bg-white px-8 py-4 text-base font-medium text-[#333333] transition duration-200 hover:border-[#F97316] hover:text-[#F97316] focus:outline-none focus:ring-4 focus:ring-[#F97316]/25"
-							>
-								<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform: rotate(-135deg);"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
-								Назад
-							</button>
-							<button
-								type="submit"
-								class="inline-flex min-h-[68px] items-center justify-center rounded-full bg-[#F97316] px-10 py-4 text-base font-medium text-white shadow-[0_8px_24px_rgba(249,115,22,0.2)] transition duration-200 hover:-translate-y-0.5 hover:bg-[#EA6508] hover:shadow-[0_12px_28px_rgba(249,115,22,0.28)] focus:outline-none focus:ring-4 focus:ring-[#F97316]/25 active:translate-y-0"
-							>
-								Получить расчет за 15 минут
-							</button>
-						</div>
-					</div>
-					</div>
-				</form>
-			</div>
+	<!-- ENQUIRY (ProMaintenance enquiry-section) -->
+	<section id="contact" class="enquiry-section view">
+		<div class="enquiry-lead">
+			<p class="eyebrow" style="color: rgba(240,239,237,.62); display: flex; align-items: center;">
+				<span class="live-dot" style="background: currentColor; border-radius: 50%; width: 6px; height: 6px; margin-right: 12px; display: inline-block;" aria-hidden="true"></span>
+				Поговорим о вашем проекте
+			</p>
+			<h2 id="enquiry-title" style="margin-top: 35px; font-size: clamp(48px, 6.2vw, 102px); font-weight: 450; line-height: 1.03; letter-spacing: -.055em;">
+				Рассчитаем стоимость<br>за 15 минут
+			</h2>
+			<p style="color: #b8b3ae; margin-top: 27px; font-size: 15px; line-height: 1.6;">
+				Одна задача. Один разговор.<br>Расскажите, что у вас за проект.
+			</p>
+			<a class="enquiry-email" href="mailto:<?= htmlspecialchars((string)seo_config('email')) ?>"><?= htmlspecialchars((string)seo_config('email')) ?>
+				<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<path d="M7 7h10v10"></path>
+					<path d="M7 17 17 7"></path>
+				</svg>
+			</a>
+			<a class="enquiry-phone" href="tel:<?= htmlspecialchars(preg_replace('/\D/', '', (string)seo_config('phone'))) ?>" style="color: #b8b3ae; margin-top: 12px; font-size: 13px; display: block;"><?= htmlspecialchars((string)seo_config('phone_display')) ?></a>
+			<span class="enquiry-location" style="color: #aaa49e; margin-top: 45px; font-size: 10px; display: block;">Москва и область. Работаем по всей России.</span>
 		</div>
+		<?php include_once __DIR__ . '/../components/enquiry_form.php'; ?>
 	</section>
-</div>
-
 
 	<!-- 6. Отзывы клиентов (видимые + schema.org) -->
 	<section id="reviews" class="fss-reviews-section view">
@@ -1633,8 +1458,8 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 			document.addEventListener('DOMContentLoaded', sync);
 		} else {
 			sync();
-}
 		}
+	})();
 	</script>
 
 

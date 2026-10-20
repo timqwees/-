@@ -47,7 +47,7 @@ if ($q !== '') {
 	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261018">
 	<script defer src="/public/assets/distJS/main.js"></script>
 </head>
-<body class="font-sans text-gray-800">
+<body class="font-sans text-gray-800" data-page="inner">
 	<?php include_once __DIR__ . '/../components/header.php'; ?>
 
 	<section class="page-hero">
