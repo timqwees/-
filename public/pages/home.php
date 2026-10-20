@@ -38,31 +38,26 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 	<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 	<!-- Favicon unified -->
 	<link rel="icon" type="image/png" href="/public/assets/image/logo/favicon/favicon-96x96.png" sizes="96x96" />
-	<link rel="icon" type="image/svg+xml" href="/public/assets/image/logo/favicon/favicon.svg" />
 	<link rel="shortcut icon" href="/public/assets/image/logo/favicon/favicon.ico" />
 	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/favicon/apple-touch-icon.png" />
 	<meta name="apple-mobile-web-app-title" content="ФСС" />
 	<link rel="manifest" href="/public/assets/image/logo/favicon/site.webmanifest" />
 	<link rel="mask-icon" href="/public/assets/image/logo/favicon/favicon-96x96.png" color="#F97316">
-
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap"></noscript>
-	<style> body { font-family: 'Wix Madefor Display', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
+	<link rel="preload" as="font" type="font/woff2" href="/public/assets/vendor/fonts/Manrope-latin.woff2" crossorigin><link rel="preload" as="font" type="font/woff2" href="/public/assets/vendor/fonts/Manrope-cyrillic.woff2" crossorigin><link rel="preload" as="font" type="font/woff2" href="/public/assets/fonts/WixMadeforDisplay/WixMadeforDisplay-Variable.woff2" crossorigin><link rel="stylesheet" href="/public/assets/vendor/fonts/fonts.css">
+	<style> body { font-family: 'DM Sans Variable', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
 	<!-- Preload critical -->
 	<link rel="preload" href="/public/assets/distCSS/style.css?v=20261018" as="style">
 	<link rel="preload" href="/public/assets/distJS/main.js" as="script">
 	<!-- Styles -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
-	<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css">
+	<noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css"></noscript>
 	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261018">
 	<!-- Swiper -->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-	<script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-	<script defer src="/public/assets/distJS/main.js"></script>
+	<link rel="stylesheet" href="/public/assets/vendor/swiper/swiper-bundle.min.css" />
+	<script defer src="/public/assets/vendor/swiper/swiper-bundle.min.js"></script>
 	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261018">
 	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261018">
-	<link rel="stylesheet" href="/public/assets/distCSS/protenance.css?v=20261018">
+	<link rel="stylesheet" href="/public/assets/distCSS/protenance.css?v=20261022">
 
 <?php include_once __DIR__ . '/../components/sheoma.php'; ?>
 <?= seo_analytics() ?>
@@ -106,10 +101,6 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 
 		.banner-float-left {
 			animation: floatLeftIcon 4s ease-in-out infinite;
-		}
-
-		section {
-			overflow: hidden;
 		}
 
 		/* Секция «Мы выполняем» — одинаковые скругления, паддинги и высота карточек */
@@ -353,20 +344,9 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 		}
 	</style>
 	<?php include_once __DIR__ . '/../components/sheoma.php'; ?>
-<?= seo_analytics() ?>
-
-<?= seo_utm_script() ?>
-
-<?= seo_goals_script() ?>
-
-	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261018">
-<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261018">
 </head>
 
 <body class="font-sans text-gray-800" data-page="home">
-
-	<!-- Полоса прогресса скролла (ProMaintenance) -->
-	<div class="site-progress" aria-hidden="true"></div>
 
 	<?php include_once __DIR__ . '/../components/header.php'; ?>
 
@@ -428,7 +408,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 		</div>
 	</section>
 	<!-- ABOUT (ProMaintenance about-section) -->
-	<section id="about" class="about-section section-shell view">
+	<section id="about" class="about-section section-shell">
 		<div class="section-topline">
 			<p class="eyebrow">01 / Наш опыт</p>
 			<span class="eyebrow">Москва и область</span>
@@ -460,7 +440,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 	</section>
 
 	<!-- DIVISIONS (ProMaintenance division-section) -->
-	<section id="divisions" class="division-section section-shell view">
+	<section id="divisions" class="division-section section-shell">
 		<div class="section-topline">
 			<p class="eyebrow">Три направления</p>
 			<span class="eyebrow">Одно ФСС</span>
@@ -472,7 +452,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 		<div class="division-grid">
 			<a class="division-card" href="/services/bazovoe-stroenie" title="Производство быстровозводимых зданий">
 				<div class="division-photo">
-					<img src="/public/assets/image/banner.jpeg" alt="Производство быстровозводимых зданий — завод ФСС" title="Производство быстровозводимых зданий — завод ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
+					<img src="/public/assets/image/banner.webp" alt="Производство быстровозводимых зданий — завод ФСС" title="Производство быстровозводимых зданий — завод ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/logo-64.png'">
 				</div>
 				<div class="division-card-label">
 					<span class="eyebrow">01</span>
@@ -486,7 +466,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 			</a>
 			<a class="division-card" href="/services/kapital" title="Капитальный строительство и ремонт">
 				<div class="division-photo">
-					<img src="/public/assets/image/services/капстроение/10.JPG" alt="Капитальный ремонт здания — объект ФСС" title="Капитальный ремонт здания — объект ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
+					<img src="/public/assets/image/services/капстроение/10.JPG" alt="Капитальный ремонт здания — объект ФСС" title="Капитальный ремонт здания — объект ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/logo-64.png'">
 				</div>
 				<div class="division-card-label">
 					<span class="eyebrow">02</span>
@@ -500,7 +480,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 			</a>
 			<a class="division-card" href="/services/spectehnika" title="Спецтехника и услуги">
 				<div class="division-photo">
-					<img src="/public/assets/image/swiper/3.jpeg" alt="Спецтехника и услуги ФСС" title="Спецтехника и услуги ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
+					<img src="/public/assets/image/swiper/3.jpeg" alt="Спецтехника и услуги ФСС" title="Спецтехника и услуги ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/logo-64.png'">
 				</div>
 				<div class="division-card-label">
 					<span class="eyebrow">03</span>
@@ -514,7 +494,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 			</a>
 		</div>
 	</section>
-	<section id="projects" class="selected-work section-shell view">
+	<section id="projects" class="selected-work section-shell">
 		<div class="section-topline">
 			<p class="eyebrow">02 / Избранные проекты</p>
 			<a href="/portfolio" class="text-link">Смотреть все объекты
@@ -531,10 +511,10 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 		</div>
 
 		<div class="featured-grid">
-			<article class="project-card" data-emirate="Московская область" data-search="Склад 1 200 м² из сэндвич-панелей Склад 1 200 м² из сэндвич-панелей Логистика Московская область Московская область Логистика" data-slug="sklad-1200">
+			<article class="project-card" data-emirate="Московская область" data-search="Склад 1 200 м² из сэндвич-панелей Склад 1 200 м² из сэндвич-панелей Логистика Химки Московская область Доковые ворота, тёплый контур, освещение и вентиляция" data-slug="sklad-1200">
 				<a href="/portfolio#obj-1" class="project-card__link" title="Склад 1 200 м² из сэндвич-панелей — объект ФСС">
 					<div class="project-card__image">
-						<img src="/public/assets/image/services/капстроение/10.JPG" srcset="/public/assets/image/services/капстроение/10.JPG 600w, /public/assets/image/services/капстроение/10.JPG 1000w, /public/assets/image/services/капстроение/10.JPG 1600w, /public/assets/image/services/капстроение/10.JPG 1672w" alt="Склад 1 200 м² из сэндвич-панелей — объект ФСС" title="Склад 1 200 м² из сэндвич-панелей — объект ФСС" sizes="92vw" loading="lazy" decoding="async" width="1672" height="941" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
+						<img src="/public/assets/image/services/капстроение/10.JPG" srcset="/public/assets/image/services/капстроение/10.JPG 600w, /public/assets/image/services/капстроение/10.JPG 1000w, /public/assets/image/services/капстроение/10.JPG 1600w, /public/assets/image/services/капстроение/10.JPG 1672w" alt="Склад 1 200 м² из сэндвич-панелей — объект ФСС" title="Склад 1 200 м² из сэндвич-панелей — объект ФСС" sizes="92vw" loading="lazy" decoding="async" width="1672" height="941" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/logo-64.png'">
 						<span class="project-card__number">01 — Логистика</span>
 						<span class="project-card__arrow">
 							<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
@@ -550,10 +530,10 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 				</a>
 			</article>
 
-			<article class="project-card" data-emirate="Московская область" data-search="Модульное общежитие на 120 мест Модульное общежитие на 120 мест Жильё Московская область Московская область Жильё" data-slug="obshchiezhie-120">
+			<article class="project-card" data-emirate="Московская область" data-search="Модульное общежитие на 120 мест Модульное общежитие на 120 мест Жильё Мытищи Московская область Два этажа, тёплый контур, кондиционеры в каждой комнате" data-slug="obshchiezhie-120">
 				<a href="/portfolio#obj-2" class="project-card__link" title="Модульное общежитие на 120 мест — объект ФСС">
 					<div class="project-card__image">
-						<img src="/public/assets/image/swiper/1.jpeg" srcset="/public/assets/image/swiper/1.jpeg 600w, /public/assets/image/swiper/1.jpeg 1000w, /public/assets/image/swiper/1.jpeg 1600w, /public/assets/image/swiper/1.jpeg 1672w" alt="Модульное общежитие на 120 мест — объект ФСС" title="Модульное общежитие на 120 мест — объект ФСС" sizes="(min-width: 993px) 46vw, 100vw" loading="lazy" decoding="async" width="1672" height="941" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
+						<img src="/public/assets/image/swiper/1.jpeg" srcset="/public/assets/image/swiper/1.jpeg 600w, /public/assets/image/swiper/1.jpeg 1000w, /public/assets/image/swiper/1.jpeg 1600w, /public/assets/image/swiper/1.jpeg 1672w" alt="Модульное общежитие на 120 мест — объект ФСС" title="Модульное общежитие на 120 мест — объект ФСС" sizes="(min-width: 993px) 46vw, 100vw" loading="lazy" decoding="async" width="1672" height="941" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/logo-64.png'">
 						<span class="project-card__number">02 — Жильё</span>
 						<span class="project-card__arrow">
 							<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
@@ -569,10 +549,10 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 				</a>
 			</article>
 
-			<article class="project-card" data-emirate="Московская область" data-search="Капремонт школы под ключ Капремонт школы под ключ Образование Московская область Московская область Образование" data-slug="kapremont-shkoly">
+			<article class="project-card" data-emirate="Московская область" data-search="Капремонт школы под ключ Капремонт школы под ключ Образование Подольск Московская область Полы, потолки, электрика и чистовая отделка классов" data-slug="kapremont-shkoly">
 				<a href="/portfolio#obj-3" class="project-card__link" title="Капремонт школы под ключ — объект ФСС">
 					<div class="project-card__image">
-						<img src="/public/assets/image/swiper/3.jpeg" srcset="/public/assets/image/swiper/3.jpeg 600w, /public/assets/image/swiper/3.jpeg 1000w, /public/assets/image/swiper/3.jpeg 1600w, /public/assets/image/swiper/3.jpeg 1672w" alt="Капремонт школы под ключ — объект ФСС" title="Капремонт школы под ключ — объект ФСС" sizes="(min-width: 993px) 46vw, 100vw" loading="lazy" decoding="async" width="1672" height="941" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
+						<img src="/public/assets/image/swiper/3.jpeg" srcset="/public/assets/image/swiper/3.jpeg 600w, /public/assets/image/swiper/3.jpeg 1000w, /public/assets/image/swiper/3.jpeg 1600w, /public/assets/image/swiper/3.jpeg 1672w" alt="Капремонт школы под ключ — объект ФСС" title="Капремонт школы под ключ — объект ФСС" sizes="(min-width: 993px) 46vw, 100vw" loading="lazy" decoding="async" width="1672" height="941" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/logo-64.png'">
 						<span class="project-card__number">03 — Образование</span>
 						<span class="project-card__arrow">
 							<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
@@ -593,7 +573,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 	</section>
 
 	<!-- EXPERTISE (ProMaintenance expertise-section) -->
-	<section id="expertise" class="expertise-section section-shell view">
+	<section id="expertise" class="expertise-section section-shell">
 		<div class="section-topline">
 			<p class="eyebrow">02 / Компетенции</p>
 			<span class="eyebrow">Точность снаружи и внутри</span>
@@ -604,7 +584,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 				<div class="expertise-image">
 					<img src="/public/assets/image/swiper/1.jpeg" alt="Модульное общежитие из сэндвич-панелей — объект ФСС" title="Модульное общежитие из сэндвич-панелей — объект ФСС" loading="lazy" data-expertise-image="moduli" decoding="async" class="is-active">
 					<img src="/public/assets/image/swiper/2.jpg" alt="Склад из сэндвич-панелей — объект ФСС" title="Склад из сэндвич-панелей — объект ФСС" loading="lazy" data-expertise-image="sklad" decoding="async">
-					<img src="/public/assets/image/banner.jpeg" alt="Производство модульных зданий — завод ФСС" title="Производство модульных зданий — завод ФСС" loading="lazy" data-expertise-image="proizvodstvo" decoding="async">
+					<img src="/public/assets/image/banner.webp" alt="Производство модульных зданий — завод ФСС" title="Производство модульных зданий — завод ФСС" loading="lazy" data-expertise-image="proizvodstvo" decoding="async">
 					<img src="/public/assets/image/services/капстроение/10.JPG" alt="Капитальный ремонт здания — объект ФСС" title="Капитальный ремонт здания — объект ФСС" loading="lazy" data-expertise-image="kapremont" decoding="async">
 				</div>
 				<p class="eyebrow">Технологическая экспертиза / Структурная надёжность</p>
@@ -695,13 +675,13 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 	</section>
 
 	<!-- PROCESS (ProMaintenance process-section) -->
-	<section id="process" class="process-section view">
+	<section id="process" class="process-section">
 		<div class="process-photo">
-			<img src="/public/assets/image/banner.jpeg" alt="Модульные здания — производство ФСС" title="Модульные здания — производство ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
+			<img src="/public/assets/image/banner.webp" alt="Модульные здания — производство ФСС" title="Модульные здания — производство ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/logo-64.png'">
 		</div>
 		<div class="process-content section-shell">
 			<p class="eyebrow">04 / Как мы работаем</p>
-			<h2>Продуманно на каждом этапе.<br>Уверенно на каждом шаге.</h2>
+			<h2>Продуманно на каждом этапе.<br><span>Уверенно на каждом шаге.</span></h2>
 			<div class="process-steps">
 				<details data-phase="0" open>
 					<summary>
@@ -763,7 +743,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 	</section>
 
 	<!-- WORKS PREVIEW (ProMaintenance works-preview) -->
-	<section class="works-preview section-shell view">
+	<section class="works-preview section-shell">
 		<div class="works-preview-copy">
 			<p class="eyebrow">С наших объектов</p>
 			<h2>Построено в поле.<br>Увидено вблизи.</h2>
@@ -776,12 +756,12 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 			</a>
 		</div>
 		<a href="/portfolio" class="works-preview-photo" aria-label="Смотреть все объекты ФСС">
-			<img src="/public/assets/image/swiper/2.jpg" alt="Склад из сэндвич-панелей — объект ФСС" title="Склад из сэндвич-панелей — объект ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/favicon.svg'">
+			<img src="/public/assets/image/swiper/2.jpg" alt="Склад из сэндвич-панелей — объект ФСС" title="Склад из сэндвич-панелей — объект ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/logo-64.png'">
 		</a>
 	</section>
 
 	<!-- ASSESSMENT (ProMaintenance assessment-section) -->
-	<section id="triage" class="assessment-section section-shell view">
+	<section id="triage" class="assessment-section section-shell">
 		<details class="assessment-disclosure">
 			<summary>
 				<span class="eyebrow">Полезно начать отсюда</span>
@@ -864,61 +844,56 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 	<!-- Contact — High converting -->
 <div class="px-3 sm:px-5">
 	<!-- ENQUIRY (ProMaintenance enquiry-section) -->
-	<section id="contact" class="enquiry-section view">
+	<section id="contact" class="enquiry-section">
 		<div class="enquiry-lead">
-			<p class="eyebrow" style="color: rgba(240,239,237,.62); display: flex; align-items: center;">
-				<span class="live-dot" style="background: currentColor; border-radius: 50%; width: 6px; height: 6px; margin-right: 12px; display: inline-block;" aria-hidden="true"></span>
+			<p class="eyebrow">
+				<span class="live-dot" aria-hidden="true"></span>
 				Поговорим о вашем проекте
 			</p>
-			<h2 id="enquiry-title" style="margin-top: 35px; font-size: clamp(48px, 6.2vw, 102px); font-weight: 450; line-height: 1.03; letter-spacing: -.055em;">
-				Рассчитаем стоимость<br>за 15 минут
-			</h2>
-			<p style="color: #b8b3ae; margin-top: 27px; font-size: 15px; line-height: 1.6;">
-				Одна задача. Один разговор.<br>Расскажите, что у вас за проект.
-			</p>
+			<h2 id="enquiry-title">Рассчитаем стоимость<br><span>за 15 минут</span></h2>
+			<p>Одна задача. Один разговор.<br>Расскажите, что у вас за проект.</p>
 			<a class="enquiry-email" href="mailto:<?= htmlspecialchars((string)seo_config('email')) ?>"><?= htmlspecialchars((string)seo_config('email')) ?>
 				<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 					<path d="M7 7h10v10"></path>
 					<path d="M7 17 17 7"></path>
 				</svg>
 			</a>
-			<a class="enquiry-phone" href="tel:<?= htmlspecialchars(preg_replace('/\D/', '', (string)seo_config('phone'))) ?>" style="color: #b8b3ae; margin-top: 12px; font-size: 13px; display: block;"><?= htmlspecialchars((string)seo_config('phone_display')) ?></a>
-			<span class="enquiry-location" style="color: #aaa49e; margin-top: 45px; font-size: 10px; display: block;">Москва и область. Работаем по всей России.</span>
+			<a class="enquiry-phone" href="tel:<?= htmlspecialchars(preg_replace('/\D/', '', (string)seo_config('phone'))) ?>"><?= htmlspecialchars((string)seo_config('phone_display')) ?></a>
+			<span class="enquiry-location">Москва и область. Работаем по всей России.</span>
 		</div>
 		<?php include_once __DIR__ . '/../components/enquiry_form.php'; ?>
 	</section>
 
-	<!-- 6. Отзывы клиентов (видимые + schema.org) -->
-	<section id="reviews" class="fss-reviews-section view">
-	<div class="fss-reviews-container">
-		<div class="section-heading">
-			<h2>Отзывы наших клиентов</h2>
-			<span class="heading-divider" aria-hidden="true"></span>
-			<p><?= seo_config('objects') ?> объектов за <?= seo_config('founded_market') ?> года — реальные истории</p>
+	<!-- 6. Отзывы клиентов (ProMaintenance: ревью-сетка + schema.org) -->
+	<section id="reviews" class="reviews-section section-shell view">
+		<div class="section-topline">
+			<p class="eyebrow">05 / Отзывы</p>
+			<span class="eyebrow"><?= seo_config('objects') ?> объектов с <?= seo_config('founded_market') ?> года</span>
 		</div>
-		<div class="fss-reviews-swiper swiper reviews-swiper">
-			<div class="swiper-wrapper">
-				<?php foreach (seo_reviews() as $r): ?>
-				<div class="swiper-slide">
-					<div class="fss-review-card">
-						<div class="fss-review-stars" aria-label="Рейтинг <?= $r['star'] ?> из 5">
-							<?php for ($i = 0; $i < 5; $i++): ?>
-							<?= $i < $r['star'] ? '<i class="fa-solid fa-star"></i>' : '<i class="fa-regular fa-star"></i>' ?>
+		<div class="head-row">
+			<h2>Говорят<br><span>наши клиенты.</span></h2>
+			<p>Реальные истории с объектов: сроки, бюджеты<br>и результат, который принимают.</p>
+		</div>
+		<div class="reviews-grid">
+			<?php foreach (seo_reviews() as $i => $r): ?>
+				<article class="review-card">
+					<div class="review-card-top">
+						<span class="review-stars" aria-label="Рейтинг <?= (int)$r['star'] ?> из 5">
+							<?php for ($s = 0; $s < 5; $s++): ?>
+								<i class="<?= $s < $r['star'] ? 'is-on' : '' ?>">★</i>
 							<?php endfor ?>
-						</div>
-						<p class="fss-review-text"><?= htmlspecialchars($r['text'], ENT_QUOTES) ?></p>
-						<div class="fss-review-author">
-							<strong><?= htmlspecialchars($r['name'], ENT_QUOTES) ?></strong>
-							<span><?= htmlspecialchars($r['company'], ENT_QUOTES) ?></span>
-							<time datetime="<?= $r['date'] ?>"><?= $r['date'] ?></time>
-						</div>
+						</span>
+						<span class="review-index"><?= str_pad((string)($i + 1), 2, '0', STR_PAD_LEFT) ?></span>
 					</div>
-				</div>
-				<?php endforeach ?>
-			</div>
-			<div class="reviews-pagination swiper-pagination"></div>
+					<p class="review-text"><?= htmlspecialchars($r['text'], ENT_QUOTES) ?></p>
+					<div class="review-author">
+						<strong><?= htmlspecialchars($r['name'], ENT_QUOTES) ?></strong>
+						<span><?= htmlspecialchars($r['company'], ENT_QUOTES) ?></span>
+						<time datetime="<?= $r['date'] ?>"><?= $r['date'] ?></time>
+					</div>
+				</article>
+			<?php endforeach ?>
 		</div>
-	</div>
 	</section>
 
 	<!-- ИЗБРАННЫЕ ПРОЕКТЫ (Protenance selected-work) -->
@@ -926,385 +901,67 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 	<section class="marquee-band" aria-hidden="true">
 		<div class="marquee-track"><span class="marquee-item">Капитальный ремонт</span><span class="marquee-item">Поставка мебели</span><span class="marquee-item">Быстровозводимые здания</span><span class="marquee-item">Склады</span><span class="marquee-item">Ангары</span><span class="marquee-item">Навесы</span><span class="marquee-item">Дизель-генераторы</span><span class="marquee-item">Компрессорные станции</span><span class="marquee-item">Блочно-модульные конструкции</span><span class="marquee-item">Монтаж инженерных систем</span><span class="marquee-item">Проектирование объектов</span><span class="marquee-item">Техническое обслуживание</span><span class="marquee-item">Ремонт кровли</span><span class="marquee-item">Внутренняя отделка</span><span class="marquee-item">Промышленные полы</span><span class="marquee-item">Фасадные работы</span><span class="marquee-item">Пожарная безопасность</span><span class="marquee-item">Ландшафтные работы</span><span class="marquee-item">Капитальный ремонт</span><span class="marquee-item">Поставка мебели</span><span class="marquee-item">Быстровозводимые здания</span><span class="marquee-item">Склады</span><span class="marquee-item">Ангары</span><span class="marquee-item">Навесы</span><span class="marquee-item">Дизель-генераторы</span><span class="marquee-item">Компрессорные станции</span><span class="marquee-item">Блочно-модульные конструкции</span><span class="marquee-item">Монтаж инженерных систем</span><span class="marquee-item">Проектирование объектов</span><span class="marquee-item">Техническое обслуживание</span><span class="marquee-item">Ремонт кровли</span><span class="marquee-item">Внутренняя отделка</span><span class="marquee-item">Промышленные полы</span><span class="marquee-item">Фасадные работы</span><span class="marquee-item">Пожарная безопасность</span><span class="marquee-item">Ландшафтные работы</span></div>
 	</section>
-	<!-- Почему выбирают: секция «Бесперебойная работа и безопасность» (точная копия референса) -->
-	<section id="pluses" class="view pluses-band">
-		<section class="security-section">
-			<h2 class="security-title">Почему выбирают нас?</h2>
-
-			<div class="security-grid">
-
-				<!-- 1. Большая карточка -->
-				<article class="security-card security-main">
-					<h3>Полный контроль 24/7</h3>
-					<p>Инженер на площадке, фотоотчёт каждую неделю и технадзор на каждом этапе — вы в курсе прогресса без звонков.</p>
-					<div class="security-shield" aria-hidden="true"><i class="fa-solid fa-shield-halved"></i></div>
-				</article>
-
-				<!-- 2. Соблюдение / договор -->
-				<article class="security-card security-compliance">
-					<h3>Фиксируем цену и сроки</h3>
-					<p>Смета за 15 минут. Закрепляем стоимость и сроки в договоре — цена не растёт по ходу стройки.</p>
-					<div class="document-stack" aria-hidden="true">
-						<div class="document document-back">
-							<div class="document-line"></div>
-							<div class="document-line"></div>
-							<div class="document-line"></div>
-						</div>
-						<div class="document">
-							<div class="document-line"></div>
-							<div class="document-line"></div>
-							<div class="document-check">✓</div>
-							<div class="document-check">✓</div>
-							<div class="document-check">✓</div>
-						</div>
-					</div>
-				</article>
-
-				<!-- 3. Сроки -->
-				<article class="security-card security-storage">
-					<h3>Сроки<br />от 14 дней</h3>
-					<p>Сдаём модуль за 2–12 недель вместо 3–6 месяцев классической стройки.</p>
-				</article>
-
-				<!-- 4. Стата -->
-				<article class="security-card security-uptime">
-					<div class="gauge" aria-hidden="true">
-						<div class="gauge-ring"></div>
-						<div class="gauge-needle"></div>
-					</div>
-					<div class="uptime-number">180+</div>
-					<p>сданных объектов<br />на рынке с <?= seo_config('founded_market') ?> года</p>
-				</article>
-
-				<!-- 5. Техника -->
-				<article class="security-card security-versions">
-					<span class="security-ico" aria-hidden="true"><i class="fa-solid fa-truck-fast"></i></span>
-					<h3>Своя техника<br />и доставка</h3>
-				</article>
-
-				<!-- 6. Производство -->
-				<article class="security-card security-requests">
-					<h3>Собственный завод БВЗ —<br />модули без посредников</h3>
-					<p>Производим сэндвич-панели и блок-контейнеры сами — контроль качества и цена ниже рынка.</p>
-				</article>
-
-				<!-- 7. Гарантия -->
-				<article class="security-card security-support">
-					<span class="security-ico" aria-hidden="true"><i class="fa-solid fa-shield-halved"></i></span>
-					<h3>Гарантия<br class="hidden sm:block" />50+ лет</h3>
-				</article>
-
+	<!-- Почему выбирают: ProMaintenance (плюсы + цифры) -->
+	<section id="pluses" class="pluses-section section-shell view">
+		<div class="section-topline">
+			<p class="eyebrow">06 / Почему мы</p>
+			<span class="eyebrow">Один подрядчик на весь цикл</span>
+		</div>
+		<div class="head-row">
+			<h2>Причины выбрать<br><span>нас.</span></h2>
+			<p>Прозрачные условия, собственное производство<br>и инженер на каждом объекте.</p>
+		</div>
+		<div class="pluses-grid">
+			<article class="plus-item">
+				<span class="plus-index">01</span>
+				<h3>Полный контроль 24/7</h3>
+				<p>Инженер на площадке, фотоотчёт каждую неделю и технадзор на каждом этапе — вы в курсе прогресса без звонков.</p>
+			</article>
+			<article class="plus-item">
+				<span class="plus-index">02</span>
+				<h3>Фиксированная цена</h3>
+				<p>Смета за 15 минут. Стоимость и сроки закрепляем в договоре — цена не растёт по ходу стройки.</p>
+			</article>
+			<article class="plus-item">
+				<span class="plus-index">03</span>
+				<h3>Собственный завод БВЗ</h3>
+				<p>Производим сэндвич-панели и блок-контейнеры сами: контроль качества и цена ниже рынка.</p>
+			</article>
+			<article class="plus-item">
+				<span class="plus-index">04</span>
+				<h3>Своя техника и доставка</h3>
+				<p>Собственный парк техники и доставка по России: без субподряда и перепродажи.</p>
+			</article>
+			<article class="plus-item">
+				<span class="plus-index">05</span>
+				<h3>Полный цикл работ</h3>
+				<p>Проектирование, фундамент, монтаж, инженерные системы и сдача под ключ — одним договором.</p>
+			</article>
+			<article class="plus-item">
+				<span class="plus-index">06</span>
+				<h3>Работаем по всей России</h3>
+				<p>Москва и область — основной регион, остальные — по отработанной логистике и договорённости.</p>
+			</article>
+		</div>
+		<dl class="pluses-stats">
+			<div>
+				<dd><?= seo_config('objects') ?></dd>
+				<dt>сданных объектов с <?= seo_config('founded_market') ?> года</dt>
 			</div>
-		</section>
+			<div>
+				<dd>50<span>лет</span></dd>
+				<dt>гарантия на несущие конструкции</dt>
+			</div>
+			<div>
+				<dd>14<span>дней</span></dd>
+				<dt>минимальный срок запуска работ</dt>
+			</div>
+			<div>
+				<dd>15<span>минут</span></dd>
+				<dt>до сметы по вашей заявке</dt>
+			</div>
+		</dl>
 	</section>
-	<div hidden aria-hidden="true">
-			<div class="swipers overflow-hidden">
-				<div class="swiper-wrapper" style="height: 500px">
-
-
-					<!-- slide 1 -->
-					<div class="viewLeft swiper-slide overflow-hidden rounded-[25px] relative">
-						<video class="slide-bg" muted loop playsinline
-							src="/public/assets/image/banner/dostavka.MP4" preload="none" poster="/public/assets/image/banner.jpeg"></video>
-						<!-- темное затемнение -->
-						<div class="bg-black w-full h-full opacity-50 absolute"></div>
-						<div class="viewLeft slide-content">
-							<!-- содержание -->
-							<div class="viewLeft flex slide-had-content justify-center items-center gap-2 font-bold">
-								<div
-									class="viewLeft  w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-									<i class="viewLeft fas fa-bolt text-emerald-600 text-xl"></i>
-								</div>
-								<h3>ФСС - услуги</h3>
-							</div>
-							<div class="viewLeft items-center">
-								<h3> <i class="viewLeft fas fa-trash-alt text-emerald-600 text-xl mr-2"></i>»
-									<b>Мусорные
-										баки</b>
-								</h3>
-								</h3>
-							</div>
-						</div>
-						<!-- конец содержание-->
-					</div>
-
-					<!-- slide 1 -->
-					<div class="viewLeft swiper-slide overflow-hidden rounded-[25px] relative">
-						<video class="slide-bg" muted loop playsinline
-							src="/public/assets/image/banner/dostavkaKD.MP4" preload="none" poster="/public/assets/image/banner.jpeg"></video>
-						<!-- темное затемнение -->
-						<div class="bg-black w-full h-full opacity-50 absolute"></div>
-						<div class="viewLeft slide-content">
-							<!-- содержание -->
-							<div class="viewLeft flex slide-had-content justify-center items-center gap-2 font-bold">
-								<div
-									class="viewLeft  w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-									<i class="viewLeft fas fa-bolt text-emerald-600 text-xl"></i>
-								</div>
-								<h3>ФСС - услуги</h3>
-							</div>
-							<div class="viewLeft items-center">
-								<h3> <i class="viewLeft fas fa-trash-alt text-emerald-600 text-xl mr-2"></i>»
-									<b>Мусорные
-										баки</b>
-								</h3>
-							</div>
-						</div>
-						<!-- конец содержание-->
-					</div>
-
-					<!-- slide 1 -->
-					<div class="viewLeft swiper-slide overflow-hidden rounded-[25px] relative">
-						<video class="slide-bg" muted loop playsinline
-							src="/public/assets/image/banner/schakman.mp4" preload="none" poster="/public/assets/image/banner.jpeg"></video>
-						<!-- темное затемнение -->
-						<div class="bg-black w-full h-full opacity-50 absolute"></div>
-						<div class="viewLeft slide-content">
-							<!-- содержание -->
-							<div class="viewLeft flex slide-had-content justify-center items-center gap-2 font-bold">
-								<div
-									class="viewLeft  w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-									<i class="viewLeft fas fa-bolt text-emerald-600 text-xl"></i>
-								</div>
-								<h3>ФСС - услуги</h3>
-							</div>
-							<div class="viewLeft items-center">
-								<h3> <i class="viewLeft fas fa-trash-alt text-emerald-600 text-xl mr-2"></i>» <b>Мусорные
-										баки</b></h3>
-							</div>
-						</div>
-						<!-- конец содержание-->
-					</div>
-
-					<!-- slide 1 -->
-					<div class="viewLeft swiper-slide overflow-hidden rounded-[25px] relative">
-						<video class="slide-bg" muted loop playsinline
-							src="/public/assets/image/banner/tracktor.mp4" preload="none" poster="/public/assets/image/banner.jpeg"></video>
-						<!-- темное затемнение -->
-						<div class="bg-black w-full h-full opacity-50 absolute"></div>
-						<div class="viewLeft slide-content">
-							<!-- содержание -->
-							<div class="viewLeft flex slide-had-content justify-center items-center gap-2 font-bold">
-								<div
-									class="viewLeft  w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-									<i class="viewLeft fas fa-bolt text-emerald-600 text-xl"></i>
-								</div>
-								<h3>ФСС - услуги</h3>
-							</div>
-							<div class="viewLeft items-center">
-								<h3> <i class="viewLeft fas fa-school text-emerald-600 text-xl mr-2"></i>» <b>Капитальный
-										ремонт школ</b>
-								</h3>
-							</div>
-						</div>
-						<!-- конец содержание-->
-					</div>
-
-					<!-- slide 1 -->
-					<div class="viewLeft swiper-slide overflow-hidden rounded-[25px] relative">
-						<video class="slide-bg" muted loop playsinline
-							src="/public/assets/image/banner/buldozer.mp4" preload="none" poster="/public/assets/image/banner.jpeg"></video>
-						<!-- темное затемнение -->
-						<div class="bg-black w-full h-full opacity-50 absolute"></div>
-						<div class="viewLeft slide-content">
-							<!-- содержание -->
-							<div class="viewLeft flex slide-had-content justify-center items-center gap-2 font-bold">
-								<div
-									class="viewLeft  w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-									<i class="viewLeft fas fa-bolt text-emerald-600 text-xl"></i>
-								</div>
-								<h3>ФСС - услуги</h3>
-							</div>
-							<div class="viewLeft items-center">
-								<h3> <i class="viewLeft fas fa-school text-emerald-600 text-xl mr-2"></i>» <b>Капитальный
-										ремонт школ</b></h3>
-							</div>
-						</div>
-						<!-- конец содержание-->
-					</div>
-
-					<!-- slide 1 -->
-					<div class="viewLeft swiper-slide overflow-hidden rounded-[25px] relative">
-						<video class="slide-bg" muted loop playsinline
-							src="/public/assets/image/banner/buldozer.mp4" preload="none" poster="/public/assets/image/banner.jpeg"></video>
-						<!-- темное затемнение -->
-						<div class="bg-black w-full h-full opacity-50 absolute"></div>
-						<div class="viewLeft slide-content">
-							<!-- содержание -->
-							<div class="viewLeft flex slide-had-content justify-center items-center gap-2 font-bold">
-								<div
-									class="viewLeft  w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-									<i class="viewLeft fas fa-bolt text-emerald-600 text-xl"></i>
-								</div>
-								<h3>ФСС - услуги</h3>
-							</div>
-							<div class="viewLeft items-center">
-								<h3> <i class="viewLeft fas fa-school text-emerald-600 text-xl mr-2"></i>» <b>Капитальный
-										ремонт школ</b></h3>
-							</div>
-						</div>
-						<!-- конец содержание-->
-					</div>
-
-					<!-- slide 1 -->
-					<div class="viewLeft swiper-slide overflow-hidden rounded-[25px] relative">
-						<video class="slide-bg" muted loop playsinline
-							src="/public/assets/image/banner/schakman.mp4" preload="none" poster="/public/assets/image/banner.jpeg"></video>
-						<!-- темное затемнение -->
-						<div class="bg-black w-full h-full opacity-50 absolute"></div>
-						<div class="viewLeft slide-content">
-							<!-- содержание -->
-							<div class="viewLeft flex slide-had-content justify-center items-center gap-2 font-bold">
-								<div
-									class="viewLeft  w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-									<i class="viewLeft fas fa-bolt text-emerald-600 text-xl"></i>
-								</div>
-								<h3>ФСС - услуги</h3>
-							</div>
-							<div class="viewLeft items-center">
-								<h3> <i class="viewLeft fas fa-chair text-emerald-600 text-xl mr-2"></i>» <b>Производство
-										мебели</b></h3>
-							</div>
-						</div>
-						<!-- конец содержание-->
-					</div>
-
-					<!-- slide 1 -->
-					<div class="viewLeft swiper-slide overflow-hidden rounded-[25px] relative">
-						<video class="slide-bg" muted loop playsinline
-							src="/public/assets/image/banner/dostavka.MP4" preload="none" poster="/public/assets/image/banner.jpeg"></video>
-						<!-- темное затемнение -->
-						<div class="bg-black w-full h-full opacity-50 absolute"></div>
-						<div class="viewLeft slide-content">
-							<!-- содержание -->
-							<div class="viewLeft flex slide-had-content justify-center items-center gap-2 font-bold">
-								<div
-									class="viewLeft  w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-									<i class="viewLeft fas fa-bolt text-emerald-600 text-xl"></i>
-								</div>
-								<h3>ФСС - услуги</h3>
-							</div>
-							<div class="viewLeft items-center">
-								<h3> <i class="viewLeft fas fa-bus text-emerald-600 text-xl mr-2"></i>»
-									<b>Автотранспортные доставки</b>
-								</h3>
-							</div>
-						</div>
-						<!-- конец содержание-->
-					</div>
-
-
-					<!-- slide 1 -->
-					<div class="viewLeft swiper-slide overflow-hidden rounded-[25px] relative">
-						<video class="slide-bg" muted loop playsinline
-							src="/public/assets/image/banner/dostavkaKD.MP4" preload="none" poster="/public/assets/image/banner.jpeg"></video>
-						<!-- темное затемнение -->
-						<div class="bg-black w-full h-full opacity-50 absolute"></div>
-						<div class="viewLeft slide-content">
-							<!-- содержание -->
-							<div class="viewLeft flex slide-had-content justify-center items-center gap-2 font-bold">
-								<div
-									class="viewLeft  w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-									<i class="viewLeft fas fa-bolt text-emerald-600 text-xl"></i>
-								</div>
-								<h3>ФСС - услуги</h3>
-							</div>
-							<div class="viewLeft items-center">
-								<h3> <i class="viewLeft fas fa-train text-emerald-600 text-xl mr-2"></i>»
-									<b>Железнодорожные доставки</b>
-								</h3>
-							</div>
-						</div>
-						<!-- конец содержание-->
-					</div>
-
-
-					<!-- slide 1 -->
-					<div class="viewLeft swiper-slide overflow-hidden rounded-[25px] relative">
-						<video class="slide-bg" muted loop playsinline
-							src="/public/assets/image/banner/buldozer.mp4" preload="none" poster="/public/assets/image/banner.jpeg"></video>
-						<!-- темное затемнение -->
-						<div class="bg-black w-full h-full opacity-50 absolute"></div>
-						<div class="viewLeft slide-content">
-							<!-- содержание -->
-							<div class="viewLeft flex slide-had-content justify-center items-center gap-2 font-bold">
-								<div
-									class="viewLeft  w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-									<i class="viewLeft fas fa-bolt text-emerald-600 text-xl"></i>
-								</div>
-								<h3>ФСС - услуги</h3>
-							</div>
-							<div class="viewLeft items-center">
-								<h3> <i class="viewLeft fas fa-dumpster text-emerald-600 text-xl mr-2"></i>»
-									<b>Спецтехника - Бульдозер</b>
-								</h3>
-							</div>
-						</div>
-						<!-- конец содержание-->
-					</div>
-
-
-					<!-- slide 1 -->
-					<div class="viewLeft swiper-slide overflow-hidden rounded-[25px] relative">
-						<video class="slide-bg" muted loop playsinline
-							src="/public/assets/image/banner/tracktor.mp4" preload="none" poster="/public/assets/image/banner.jpeg"></video>
-						<!-- темное затемнение -->
-						<div class="bg-black w-full h-full opacity-50 absolute"></div>
-						<div class="viewLeft slide-content">
-							<!-- содержание -->
-							<div class="viewLeft flex slide-had-content justify-center items-center gap-2 font-bold">
-								<div
-									class="viewLeft  w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-									<i class="viewLeft fas fa-bolt text-emerald-600 text-xl"></i>
-								</div>
-								<h3>ФСС - услуги</h3>
-							</div>
-							<div class="viewLeft items-center">
-								<h3> <i class="viewLeft fas fa-tractor text-emerald-600 text-xl mr-2"></i>»
-									<b>Спецтехника - Трактор</b>
-								</h3>
-							</div>
-						</div>
-						<!-- конец содержание-->
-					</div>
-
-					<!-- slide 1 -->
-					<div class="viewLeft swiper-slide overflow-hidden rounded-[25px] relative">
-						<video class="slide-bg" muted loop playsinline
-							src="/public/assets/image/banner/schakman.mp4" preload="none" poster="/public/assets/image/banner.jpeg"></video>
-						<!-- темное затемнение -->
-						<div class="bg-black w-full h-full opacity-50 absolute"></div>
-						<div class="viewLeft slide-content">
-							<!-- содержание -->
-							<div class="viewLeft flex slide-had-content justify-center items-center gap-2 font-bold">
-								<div
-									class="viewLeft  w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-									<i class="viewLeft fas fa-bolt text-emerald-600 text-xl"></i>
-								</div>
-								<h3>ФСС - услуги</h3>
-							</div>
-							<div class="viewLeft items-center">
-								<h3> <i class="viewLeft fas fa-truck text-emerald-600 text-xl mr-2"></i>»
-									<b>Спецтехника - Шакман</b>
-								</h3>
-							</div>
-						</div>
-						<!-- конец содержание-->
-					</div>
-
-
-				</div>
-				<!-- Кнопки навигации и пагинация -->
-				<div class="relative w-full flex items-center justify-between mt-6">
-					<div class="swiper-paginations flex-1 flex justify-center"></div>
-				</div>
-				<div class="relative w-full flex items-center justify-between mt-6">
-					<a href="/portfolio" title="Посмотреть все проекты"
-						class="inline-flex items-center gap-2 bg-gray-900 hover:bg-black text-white px-7 py-3 rounded-full font-semibold shadow viewLeft mx-auto">Посмотреть
-						все проекты</a>
-				</div>
-			</div>
-	</div>
 		<script>
 			document.addEventListener("DOMContentLoaded", function () {
 				const el = document.querySelector(".swipers");

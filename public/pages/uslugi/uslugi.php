@@ -7,10 +7,8 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap"></noscript>
-	<style> body { font-family: 'Wix Madefor Display', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
+	<link rel="preload" as="font" type="font/woff2" href="/public/assets/vendor/fonts/Manrope-latin.woff2" crossorigin><link rel="preload" as="font" type="font/woff2" href="/public/assets/vendor/fonts/Manrope-cyrillic.woff2" crossorigin><link rel="preload" as="font" type="font/woff2" href="/public/assets/fonts/WixMadeforDisplay/WixMadeforDisplay-Variable.woff2" crossorigin><link rel="stylesheet" href="/public/assets/vendor/fonts/fonts.css">
+	<style> body { font-family: 'DM Sans Variable', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
 
 	<title>Услуги — Производство, ремонт, доставка | ФАВОРИТ-СТРОЙ-СНАБ</title>
 	<meta name="description" content="Все услуги ФАВОРИТ-СТРОЙ-СНАБ: БВЗ под ключ, капитальный ремонт, грузоперевозки, спецтехника, мебель, склады, навесы.">
@@ -21,14 +19,13 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
 	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 	<!-- Favicon unified -->
 	<link rel="icon" type="image/png" href="/public/assets/image/logo/favicon/favicon-96x96.png" sizes="96x96" />
-	<link rel="icon" type="image/svg+xml" href="/public/assets/image/logo/favicon/favicon.svg" />
 	<link rel="shortcut icon" href="/public/assets/image/logo/favicon/favicon.ico" />
 	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/favicon/apple-touch-icon.png" />
 	<meta name="apple-mobile-web-app-title" content="ФСС" />
 	<link rel="manifest" href="/public/assets/image/logo/favicon/site.webmanifest" />
 
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
-	<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css">
+	<noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css"></noscript>
 	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261018">
 	<script defer src="/public/assets/distJS/main.js"></script>
 
@@ -39,8 +36,8 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
 	<?= seo_og_tags('Услуги — Производство, ремонт, доставка | ФАВОРИТ-СТРОЙ-СНАБ', 'Все услуги ФАВОРИТ-СТРОЙ-СНАБ: БВЗ под ключ, капитальный ремонт, грузоперевозки, спецтехника, мебель, склады, навесы.', '/public/assets/image/og/og-uslugi-1200x630.jpg') ?>
 
 	<!-- Swiper Slider for Banner -->
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-	<script defer="true" src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+	<link rel="stylesheet" href="/public/assets/vendor/swiper/swiper-bundle.min.css" />
+	<script defer src="/public/assets/vendor/swiper/swiper-bundle.min.js"></script>
 
 	<?php include_once __DIR__ . '/../../components/sheoma.php'; ?>
 
@@ -55,17 +52,9 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
 <style>
   :root { --mts-red: #F97316; --page-bg: #fff; --ink: #17191d; --muted: #6b7078; --soft: #f3f4f6; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 18px; --radius-xl: 24px; }
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: auto; }
   body { margin: 0; background: var(--page-bg); color: var(--ink); font-family: Arial, Helvetica, sans-serif; -webkit-font-smoothing: antialiased; }
   .container { width: min(100% - 112px, 1280px); margin-inline: auto; padding-top: 96px; }
-  .topline { min-height: 34px; border-bottom: 1px solid #f0f0f0; font-size: 11px; }
-  .mainnav { min-height: 54px; border-bottom: 1px solid #f0f0f0; font-size: 12px; }
-  .brand { color: var(--mts-red); font-weight: 900; letter-spacing: -1.6px; font-size: 22px; line-height: .8; }
-  .brand small { display: block; font-size: 8px; letter-spacing: 0; text-align: right; margin-top: 4px; }
-  .nav-link { white-space: nowrap; transition: color .2s; }
-  .nav-link:hover { color: var(--mts-red); }
-  .login { background: var(--mts-red); color: white; border-radius: 13px; padding: 11px 23px; font-weight: 700; }
-  .catalog { border-radius: 13px; background: #f4f5f7; padding: 11px 17px; font-weight: 700; white-space: nowrap; }
   .page-title { font-size: clamp(36px, 5vw, 62px); line-height: 1.04; font-weight: 600; letter-spacing: -2.5px; margin: 40px 0 34px; }
   .search { width: 300px; background: #f5f6f8; border: 1px solid #e7e7ea; border-radius: 999px; padding: 11px 16px; color: #17191d; font-size: 13px; display: flex; align-items: center; gap: 10px; margin: 0; transition: border-color .2s, box-shadow .2s; }
   .search:focus-within { border-color: #F97316; background: #fff; box-shadow: 0 0 0 3px rgba(249,115,22,.12); }
@@ -140,10 +129,6 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
   }
   @media (max-width: 700px) {
     .container { width: calc(100% - 32px); padding-top: 80px; }
-    .topline { display: none; }
-    .mainnav { min-height: 64px; }
-    .nav-primary { gap: 12px; }
-    .nav-primary .nav-link { display: none; }
     .page-title { font-size: 39px; letter-spacing: -1.5px; margin: 32px 0 25px; }
     .title-row { align-items: flex-start; flex-direction: column; gap: 15px; }
     .search { width: 100%; }
@@ -170,7 +155,8 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
 
 </head>
 
-	<?php include_once 'public/components/header.php'; ?>
+<body class="font-sans text-gray-800" data-page="inner">
+	<?php include_once __DIR__ . '/../../components/header.php'; ?>
 	<!-- Main Content -->
 	<main class="container">
 	<?= seo_breadcrumbs_html() ?>
@@ -320,7 +306,7 @@ require_once __DIR__ . '/../../../app/bootstrap.php';
   </script>
   
 	<!-- footer content -->
-	<?php include_once 'public/components/footer.php'; ?>
+	<?php include_once __DIR__ . '/../../components/footer.php'; ?>
 	<!-- форма обратной связи -->
 
 

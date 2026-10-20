@@ -15,8 +15,11 @@ class FormHandler
     /**
      * Редирект на текущую страницу + запись результата в сессию
      * (её читает app/bootstrap.php и показывает уведомление).
+     *
+     * @param array<string,string> $result Данные заявки для экрана «Заявка принята»
+     *                                       (ProMaintenance enquiry-success)
      */
-    private static function redirect(bool $success, string $message, string $formType = 'modal'): void
+    private static function redirect(bool $success, string $message, string $formType = 'modal', array $result = []): void
     {
         if (session_status() === PHP_SESSION_NONE) {
             @session_start();
@@ -27,6 +30,11 @@ class FormHandler
             'message' => $message,
             'time' => time(),
         ];
+
+        // Данные заявки для экрана успеха (enquiry-success) — только при успешной отправке
+        if ($success && $result !== []) {
+            $_SESSION['fss_enquiry_result'] = $result + ['type' => $formType];
+        }
 
         // Возвращаемся на страницу, с которой отправлена форма
         $path = '/';
@@ -153,7 +161,19 @@ class FormHandler
             ? 'Вы успешно оставили заявку! Мы свяжемся с вами в ближайшее время.'
             : 'Не удалось отправить заявку. Пожалуйста, позвоните нам +7 938 018-00-06 или попробуйте позже.';
 
-        self::redirect($success, $message, $type);
+        // Данные для экрана «Заявка принята» (ProMaintenance enquiry-success)
+        $result = [];
+        if ($success && $type === 'modal') {
+            $result = [
+                'name' => $name,
+                'service' => (string)($_POST['product'] ?? ''),
+                'email' => $email !== '' ? $email : $phone,
+                'phone' => $phone,
+                'reference' => 'ФСС-' . date('Ymd') . '-' . strtoupper(bin2hex(random_bytes(2))),
+            ];
+        }
+
+        self::redirect($success, $message, $type, $result);
     }
 
     private static function getFormType(): ?string

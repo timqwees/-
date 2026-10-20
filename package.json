@@ -18,7 +18,7 @@
     "git":"git add -f . && git commit -m 'update' && git push -f",
     "index": "php tools/indexnow.php",
     "indexnow": "php tools/indexnow.php",
-    "qwees:start": "php -S 0.0.0.0:80"
+    "qwees:start": "php -d opcache.enable_cli=1 -d opcache.validate_timestamps=1 -d opcache.revalidate_freq=0 -S 127.0.0.1:8899"
   },
   "dependencies": {
     "acorn": "^8.17.0",

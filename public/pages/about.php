@@ -5,10 +5,8 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Jura:wght@400;500;600;700&display=swap"></noscript>
-	<style> body { font-family: 'Wix Madefor Display', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
+	<link rel="preload" as="font" type="font/woff2" href="/public/assets/vendor/fonts/Manrope-latin.woff2" crossorigin><link rel="preload" as="font" type="font/woff2" href="/public/assets/vendor/fonts/Manrope-cyrillic.woff2" crossorigin><link rel="preload" as="font" type="font/woff2" href="/public/assets/fonts/WixMadeforDisplay/WixMadeforDisplay-Variable.woff2" crossorigin><link rel="stylesheet" href="/public/assets/vendor/fonts/fonts.css">
+	<style> body { font-family: 'DM Sans Variable', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
 
 	<title>О компании — ФАВОРИТ-СТРОЙ-СНАБ на рынке с <?= htmlspecialchars((string)seo_config('founded_market')) ?> года</title>
 <meta name="description" content="ФАВОРИТ-СТРОЙ-СНАБ на рынке с <?= htmlspecialchars((string)seo_config('founded_market')) ?> года (ООО — с <?= htmlspecialchars((string)seo_config('founded')) ?>): собственный завод БВЗ, 180+ сданных объектов, гарантия 50+ лет. Москва, МО и вся Россия. ☎ <?= htmlspecialchars((string)seo_config('phone_display')) ?>">
@@ -20,17 +18,14 @@
 
 	<!-- Favicon unified -->
 	<link rel="icon" type="image/png" href="/public/assets/image/logo/favicon/favicon-96x96.png" sizes="96x96" />
-	<link rel="icon" type="image/svg+xml" href="/public/assets/image/logo/favicon/favicon.svg" />
 	<link rel="shortcut icon" href="/public/assets/image/logo/favicon/favicon.ico" />
 	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/favicon/apple-touch-icon.png" />
 	<meta name="apple-mobile-web-app-title" content="ФСС" />
 	<link rel="manifest" href="/public/assets/image/logo/favicon/site.webmanifest" />
 
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
-	<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css">
+	<noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css"></noscript>
 	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261018">
-	<script defer src="/public/assets/distJS/main.js?v=20261018"></script>
-
 	<!-- canonical -->
 	<?= seo_canonical_tags() ?>
 	<?= seo_verify_tags() ?>
@@ -263,7 +258,7 @@
 				</article>
 				<article class="expertise-card" style="background:#fff;border:1px solid #F5E6D3;border-radius:24px;overflow:hidden;padding:28px;">
 					<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
-						<div style="width:48px;height:48px;background:#F97316;border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-drone" style="color:#fff;font-size:20px"></i></div>
+						<div style="width:48px;height:48px;background:#F97316;border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-satellite" style="color:#fff;font-size:20px"></i></div>
 						<h3 style="margin:0;font-size:20px;font-weight:800;color:#171310">БПЛА, КИТ и высокотех оборудование</h3>
 					</div>
 					<p style="margin:0 0 12px;font-size:14px;color:#44403C;line-height:1.6">Поставка БПЛА, комплектующих, систем КИТ. Работа с ведущими производителями, адаптация под ТЗ, сертификация.</p>

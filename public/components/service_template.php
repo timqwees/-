@@ -115,7 +115,6 @@ for ($k = 0; $k < $wn; $k++) { $works[] = $pool[($off + 5 + $k) % $pn]; }
 <meta name="theme-color" content="#F97316">
 	<!-- Favicon unified -->
 	<link rel="icon" type="image/png" href="/public/assets/image/logo/favicon/favicon-96x96.png" sizes="96x96" />
-	<link rel="icon" type="image/svg+xml" href="/public/assets/image/logo/favicon/favicon.svg" />
 	<link rel="shortcut icon" href="/public/assets/image/logo/favicon/favicon.ico" />
 	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/favicon/apple-touch-icon.png" />
 	<meta name="apple-mobile-web-app-title" content="ФСС" />
@@ -128,17 +127,13 @@ for ($k = 0; $k < $wn; $k++) { $works[] = $pool[($off + 5 + $k) % $pn]; }
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<style> body { font-family: 'Wix Madefor Display', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
+<style> body { font-family: 'DM Sans Variable', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
 <link rel="preload" href="/public/assets/distCSS/style.css?v=20261018" as="style">
 <link rel="preload" href="/public/assets/distJS/main.js?v=20261018" as="script">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css">
+<noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css"></noscript>
 <link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261018">
-<link rel="stylesheet" href="/public/assets/distCSS/protenance.css?v=20261018">
-<script defer src="/public/assets/distJS/main.js?v=20261018"></script>
+<link rel="stylesheet" href="/public/assets/distCSS/protenance.css?v=20261022">
 <meta name="yandex-verification" content="27e0ba9980498150" />
 <?php include_once __DIR__ . '/sheoma.php'; ?>
 <?= seo_analytics() ?>

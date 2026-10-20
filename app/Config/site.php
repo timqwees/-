@@ -66,6 +66,8 @@ return [
 	'founded' => '2020',
 	'registered_at' => '2020-09-01',
 	'founded_market' => '2011',
+	// Лет на рынке считаем от founded_market автоматически — цифра не устаревает.
+	'market_years' => (string)max(1, (int)date('Y') - 2011),
 	'inn' => '9724020865',
 	'ogrn' => '1207700318583',
 	'kpp' => '770901001',
