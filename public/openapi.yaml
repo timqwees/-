@@ -6,7 +6,7 @@ info:
     капитальный ремонт школ и социальных объектов, комплексное оснащение школ по стандартам Минпросвещения РФ,
     поставка БПЛА и систем КИТ, грузоперевозки и аренда спецтехники.
     Все цены — ориентиры, точная смета по звонку +7 938 018-00-06 и фиксируется в договоре.
-  version: "1.1"
+  version: "1.2"
   contact:
     name: ФАВОРИТ-СТРОЙ-СНАБ
     email: fss@фсс.рус
@@ -21,6 +21,24 @@ paths:
       responses:
         '200':
           description: "HTML-каталог услуг "
+  /company:
+    get:
+      operationId: company
+      summary: Реквизиты, руководство, направления деятельности и выполненные объекты
+      description: |
+        ООО «Фаворит-Строй-Снаб» (ИНН 9724020865, КПП 770901001, ОГРН 1207700318583).
+        Генеральный директор — Аюбов Хасин Хамзатович. Сотрудничает с Росгвардией (ФСВНГ РФ).
+        16 объектов капитального ремонта, 13 оснащённых школ, комплекс общежитий 9 000+ м² в Сочи.
+      responses:
+        '200':
+          description: "HTML-страница компании с полными реквизитами "
+  /contacts:
+    get:
+      operationId: contacts
+      summary: Контакты, реквизиты и форма заявки
+      responses:
+        '200':
+          description: "HTML-страница контактов "
   /services/{slug}:
     get:
       operationId: service
@@ -38,7 +56,7 @@ paths:
   /services/{slug}/{geo}:
     get:
       operationId: serviceGeo
-      summary: Гео-страница услуги (Москва и Московская область)
+      summary: Гео-страница услуги (Москва, МО и регионы с выполненными работами)
       parameters:
         - name: slug
           in: path
@@ -49,7 +67,7 @@ paths:
           required: true
           schema:
             type: string
-            enum: [tushino, himki, krasnogorsk, mytishchi, balashiha, podolsk, domodedovo, odincovo, lyubercy, shchelkovo]
+            enum: [tushino, himki, krasnogorsk, mytishchi, balashiha, podolsk, domodedovo, odincovo, lyubercy, shchelkovo, sochi, guukovo, gudermes, argun, chechen-aul, achhoy-martan, shatura]
       responses:
         '200':
           description: "HTML-страница с локальными условиями, сроками и FAQ "
@@ -70,7 +88,7 @@ paths:
           required: true
           schema:
             type: string
-            enum: [obshchegiya-adler-sochi, kapremont-gudermes, bpla-kit, osnashchenie-shkol, navesy-100-mest]
+            enum: [obshchegiya-adler-sochi, kapremont-gudermes, kapremont-argun, kapremont-chechen-aul, dvorets-sporta-shahter, kapremont-shatura, kapremont-achhoy-martan, osnashchenie-shkol, navesy-100-mest, administrativnoe-zdanie, bpla-kit, noutbuki-cdo]
       responses:
         '200':
           description: "OK "
@@ -110,6 +128,13 @@ paths:
     get:
       operationId: ymlFeed
       summary: YML-фид услуг с ценами (Яндекс.Товары)
+      responses:
+        '200':
+          description: "application/xml, YML "
+  /feed.yml:
+    get:
+      operationId: feedYml
+      summary: YML-фид услуг (алиас /yml.xml)
       responses:
         '200':
           description: "application/xml, YML "

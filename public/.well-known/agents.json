@@ -12,14 +12,18 @@
   ],
   "endpoints": [
     { "path": "/uslugi", "type": "services-hub" },
+    { "path": "/company", "type": "company-registrations" },
     { "path": "/portfolio", "type": "portfolio" },
     { "path": "/sitemap-index.xml", "type": "sitemap-index" },
     { "path": "/sitemap.xml", "type": "sitemap" },
+    { "path": "/llms.txt", "type": "llms-summary" },
+    { "path": "/llms-full.txt", "type": "llms-full" },
     { "path": "/openapi.yaml", "type": "api-spec" },
     { "path": "/ai-plugin.json", "type": "ai-plugin" }
   ],
-  "contacts": { "phone": "+7 938 018-00-06", "email": "fss@фсс.рус", "telegram": "https://t.me/fss_rus", "vk": "https://vk.com/fss_rus" },
-  "address": { "postalCode": "101000", "locality": "Москва", "street": "ул. Большая Спасоглинищевская, д. 9/1 стр. 10, помещ. 1/2", "country": "RU" },
+  "contacts": { "phone": "+7 938 018-00-06", "email": "fss@фсс.рус", "telegram": "https://t.me/fss_rus", "yandex_maps": "https://yandex.ru/maps/?text=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0%2C%20%D0%BF%D0%B5%D1%80.%20%D0%91%D0%BE%D0%BB%D1%8C%D1%88%D0%BE%D0%B9%20%D0%A1%D0%BF%D0%B0%D1%81%D0%BE%D0%B3%D0%BB%D0%B8%D0%BD%D0%B8%D1%89%D0%B5%D0%B2%D1%81%D0%BA%D0%B8%D0%B9%2C%20%D0%B4.%209%2F1%20%D1%81%D1%82%D1%80.%2010%2C%20%D0%BF%D0%BE%D0%BC%D0%B5%D1%89.%201%2F2%2C%20101000" },
+  "address": { "postalCode": "101000", "locality": "Москва", "street": "пер. Большой Спасоглинищевский, д. 9/1 стр. 10, помещ. 1/2", "country": "RU" },
+  "registration": { "legalName": "ООО «Фаворит-Строй-Снаб»", "inn": "9724020865", "kpp": "770901001", "ogrn": "1207700318583", "ceo": "Аюбов Хасин Хамзатович" },
   "serviceAreas": ["Москва", "Московская область", "Краснодарский край", "Чеченская Республика", "Ростовская область", "Россия"],
   "languages": ["ru"],
   "hours": "Пн–Пт 09:00–18:00 (МСК)"

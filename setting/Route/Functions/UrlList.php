@@ -19,9 +19,15 @@ final class UrlList
 		} else {
 			header('Cache-Control: public, max-age=3600');
 		}
-		$urls = ['/', '/uslugi', '/portfolio', '/about', '/contacts', '/politika', '/soglasie', '/search'];
+		$urls = ['/', '/uslugi', '/portfolio', '/about', '/company', '/contacts', '/politika', '/soglasie', '/search', '/search/blog'];
 		foreach (glob($root . '/public/pages/services/*/index.php') ?: [] as $file) {
 			$urls[] = '/services/' . basename(dirname((string)$file));
+		}
+		// Блог: хаб и все статьи
+		$urls[] = '/blog';
+		$blogPosts = function_exists('seo_blog_posts') ? seo_blog_posts() : [];
+		foreach (array_keys((array)$blogPosts) as $postSlug) {
+			$urls[] = '/blog/' . $postSlug;
 		}
 		// Детальные страницы объектов
 		$projectsFile = $root . '/app/Data/projects.php';

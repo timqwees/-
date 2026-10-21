@@ -23,8 +23,8 @@
 	<meta name="apple-mobile-web-app-title" content="ФСС" />
 	<link rel="manifest" href="/manifest.json" />
 
-	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css">
-	<noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css"></noscript>
+	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css?v=20261024">
+	<noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css?v=20261024"></noscript>
 	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261018">
 	<!-- canonical -->
 	<?= seo_canonical_tags() ?>

@@ -137,8 +137,8 @@ $photos = [
 	<meta name="apple-mobile-web-app-title" content="ФСС" />
 	<link rel="manifest" href="/public/assets/image/logo/favicon/site.webmanifest" />
 
-	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css">
-	<noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css"></noscript>
+	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css?v=20261024">
+	<noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css?v=20261024"></noscript>
 	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261018">
 
 	<!-- canonical -->
@@ -156,7 +156,7 @@ $photos = [
 	<?= seo_goals_script() ?>
 	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261018">
 	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261018">
-	<link rel="stylesheet" href="/public/assets/distCSS/promaintenance.css?v=20261023">
+	<link rel="stylesheet" href="/public/assets/distCSS/promaintenance.css?v=20261024">
 
 <style>
 	/* ============================================================
@@ -317,6 +317,13 @@ $photos = [
 
 	.usl-stat:last-child {
 		border-right: 0;
+	}
+
+	/* Каждый следующий блок отходит от разделительной полосы */
+	@media (width>992px) {
+		.usl-stat + .usl-stat {
+			padding-left: 32px;
+		}
 	}
 
 	.usl-stat dd {
@@ -774,6 +781,71 @@ $photos = [
 			justify-content: flex-start;
 		}
 	}
+
+	/* ---------- ГЕО-НАПРАВЛЕНИЯ (хаб → региональные страницы) ---------- */
+	.uc-geo {
+		padding-block: clamp(60px, 7vw, 120px);
+	}
+
+	.uc-geo__grid {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 1px;
+		background: var(--line);
+		border: 1px solid var(--line);
+		margin-top: 46px;
+	}
+
+	.uc-geo__col {
+		background: #fff;
+		padding: 26px 24px 28px;
+	}
+
+	.uc-geo__col h3 {
+		margin: 0;
+		font-size: 20px;
+		font-weight: 500;
+		line-height: 1.25;
+	}
+
+	.uc-geo__region {
+		margin: 8px 0 18px;
+		color: rgba(23, 19, 16, .55);
+		font-size: 12px;
+		letter-spacing: .04em;
+	}
+
+	.uc-geo__col ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.uc-geo__col .text-link {
+		font-size: 14px;
+		gap: 12px;
+	}
+
+	@media (width<=1100px) {
+		.uc-geo__grid {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+	}
+
+	@media (width<=820px) {
+		.uc-geo__grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (width<=520px) {
+		.uc-geo__grid {
+			grid-template-columns: 1fr;
+		}
+	}
 </style>
 
 </head>
@@ -920,6 +992,57 @@ $photos = [
 						<path d="M7 17 17 7"></path>
 					</svg>
 				</a>
+			</div>
+		</section>
+
+		<!-- ГЕО-НАПРАВЛЕНИЯ (хаб → региональные страницы) -->
+		<section id="geo" class="uc-geo section-shell" aria-labelledby="uc-geo-title">
+			<div class="section-topline">
+				<p class="eyebrow">03 / География</p>
+				<span class="eyebrow">Москва · МО · Регионы</span>
+			</div>
+			<div class="work-heading">
+				<h2 id="uc-geo-title">Работаем<br>по всей России</h2>
+				<p>База — Москва, объекты сдаём в регионах с подтверждёнными работами.<br>Выберите свой город — страница с местными сроками и логистикой.</p>
+			</div>
+			<?php
+			$__geoAll = function_exists('seo_geo') ? seo_geo() : ['geo' => [], 'priority_services' => []];
+			$__geoList = (array)($__geoAll['geo'] ?? []);
+			$__prio = (array)($__geoAll['priority_services'] ?? []);
+			$__geoRows = [];
+			foreach ($__geoList as $__gk => $__gv) {
+				$__links = [];
+				foreach ($__prio as $__ps) {
+					if (seo_geo_allows((array)$__gv, (string)$__ps)) {
+						$__links[] = [
+							'slug' => (string)$__ps,
+							'label' => (string)($short[$__ps] ?? (seo_service((string)$__ps)['title'] ?? $__ps)),
+						];
+					}
+				}
+				if (!$__links) {
+					continue;
+				}
+				$__geoRows[] = [
+					'key' => (string)$__gk,
+					'name' => (string)($__gv['name'] ?? $__gk),
+					'region' => (string)($__gv['region'] ?? ''),
+					'links' => $__links,
+				];
+			}
+			?>
+			<div class="uc-geo__grid">
+				<?php foreach ($__geoRows as $__row): ?>
+					<div class="uc-geo__col">
+						<h3><?= htmlspecialchars($__row['name']) ?></h3>
+						<p class="uc-geo__region"><?= htmlspecialchars($__row['region']) ?></p>
+						<ul>
+							<?php foreach ($__row['links'] as $__l): ?>
+								<li><a class="text-link" href="/services/<?= htmlspecialchars($__l['slug']) ?>/<?= htmlspecialchars($__row['key']) ?>" title="<?= htmlspecialchars($__row['name'] . ' — ' . $__l['label']) ?>"><?= htmlspecialchars($__l['label']) ?></a></li>
+							<?php endforeach; ?>
+						</ul>
+					</div>
+				<?php endforeach; ?>
 			</div>
 		</section>
 

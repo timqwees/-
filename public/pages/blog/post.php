@@ -66,12 +66,44 @@ if (count($related) < 4) {
 	<?php endforeach; ?>
 	<link rel="preload" href="/public/assets/distCSS/style.css?v=<?= seo_ver() ?>" as="style">
 	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=<?= seo_ver() ?>">
-	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css">
-	<noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css"></noscript>
+	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css?v=20261024">
+	<noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css?v=20261024"></noscript>
 	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=<?= seo_ver() ?>">
 	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=<?= seo_ver() ?>">
 	<link rel="stylesheet" href="/public/assets/distCSS/article.css?v=<?= seo_ver() ?>">
+	<style>
+		/* Связанная услуга — блок в сайдбаре статьи (связка blog → services) */
+		.article-sidebar-card--service .article-sidebar-body {
+			display: flex;
+			flex-direction: column;
+			gap: 12px;
+			align-items: flex-start;
+		}
+
+		.article-service-link {
+			font-size: 16px;
+			font-weight: 600;
+			line-height: 1.3;
+			color: inherit;
+			text-decoration: none;
+		}
+
+		.article-service-link:hover {
+			text-decoration: underline;
+			text-underline-offset: 3px;
+		}
+
+		.article-service-note {
+			margin: 0;
+			font-size: 12.5px;
+			line-height: 1.5;
+			color: rgba(23, 19, 16, .62);
+		}
+	</style>
 	<?php include_once __DIR__ . '/../../components/sheoma.php'; ?>
+	<?= seo_analytics() ?>
+	<?= seo_utm_script() ?>
+	<?= seo_goals_script() ?>
 </head>
 
 <body class="blog-post-page" data-page="inner">
@@ -200,6 +232,17 @@ if (count($related) < 4) {
 
 				<!-- Sidebar -->
 				<aside class="article-sidebar">
+					<?php if (!empty($service) && !empty($service['title'])): ?>
+					<div class="article-sidebar-card article-sidebar-card--service">
+						<div class="article-sidebar-header">Связанная услуга</div>
+						<div class="article-sidebar-body">
+							<a class="article-service-link" href="/services/<?= htmlspecialchars((string)($post['service_slug'] ?? ''), ENT_QUOTES) ?>" title="<?= $h($service['title']) ?>"><?= $h($service['title']) ?></a>
+							<p class="article-service-note">Работы по этой услуге: <?= $h((string)($service['service_type'] ?? '')) ?><?php if (!empty($service['price_from'])): ?> · от <?= number_format((float)$service['price_from'], 0, ',', ' ') ?> ₽/м²<?php endif; ?></p>
+							<a class="article-sidebar-card--cta-btn article-sidebar-card--cta-btn--primary" href="/services/<?= htmlspecialchars((string)($post['service_slug'] ?? ''), ENT_QUOTES) ?>" title="Перейти к услуге">Перейти к услуге</a>
+						</div>
+					</div>
+					<?php endif ?>
+
 					<?php if (!empty($related)): ?>
 					<div class="article-sidebar-card">
 						<div class="article-sidebar-header">Читайте также</div>

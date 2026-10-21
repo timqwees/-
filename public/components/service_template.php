@@ -146,20 +146,37 @@ $fssSec = function (string $label): string {
 // Заголовок вкладки: краткий заголовок услуги (до «—») + бренд, укладываемся в 60 символов.
 // Для гео-страниц город ставим в конец и НЕ даём ему обрезаться (иначе titles дублируются).
 $titleSuffix = ' | ФАВОРИТ-СТРОЙ-СНАБ';
-$seoTitle = seo_clip($h1a, 60 - mb_strlen($titleSuffix)) . $titleSuffix;
+// seo_title в app/Data/services.php — точная формулировка заголовка вкладки
+// (для длинных названий, которые иначе обрезаются многоточием).
+$seoTitle = !empty($svc['seo_title'])
+	? (string)$svc['seo_title']
+	: seo_clip($h1a, 60 - mb_strlen($titleSuffix)) . $titleSuffix;
 $seoDesc = (string)$svc['description'];
 if ($geo) {
 	$h1b = 'в ' . $geoIn;
 	// Гео-посадочная: полное название услуги + город; бренд добавляем, только если укладываемся в 60 символов.
-	$seoTitle = seo_clip($h1a . ' в ' . $geoIn, 60);
+	$geoBase = !empty($svc['seo_title'])
+		? trim((string)preg_replace('/\s*\|\s*ФАВОРИТ-СТРОЙ-СНАБ$/u', '', (string)$svc['seo_title']))
+		: $h1a;
+	$seoTitle = seo_clip($geoBase . ' в ' . $geoIn, 60);
 	if (mb_strlen($seoTitle) + mb_strlen($titleSuffix) <= 60) {
 		$seoTitle .= $titleSuffix;
 	}
-	$seoDesc = $geoName . ' — ' . (string)$svc['description'];
-	// Локальная деталь в description: уникализирует сниппет и повышает CTR по гео-запросу
+	// Гео-сниппет собираем заново (короткий, полный, без многоточия):
+	// город + услуга + локальная логистика + срок. Длинное описание услуги
+	// сюда не подставляем — иначе сниппет обрезается многоточием.
+	$geoDesc = $geoName . ' — ' . $geoBase . '.';
 	if (!empty($geo['distance']) && !empty($geo['eta'])) {
-		$seoDesc .= ' Доставка ' . $geo['eta'] . ' ' . $geo['route'] . ', ' . $geo['distance'] . ' км от базы.';
+		$geoDesc .= ' Доставка ' . $geo['eta'] . ', ' . $geo['distance'] . ' км от базы.';
 	}
+	if (!empty($geo['route'])) {
+		$withRoute = $geoDesc . ' Маршрут: ' . $geo['route'] . '. Срок от ' . $deadline . ' дней.';
+		// Длинный маршрут (регионы) не влезает в сниппет — оставляем без него
+		$geoDesc = mb_strlen($withRoute) <= 135 ? $withRoute : $geoDesc . ' Срок от ' . $deadline . ' дней.';
+	} else {
+		$geoDesc .= ' Срок от ' . $deadline . ' дней.';
+	}
+	$seoDesc = seo_clip($geoDesc, 135);
 }
 $basePrice = !empty($svc['price_from']) ? (int)$svc['price_from'] : 0;
 // Таблица цен «за м²» и калькулятор площади — только для услуг с площадной ценой
@@ -200,7 +217,7 @@ for ($k = 0; $k < $wn; $k++) { $works[] = $pool[($off + 5 + $k) % $pn]; }
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?= $h($seoTitle) ?></title>
-<meta name="description" content="<?= $h(seo_clip($seoDesc, 130)) ?> ☎ <?= $h($phone) ?>">
+<meta name="description" content="<?= $h(seo_clip($seoDesc, 135)) ?> ☎ <?= $h($phone) ?>">
 	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
 <meta name="theme-color" content="#876b55">
@@ -221,11 +238,10 @@ for ($k = 0; $k < $wn; $k++) { $works[] = $pool[($off + 5 + $k) % $pn]; }
 <style> body { font-family: 'DM Sans Variable', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
 <link rel="preload" href="/public/assets/distCSS/style.css?v=20261018" as="style">
 <link rel="preload" href="/public/assets/distJS/main.js?v=20261018" as="script">
-<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css">
-<noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css"></noscript>
+<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css?v=20261024">
+<noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css?v=20261024"></noscript>
 <link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261018">
-<link rel="stylesheet" href="/public/assets/distCSS/promaintenance.css?v=20261023">
-<meta name="yandex-verification" content="27e0ba9980498150" />
+<link rel="stylesheet" href="/public/assets/distCSS/promaintenance.css?v=20261024">
 <?php include_once __DIR__ . '/sheoma.php'; ?>
 <?= seo_analytics() ?>
 <?= seo_utm_script() ?>
@@ -465,6 +481,14 @@ for ($k = 0; $k < $wn; $k++) { $works[] = $pool[($off + 5 + $k) % $pn]; }
 
 .svc-stat:last-child {
 	border-right: 0;
+}
+
+/* Каждый следующий блок отходит от разделительной полосы:
+   без этого текст примыкает к линии вплотную (вид «02 / 03» у границы) */
+@media (width>992px) {
+	.svc-stat + .svc-stat {
+		padding-left: 32px;
+	}
 }
 
 .svc-stat dd {
@@ -1462,6 +1486,136 @@ main img {
 		transition: none;
 	}
 }
+
+/* ---------- ПОЛЕЗНЫЕ СТАТЬИ (связка услуга → блог) ---------- */
+.svc-articles {
+	padding-block: clamp(60px, 7vw, 110px);
+}
+
+.svc-articles__grid {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 1px;
+	background: var(--line);
+	border: 1px solid var(--line);
+	margin-top: 40px;
+}
+
+.svc-articles__card {
+	background: #fff;
+	padding: 24px 22px 28px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	transition: background .25s var(--ease);
+}
+
+.svc-articles__card:hover {
+	background: #faf8f6;
+}
+
+.svc-articles__meta {
+	color: #a08b76;
+	font-size: 11px;
+	letter-spacing: .1em;
+	text-transform: uppercase;
+}
+
+.svc-articles__card h3 {
+	margin: 0;
+	font-size: 17px;
+	font-weight: 500;
+	line-height: 1.32;
+}
+
+.svc-articles__card p {
+	margin: 0;
+	color: rgba(23, 19, 16, .66);
+	font-size: 13.5px;
+	line-height: 1.6;
+}
+
+.svc-articles__all {
+	display: inline-flex;
+	align-items: center;
+	gap: 12px;
+	margin-top: 28px;
+	font-size: 14px;
+}
+
+@media (width<=1100px) {
+	.svc-articles__grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (width<=620px) {
+	.svc-articles__grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+/* ---------- РЕАЛИЗОВАННЫЕ ОБЪЕКТЫ ПО ТЕМЕ (услуга → кейс) ---------- */
+.svc-cases {
+	padding-block: clamp(60px, 7vw, 110px);
+}
+
+.svc-cases__grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 1px;
+	background: var(--line);
+	border: 1px solid var(--line);
+	margin-top: 40px;
+}
+
+.svc-cases__card {
+	background: #fff;
+	padding: 24px 22px 28px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	text-decoration: none;
+	color: inherit;
+	transition: background .25s var(--ease);
+}
+
+.svc-cases__card:hover {
+	background: #faf8f6;
+}
+
+.svc-cases__meta {
+	color: #a08b76;
+	font-size: 11px;
+	letter-spacing: .1em;
+	text-transform: uppercase;
+}
+
+.svc-cases__card h3 {
+	margin: 0;
+	font-size: 18px;
+	font-weight: 500;
+	line-height: 1.3;
+}
+
+.svc-cases__card p {
+	margin: 0;
+	color: rgba(23, 19, 16, .66);
+	font-size: 13.5px;
+	line-height: 1.6;
+}
+
+@media (width<=900px) {
+	.svc-cases__grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (width<=620px) {
+	.svc-cases__grid {
+		grid-template-columns: 1fr;
+	}
+}
 </style>
 
 </head>
@@ -1652,6 +1806,8 @@ main img {
 				</div>
 				<form class="svc-form js-svcalc" method="POST" action="/send/email" data-goal="lead_<?= $h($slug) ?>" novalidate>
 					<input type="hidden" name="content_form">
+					<input type="hidden" name="product" value="<?= $h($svc['title']) ?>">
+					<input type="hidden" name="page_url" value="<?= $h((string)seo_url()) ?>">
 					<?php $abPath = __DIR__ . '/antibot_fields.php'; if (file_exists($abPath)) include $abPath; ?>
 					<input type="text" name="name" placeholder="Ваше имя" autocomplete="name" required>
 					<div class="row2">
@@ -2120,6 +2276,100 @@ main img {
 				<a href="#lead" class="cta-pill" data-goal="svc_band_cta" title="Построить с нами">Построить с нами <i class="fa-solid fa-arrow-right"></i></a>
 			</div>
 		</section>
+
+		<!-- РЕАЛИЗОВАННЫЕ ОБЪЕКТЫ ПО ТЕМЕ: связка услуга → кейс -->
+		<?php
+		$__svcProjects = [
+			'proizvodim_modul' => ['obshchegiya-adler-sochi'],
+			'obchegitia' => ['obshchegiya-adler-sochi'],
+			'kapital' => ['kapremont-gudermes', 'kapremont-argun', 'kapremont-chechen-aul', 'dvorets-sporta-shahter', 'kapremont-shatura', 'kapremont-achhoy-martan'],
+			'osnashchenie' => ['osnashchenie-shkol'],
+			'naves' => ['navesy-100-mest'],
+			'administrativnoe' => ['administrativnoe-zdanie'],
+			'bpla' => ['bpla-kit'],
+			'postavka' => ['noutbuki-cdo'],
+		][(string)$slug] ?? [];
+		static $__projCache = null;
+		if ($__projCache === null) {
+			$__projCache = (array)(require dirname(__DIR__, 2) . '/app/Data/projects.php');
+		}
+		$__allProjects = $__projCache;
+		$__projectCards = [];
+		foreach ($__svcProjects as $__pslug) {
+			if (isset($__allProjects[$__pslug])) {
+				$__projectCards[] = [$__pslug, $__allProjects[$__pslug]];
+			}
+		}
+		if ($__projectCards):
+			?>
+			<section class="svc-section section-shell svc-cases" aria-labelledby="svc-cases-title">
+				<div class="section-topline">
+					<p class="eyebrow"><?= $h($fssSec('Кейсы')) ?></p>
+					<span class="eyebrow">Сданные объекты</span>
+				</div>
+				<div class="work-heading">
+					<h2 id="svc-cases-title">Объекты<br>по этой теме</h2>
+					<p>Фото, задача и результат по объектам, где мы<br>выполняли работы по этому направлению.</p>
+				</div>
+				<div class="svc-cases__grid">
+					<?php foreach ($__projectCards as [$__pslug2, $__pr]): ?>
+						<a class="svc-cases__card" href="/portfolio/<?= $h((string)$__pslug2) ?>" title="<?= $h((string)$__pr['title']) ?>">
+							<span class="svc-cases__meta"><?= $h((string)($__pr['type'] ?? '')) ?><?php if (!empty($__pr['region'])): ?> · <?= $h((string)$__pr['region']) ?><?php endif; ?></span>
+							<h3><?= $h((string)$__pr['title']) ?></h3>
+							<p><?= $h(seo_clip((string)($__pr['lead'] ?? ''), 110)) ?></p>
+						</a>
+					<?php endforeach; ?>
+				</div>
+			</section>
+		<?php endif; ?>
+
+		<!-- ПОЛЕЗНЫЕ СТАТЬИ: связка услуга → блог (перетекание веса и релевантности) -->
+		<?php
+		$__blogPosts = function_exists('seo_blog_posts') ? seo_blog_posts() : [];
+		$__svcArticles = [];
+		foreach ($__blogPosts as $__bs => $__bp) {
+			if ((string)($__bp['service_slug'] ?? '') === (string)$slug) {
+				$__svcArticles[] = [$__bs, $__bp];
+			}
+		}
+		if (!$__svcArticles) {
+			// Если по услуге статей нет — берём последние материалы блога,
+			// чтобы каждая страница услуги отдавала вес блогу.
+			$__fallback = [];
+			foreach ($__blogPosts as $__bs2 => $__bp2) {
+				$__fallback[] = [$__bs2, $__bp2];
+			}
+			$__svcArticles = array_slice($__fallback, 0, 4);
+		}
+		$__svcArticles = array_slice($__svcArticles, 0, 4);
+		if ($__svcArticles):
+			?>
+			<section class="svc-section section-shell svc-articles" aria-labelledby="svc-articles-title">
+				<div class="section-topline">
+					<p class="eyebrow"><?= $h($fssSec('Материалы')) ?></p>
+					<span class="eyebrow">Экспертиза инженеров</span>
+				</div>
+				<div class="work-heading">
+					<h2 id="svc-articles-title">Полезные<br>статьи</h2>
+					<p>Разборы, нормы и сравнения по теме услуги —<br>чтобы вы приняли решение без ошибок.</p>
+				</div>
+				<div class="svc-articles__grid">
+					<?php foreach ($__svcArticles as [$__bs, $__bp]): ?>
+						<a class="svc-articles__card" href="/blog/<?= $h((string)$__bs) ?>" title="<?= $h($__bp['title']) ?>">
+							<span class="svc-articles__meta"><?= $h((string)($__bp['category_name'] ?? '')) ?> · <?= (int)($__bp['read_minutes'] ?? 5) ?> мин</span>
+							<h3><?= $h($__bp['title']) ?></h3>
+							<p><?= $h(seo_clip((string)$__bp['description'], 110)) ?></p>
+						</a>
+					<?php endforeach; ?>
+				</div>
+				<a class="text-link svc-articles__all" href="/blog" title="Все материалы блога">Все материалы блога
+					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+						<path d="M7 7h10v10"></path>
+						<path d="M7 17 17 7"></path>
+					</svg>
+				</a>
+			</section>
+		<?php endif; ?>
 
 		<?php include_once __DIR__ . '/reviews_services.php'; ?>
 	</main>

@@ -21,7 +21,7 @@ $phone = (string)seo_config('phone');
 $phoneDisplay = (string)seo_config('phone_display');
 
 $t = 'О компании — ФАВОРИТ-СТРОЙ-СНАБ';
-$d = 'ООО «ФАВОРИТ-СТРОЙ-СНАБ» (ИНН ' . $inn . ', ОГРН ' . $ogrn . ') — на рынке с ' . $foundedMarket . ' года (ООО с ' . $founded . '), поставка и монтаж БВЗ, фиксированная смета за 15 минут, сроки от 14 дней, гарантия 50+ лет.';
+$d = 'ООО «ФАВОРИТ-СТРОЙ-СНАБ» (ИНН ' . $inn . ', ОГРН ' . $ogrn . ') — на рынке с ' . $foundedMarket . ' года: поставка и монтаж БВЗ, капремонт, оснащение школ. Гарантия 50+ лет.';
 
 /* Почему выбирают — короткие тезисы в стиле дизайн-системы */
 $why = [
@@ -115,8 +115,8 @@ $projects = [
 	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 	<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 	<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
-	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css">
-	<noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css"></noscript>
+	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css?v=20261024">
+	<noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css?v=20261024"></noscript>
 	<style> body { font-family: 'DM Sans Variable', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
 	<link rel="preload" href="/public/assets/distCSS/style.css?v=20261018" as="style">
 	<link rel="preload" href="/public/assets/distJS/main.js?v=20261018" as="script">
@@ -124,7 +124,7 @@ $projects = [
 	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261018">
 	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261018">
 	<!-- Дизайн-система главной страницы (ProMaintenance) -->
-	<link rel="stylesheet" href="/public/assets/distCSS/promaintenance.css?v=20261023">
+	<link rel="stylesheet" href="/public/assets/distCSS/promaintenance.css?v=20261024">
 	<?php include_once __DIR__ . '/../../components/sheoma.php'; ?>
 	<?= seo_analytics() ?>
 	<?= seo_utm_script() ?>
@@ -288,6 +288,13 @@ $projects = [
 
 		.abt-stat:last-child {
 			border-right: 0;
+		}
+
+		/* Каждый следующий блок отходит от разделительной полосы */
+		@media (min-width: 641px) {
+			.abt-stat + .abt-stat {
+				padding-left: 28px;
+			}
 		}
 
 		.abt-stat dd {
@@ -622,6 +629,18 @@ $projects = [
 				grid-template-columns: 1fr;
 			}
 
+			/* В одну колонку карточки идут друг за другом — между текстом
+			   и линией следующей карточки нужен воздух */
+			.abt-why-card,
+			.abt-exp-card {
+				margin-bottom: 30px;
+			}
+
+			.abt-why-card:last-child,
+			.abt-exp-card:last-child {
+				margin-bottom: 0;
+			}
+
 			.abt-requ-list>div {
 				grid-template-columns: 1fr;
 				gap: 6px;
@@ -856,6 +875,14 @@ $projects = [
 							<dd><a href="mailto:<?= htmlspecialchars((string)seo_config('email_puny')) ?>" title="Написать на email"><?= htmlspecialchars((string)seo_config('email')) ?></a></dd>
 						</div>
 						<div>
+							<dt>Telegram</dt>
+							<dd><a href="<?= htmlspecialchars((string)seo_config('telegram')) ?>" target="_blank" rel="noopener noreferrer" title="Telegram: @fss_rus">@fss_rus</a> — самый быстрый канал: фото площадки, чертежи, вопросы по срокам и комплектации</dd>
+						</div>
+						<div>
+							<dt>Документы и договор</dt>
+							<dd>Договор · Сметы · КП — <a href="/contacts#ways" title="Договор, сметы и коммерческие предложения">запросить</a></dd>
+						</div>
+						<div>
 							<dt>Регионы работы</dt>
 							<dd><?= htmlspecialchars(implode(', ', array_slice((array)seo_config('area_served'), 0, 5))) ?> и вся Россия</dd>
 						</div>
@@ -864,7 +891,7 @@ $projects = [
 							<dd><a href="<?= htmlspecialchars((string)seo_config('base_url')) ?>" title="ФАВОРИТ-СТРОЙ-СНАБ">фсс.рус</a></dd>
 						</div>
 					</dl>
-					<p class="abt-requ-note">Все показатели компании — в таблице «Компания в цифрах» в разделе <a href="/portfolio#facts">Портфолио</a>.</p>
+					<p class="abt-requ-note">Все показатели компании — в таблице «Компания в цифрах» в разделе <a href="/portfolio#facts">Портфолио</a>. Полный перечень выполненных объектов, направления деятельности и стандарты — на странице <a href="/company" title="Реквизиты, руководство и выполненные объекты">«О компании и реквизиты»</a>.</p>
 				</div>
 			</div>
 		</section>

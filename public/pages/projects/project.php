@@ -45,7 +45,11 @@ $galleryPhotos = $photoUrls;
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title><?= $h($seoTitle) ?></title>
-	<meta name="description" content="<?= $h(seo_clip((string)$p['lead'], 120) . ' Гарантия 50+ лет, смета за 15 минут.') ?>">
+	<meta name="description" content="<?= $h(
+		(mb_strlen((string)$p['lead'] . ' Гарантия 50+ лет, смета за 15 минут.') <= 158
+			? (string)$p['lead'] . ' Гарантия 50+ лет, смета за 15 минут.'
+			: seo_clip((string)$p['lead'], 158))
+	) ?>">
 	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 	<meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
 	<meta name="theme-color" content="#876b55">
@@ -59,13 +63,16 @@ $galleryPhotos = $photoUrls;
 	<?= seo_verify_tags() ?>
 	<?= seo_og_tags($title . ' — ФАВОРИТ-СТРОЙ-СНАБ', (string)$p['lead'], $photoUrls ? $photoUrls[0] : '') ?>
 	<link rel="preload" href="/public/assets/distCSS/style.css?v=20261018" as="style">
-	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css">
+	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css?v=20261024">
 	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261018">
 	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261018">
 	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261018">
 	<!-- Дизайн-система главной страницы (ProMaintenance) -->
-	<link rel="stylesheet" href="/public/assets/distCSS/promaintenance.css?v=20261023">
+	<link rel="stylesheet" href="/public/assets/distCSS/promaintenance.css?v=20261024">
 	<?php include_once __DIR__ . '/../../components/sheoma.php'; ?>
+	<?= seo_analytics() ?>
+	<?= seo_utm_script() ?>
+	<?= seo_goals_script() ?>
 	<style>
 	/* ============================================================
 	   ГЕРОЙ ОБЪЕКТА — по образцу hero главной страницы

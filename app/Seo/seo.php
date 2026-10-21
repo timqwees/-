@@ -266,7 +266,7 @@ if (!function_exists('seo_organization_jsonld')) {
 					'areaServed' => 'RU',
 					'availableLanguage' => ['Russian'],
 				]],
-				'sameAs' => array_values(array_filter([seo_config('telegram'), seo_config('vk')])),
+				'sameAs' => array_values(array_filter([seo_config('telegram'), seo_config('yandex_maps')])),
 				'knowsAbout' => [
 					'быстровозводимые здания', 'модульные здания', 'капитальное строительство', 'капитальный ремонт зданий',
 					'склады из сэндвич-панелей', 'ангары', 'АБК', 'общежития', 'грузоперевозки', 'аренда спецтехники',
@@ -320,6 +320,7 @@ if (!function_exists('seo_breadcrumbs_jsonld')) {
 			'/uslugi' => 'Услуги',
 			'/portfolio' => 'Портфолио объектов',
 			'/about' => 'О компании',
+			'/company' => 'О компании и реквизиты',
 			'/contacts' => 'Контакты',
 			'/blog' => 'Блог',
 			'/politika' => 'Политика конфиденциальности',
@@ -543,18 +544,35 @@ if (!function_exists('seo_blog_jsonld')) {
 		if ($slug && isset($posts[$slug])) {
 			$p = $posts[$slug];
 			$author = seo_config('ceo');
+			$text = strip_tags(seo_blog_post_content($p));
 			return [
 				'@type' => 'BlogPosting',
+				'@id' => $base . '/blog/' . $slug . '#blogposting',
 				'headline' => $p['title'],
 				'description' => $p['description'],
 				'datePublished' => $p['date'],
 				'dateModified' => $p['date'],
+				'inLanguage' => 'ru-RU',
+				'url' => $base . '/blog/' . $slug,
 				'author' => ['@type' => 'Person', 'name' => $author],
 				'publisher' => ['@id' => $base . '#organization'],
 				'image' => ['@type' => 'ImageObject', 'url' => $base . $p['og_image']],
 				'articleSection' => $p['category_name'],
 				'keywords' => implode(', ', $p['tags']),
-				'wordCount' => str_word_count(strip_tags(seo_blog_post_content($p))),
+				// Связь статьи с услугой: укрепляет тематическую связку blog → services
+				'about' => (function () use ($p, $base): array {
+					$svc = seo_service((string)($p['service_slug'] ?? ''));
+					if (!$svc) {
+						return [];
+					}
+					return [
+						'@type' => 'Service',
+						'name' => (string)($svc['title'] ?? ''),
+						'url' => $base . '/services/' . (string)($p['service_slug'] ?? ''),
+					];
+				})(),
+				// wordCount: считаем слова по кириллице (str_word_count считает только латиницу)
+				'wordCount' => count(preg_split('/\s+/u', trim($text), -1, PREG_SPLIT_NO_EMPTY) ?: []),
 				'timeRequired' => 'PT' . (int)($p['read_minutes'] ?? 5) . 'M',
 				'mainEntityOfPage' => ['@type' => 'WebPage', '@id' => $base . '/blog/' . $slug],
 			];
@@ -564,9 +582,13 @@ if (!function_exists('seo_blog_jsonld')) {
 			foreach ($posts as $slug => $p) {
 				$nodes[] = [
 					'@type' => 'BlogPosting',
+					'@id' => $base . '/blog/' . $slug . '#blogposting',
 					'headline' => $p['title'],
 					'description' => $p['description'],
 					'datePublished' => $p['date'],
+					'inLanguage' => 'ru-RU',
+					'url' => $base . '/blog/' . $slug,
+					'image' => ['@type' => 'ImageObject', 'url' => $base . $p['og_image']],
 					'author' => ['@type' => 'Person', 'name' => seo_config('ceo')],
 					'publisher' => ['@id' => $base . '#organization'],
 					'mainEntityOfPage' => ['@type' => 'WebPage', '@id' => $base . '/blog/' . $slug],
@@ -760,7 +782,7 @@ if (!function_exists('seo_goals_script')) {
 			document.addEventListener('click', function(e){
 				var el = e.target.closest ? e.target.closest('[data-goal]') : null;
 				if (el) goal(el);
-				var a = e.target.closest ? e.target.closest('a[href^="tel:"], a[href^="mailto:"], a[href*="t.me"], a[href*="wa.me"], a[href*="vk.com"]') : null;
+				var a = e.target.closest ? e.target.closest('a[href^="tel:"], a[href^="mailto:"], a[href*="t.me"], a[href*="wa.me"], a[href*="yandex.ru/maps"]') : null;
 				if (a) window.fssGoal('contact_click', {type: a.getAttribute('href').split(':')[0]});
 			}, true);
 			document.addEventListener('submit', function(e){

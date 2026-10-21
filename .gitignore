@@ -27,5 +27,8 @@ public/assets/distCSS/auto/
 # Рантайм-кэш (в проекте не используется — вынесен в системный tmp, App\Models\Cache\Path)
 var/
 
+# Кэш исходников Font Awesome для tools/build_fontawesome_subset.py
+tools/.fa-cache/
+
 # Секрет подписи CSRF-токена (основной — FSS_SECRET в .env; файл создаётся автоматически)
 .fss-secret

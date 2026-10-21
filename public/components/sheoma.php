@@ -25,19 +25,8 @@ foreach ($reviews as $node) {
 	$graph[] = $node;
 }
 
-// Speakable для статей блога
-if (preg_match('#^/blog/([^/]+)$#', seo_url(), $m)) {
-	$bp = seo_blog_jsonld($m[1]);
-	if ($bp) {
-		$graph[] = $bp;
-		// Speakable для статьи
-		$graph[] = [
-			'@type' => 'SpeakableSpecification',
-			'cssSelector' => ['.article-body', '.article-toc', '.article-expert__text'],
-			'xpath' => ['//article[contains(@class, "article-body")]//p', '//ol[contains(@class, "article-toc")]//li'],
-		];
-	}
-}
+// Блог: BlogPosting для конкретной статьи — в блоке ниже (единый разбор URL),
+// здесь только заготовка, чтобы не дублировать BlogPosting в @graph.
 
 // Service + Offer + FAQPage + Review — на странице услуги и её гео-посадочных
 if (preg_match('#^/services/([^/]+)(?:/([^/]+))?$#', seo_url(), $m)) {
@@ -171,8 +160,18 @@ if (seo_url() === '/uslugi') {
 	];
 }
 
-// Хаб блога — BlogPosting для каждого поста
-if (preg_match('#^/blog/([^/]+)$#', seo_url(), $m)) {
+// Хаб блога — BlogPosting для каждого поста; статья — BlogPosting + Speakable
+if (seo_url() === '/blog') {
+	// Список статей: BlogPosting для каждой записи (полезно AI-краулерам)
+	$blogList = seo_blog_jsonld();
+	if (is_array($blogList) && $blogList !== []) {
+		foreach ($blogList as $bpNode) {
+			if (is_array($bpNode)) {
+				$graph[] = $bpNode;
+			}
+		}
+	}
+} elseif (preg_match('#^/blog/([^/]+)$#', seo_url(), $m)) {
 	$bp = seo_blog_jsonld($m[1]);
 	if ($bp) {
 		$graph[] = $bp;

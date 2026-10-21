@@ -179,7 +179,9 @@ if (!defined('FSS_ASSET_VER')) {
 	}
 	if ($__ver <= 0) {
 		$__newest = 0;
-		foreach (['/public/assets/distCSS', '/public/assets/distJS'] as $__dir) {
+		// vendor/fontawesome тоже сканируется: его пересборка (новый сабсет
+		// иконок) иначе не сменит ?v= и браузер останется на старом CSS.
+		foreach (['/public/assets/distCSS', '/public/assets/distJS', '/public/assets/vendor/fontawesome'] as $__dir) {
 			$__abs = dirname(__DIR__) . $__dir;
 			if (!is_dir($__abs)) {
 				continue;

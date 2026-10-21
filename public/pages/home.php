@@ -34,8 +34,8 @@ $fssSec = function (string $label): string {
 	<meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
 	<meta name="theme-color" content="#876b55">
 	<meta name="format-detection" content="telephone=yes">
-	<meta name="yandex-verification" content="27e0ba9980498150" />
-	<link rel="canonical" href="<?= htmlspecialchars($seo['canonical']); ?>">
+	<?= seo_verify_tags() ?>
+	<?= seo_canonical_tags() ?>
 
 	<?= seo_og_tags($seo['title'], $seo['description'], $seo['og']['image']) ?>
 
@@ -56,15 +56,15 @@ $fssSec = function (string $label): string {
 	<link rel="preload" href="/public/assets/distCSS/style.css?v=20261018" as="style">
 	<link rel="preload" href="/public/assets/distJS/main.js" as="script">
 	<!-- Styles -->
-	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css">
-	<noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css"></noscript>
+	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css?v=20261024">
+	<noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css?v=20261024"></noscript>
 	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261018">
 	<!-- Swiper -->
 	<link rel="stylesheet" href="/public/assets/vendor/swiper/swiper-bundle.min.css" />
 	<script defer src="/public/assets/vendor/swiper/swiper-bundle.min.js"></script>
 	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261018">
 	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261018">
-	<link rel="stylesheet" href="/public/assets/distCSS/promaintenance.css?v=20261023">
+	<link rel="stylesheet" href="/public/assets/distCSS/promaintenance.css?v=20261024">
 
 <?php include_once __DIR__ . '/../components/sheoma.php'; ?>
 <?= seo_analytics() ?>
@@ -1023,6 +1023,10 @@ $fssSec = function (string $label): string {
 				</svg>
 			</a>
 			<a class="enquiry-phone" href="tel:<?= htmlspecialchars(preg_replace('/\D/', '', (string)seo_config('phone'))) ?>"><?= htmlspecialchars((string)seo_config('phone_display')) ?></a>
+			<a class="enquiry-telegram" href="<?= htmlspecialchars((string)seo_config('telegram')) ?>" target="_blank" rel="noopener noreferrer" title="Telegram: @fss_rus">@fss_rus</a>
+			<span class="enquiry-telegram-note">Самый быстрый канал: фото площадки, чертежи, вопросы по срокам и комплектации.</span>
+			<a class="enquiry-docs" href="/contacts#ways" title="Договор, сметы и коммерческие предложения">Документы и договор</a>
+			<span class="enquiry-docs-note">Договор · Сметы · КП</span>
 			<span class="enquiry-location">Москва и область. Работаем по всей России.</span>
 		</div>
 		<?php include_once __DIR__ . '/../components/enquiry_form.php'; ?>

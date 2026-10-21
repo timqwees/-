@@ -69,11 +69,14 @@ $description = 'Экспертные статьи о строительстве 
 	<style> body { font-family: 'DM Sans Variable', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
 	<link rel="preload" href="/public/assets/distCSS/style.css?v=<?= seo_ver() ?>" as="style">
 	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=<?= seo_ver() ?>">
-	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css">
-	<noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css"></noscript>
+	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css?v=20261024">
+	<noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css?v=20261024"></noscript>
 	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=<?= seo_ver() ?>">
 	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=<?= seo_ver() ?>">
 	<?php include_once __DIR__ . '/../../components/sheoma.php'; ?>
+	<?= seo_analytics() ?>
+	<?= seo_utm_script() ?>
+	<?= seo_goals_script() ?>
 </head>
 
 <body class="blog-page" data-page="inner">
@@ -278,9 +281,33 @@ $description = 'Экспертные статьи о строительстве 
 								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg>
 							</a>
 							<?php endif; ?>
-						</nav>
-						<?php endif; ?>
-					</div>
+					</nav>
+					<?php endif; ?>
+
+					<!-- АРХИВ МАТЕРИАЛОВ: все статьи блога одной ссылкой с хаба.
+					     Нужно, чтобы каждая статья была доступна краулеру по внутренним
+					     ссылкам, а не только через параметр ?page=N (иначе часть статей
+					     находится лишь в sitemap.xml и не получает внутреннего веса). -->
+					<?php if (!$isFiltered): ?>
+					<section class="blog-archive" aria-labelledby="blog-archive-title">
+						<div class="blog-archive__header">
+							<h2 id="blog-archive-title">Архив материалов</h2>
+							<span class="blog-archive__count"><?= count($allPosts) ?> статей</span>
+						</div>
+						<ul class="blog-archive__list">
+							<?php foreach ($allPosts as $__slug => $__item): ?>
+								<li>
+									<a class="blog-archive__link" href="/blog/<?= htmlspecialchars((string)$__slug, ENT_QUOTES) ?>" title="<?= htmlspecialchars((string)$__item['title'], ENT_QUOTES) ?>">
+										<time datetime="<?= htmlspecialchars((string)$__item['date'], ENT_QUOTES) ?>"><?= date('d.m.Y', strtotime((string)$__item['date'])) ?></time>
+										<span class="blog-archive__title"><?= htmlspecialchars((string)$__item['title'], ENT_QUOTES) ?></span>
+										<span class="blog-archive__cat"><?= htmlspecialchars((string)($__item['category_name'] ?? ''), ENT_QUOTES) ?></span>
+									</a>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+					</section>
+					<?php endif; ?>
+				</div>
 
 					<!-- Sidebar -->
 					<aside class="blog-sidebar" aria-label="Дополнительно">
@@ -656,6 +683,83 @@ $description = 'Экспертные статьи о строительстве 
 			.blog-cta-card { padding: 24px; }
 			.blog-cta-actions { flex-direction: column; }
 			.blog-cta-btn { width: 100%; }
+		}
+
+		/* ---------- АРХИВ МАТЕРИАЛОВ (ссылки на все статьи с хаба) ---------- */
+		.blog-archive {
+			margin-top: 48px;
+			padding-top: 32px;
+			border-top: 1px solid var(--border);
+		}
+
+		.blog-archive__header {
+			display: flex;
+			align-items: baseline;
+			justify-content: space-between;
+			gap: 16px;
+			margin-bottom: 18px;
+		}
+
+		.blog-archive__header h2 {
+			margin: 0;
+			font-size: 24px;
+			font-weight: 600;
+			letter-spacing: -.01em;
+		}
+
+		.blog-archive__count {
+			color: var(--muted);
+			font-size: 12.5px;
+		}
+
+		.blog-archive__list {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+			border-top: 1px solid var(--border);
+		}
+
+		.blog-archive__link {
+			display: grid;
+			grid-template-columns: 96px minmax(0, 1fr) auto;
+			gap: 16px;
+			align-items: baseline;
+			padding: 12px 0;
+			border-bottom: 1px solid var(--border);
+			color: inherit;
+			text-decoration: none;
+			transition: color .2s ease;
+		}
+
+		.blog-archive__link:hover {
+			color: var(--brand);
+		}
+
+		.blog-archive__link time {
+			color: var(--muted);
+			font-size: 12.5px;
+		}
+
+		.blog-archive__title {
+			font-size: 14.5px;
+			line-height: 1.45;
+		}
+
+		.blog-archive__cat {
+			color: var(--muted);
+			font-size: 12px;
+			white-space: nowrap;
+		}
+
+		@media (max-width: 640px) {
+			.blog-archive__link {
+				grid-template-columns: minmax(0, 1fr);
+				gap: 4px;
+			}
+
+			.blog-archive__cat {
+				white-space: normal;
+			}
 		}
 	</style>
 </body>

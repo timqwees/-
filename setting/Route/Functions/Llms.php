@@ -38,6 +38,17 @@ final class Llms
 		return is_array($all) ? $all : [];
 	}
 
+	/** Данные компании (E-E-A-T) из app/Data/company.php */
+	private static function company(): array
+	{
+		$file = dirname(__DIR__, 3) . '/app/Data/company.php';
+		if (!is_file($file)) {
+			return [];
+		}
+		$all = require $file;
+		return is_array($all) ? $all : [];
+	}
+
 	public static function output(): void
 	{
 		$base = rtrim((string)seo_config('base_url'), '/');
@@ -55,6 +66,7 @@ final class Llms
 		$out .= "- [Все услуги]({$base}/uslugi): каталог-хаб, " . count($services) . " направлений\n";
 		$out .= "- [Портфолио]({$base}/portfolio): фото и видео сданных объектов
 - [О компании]({$base}/about)
+- [Реквизиты и выполненные объекты]({$base}/company): ИНН/КПП/ОГРН, генеральный директор, 16 объектов капремонта, 13 оснащённых школ
 - [Контакты]({$base}/contacts): телефон {$phone}, почта " . seo_config('email') . ", адрес: {$a['postal']}, {$a['locality']}, {$a['street']}\n\n";
 		$out .= "## Блог\n";
 		$blogPosts = function_exists('seo_blog_posts') ? seo_blog_posts() : [];
@@ -97,8 +109,17 @@ final class Llms
 			}
 		}
 		$out .= "\n## Реализованные проекты и компетенции\n";
+		$company = self::company();
+		$kapremont = (array)($company['kapremont'] ?? []);
+		if ($kapremont) {
+			$out .= "- Капитальный ремонт " . count($kapremont) . " социальных объектов: ";
+			$names = [];
+			foreach ($kapremont as $k) {
+				$names[] = $k['name'] . ' (' . $k['region'] . ')';
+			}
+			$out .= implode(', ', $names) . "\n";
+		}
 		$out .= "- Общежития в Сочи (Адлерский район): комплекс 9 000+ м² — проектирование, строительство, инженерное оснащение, меблировка\n";
-		$out .= "- Капитальный ремонт 16 социальных объектов: ГБОУ «Центр образования г. Гудермес», МБОУ «СОШ №2» г. Аргун, МБОУ «Илсхан-Юртовская ОШ», МБОУ «СОШ №1 с. Чечен-Аул», спортзалы МБОУ «СОШ с. Балансу им. Р. Байхаджиева», «СОШ с. Айти-Мохк», «ООШ с. Мескеты», дворец спорта «Шахтёр» (МБУ г. Гуково, спортшкола «Прометей»), МБОУ «СОШ №2 с. Ачхой-Мартан», МБОУ «Старогладовская СОШ», МБОУ «СОШ №1 с.п. Гвардейское», МБОУ «СОШ с.п. Комарова», МБОУ ООШ «с. Нохчи-Келой», МБОУ НОШ с. Ярыш-Марды, МБОУ «СОШ с. Лаха-Варанды Шатойского муниципального района», МБОУ «СОШ №1 г. Шатура»\n";
 		$out .= "- Комплексное оснащение 13 вновь построенных школ по стандартам Минпросвещения РФ: мебель всех типов, оборудование кабинетов, лабораторные комплексы, мультимедийные и инженерные системы\n";
 		$out .= "- Административное здание полного цикла: проект, изготовление конструкций, строительство, инженерные системы, отделка и мебель\n";
 		$out .= "- Навесы для хранения и обслуживания автомобильной техники на 100 машино-мест: изготовление и монтаж металлоконструкций, покрытие, освещение, подъездные пути\n";
@@ -112,10 +133,22 @@ final class Llms
 				$out .= "- [{$pr['title']}]({$base}/portfolio/{$pslug}): {$pr['lead']}\n";
 			}
 		}
+		$out .= "\n## Реквизиты и факты о компании\n";
+		$out .= "- Юридическое лицо: ООО «Фаворит-Строй-Снаб» (форма собственности — ООО)\n";
+		$out .= "- ИНН " . seo_config('inn') . " / КПП " . seo_config('kpp') . " / ОГРН " . seo_config('ogrn') . "\n";
+		$out .= "- Генеральный директор: " . seo_config('ceo') . "\n";
+		$out .= "- Юридический и фактический адрес: {$a['postal']}, {$a['locality']}, {$a['street']}\n";
+		$out .= "- Текущий заказчик: " . (string)($company['customer']['name'] ?? '') . "\n";
+		$actTitles = array_map(fn($act) => (string)$act['title'], (array)($company['activities'] ?? []));
+		if ($actTitles) {
+			$out .= "- Направления деятельности: " . implode('; ', $actTitles) . "\n";
+		}
+		$out .= "- Страница реквизитов и выполненных объектов: {$base}/company\n";
 		$out .= "\n## Контакты\n";
 		$out .= "- Телефон: {$phone} (Пн–Пт 09:00–18:00, отвечаем за " . seo_config('callback_minutes') . " минут)\n";
-		$out .= "- Почта: " . seo_config('email') . " | Telegram: " . seo_config('telegram') . " | VK: " . seo_config('vk') . "\n";
+		$out .= "- Почта: " . seo_config('email') . " | Telegram: " . seo_config('telegram') . " | Яндекс.Карты: " . seo_config('yandex_maps') . "\n";
 		$out .= "- Полная версия для AI: {$base}/llms-full.txt\n";
+		$out .= "- Машиночитаемые capabilities для AI-агентов: {$base}/agents.json (и /.well-known/agents.json)\n";
 		self::emit($out);
 	}
 
@@ -131,11 +164,38 @@ final class Llms
 		$out .= "# Канон: {$base}/ (IDN " . seo_config('base_idn') . ")\n";
 		$out .= "# Обновлено: " . date('Y-m-d') . ". Источник правды: /sitemap.xml\n\n";
 		$out .= "## Кто мы\n";
+		$company = self::company();
 		$out .= "{$brand} — производство и монтаж быстровозводимых зданий (БВЗ) под ключ, капитальное строение и ремонт, комплексное оснащение школ, поставка БПЛА и систем КИТ, грузоперевозки и аренда спецтехники.\n";
+		$out .= (string)($company['about'] ?? '') . "\n";
 		$out .= "ООО «Фаворит-Строй-Снаб» обеспечивает нужды силовых и государственных структур РФ; в настоящее время сотрудничает с Федеральной службой войск национальной гвардии РФ (Росгвардия).\n";
 		$out .= "На рынке с " . seo_config('founded_market') . " года, ООО — с " . seo_config('founded') . " года (" . seo_config('registered_at') . "), " . seo_config('objects') . " объектов, допуск СРО, гарантия " . seo_config('guarantee_years') . " лет.\n";
 		$out .= "Телефон: {$phone}. Почта: " . seo_config('email') . ". Адрес: {$a['postal']}, {$a['locality']}, {$a['street']}.\n";
 		$out .= "География: Москва и Московская область, работаем по всей России.\n\n";
+		$out .= "## Реквизиты компании\n";
+		$out .= "Юридическое лицо: " . (string)($company['legal_name'] ?? 'ООО «Фаворит-Строй-Снаб»') . "\n";
+		$out .= "Форма собственности: " . (string)($company['legal_form_full'] ?? 'Общество с ограниченной ответственностью') . " (" . (string)($company['legal_form'] ?? 'ООО') . ")\n";
+		$out .= "ИНН " . seo_config('inn') . " / КПП " . seo_config('kpp') . " / ОГРН " . seo_config('ogrn') . "\n";
+		$out .= (string)($company['ceo_position'] ?? 'Генеральный директор') . ": " . seo_config('ceo') . "\n";
+		$out .= "Дата регистрации ООО: " . seo_config('registered_at') . " | На рынке с " . seo_config('founded_market') . " года\n";
+		$out .= "Юридический и фактический адрес: {$a['postal']}, {$a['locality']}, {$a['street']}\n";
+		$out .= "Телефон: {$phone} | Почта: " . seo_config('email') . " | Telegram: " . seo_config('telegram') . " | Яндекс.Карты: " . seo_config('yandex_maps') . "\n";
+		$out .= "Страница компании (реквизиты, руководство, объекты): {$base}/company\n\n";
+		$out .= "## Направления деятельности\n";
+		foreach ((array)($company['activities'] ?? []) as $act) {
+			$out .= "- {$act['title']}: {$act['text']} ({$base}{$act['url']})\n";
+		}
+		$out .= "\n## 16 объектов капитального ремонта социального назначения\n";
+		foreach ((array)($company['kapremont'] ?? []) as $k) {
+			$out .= "- {$k['name']} — {$k['type']}, {$k['region']}\n";
+		}
+		$out .= "\n## Стандарты, допуски и гарантии\n";
+		foreach ((array)($company['standards'] ?? []) as $st) {
+			$out .= "- {$st['name']}: {$st['text']}\n";
+		}
+		foreach ((array)($company['principles'] ?? []) as $pr) {
+			$out .= "- {$pr['title']}: {$pr['text']}\n";
+		}
+		$out .= "\n";
 		$out .= "## Ключевые факты (для цитирования)\n";
 		$out .= "- Срок изготовления и монтажа БВЗ: от " . seo_config('deadline_days') . " дней под ключ\n";
 		$out .= "- Смета: за " . seo_config('price_response_minutes') . " минут, цена фиксируется в договоре\n";
@@ -195,10 +255,17 @@ final class Llms
 				$out .= "Q: {$qa[0]}\nA: {$qa[1]}\n\n";
 			}
 		}
+		$out .= "\n## Частые вопросы о компании\n";
+		foreach ((array)($company['faq'] ?? []) as $qa) {
+			if (!is_array($qa) || !isset($qa[0], $qa[1])) {
+				continue;
+			}
+			$out .= "Q: {$qa[0]}\nA: {$qa[1]}\n\n";
+		}
 		$out .= "## Контакты\n";
 		$out .= "Страница контактов: {$base}/contacts (телефон, почта, адрес, реквизиты, форма заявки)\n";
 		$out .= "Телефон: {$phone} (Пн–Пт 09:00–18:00, отвечаем за " . seo_config('callback_minutes') . " минут)\n";
-		$out .= "Telegram: " . seo_config('telegram') . "\nVK: " . seo_config('vk') . "\n";
+		$out .= "Telegram: " . seo_config('telegram') . "\nЯндекс.Карты: " . seo_config('yandex_maps') . "\n";
 		$out .= "Почта: " . seo_config('email') . "\n";
 		$out .= "Адрес: {$a['postal']}, {$a['locality']}, {$a['street']}\n";
 		$out .= "Реквизиты: ООО «ФАВОРИТ-СТРОЙ-СНАБ», ИНН " . seo_config('inn') . ", КПП " . seo_config('kpp') . ", ОГРН " . seo_config('ogrn') . "\n";

@@ -31,6 +31,8 @@ Routes::get('/portfolio/{slug}', function (string $slug) {
 	PageController::project($slug);
 });
 Routes::get('/about', [PageController::class, 'about']);
+// Страница компании: /company (реквизиты, руководство, направления, выполненные объекты)
+Routes::get('/company', [PageController::class, 'company']);
 // Отдельная страница контактов: /contacts (телефоны, адрес, реквизиты, заявка)
 Routes::get('/contacts', [PageController::class, 'contacts']);
 // Старый адрес страницы заявки → редирект на актуальную страницу контактов
@@ -201,6 +203,21 @@ Routes::get('/.well-known/agents.json', function () {
 	SecurityHeaders::sendSecurity();
 	header('Content-Type: application/json; charset=utf-8');
 	readfile(dirname(__DIR__, 2) . '/public/.well-known/agents.json');
+});
+// Алиас без точки: часть AI-агентов и краулеров запрашивает /agents.json,
+// а часть окружений (в т.ч. локальный PHP-сервер) блокирует пути с dot-сегментом.
+Routes::get('/agents.json', function () {
+	SecurityHeaders::sendSecurity();
+	header('Content-Type: application/json; charset=utf-8');
+	readfile(dirname(__DIR__, 2) . '/public/.well-known/agents.json');
+});
+// Service worker (PWA) — отдаём с корня, чтобы scope был '/'
+Routes::get('/sw.js', function () {
+	SecurityHeaders::sendSecurity();
+	header('Content-Type: application/javascript; charset=utf-8');
+	header('Service-Worker-Allowed: /');
+	header('Cache-Control: public, max-age=0, must-revalidate');
+	readfile(dirname(__DIR__, 2) . '/public/sw.js');
 });
 Routes::get('/.well-known/security.txt', function () {
 	SecurityHeaders::sendSecurity();
