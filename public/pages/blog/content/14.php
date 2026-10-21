@@ -28,7 +28,7 @@
 <li>Навес над техникой (10–20 м²)</li>
 </ul>
 
-<div data-type="box" data-color="green">
+<div data-type="box" data-kind="gain">
 <h3>✅ Гарантия</h3>
 <p>Все навесы снабжаются сертификатом соответствия и гарантией на 10 лет.</p>
 </div>

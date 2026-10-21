@@ -24,8 +24,9 @@ final class Sitemap
 			['/uslugi', '0.9', 'weekly'],
 			['/portfolio', '0.8', 'weekly'],
 			['/about', '0.5', 'monthly'],
-			['/politika', '0.3', 'yearly'],
-			['/soglasie', '0.3', 'yearly'],
+			['/contacts', '0.6', 'monthly'],
+			// /politika и /soglasie закрыты noindex — в sitemap им не место
+			// (противоречие «noindex, но в карте сайта» сбивает краулер).
 		];
 		foreach (array_keys(is_array($services) ? $services : []) as $slug) {
 			if (is_file($root . '/public/pages/services/' . $slug . '/index.php')) {
@@ -39,12 +40,23 @@ final class Sitemap
 			if (!is_file($root . '/public/pages/services/' . $slug . '/index.php')) {
 				continue;
 			}
-			foreach (array_keys($geoList) as $gk) {
+			foreach ($geoList as $gk => $gdata) {
+				// У города может быть ограничение по услугам (только те, где есть работы)
+				if (!seo_geo_allows((array)$gdata, (string)$slug)) {
+					continue;
+				}
 				$pages[] = ['/services/' . $slug . '/' . $gk, '0.6', 'monthly'];
 			}
 		}
 		foreach (array_keys($blogPosts) as $slug) {
 			$pages[] = ['/blog/' . $slug, '0.6', 'monthly'];
+		}
+		// Детальные страницы объектов (/portfolio/{slug})
+		$projectsFile = $root . '/app/Data/projects.php';
+		if (is_file($projectsFile)) {
+			foreach (array_keys((array)(require $projectsFile)) as $slug) {
+				$pages[] = ['/portfolio/' . $slug, '0.7', 'monthly'];
+			}
 		}
 		return $pages;
 	}
@@ -58,8 +70,7 @@ final class Sitemap
 			'/uslugi' => $root . '/public/pages/uslugi/uslugi.php',
 			'/portfolio' => $root . '/public/pages/portfolio.php',
 			'/about' => $root . '/public/pages/about/index.php',
-			'/politika' => $root . '/public/pages/politic/index.php',
-			'/soglasie' => $root . '/public/pages/agree/index.php',
+			'/contacts' => $root . '/public/pages/contacts/index.php',
 		];
 		if (array_key_exists($loc, $map)) {
 			return $map[$loc];
@@ -73,6 +84,9 @@ final class Sitemap
 		if (preg_match('#^/blog/([^/]+)$#', $loc, $m)) {
 			return $root . '/public/pages/blog/post.php';
 		}
+		if (preg_match('#^/portfolio/([^/]+)$#', $loc, $m)) {
+			return $root . '/public/pages/projects/project.php';
+		}
 		return null;
 	}
 
@@ -83,7 +97,7 @@ final class Sitemap
 
 	public static function output(): void
 	{
-		$base = rtrim(seo_config('base_url'), '/');
+		$base = rtrim((string)seo_config('base_url'), '/');
 		$out = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 		$out .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
 		foreach (self::pages() as [$loc, $priority, $freq]) {
@@ -97,7 +111,7 @@ final class Sitemap
 
 	public static function outputIndex(): void
 	{
-		$base = rtrim(seo_config('base_url'), '/');
+		$base = rtrim((string)seo_config('base_url'), '/');
 		$out = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 		$out .= '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
 		$out .= '  <sitemap><loc>' . $base . '/sitemap.xml</loc><lastmod>' . date('Y-m-d') . '</lastmod></sitemap>' . "\n";

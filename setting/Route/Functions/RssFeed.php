@@ -10,10 +10,26 @@ namespace Setting\Route\Functions;
  */
 final class RssFeed
 {
+	/**
+	 * OG-картинка для фида. Если файла нет — берём общий og-home,
+	 * иначе в RSS/Турбо уходят битые ссылки на несуществующие изображения.
+	 */
+	private static function ogImage(string $url, string $root): string
+	{
+		$path = parse_url($url, PHP_URL_PATH);
+		if (is_string($path) && str_starts_with($path, '/public/')) {
+			$file = $root . $path;
+			if (is_file($file)) {
+				return $url;
+			}
+		}
+		return rtrim((string)seo_config('base_url'), '/') . '/public/assets/image/og/og-home-1200x630.jpg';
+	}
+
 	/** @return list<array{title:string,link:string,desc:string,date:string,category?:string,author?:array{name:string,uri?:string},image?:string,content?:string}> */
 	private static function items(): array
 	{
-		$base = rtrim(seo_config('base_url'), '/');
+		$base = rtrim((string)seo_config('base_url'), '/');
 		$root = dirname(__DIR__, 3);
 		$items = [];
 
@@ -34,7 +50,7 @@ final class RssFeed
 			'desc' => 'Все услуги компании ' . seo_config('brand') . ': БВЗ под ключ, капремонт, спецтехника, компрессоры, ДГУ, мебель.',
 			'date' => date('r', (int)@filemtime($root . '/public/pages/uslugi/uslugi.php')),
 			'category' => 'Услуги',
-			'image' => $base . '/public/assets/image/og/og-uslugi-1200x630.jpg',
+			'image' => self::ogImage($base . '/public/assets/image/og/og-uslugi-1200x630.jpg', $root),
 		];
 
 		// Individual services
@@ -52,7 +68,7 @@ final class RssFeed
 				'desc' => $s['description'],
 				'date' => date('r', (int)filemtime($file)),
 				'category' => 'Услуги',
-				'image' => $base . '/public/assets/image/og/og-services-' . $slug . '-1200x630.jpg',
+				'image' => self::ogImage($base . '/public/assets/image/og/og-services-' . $slug . '-1200x630.jpg', $root),
 			];
 		}
 
@@ -74,7 +90,7 @@ final class RssFeed
 						'role' => $author['role'] ?? '',
 						'uri' => $base . '/about',
 					] : null,
-					'image' => $base . $p['og_image'],
+					'image' => self::ogImage($base . (string)($p['og_image'] ?? ''), $root),
 				];
 			}
 		}
@@ -96,7 +112,7 @@ final class RssFeed
 			'desc' => 'Реализованные объекты: склады, ангары, АБК, общежития, школы. Фото и описания.',
 			'date' => date('r', (int)@filemtime($root . '/public/pages/portfolio.php')),
 			'category' => 'Портфолио',
-			'image' => $base . '/public/assets/image/og/og-portfolio-1200x630.jpg',
+			'image' => self::ogImage($base . '/public/assets/image/og/og-portfolio-1200x630.jpg', $root),
 		];
 
 		return $items;
@@ -109,7 +125,7 @@ final class RssFeed
 
 	public static function output(): void
 	{
-		$base = rtrim(seo_config('base_url'), '/');
+		$base = rtrim((string)seo_config('base_url'), '/');
 		$brand = seo_config('brand');
 		$phoneTel = (string)preg_replace('/\D/', '', (string)seo_config('phone'));
 		$phone = (string)seo_config('phone_display');
@@ -170,7 +186,7 @@ final class RssFeed
 
 	public static function outputTurbo(): void
 	{
-		$base = rtrim(seo_config('base_url'), '/');
+		$base = rtrim((string)seo_config('base_url'), '/');
 		$brand = seo_config('brand');
 		$phoneTel = (string)preg_replace('/\D/', '', (string)seo_config('phone'));
 		$phone = (string)seo_config('phone_display');

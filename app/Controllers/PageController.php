@@ -39,14 +39,31 @@ class PageController
 		self::show('portfolio.php');
 	}
 
+	public static function project(string $slug): void
+	{
+		$file = self::view('projects/project.php');
+		$all = file_exists(dirname(__DIR__, 2) . '/app/Data/projects.php')
+			? (require dirname(__DIR__, 2) . '/app/Data/projects.php')
+			: [];
+		if (!is_file($file) || !isset($all[$slug])) {
+			Routes::error_404('/portfolio/' . $slug);
+			return;
+		}
+		$GLOBALS['fss_project_slug'] = $slug;
+		$GLOBALS['fss_canonical_path'] = '/portfolio/' . $slug;
+		$GLOBALS['fss_page_file'] = $file;
+		Routes::auto_element($file);
+	}
+
 	public static function about(): void
 	{
 		self::show('about/index.php');
 	}
 
-	public static function contact(): void
+	/** Отдельная страница «Контакты» (/contacts) — телефоны, адрес, реквизиты, заявка. */
+	public static function contacts(): void
 	{
-		self::show('contact.php');
+		self::show('contacts/index.php');
 	}
 
 
@@ -82,7 +99,8 @@ class PageController
 		$file = self::view('services/' . $slug . '/index.php');
 		$g = function_exists('seo_geo') ? seo_geo() : ['geo' => [], 'priority_services' => []];
 		$priority = (array)($g['priority_services'] ?? []);
-		if (!is_file($file) || !isset($g['geo'][$geo]) || !in_array($slug, $priority, true)) {
+		if (!is_file($file) || !isset($g['geo'][$geo]) || !in_array($slug, $priority, true)
+			|| !seo_geo_allows((array)$g['geo'][$geo], $slug)) {
 			Routes::error_404('/services/' . $slug . '/' . $geo);
 			return;
 		}

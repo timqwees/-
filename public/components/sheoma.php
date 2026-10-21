@@ -8,7 +8,7 @@
 $graph = seo_organization_jsonld();
 
 // Speakable для голосовых ассистентов (Google Assistant, Алиса)
-$base = rtrim(seo_config('base_url'), '/');
+$base = rtrim((string)seo_config('base_url'), '/');
 $graph[] = [
 	'@type' => 'SpeakableSpecification',
 	'cssSelector' => ['.article-body', '.blog-card-excerpt', '.service-description', '.faq-a'],
@@ -60,7 +60,14 @@ if (preg_match('#^/services/([^/]+)(?:/([^/]+))?$#', seo_url(), $m)) {
 		$graph[] = $svc;
 	}
 	$s = seo_service($m[1]);
-	if (!empty($s['faq'])) {
+	// На гео-странице к общим вопросам услуги добавляем локальные вопросы города —
+	// разметка FAQPage совпадает с видимым текстом (нет расхождения разметки и контента).
+	$faqList = array_values((array)($s['faq'] ?? []));
+	if (!empty($m[2])) {
+		$gg = function_exists('seo_geo') ? seo_geo() : ['geo' => []];
+		$faqList = array_merge($faqList, array_values((array)($gg['geo'][$m[2]]['faq'] ?? [])));
+	}
+	if ($faqList) {
 		$graph[] = [
 			'@type' => 'FAQPage',
 			'@id' => seo_canonical() . '#faq',
@@ -68,7 +75,7 @@ if (preg_match('#^/services/([^/]+)(?:/([^/]+))?$#', seo_url(), $m)) {
 				'@type' => 'Question',
 				'name' => $qa[0],
 				'acceptedAnswer' => ['@type' => 'Answer', 'text' => $qa[1]],
-			], $s['faq']),
+			], $faqList),
 		];
 	}
 	// Review для конкретной услуги (агрегатное + возможность индивидуальных)
@@ -145,7 +152,7 @@ if (seo_url() === '/uslugi') {
 		'name' => 'Услуги ФАВОРИТ-СТРОЙ-СНАБ',
 		'itemListElement' => array_values(array_map(fn($slug, $s) => [
 			'@type' => 'Offer',
-			'itemOffered' => ['@type' => 'Service', 'name' => $s['title'], 'url' => rtrim(seo_config('base_url'), '/') . '/services/' . $slug],
+			'itemOffered' => ['@type' => 'Service', 'name' => $s['title'], 'url' => rtrim((string)seo_config('base_url'), '/') . '/services/' . $slug],
 			'priceCurrency' => 'RUB',
 			'availability' => 'https://schema.org/InStock',
 		] + (!empty($s['price_from']) ? ['price' => $s['price_from']] : []), array_keys($services), array_values($services))),
@@ -180,7 +187,7 @@ if (preg_match('#^/blog/([^/]+)$#', seo_url(), $m)) {
 
 // Главная — VideoObject для hero-видео
 if (seo_url() === '/') {
-	$base = rtrim(seo_config('base_url'), '/');
+	$base = rtrim((string)seo_config('base_url'), '/');
 	$videoRel = '/public/assets/image/banner/dostavka.MP4';
 	$videoPath = dirname(__DIR__, 2) . $videoRel;
 	if (is_file($videoPath)) {
@@ -198,7 +205,7 @@ if (seo_url() === '/') {
 			'@type' => 'VideoObject',
 			'@id' => $base . '#hero-video',
 			'name' => 'Быстровозводимые здания ФСС — строим то, что ведёт вас вперёд',
-			'description' => 'Видео-презентация ФАВОРИТ-СТРОЙ-СНАБ: производство и монтаж БВЗ под ключ, склады, ангары, АБК, общежития, капремонт. 180+ объектов, 14 лет на рынке.',
+			'description' => 'Видео-презентация ФАВОРИТ-СТРОЙ-СНАБ: производство и монтаж БВЗ под ключ, склады, ангары, АБК, общежития, капремонт. ' . seo_config('objects') . ' объектов, с ' . seo_config('founded_market') . ' года на рынке.',
 			'thumbnailUrl' => $base . '/public/assets/image/og/og-home-1200x630.jpg',
 			'uploadDate' => date('c', (int)@filemtime(dirname(__DIR__, 2) . '/public/pages/home.php')),
 			'contentUrl' => $base . $videoRel,
@@ -216,6 +223,18 @@ if (seo_url() === '/') {
 		'@type' => 'SpeakableSpecification',
 		'cssSelector' => ['.hero-title', '.svh-h1', '.svh-lead', '.svh-eyebrow', '.stat-lbl', '.stat-num'],
 		'xpath' => ['//h1', '//section[contains(@class, "hero")]//p', '//div[contains(@class, "stat")]'],
+	];
+}
+
+// Страницы поиска — SearchResultsPage (в т.ч. для AI-краулеров)
+if (in_array(seo_url(), ['/search', '/search/blog'], true)) {
+	$graph[] = [
+		'@type' => 'SearchResultsPage',
+		'@id' => seo_canonical() . '#search',
+		'name' => seo_url() === '/search' ? 'Поиск по сайту' : 'Поиск по блогу',
+		'url' => seo_canonical(),
+		'isPartOf' => ['@id' => $base . '#website'],
+		'about' => ['@id' => $base . '#organization'],
 	];
 }
 

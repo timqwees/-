@@ -9,9 +9,9 @@
 	<style> body { font-family: 'DM Sans Variable', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
 
 	<title>О компании — ФАВОРИТ-СТРОЙ-СНАБ на рынке с <?= htmlspecialchars((string)seo_config('founded_market')) ?> года</title>
-<meta name="description" content="ФАВОРИТ-СТРОЙ-СНАБ на рынке с <?= htmlspecialchars((string)seo_config('founded_market')) ?> года (ООО — с <?= htmlspecialchars((string)seo_config('founded')) ?>): собственный завод БВЗ, 180+ сданных объектов, гарантия 50+ лет. Москва, МО и вся Россия. ☎ <?= htmlspecialchars((string)seo_config('phone_display')) ?>">
+<meta name="description" content="ФАВОРИТ-СТРОЙ-СНАБ на рынке с <?= htmlspecialchars((string)seo_config('founded_market')) ?> года (ООО — с <?= htmlspecialchars((string)seo_config('founded')) ?>): поставка и монтаж БВЗ, , гарантия 50+ лет. Москва, МО и вся Россия. ☎ <?= htmlspecialchars((string)seo_config('phone_display')) ?>">
 	<meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
-	<meta name="theme-color" content="#F97316">
+	<meta name="theme-color" content="#876b55">
 	<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 	<meta name="robots" content="index, follow">
@@ -21,7 +21,7 @@
 	<link rel="shortcut icon" href="/public/assets/image/logo/favicon/favicon.ico" />
 	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/favicon/apple-touch-icon.png" />
 	<meta name="apple-mobile-web-app-title" content="ФСС" />
-	<link rel="manifest" href="/public/assets/image/logo/favicon/site.webmanifest" />
+	<link rel="manifest" href="/manifest.json" />
 
 	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css">
 	<noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css"></noscript>
@@ -30,7 +30,7 @@
 	<?= seo_canonical_tags() ?>
 	<?= seo_verify_tags() ?>
 
-	<?= seo_og_tags('О компании — ФАВОРИТ-СТРОЙ-СНАБ на рынке с ' . htmlspecialchars((string)seo_config('founded_market')) . ' года', 'С ' . htmlspecialchars((string)seo_config('founded_market')) . ' года строим быстровозводимые здания: собственный завод БВЗ, ' . seo_config('objects') . ' сданных объектов, гарантия ' . seo_config('guarantee_years') . ' лет. Москва, МО и вся Россия.', '/public/assets/image/og/og-about-1200x630.jpg') ?>
+	<?= seo_og_tags('О компании — ФАВОРИТ-СТРОЙ-СНАБ на рынке с ' . htmlspecialchars((string)seo_config('founded_market')) . ' года', 'С ' . htmlspecialchars((string)seo_config('founded_market')) . ' года строим быстровозводимые здания: поставка и монтаж БВЗ, ' . seo_config('objects') . ' сданных объектов, гарантия ' . seo_config('guarantee_years') . ' лет. Москва, МО и вся Россия.', '/public/assets/image/og/og-about-1200x630.jpg') ?>
 
 	<?php include_once __DIR__ . '/../components/sheoma.php'; ?>
 	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261018">
@@ -42,15 +42,15 @@
 	<style>
 	.bi-hero{background:#171310;border-radius:32px;margin:104px auto 0;max-width:1408px;overflow:hidden;position:relative;}
 	.bi-hero-in{max-width:1280px;margin:0 auto;padding:clamp(48px,6vw,96px) 20px;display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;}
-	.bi-eyebrow{display:inline-flex;align-items:center;gap:10px;color:#FDBA74;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;}
-	.bi-eyebrow::before{content:"";width:26px;height:2px;background:#F97316;border-radius:2px;}
+	.bi-eyebrow{display:inline-flex;align-items:center;gap:10px;color:#e3d1bd;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;}
+	.bi-eyebrow::before{content:"";width:26px;height:2px;background:#876b55;border-radius:2px;}
 	.bi-h1{margin:16px 0 0;color:#fff;font-size:clamp(44px,6vw,88px);font-weight:800;letter-spacing:-.03em;line-height:1;}
 	.bi-h1 .pill{display:inline-block;height:.82em;width:1.9em;border-radius:999px;overflow:hidden;vertical-align:-.08em;margin:0 .08em;}
 	.bi-h1 .pill img{width:100%;height:100%;object-fit:cover;display:block;}
-	.bi-h1 .acc{color:#F97316;}
+	.bi-h1 .acc{color:#876b55;}
 	.bi-sub{margin:18px 0 0;color:#D6D3D1;font-size:16px;line-height:1.65;max-width:46ch;}
 	.bi-cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px;}
-	.bi-btn{position:relative;display:inline-flex;align-items:center;gap:12px;background:#F97316;color:#171310;font-weight:800;font-size:15px;border-radius:999px;padding:16px 30px;text-decoration:none;overflow:hidden;}
+	.bi-btn{position:relative;display:inline-flex;align-items:center;gap:12px;background:#876b55;color:#171310;font-weight:800;font-size:15px;border-radius:999px;padding:16px 30px;text-decoration:none;overflow:hidden;}
 	.bi-btn .clip{display:block;height:1.3em;overflow:hidden;}
 	.bi-btn .roll{display:block;transition:transform .35s cubic-bezier(.16,1,.3,1);}
 	.bi-btn:hover .roll{transform:translateY(-1.3em);}
@@ -59,11 +59,11 @@
 	.bi-visual img.main{width:100%;height:clamp(320px,36vw,520px);object-fit:cover;border-radius:24px;display:block;}
 	.bi-badge{position:absolute;left:20px;bottom:20px;background:rgba(23,19,16,.85);backdrop-filter:blur(8px);border-radius:18px;padding:16px 22px;color:#fff;}
 	.bi-badge b{display:block;font-size:30px;font-weight:800;letter-spacing:-.02em;}
-	.bi-badge b i{font-style:normal;color:#FDBA74;}
+	.bi-badge b i{font-style:normal;color:#e3d1bd;}
 	.bi-badge span{font-size:13px;color:#D6D3D1;}
 	.bi-stats{display:flex;gap:clamp(24px,4vw,56px);margin-top:34px;flex-wrap:wrap;}
 	.bi-stats div b{display:block;color:#fff;font-size:clamp(26px,3vw,40px);font-weight:800;letter-spacing:-.02em;}
-	.bi-stats div b i{font-style:normal;color:#F97316;}
+	.bi-stats div b i{font-style:normal;color:#876b55;}
 	.bi-stats div span{font-size:12.5px;color:#A8A29E;}
 	.bi-aud{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
   .fss-breadcrumbs { margin-bottom: 20px; }
@@ -71,7 +71,7 @@
   .fss-bc-item { display: flex; align-items: center; }
   .fss-bc-item:not(:last-child)::after { content: "/"; margin-left: 6px; color: #b0b3b8; }
   .fss-bc-link { color: #6b7078; text-decoration: none; transition: color .2s; }
-  .fss-bc-link:hover { color: #F97316; }
+  .fss-bc-link:hover { color: #876b55; }
   .fss-bc-current { color: #17191d; font-weight: 600; }
 	.bi-card{background:#fff;border:1px solid #F5E6D3;border-radius:24px;overflow:hidden;transition:transform .3s ease,box-shadow .3s ease;}
 	.bi-card:hover{transform:translateY(-6px);box-shadow:0 24px 54px rgba(23,19,16,.12);}
@@ -79,7 +79,7 @@
 	.bi-card div{padding:22px;}
 	.bi-card h3{margin:0 0 8px;font-size:18px;font-weight:800;color:#171310;}
 	.bi-card p{margin:0 0 12px;font-size:13.5px;color:#78716C;line-height:1.55;}
-	.bi-card a{font-size:13px;font-weight:700;color:#C2410C;}
+	.bi-card a{font-size:13px;font-weight:700;color:#554433;}
 	@media(max-width:900px){.bi-hero-in{grid-template-columns:1fr;}.bi-aud{grid-template-columns:1fr 1fr;}}
 	@media(max-width:560px){.bi-aud{grid-template-columns:1fr;}}
 	@media(prefers-reduced-motion:reduce){.bi-btn .roll{transition:none;}}
@@ -102,7 +102,7 @@
 					</div>
 				</div>
 				<div class="bi-visual">
-					<img class="main" src="/public/assets/image/services/капстроение/1.JPG"<?= seo_img_attrs('/public/assets/image/services/капстроение/1.JPG') ?> alt="Быстровозводимое здание ФСС" fetchpriority="high" decoding="async" onerror="this.style.display=.none." title="Быстровозводимое здание ФСС">
+					<img class="main" src="/public/assets/image/services/капстроение/1.JPG"<?= seo_img_attrs('/public/assets/image/services/капстроение/1.JPG') ?> alt="Быстровозводимое здание ФСС" fetchpriority="high" decoding="async" onerror="this.style.display='none'" title="Быстровозводимое здание ФСС">
 					<div class="bi-badge"><b>14 <i>дней</i></b><span>от старта до сдачи</span></div>
 				</div>
 			</div>
@@ -163,12 +163,12 @@
 					<h3>Своя техника<br>и доставка</h3>
 				</article>
 				<article class="security-card security-requests">
-					<h3>Собственный завод БВЗ —<br>модули без посредников</h3>
-					<p>Производим сэндвич-панели и блок-контейнеры сами — контроль качества и цена ниже рынка.</p>
+					<h3>БВЗ и модули<br>собственной закупки</h3>
+					<p>Поставляем сэндвич-панели и блок-контейнеры и монтируем их сами — контроль качества на объекте и цена ниже рынка.</p>
 				</article>
 				<article class="security-card security-support">
 					<h3>Нужна<br>смета?</h3>
-					<a href="/#contact" title="Получить за 15 минут" style="color:#171310;font-weight:700;font-size:15px;text-decoration:underline;text-underline-offset:4px;text-decoration-color:#F97316">Получить за 15 минут</a>
+					<a href="/#contact" title="Получить за 15 минут" style="color:#171310;font-weight:700;font-size:15px;text-decoration:underline;text-underline-offset:4px;text-decoration-color:#876b55">Получить за 15 минут</a>
 				</article>
 			</div>
 		</section>
@@ -185,7 +185,7 @@
 		<section class="page-section view" id="faq">
 			<div class="section-heading"><h2>Частые вопросы</h2><span class="heading-divider" aria-hidden="true"></span><p>О компании и условиях работы</p></div>
 			<div class="grid gap-3" style="margin-top:22px;max-width:860px">
-				<details class="faq-ex" open><summary><span class="faq-mark" aria-hidden="true"></span><span>Сколько лет вы на рынке?</span></summary><div class="faq-content"><p class="faq-a">Работаем с <?= htmlspecialchars((string)seo_config('founded_market')) ?> года — 14 лет строим быстровозводимые здания, делаем капремонт и возим грузы.</p></div></details>
+				<details class="faq-ex" open><summary><span class="faq-mark" aria-hidden="true"></span><span>Сколько лет вы на рынке?</span></summary><div class="faq-content"><p class="faq-a">Работаем с <?= htmlspecialchars((string)seo_config('founded_market')) ?> года — <?= htmlspecialchars((string)seo_config('market_years')) ?> лет строим быстровозводимые здания, делаем капремонт и возим грузы.</p></div></details>
 				<details class="faq-ex"><summary><span class="faq-mark" aria-hidden="true"></span><span>Где вы работаете?</span></summary><div class="faq-content"><p class="faq-a">База — Москва и Московская область, объекты сдаём по всей России.</p></div></details>
 				<details class="faq-ex"><summary><span class="faq-mark" aria-hidden="true"></span><span>Даёте ли гарантию и договор?</span></summary><div class="faq-content"><p class="faq-a">Да: договор с фиксированной ценой и сроками, гарантия на конструкции — 50+ лет, на работы — по договору.</p></div></details>
 				<details class="faq-ex"><summary><span class="faq-mark" aria-hidden="true"></span><span>Работаете с юрлицами и НДС?</span></summary><div class="faq-content"><p class="faq-a">Да, работаем с юрлицами и госзаказом: договор, счёт, закрывающие документы, допуск СРО.</p></div></details>
@@ -193,11 +193,11 @@
 			</div>
 		</section>
 		<section class="page-section view" id="expertise">
-			<div class="section-heading"><h2>Наша экспертиза и реализованные проекты</h2><span class="heading-divider" aria-hidden="true"></span><p>Опыт, подтверждённый госзаказчиками и 힘이ными структурами</p></div>
+			<div class="section-heading"><h2>Наша экспертиза и реализованные проекты</h2><span class="heading-divider" aria-hidden="true"></span><p>Опыт, подтверждённый госзаказчиками и силовыми структурами</p></div>
 			<div class="expertise-grid" style="margin-top:22px;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px">
 				<article class="expertise-card" style="background:#fff;border:1px solid #F5E6D3;border-radius:24px;overflow:hidden;padding:28px;transition:transform .3s ease,box-shadow .3s ease;">
 					<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
-						<div style="width:48px;height:48px;background:#F97316;border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-building" style="color:#fff;font-size:20px"></i></div>
+						<div style="width:48px;height:48px;background:#876b55;border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-building" style="color:#fff;font-size:20px"></i></div>
 						<h3 style="margin:0;font-size:20px;font-weight:800;color:#171310">Госзаказ и силовые структуры</h3>
 					</div>
 					<p style="margin:0 0 12px;font-size:14px;color:#44403C;line-height:1.6">Сотрудничаем с <strong>Росгвардией (ФСВНГ РФ)</strong> — обеспечиваем нужды силовых и государственных структур РФ. Работаем по 44-ФЗ и 223-ФЗ, имеем допуск СРО.</p>
@@ -210,7 +210,7 @@
 				</article>
 				<article class="expertise-card" style="background:#fff;border:1px solid #F5E6D3;border-radius:24px;overflow:hidden;padding:28px;">
 					<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
-						<div style="width:48px;height:48px;background:#F97316;border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-bed" style="color:#fff;font-size:20px"></i></div>
+						<div style="width:48px;height:48px;background:#876b55;border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-bed" style="color:#fff;font-size:20px"></i></div>
 						<h3 style="margin:0;font-size:20px;font-weight:800;color:#171310">Общежития и вахтовые посёлки</h3>
 					</div>
 					<p style="margin:0 0 12px;font-size:14px;color:#44403C;line-height:1.6"><strong>Комплекс в Сочи (Адлерский район)</strong> — 9 000+ м² под ключ: проектирование, строительство, инженерное оснащение, меблировка.</p>
@@ -222,19 +222,19 @@
 				</article>
 				<article class="expertise-card" style="background:#fff;border:1px solid #F5E6D3;border-radius:24px;overflow:hidden;padding:28px;">
 					<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
-						<div style="width:48px;height:48px;background:#F97316;border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-school" style="color:#fff;font-size:20px"></i></div>
-						<h3 style="margin:0;font-size:20px;font-weight:800;color:#171310">Капремонт школ (13+ объектов)</h3>
+						<div style="width:48px;height:48px;background:#876b55;border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-school" style="color:#fff;font-size:20px"></i></div>
+						<h3 style="margin:0;font-size:20px;font-weight:800;color:#171310">Капремонт школ (16 объектов)</h3>
 					</div>
-					<p style="margin:0 0 12px;font-size:14px;color:#44403C;line-height:1.6">Капитальный ремонт 13+ социальных объектов (школы, спортивные залы, дворцы спорта) в Чечне, Ростовской области, Москве.</p>
+					<p style="margin:0 0 12px;font-size:14px;color:#44403C;line-height:1.6">Капитальный ремонт 16 социальных объектов (школы, спортивные залы, дворцы спорта) в Чеченской Республике, Ростовской области, Московской области.</p>
 					<ul style="margin:0;padding-left:20px;font-size:14px;color:#44403C;line-height:1.8">
 						<li>ГБОУ «Центр образования г. Гудермес»</li>
-						<li>МБОУ СОШ №2 г. Аргун и др. (13+ объектов)</li>
+						<li>МБОУ СОШ №2 г. Аргун, МБОУ «Илсхан-Юртовская ОШ», Чечен-Аул, Балансу, Айти-Мохк, Мескеты, Ачхой-Мартан, Старогладовская СОШ, Гвардейское, Комарова, Нохчи-Келой, Ярыш-Марды, Лаха-Варанды, СОШ №1 г. Шатура — всего 16 объектов</li>
 						<li>Спортивные залы и дворцы спорта</li>
 					</ul>
 				</article>
 				<article class="expertise-card" style="background:#fff;border:1px solid #F5E6D3;border-radius:24px;overflow:hidden;padding:28px;">
 					<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
-						<div style="width:48px;height:48px;background:#F97316;border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-chalkboard-user" style="color:#fff;font-size:20px"></i></div>
+						<div style="width:48px;height:48px;background:#876b55;border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-chalkboard-user" style="color:#fff;font-size:20px"></i></div>
 						<h3 style="margin:0;font-size:20px;font-weight:800;color:#171310">Комплексное оснащение школ</h3>
 					</div>
 					<p style="margin:0 0 12px;font-size:14px;color:#44403C;line-height:1.6">Комплексное оснащение 13 новопостроенных школ по стандартам Минпросвещения РФ.</p>
@@ -243,10 +243,11 @@
 						<li>Оборудование кабинетов и лабораторные комплексы</li>
 						<li>Мультимедийные и инженерные системы</li>
 					</ul>
+					<a href="/services/osnashchenie" title="Оснащение школ под ключ" style="display:inline-block;margin-top:14px;color:#554433;font-weight:700;font-size:14px;text-decoration:underline;text-underline-offset:4px">Оснащение школ под ключ →</a>
 				</article>
 				<article class="expertise-card" style="background:#fff;border:1px solid #F5E6D3;border-radius:24px;overflow:hidden;padding:28px;">
 					<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
-						<div style="width:48px;height:48px;background:#F97316;border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-chair" style="color:#fff;font-size:20px"></i></div>
+						<div style="width:48px;height:48px;background:#876b55;border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-chair" style="color:#fff;font-size:20px"></i></div>
 						<h3 style="margin:0;font-size:20px;font-weight:800;color:#171310">Поставка мебели и оснащения</h3>
 					</div>
 					<p style="margin:0 0 12px;font-size:14px;color:#44403C;line-height:1.6">Функциональная, служебная и представительская мебель. Индивидуальное проектирование и визуализация.</p>
@@ -258,7 +259,7 @@
 				</article>
 				<article class="expertise-card" style="background:#fff;border:1px solid #F5E6D3;border-radius:24px;overflow:hidden;padding:28px;">
 					<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
-						<div style="width:48px;height:48px;background:#F97316;border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-satellite" style="color:#fff;font-size:20px"></i></div>
+						<div style="width:48px;height:48px;background:#876b55;border-radius:12px;display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-satellite" style="color:#fff;font-size:20px"></i></div>
 						<h3 style="margin:0;font-size:20px;font-weight:800;color:#171310">БПЛА, КИТ и высокотех оборудование</h3>
 					</div>
 					<p style="margin:0 0 12px;font-size:14px;color:#44403C;line-height:1.6">Поставка БПЛА, комплектующих, систем КИТ. Работа с ведущими производителями, адаптация под ТЗ, сертификация.</p>
@@ -267,15 +268,16 @@
 						<li>Системы КИТ, адаптация под ТЗ</li>
 						<li>Сертификация и сопровождение</li>
 					</ul>
+					<a href="/services/bpla" title="Поставка БПЛА и комплектующих" style="display:inline-block;margin-top:14px;color:#554433;font-weight:700;font-size:14px;text-decoration:underline;text-underline-offset:4px">Поставка БПЛА и комплектующих →</a>
 				</article>
 			</div>
 		</section>
 		<section class="page-section view">
 			<div class="section-heading"><h2>Реквизиты</h2><span class="heading-divider" aria-hidden="true"></span><p>Как нас найти и связаться</p></div>
 			<div class="card-prem" style="padding:clamp(24px,4vw,40px);display:grid;gap:14px;font-size:15px;color:#44403C">
-				<div><i class="fa-solid fa-location-dot" style="color:#EA580C;margin-right:10px"></i><?= htmlspecialchars((string)seo_config('address')['postal'] . ', ' . seo_config('address')['locality'] . ', ' . seo_config('address')['street']) ?></div>
-				<div><i class="fa-solid fa-phone" style="color:#EA580C;margin-right:10px"></i><a href="tel:<?= htmlspecialchars(preg_replace('/\D/', '', (string)seo_config('phone'))) ?>" title="Позвонить" style="color:#171310;font-weight:700"><?= htmlspecialchars((string)seo_config('phone_display')) ?></a></div>
-				<div><i class="fa-solid fa-envelope" style="color:#EA580C;margin-right:10px"></i><?= htmlspecialchars((string)seo_config('email')) ?></div>
+				<div><i class="fa-solid fa-location-dot" style="color:#6d5744;margin-right:10px"></i><?= htmlspecialchars((string)seo_config('address')['postal'] . ', ' . seo_config('address')['locality'] . ', ' . seo_config('address')['street']) ?></div>
+				<div><i class="fa-solid fa-phone" style="color:#6d5744;margin-right:10px"></i><a href="tel:<?= htmlspecialchars(preg_replace('/\D/', '', (string)seo_config('phone'))) ?>" title="Позвонить" style="color:#171310;font-weight:700"><?= htmlspecialchars((string)seo_config('phone_display')) ?></a></div>
+				<div><i class="fa-solid fa-envelope" style="color:#6d5744;margin-right:10px"></i><?= htmlspecialchars((string)seo_config('email')) ?></div>
 			</div>
 		</section>
 		<section class="cta-band view">

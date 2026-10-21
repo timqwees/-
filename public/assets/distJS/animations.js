@@ -20,6 +20,26 @@
 		return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 	};
 
+	/* Элемент реально отображается (не внутри display:none).
+	   Проверяем только display: visibility:hidden не учитываем — этим
+	   состоянием GSAP сам помечает элементы перед появлением (autoAlpha),
+	   и такой элемент анимировать как раз нужно. */
+	var isVisible = function (el) {
+		if (!el) return false;
+		if (typeof el.checkVisibility === 'function') {
+			return el.checkVisibility({ checkOpacity: false, checkVisibilityCSS: false });
+		}
+		return !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+	};
+
+	/* Радиус скругления элемента для clip-path (проценты недопустимы) */
+	var clipRadius = function (el) {
+		var radius = window.getComputedStyle(el).borderTopLeftRadius || '';
+		var value = parseFloat(radius);
+		if (!radius || isNaN(value) || value < 1) return '8px';
+		return value + 'px';
+	};
+
 	/* Плавный скролл к элементу (Protenance: offset -105, duration 1.05) */
 	var lenisInstance = null;
 	var scrollToTarget = function (target, offset) {
@@ -139,30 +159,174 @@
 
 	/* ============================================================
 	   2. HERO — появление при загрузке + параллакс
-	   ============================================================ */
-	function initHero() {
-		if (!window.gsap) return;
-		var hero = document.querySelector('.hero');
-		if (!hero) return;
-
-		var gsap = window.gsap;
-
-		/* При «уменьшить движение» — показываем сразу, без анимации */
-		if (reduceMotion()) {
-			gsap.set(['.hero-content > .eyebrow', '.hero h1 > span', '.hero-intro > *', '.hero-bottom > *'],
-				{ opacity: 1, y: 0, yPercent: 0, visibility: 'visible' });
-			return;
+	   ============================================================
+	   Верхние экраны всех страниц описаны единой таблицей:
+	     root  — корневой блок экрана
+	     bg    — фоновая картинка: мягко приближается (scale 1.07 → 1)
+	     parts — части, которые поднимаются снизу вверх со stagger
+	   Список дополняется новыми страницами без изменения кода анимации. */
+	var HERO_PRESETS = [
+		/* Главная */
+		{
+			root: '.hero',
+			bg: '.hero-visual',
+			parts: [
+				{ sel: '.hero-content > .eyebrow', from: { y: 12 }, dur: 0.8, at: 0.12 },
+				{ sel: '.hero h1 > span', from: { yPercent: 25 }, dur: 1.2, stagger: 0.12, at: 0.25 },
+				{ sel: '.hero-intro > *', from: { y: 18 }, dur: 0.9, stagger: 0.08, at: 0.6 },
+				{ sel: '.hero-bottom > *', from: { y: 20 }, dur: 0.9, stagger: 0.08, at: 0.85 }
+			]
+		},
+		/* Услуги (20 страниц services/*) */
+		{
+			root: '.svc-hero',
+			bg: '.svc-hero__bg',
+			parts: [
+				{ sel: '.svc-hero__inner .fss-breadcrumbs', from: { y: 10 }, dur: 0.7, at: 0.1 },
+				{ sel: '.svc-hero__eyebrow', from: { y: 12 }, dur: 0.8, at: 0.18 },
+				{ sel: '.svc-hero__title > span', from: { yPercent: 25 }, dur: 1.15, stagger: 0.12, at: 0.28 },
+				{ sel: '.svc-hero__lead', from: { y: 18 }, dur: 0.9, at: 0.55 },
+				{ sel: '.svc-hero__geo', from: { y: 18 }, dur: 0.9, at: 0.63 },
+				{ sel: '.svc-hero__actions > *', from: { y: 18 }, dur: 0.9, stagger: 0.09, at: 0.72 },
+				{ sel: '.svc-hero__inner .svc-toc', from: { y: 14 }, dur: 0.8, at: 0.84 },
+				{ sel: '.svc-hero__inner .svc-geo', from: { y: 14 }, dur: 0.8, at: 0.9 },
+				{ sel: '.svc-hero__foot > *', from: { y: 14 }, dur: 0.8, stagger: 0.08, at: 0.94 }
+			]
+		},
+		/* Каталог услуг /uslugi */
+		{
+			root: '.usl-hero',
+			bg: '.usl-hero__bg',
+			parts: [
+				{ sel: '.usl-hero__inner .fss-breadcrumbs', from: { y: 10 }, dur: 0.7, at: 0.1 },
+				{ sel: '.usl-hero__eyebrow', from: { y: 12 }, dur: 0.8, at: 0.18 },
+				{ sel: '.usl-hero h1 > span', from: { yPercent: 25 }, dur: 1.15, stagger: 0.12, at: 0.28 },
+				{ sel: '.usl-hero__intro > *', from: { y: 18 }, dur: 0.9, stagger: 0.08, at: 0.58 }
+			]
+		},
+		/* Карточка объекта /portfolio/{slug} */
+		{
+			root: '.prj-hero',
+			bg: '.prj-hero__visual',
+			parts: [
+				{ sel: '.prj-hero__inner .fss-breadcrumbs', from: { y: 10 }, dur: 0.7, at: 0.1 },
+				{ sel: '.prj-hero__eyebrow', from: { y: 12 }, dur: 0.8, at: 0.18 },
+				{ sel: '.prj-hero__title > span', from: { yPercent: 25 }, dur: 1.15, stagger: 0.12, at: 0.28 },
+				{ sel: '.prj-hero__lead', from: { y: 18 }, dur: 0.9, at: 0.55 },
+				{ sel: '.prj-hero__actions > *', from: { y: 18 }, dur: 0.9, stagger: 0.09, at: 0.66 },
+				{ sel: '.prj-hero__foot > *', from: { y: 20 }, dur: 0.9, stagger: 0.08, at: 0.8 }
+			]
+		},
+		/* Статья блога /blog/{slug} */
+		{
+			root: '.article-hero',
+			parts: [
+				{ sel: '.article-breadcrumbs', from: { y: 10 }, dur: 0.7, at: 0.1 },
+				{ sel: '.article-meta-top > *', from: { y: 12 }, dur: 0.8, stagger: 0.08, at: 0.2 },
+				{ sel: '.article-title', from: { yPercent: 20 }, dur: 1.05, at: 0.3 },
+				{ sel: '.article-desc', from: { y: 16 }, dur: 0.9, at: 0.52 }
+			]
+		},
+		/* Список блога /blog */
+		{
+			root: '.blog-hero',
+			parts: [
+				{ sel: '.blog-hero-badge', from: { y: 12, autoAlpha: 0 }, dur: 0.7, at: 0.1 },
+				{ sel: '.blog-hero-title', from: { yPercent: 20, autoAlpha: 0 }, dur: 1.05, at: 0.2 },
+				{ sel: '.blog-hero-desc', from: { y: 16, autoAlpha: 0 }, dur: 0.9, at: 0.45 },
+				{ sel: '.blog-hero-stats > *', from: { y: 14, autoAlpha: 0 }, dur: 0.8, stagger: 0.07, at: 0.58 }
+			]
+		},
+		/* О компании (бирюзовая версия) */
+		{
+			root: '.bi-hero',
+			parts: [
+				{ sel: '.bi-eyebrow', from: { y: 12 }, dur: 0.8, at: 0.12 },
+				{ sel: '.bi-h1', from: { yPercent: 22 }, dur: 1.1, at: 0.22 },
+				{ sel: '.bi-sub', from: { y: 18 }, dur: 0.9, at: 0.45 },
+				{ sel: '.bi-cta > *', from: { y: 18 }, dur: 0.8, stagger: 0.08, at: 0.55 },
+				{ sel: '.bi-visual', from: { y: 26, autoAlpha: 0 }, dur: 1.1, at: 0.4 }
+			]
+		},
+		/* Поиск /search */
+		{
+			root: '.page-hero',
+			parts: [
+				{ sel: '.page-crumb', from: { y: 10 }, dur: 0.7, at: 0.1 },
+				{ sel: '.page-eyebrow', from: { y: 12 }, dur: 0.8, at: 0.18 },
+				{ sel: '.page-hero-inner .pg-h1', from: { yPercent: 22 }, dur: 1.05, at: 0.26 },
+				{ sel: '.page-hero-inner .search-form', from: { y: 18 }, dur: 0.9, at: 0.46 },
+				{ sel: '.page-hero-inner .page-lead', from: { y: 14 }, dur: 0.8, at: 0.58 }
+			]
+		},
+		/* Контакты /contact — верхний экран заявки */
+		{
+			root: '.enquiry-section--standalone',
+			parts: [
+				{ sel: '.enquiry-lead > .eyebrow', from: { y: 12 }, dur: 0.8, at: 0.12 },
+				{ sel: '.enquiry-lead > p', from: { y: 18 }, dur: 0.9, at: 0.55 },
+				{ sel: '.enquiry-lead > .enquiry-email', from: { y: 18 }, dur: 0.9, at: 0.66 },
+				{ sel: '.enquiry-lead > .enquiry-phone', from: { y: 16 }, dur: 0.85, at: 0.74 },
+				{ sel: '.enquiry-lead > .enquiry-location', from: { y: 14 }, dur: 0.8, at: 0.82 }
+			]
 		}
+	];
 
+	function initHeroes() {
+		if (!window.gsap) return;
+		var gsap = window.gsap;
+		var reduced = reduceMotion();
+		/* Заголовки, которые разобьёт SplitText — их анимирует он сам.
+		   Если часть hero-таймлайна попадает внутрь такого заголовка,
+		   пропускаем её: иначе текст получает две анимации и остаётся
+	  	   невидимым (SplitText переносит inline-стили в свои строки). */
+		var headings = getSplitHeadings();
 
-		/* Hero Reveal — точная копия ProMaintenance:
-		   фон scale 1.07 → 1 (2s), затем текст снизу вверх со stagger */
-		gsap.timeline({ defaults: { ease: 'power3.out' } })
-			.from('.hero-visual', { scale: 1.07, duration: 2 }, 0)
-			.from('.hero-content > .eyebrow', { y: 12, autoAlpha: 0, duration: 0.8 }, 0.12)
-			.from('.hero h1 > span', { yPercent: 25, autoAlpha: 0, stagger: 0.12, duration: 1.2 }, 0.25)
-			.from('.hero-intro > *', { y: 18, autoAlpha: 0, stagger: 0.08, duration: 0.9 }, 0.6)
-			.from('.hero-bottom > *', { y: 20, autoAlpha: 0, duration: 0.9, stagger: 0.08 }, 0.85);
+		HERO_PRESETS.forEach(function (preset) {
+			var root = document.querySelector(preset.root);
+			if (!root) return;
+
+			var parts = preset.parts.filter(function (part) {
+				var targets = root.querySelectorAll(part.sel);
+				if (!targets.length) return false;
+				return !Array.prototype.some.call(targets, function (el) {
+					var heading = el.closest ? el.closest('h1, h2, h3') : null;
+					return headings.has(el) || (heading && headings.has(heading));
+				});
+			});
+
+			/* При «уменьшить движение» — показываем сразу, без анимации */
+			if (reduced) {
+				parts.forEach(function (part) {
+					var targets = root.querySelectorAll(part.sel);
+					if (!targets.length) return;
+					gsap.set(targets, { opacity: 1, y: 0, yPercent: 0, visibility: 'visible' });
+				});
+				return;
+			}
+
+			/* Hero Reveal (ProMaintenance): фон scale 1.07 → 1 (2s),
+			   затем текст снизу вверх со stagger */
+			var tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+			if (preset.bg) {
+				var bg = root.querySelector(preset.bg);
+				if (bg) tl.from(bg, { scale: 1.07, duration: 2 }, 0);
+			}
+
+			parts.forEach(function (part) {
+				var targets = root.querySelectorAll(part.sel);
+				if (!targets.length) return;
+
+				var vars = { autoAlpha: 0, duration: part.dur || 0.9, ease: 'power3.out' };
+				if (part.stagger) vars.stagger = part.stagger;
+				for (var key in part.from) {
+					if (Object.prototype.hasOwnProperty.call(part.from, key)) vars[key] = part.from[key];
+				}
+
+				tl.from(targets, vars, part.at || 0);
+			});
+		});
 	}
 
 	/* ============================================================
@@ -177,7 +341,7 @@
 			: { matches: true };
 		if (!mq.matches) return;
 
-		[['.hero', '.hero-visual', 12], ['.process-section', '.process-photo', 7]].forEach(function (row) {
+		[['.hero', '.hero-visual', 12], ['.process-section', '.process-photo', 7], ['.svc-hero', '.svc-hero__bg', 10], ['.usl-hero', '.usl-hero__bg', 10]].forEach(function (row) {
 			var trigger = document.querySelector(row[0]);
 			var target = document.querySelector(row[1]);
 			if (!trigger || !target) return;
@@ -265,6 +429,70 @@
 	/* ============================================================
 	   4. ЗАГОЛОВКИ ПО СТРОКАМ (SplitText + маска)
 	   ============================================================ */
+	/* Список заголовков, которые разбиваются на строки.
+	   Используется и в initReveals: блок, внутри которого есть такой
+	   заголовок, не анимируется целиком — иначе текст «дёргается» дважды. */
+	var HEADING_SELECTORS = [
+		/* Protenance (совместимость) */
+		'.about-grid h2',
+		'.work-heading h2',
+		'.expertise-visual h2',
+		'.process-content h2',
+		'.enquiry-lead :is(h1,h2)',
+		'.archive-intro h1',
+		'.archive-cta h2',
+		'.project-detail-title h1',
+		'.project-detail-info h2',
+		'.works-preview h2',
+		'.site-film h2',
+		'.division-detail h2',
+		/* ФСС */
+		'.show-head h2',
+		'.section-heading h2',
+		'.cta-in h2',
+		'.security-title',
+		'.svh-h1',
+		/* Портфолио */
+		'.esp-h1',
+		/* Блог */
+		'.section-title',
+		'.blog-cta-title',
+		/* О компании */
+		'.xl-hero-grid h1',
+		'.xl-about-grid h2',
+		'.xl-why-l h2',
+		/* Услуги (шаблон service_template) */
+		'.svc-section h2',
+		/* Каталог услуг */
+		'.usl-cta h2',
+		/* Объект */
+		'.prj-h1',
+		'.prj-section h2',
+		/* .prj-hero__title не включаем — её анимирует hero-таймлайн (.prj-hero) */
+		'.prj-cta h2',
+		/* Статья блога */
+		'.article-body h2',
+		'.article-body h3',
+		/* Служебные страницы */
+		'.fss-legal h2'
+	].join(',');
+
+		/* Заголовки, которые будут разбиты на строки (SplitText).
+		   Список вычисляется один раз — по нему же reveals исключает сами
+		   заголовки, чтобы текст не анимировался дважды. */
+	var splitHeadings = null;
+	var getSplitHeadings = function () {
+		if (!splitHeadings) {
+			splitHeadings = new Set();
+			if (document.querySelectorAll) {
+				document.querySelectorAll(HEADING_SELECTORS).forEach(function (el) {
+					splitHeadings.add(el);
+				});
+			}
+		}
+		return splitHeadings;
+	};
+
 	function initHeadings() {
 		if (!window.gsap || !window.SplitText) return;
 		if (reduceMotion()) return;
@@ -273,37 +501,7 @@
 		gsap.registerPlugin(SplitText);
 
 		/* Заголовки НЕ включая .hero h1 — его анимирует hero timeline */
-		var selectors = [
-			/* Protenance (совместимость) */
-			'.about-grid h2',
-			'.work-heading h2',
-			'.expertise-visual h2',
-			'.process-content h2',
-			'.enquiry-lead :is(h1,h2)',
-			'.archive-intro h1',
-			'.archive-cta h2',
-			'.project-detail-title h1',
-			'.project-detail-info h2',
-			'.works-preview h2',
-			'.site-film h2',
-			'.division-detail h2',
-			/* ФСС */
-			'.show-head h2',
-			'.section-heading h2',
-			'.cta-in h2',
-			'.security-title',
-			'.svh-h1',
-			/* Портфолио */
-			'.esp-h1',
-			/* Блог */
-			'.blog-hero-title',
-			'.section-title',
-			'.blog-cta-title',
-			/* О компании */
-			'.xl-hero-grid h1',
-			'.xl-about-grid h2',
-			'.xl-why-l h2'
-		].join(',');
+		var selectors = HEADING_SELECTORS;
 
 		document.querySelectorAll(selectors).forEach(function (el) {
 			var text = ((el.textContent || el.innerText || '') + '').replace(/\s+/g, ' ').trim();
@@ -341,11 +539,22 @@
 
 		var reveal = function (elements, trigger, delay) {
 			if (!elements.length) return;
-			/* Элементы с SplitText-строками анимирует сам SplitText — не дублируем */
+			/* Элементы с SplitText-строками анимирует сам SplitText — не дублируем.
+		   Проверяем и будущие строки (по списку заголовков), и уже готовые. */
+			var headings = getSplitHeadings();
 			elements = elements.filter(function (el) {
-				return !el.querySelector('.motion-line');
+				if (el.querySelector('.motion-line')) return false;
+				if (headings.has(el)) return false;
+				return true;
+			});
+			/* Скрытые контейнеры (display:none) не трогаем: GSAP ставит inline
+			   opacity:0, который перебил бы CSS-правило показа элемента. */
+			elements = elements.filter(function (el) {
+				return isVisible(el);
 			});
 			if (!elements.length) return;
+			/* Помечаем — чтобы общий проход не анимировал элемент второй раз */
+			elements.forEach(function (el) { el.setAttribute('data-fss-reveal', ''); });
 			/* gsap.from() применяет from-состояние сразу — элемент ждёт своего
 			   момента в зоне видимости и плавно появляется (как в ProMaintenance).
 			   Если ScrollTrigger не сработает — элемент покажет forceRevealVisible(). */
@@ -370,39 +579,133 @@
 			});
 		};
 
-		revealIn('.section-topline', ':scope > *');
-		revealIn('.about-copy', ':scope > *', 0.12);
-		revealIn('.about-stats', ':scope > div');
-		revealIn('.work-heading', ':scope > p', 0.2);
-		revealIn('.division-grid', ':scope > a', 0.1);
-		revealIn('.site-gallery-grid', ':scope > figure', 0.1);
-		revealIn('.service-list', ':scope > details', 0.1);
-		revealIn('.process-steps', ':scope > details', 0.1);
-		revealIn('.archive-intro', '.archive-intro__top, .archive-intro__bottom', 0.1);
-		revealIn('.project-archive', '.archive-controls, .archive-result-line');
-		revealIn('.project-detail-title', ':scope > p');
-		revealIn('.project-detail-info > div', ':scope > p, :scope > a', 0.12);
-		revealIn('.project-facts', ':scope > div', 0.12);
-		revealIn('.archive-cta', ':scope > p, :scope > div > a', 0.15);
-		revealIn('.enquiry-lead', ':scope > p, :scope > a, :scope > .enquiry-location', 0.1);
-		revealIn('.footer-top', ':scope > *');
+		/* ============================================================
+		   РЕЕСТР СЕКЦИЙ
+		   Формат: [контейнер, что внутри показывать, задержка]
+		   ============================================================ */
+		var REVEAL_RULES = [
+			/* Главная / общие (ProMaintenance) */
+			['.section-topline', ':scope > *', 0],
+			['.about-copy', ':scope > *', 0.12],
+			['.about-stats', ':scope > div', 0],
+			['.work-heading', ':scope > p', 0.2],
+			['.division-grid', ':scope > a', 0.1],
+			['.site-gallery-grid', ':scope > figure', 0.1],
+			['.service-list', ':scope > details', 0.1],
+			['.process-steps', ':scope > details', 0.1],
+			['.archive-intro', '.archive-intro__top, .archive-intro__bottom', 0.1],
+			['.project-archive', '.archive-controls, .archive-result-line', 0],
+			['.project-detail-title', ':scope > p', 0],
+			['.project-detail-info > div', ':scope > p, :scope > a', 0.12],
+			['.project-facts', ':scope > div', 0.12],
+			['.archive-cta', ':scope > p, :scope > div > a', 0.15],
+			['.enquiry-section:not(.enquiry-section--standalone) .enquiry-lead', ':scope > p, :scope > a, :scope > .enquiry-location', 0.1],
+			['.footer-top', ':scope > *', 0],
+			['.form-heading', ':scope > *', 0.1],
 
-		/* ФСС */
-		revealIn('.show-head', ':scope > *', 0.1);
-		revealIn('.section-heading', ':scope > p', 0.1);
-		revealIn('.cta-in', ':scope > *', 0.15);
+			/* ФСС */
+			['.show-head', ':scope > *', 0.1],
+			['.section-heading', ':scope > p', 0.1],
+			['.cta-in', ':scope > *', 0.15],
+			['.reviews-grid', ':scope > .review-card', 0.07],
+			['.trust-rail', ':scope > li', 0.05],
+			['.case-grid', ':scope > .case-card', 0.07],
+			['.pluses-grid', ':scope > *', 0.07],
+			['.pluses-stats', ':scope > *', 0.07],
 
-		/* ProMaintenance */
-		revealIn('.works-preview-copy', ':scope > *', 0.1);
+			/* ProMaintenance */
+			['.works-preview-copy', ':scope > *', 0.1],
 
-		/* Портфолио / Блог / О компании */
-		revealIn('.esp-top', ':scope > *', 0.1);
-		revealIn('.esp-item', ':scope > figcaption', 0.05);
-		revealIn('.xl-hero-grid', ':scope > *', 0.1);
-		revealIn('.xl-about-grid', ':scope > *', 0.1);
-		revealIn('.xl-why-l', ':scope > *', 0.1);
-		revealIn('.blog-card', ':scope > *', 0.05);
-		revealIn('.blog-feature', ':scope > *', 0.1);
+			/* Портфолио / Блог / О компании */
+			['.esp-top', ':scope > *', 0.1],
+			['.esp-filters', ':scope > *', 0.06],
+			['.esp-item', ':scope > figcaption', 0.05],
+			['.pf-grid', ':scope > *', 0.07],
+			['.pf-facts', ':scope > *', 0.07],
+			['.xl-hero-grid', ':scope > *', 0.1],
+			['.xl-about-grid', ':scope > *', 0.1],
+			['.xl-why-l', ':scope > *', 0.1],
+			['.xl-cards', ':scope > .xl-card', 0.08],
+			['.xl-stats-row', ':scope > *', 0.08],
+			['.blog-card', ':scope > *', 0.05],
+			['.blog-feature', ':scope > *', 0.1],
+
+			/* Каталог услуг /uslugi */
+			['.usl-stats', ':scope > .usl-stat', 0.08],
+			['.usl-facts', ':scope > .usl-facts__note', 0.12],
+			['.uc-grid', ':scope > .uc-card', 0.07],
+			['.uc-cats', ':scope > .uc-cat', 0.06],
+			['.usl-cta__in', ':scope > *', 0.12],
+			['.usl-toolbar', ':scope > *', 0.08],
+
+			/* Услуги (service_template) */
+			['.svc-stats', ':scope > .svc-stat', 0.08],
+			['.svc-section', ':scope > .svc-panel, :scope > .svc-lead, :scope > .svc-grid, :scope > .svc-step, :scope > .svc-aud__card, :scope > .svc-adv__card, :scope > .svc-work, :scope > .svc-tablewrap, :scope > .svc-note, :scope > .svc-project, :scope > .svc-calc, :scope > .svc-form, :scope > .svc-faq__item, :scope > details', 0.08],
+			['.svc-grid', ':scope > .svc-panel', 0.07],
+			['.svc-steps', ':scope > .svc-step', 0.08],
+			['.svc-faq', ':scope > details', 0.06],
+			['.svc-adv', ':scope > .svc-adv__card', 0.07],
+			['.svc-works', ':scope > .svc-work', 0.07],
+			['.svc-tablewrap', ':scope > tr', 0.02],
+			['.svc-aud', ':scope > *', 0.08],
+			['.cta-band', ':scope > .cta-in', 0.1],
+
+			/* Объект /portfolio/{slug} */
+			['.prj-facts', ':scope > div', 0.07],
+			['.prj-steps', ':scope > .prj-step', 0.08],
+			['.prj-section', ':scope > p, :scope > .prj-features, :scope > .prj-gallery', 0.08],
+			['.prj-gallery', ':scope > figure', 0.07],
+			['.faq-grid', ':scope > details', 0.06],
+			['.prj-features', ':scope > li', 0.05],
+			['.prj-cta__inner', ':scope > *', 0.12],
+
+			/* Статья блога /blog/{slug} */
+			['.article-body', ':scope > p, :scope > ul, :scope > ol, :scope > div[data-type], :scope > .article-img', 0.05],
+			['.article-sidebar-card', ':scope > *', 0.08],
+			['.author-bio', ':scope > *', 0.08],
+			['.article-expert', ':scope > *', 0.08],
+			['.article-expert__steps', ':scope > li', 0.06],
+			['.article-cta', ':scope > *', 0.08],
+			['.article-tags', ':scope > .article-tag', 0.04],
+			['.article-popular-item', ':scope > *', 0.05],
+
+			/* Список блога /blog */
+			['.blog-hero-content', ':scope > *', 0.1],
+			['.blog-cards-grid', ':scope > .blog-card', 0.06],
+			['.blog-content-section', ':scope > .container > *', 0.08],
+			['.blog-featured-card', ':scope > *', 0.08],
+			['.blog-sidebar-card', ':scope > *', 0.08],
+			['.blog-service-item', ':scope > *', 0.05],
+			['.blog-cta-card', ':scope > *', 0.1],
+			['.blog-empty-state', ':scope > *', 0.08],
+			['.blog-pagination', ':scope > *', 0.05],
+
+			/* Поиск */
+			['.page-hero-inner', ':scope > *', 0.1],
+			['.page-section', '.pcard', 0.07],
+
+			/* Служебные страницы */
+			['.fss-legal', ':scope > h1, :scope > h2, :scope > .code, :scope > p, :scope > ul, :scope > ol, :scope > .message, :scope > .btn, :scope > .fss-legal-note', 0.05],
+
+			/* О компании (бирюзовая версия) */
+			['.bi-hero-in', ':scope > *', 0.1],
+			['.bi-stats', ':scope > *', 0.08],
+			['.bi-aud', ':scope > .bi-card', 0.07],
+			['.expertise-grid', ':scope > .expertise-card', 0.07],
+			['.stats-grid', ':scope > .stat-cell', 0.07],
+			['.security-grid', ':scope > .security-card', 0.07]
+		];
+
+		REVEAL_RULES.forEach(function (rule) {
+			revealIn(rule[0], rule[1], rule[2]);
+		});
+
+		/* Шаги процесса: на мобильных это горизонтальный слайдер со своим
+		   CSS-показом (opacity:1 в media-запросе) — там GSAP не трогает
+		   элементы, иначе inline-стиль перебьёт правило слайдера. */
+		if (window.matchMedia('(min-width: 900px)').matches) {
+			revealIn('.steps3', ':scope > .step3', 0.07);
+		}
 
 		/* Элементы с data-reveal — появление снизу вверх (ProMaintenance).
 		   Заголовки (h1-h3) анимирует SplitText — не дублируем. */
@@ -416,7 +719,10 @@
 		});
 
 		/* Изображения: раскрытие через clip-path + zoom */
-		document.querySelectorAll('.project-card__image, .expertise-image, .project-detail-hero, .project-next > a, .esp-item .ph, .blog-card-img').forEach(function (el) {
+		document.querySelectorAll('.project-card__image, .expertise-image, .project-detail-hero, .project-next > a, .esp-item .ph, .blog-card-img, .blog-featured-img, .prj-gallery figure, .svc-aud__media, .svc-work__media, .svc-project__media, .article-img, .blog-popular-img').forEach(function (el) {
+			/* Радиус берём из стилей элемента: в clip-path нельзя проценты,
+			   а фиксированный 8px срезал бы скругления в 18–32px. */
+			var radius = clipRadius(el);
 			var tl = gsap.timeline({
 				defaults: { ease: 'power3.out' },
 				scrollTrigger: {
@@ -427,9 +733,9 @@
 			});
 
 			tl.fromTo(el,
-				{ clipPath: 'inset(6% 0% 0% 0% round 8px)', opacity: 0.25 },
+				{ clipPath: 'inset(6% 0% 0% 0% round ' + radius + ')', opacity: 0.25 },
 				{
-					clipPath: 'inset(0% 0% 0% 0% round 8px)',
+					clipPath: 'inset(0% 0% 0% 0% round ' + radius + ')',
 					opacity: 1,
 					duration: 1.15
 				}
@@ -450,6 +756,51 @@
 				tl.from(el.querySelectorAll('div > *'),
 					{ y: 18, opacity: 0, duration: 0.8, stagger: 0.075 }, 0.15);
 			}
+		});
+
+		initGenericReveals();
+	}
+
+	/* ============================================================
+	   5.1 ОБЩИЙ ПРОХОД — всё, что не описано в реестре, тоже появляется
+	   Заголовки (h1-h3) пропускаем: их анимирует SplitText.
+	   Элементы, уже помеченные data-fss-reveal, повторно не трогаем.
+	   ============================================================ */
+	function initGenericReveals() {
+		if (!window.gsap || !window.ScrollTrigger) return;
+		if (reduceMotion()) return;
+		var gsap = window.gsap;
+		var headings = getSplitHeadings();
+
+		var sections = document.querySelectorAll(
+			'main section, main > div > section, .fss-article-layout > section, .fss-article-layout section'
+		);
+
+		sections.forEach(function (section) {
+			var children = Array.prototype.slice.call(section.children).filter(function (el) {
+				if (el.matches('h1, h2, h3')) return false;
+				if (headings.has(el)) return false;
+				if (el.hasAttribute('data-fss-reveal')) return false;
+				if (el.querySelector('.motion-line')) return false;
+				return isVisible(el);
+			});
+
+			if (children.length < 2) return;
+
+			children.forEach(function (el) { el.setAttribute('data-fss-reveal', ''); });
+
+			gsap.from(children, {
+				y: 20,
+				opacity: 0,
+				duration: 0.8,
+				stagger: 0.07,
+				ease: 'power3.out',
+				scrollTrigger: {
+					trigger: section,
+					start: 'top 91%',
+					toggleActions: 'play none none none'
+				}
+			});
 		});
 	}
 
@@ -881,19 +1232,39 @@
 		if (!toggle || !panel || !bar) return;
 
 		var gsap = window.gsap;
-		var hero = document.querySelector('.hero');
+		/* Hero-блок страницы: [data-nav-hero] помечает полноэкранные тёмные hero
+		   (главная, объект /portfolio/{slug}, услуга /services/{slug}, /uslugi, /about).
+		   По его высоте считаем момент «прилипания» шапки. */
+		var hero = document.querySelector('[data-nav-hero]') || document.querySelector('.hero');
 		var heroHeight = hero ? hero.offsetHeight : 0;
 
-		/* Прозрачность: 0.02 (прозрачно) → 0.82 (тёмный) по мере ухода из hero */
+		/* Прозрачность: 0.02 (прозрачно) → 0.82 (тёмный) по мере ухода из hero.
+		   Фон шапки читает --nav-opacity/--nav-blur, поэтому значение должно
+		   обновляться строго по текущей позиции скролла — иначе при возврате
+		   вверх шапка «залипает» серой плашкой до следующего движения.
+		   Если hero не найден (страница без заставки или устаревший кэш скрипта) —
+		   ориентируемся на высоту самой шапки: вверху прозрачно, дальше «прилипает». */
 		var update = function () {
-			var progress = (!panel.hidden || !heroHeight)
+			var progress = !panel.hidden
 				? 1
-				: Math.min(1, Math.max(0, (window.scrollY - heroHeight * 0.3) / (heroHeight * 0.55)));
+				: (heroHeight
+					? Math.min(1, Math.max(0, (window.scrollY - heroHeight * 0.3) / (heroHeight * 0.55)))
+					: (window.scrollY > (bar.offsetHeight || 90) ? 1 : 0));
 
 			bar.style.setProperty('--nav-opacity', String(0.02 + 0.8 * progress));
 			bar.style.setProperty('--nav-blur', (1 + 23 * progress) + 'px');
 			bar.toggleAttribute('data-stuck', progress > 0.03);
 		};
+
+		/* Высота hero может измениться после загрузки (картинки, шрифты) —
+		   иначе порог прозрачности считался бы от устаревшего значения. */
+		if (hero && typeof ResizeObserver !== 'undefined') {
+			var heroObserver = new ResizeObserver(function () {
+				heroHeight = hero.offsetHeight;
+				update();
+			});
+			heroObserver.observe(hero);
+		}
 
 		var setOpen = function (open) {
 			toggle.setAttribute('aria-expanded', String(open));
@@ -971,7 +1342,7 @@
 		document.addEventListener('toggle', function (e) {
 			var el = e.target;
 			if (!(el instanceof HTMLDetailsElement) || !el.open) return;
-			var body = el.querySelector('.service-detail-body, .assessment-content, .faq-content, :scope > p');
+			var body = el.querySelector('.service-detail-body, .assessment-content, .faq-content, .svc-faq__body, .svc-step__body, :scope > p, :scope > div');
 			if (!body) return;
 			gsap.fromTo(body,
 				{ y: 10, opacity: 0 },
@@ -1019,7 +1390,7 @@
 			});
 		}
 
-		initHero();
+		initHeroes();
 		/* SplitText — только после готовности шрифтов: иначе autoSplit пересобирает
 		   строки после подмены шрифта и высота заголовка меняется на ходу (CLS). */
 		whenFontsReady(function () {
@@ -1072,15 +1443,20 @@
 		/* Страховка: если через 3 сек элементы hero всё ещё скрыты —
 		   значит GSAP не отработал (нет сети/ошибка) — показываем принудительно */
 		setTimeout(function () {
-			document.querySelectorAll('.hero-content > .eyebrow, .hero h1 > span, .hero-intro > *, .hero-bottom > *')
-				.forEach(function (el) {
-					var opacity = parseFloat(window.getComputedStyle(el).opacity);
-					if (opacity < 0.05) {
-						el.style.opacity = '1';
-						el.style.visibility = 'visible';
-						el.style.transform = 'none';
-					}
+			HERO_PRESETS.forEach(function (preset) {
+				var root = document.querySelector(preset.root);
+				if (!root) return;
+				preset.parts.forEach(function (part) {
+					root.querySelectorAll(part.sel).forEach(function (el) {
+						var opacity = parseFloat(window.getComputedStyle(el).opacity);
+						if (opacity < 0.05) {
+							el.style.opacity = '1';
+							el.style.visibility = 'visible';
+							el.style.transform = 'none';
+						}
+					});
 				});
+			});
 		}, 3000);
 	}
 

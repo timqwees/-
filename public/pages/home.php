@@ -13,6 +13,13 @@ $seo = Setting\Route\Functions\TheFunction::seo([
         ['name' => 'Главная', 'url' => $site['baseUrl'] . '/'],
     ],
 ]);
+// Сквозной номер раздела главной («01 / Наш опыт»): считается в порядке вывода,
+// поэтому пропусков и дублей номеров не возникает.
+$fssSec = function (string $label): string {
+    static $n = 0;
+    $n++;
+    return str_pad((string)$n, 2, '0', STR_PAD_LEFT) . ' / ' . $label;
+};
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -25,7 +32,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 	<meta name="description" content="<?= htmlspecialchars($seo['description']); ?>">
 	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 	<meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
-	<meta name="theme-color" content="#F97316">
+	<meta name="theme-color" content="#876b55">
 	<meta name="format-detection" content="telephone=yes">
 	<meta name="yandex-verification" content="27e0ba9980498150" />
 	<link rel="canonical" href="<?= htmlspecialchars($seo['canonical']); ?>">
@@ -41,8 +48,8 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 	<link rel="shortcut icon" href="/public/assets/image/logo/favicon/favicon.ico" />
 	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/favicon/apple-touch-icon.png" />
 	<meta name="apple-mobile-web-app-title" content="ФСС" />
-	<link rel="manifest" href="/public/assets/image/logo/favicon/site.webmanifest" />
-	<link rel="mask-icon" href="/public/assets/image/logo/favicon/favicon-96x96.png" color="#F97316">
+	<link rel="manifest" href="/manifest.json" />
+	<link rel="mask-icon" href="/public/assets/image/logo/favicon/favicon-96x96.png" color="#876b55">
 	<link rel="preload" as="font" type="font/woff2" href="/public/assets/vendor/fonts/Manrope-latin.woff2" crossorigin><link rel="preload" as="font" type="font/woff2" href="/public/assets/vendor/fonts/Manrope-cyrillic.woff2" crossorigin><link rel="preload" as="font" type="font/woff2" href="/public/assets/fonts/WixMadeforDisplay/WixMadeforDisplay-Variable.woff2" crossorigin><link rel="stylesheet" href="/public/assets/vendor/fonts/fonts.css">
 	<style> body { font-family: 'DM Sans Variable', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
 	<!-- Preload critical -->
@@ -57,14 +64,12 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 	<script defer src="/public/assets/vendor/swiper/swiper-bundle.min.js"></script>
 	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261018">
 	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261018">
-	<link rel="stylesheet" href="/public/assets/distCSS/protenance.css?v=20261022">
+	<link rel="stylesheet" href="/public/assets/distCSS/promaintenance.css?v=20261023">
 
 <?php include_once __DIR__ . '/../components/sheoma.php'; ?>
 <?= seo_analytics() ?>
 <?= seo_utm_script() ?>
 <?= seo_goals_script() ?>
-
-</head>
 
 <style>
 	@keyframes floatRightIcon {
@@ -252,38 +257,158 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 			}
 			#process .steps3-dot.is-active {
 				width: 22px;
-				background: #f97316;
+				background: #876b55;
 			}
 		}
 		@media (prefers-reduced-motion: reduce) {
 			#process .step3 { transition: none; }
 		}
 
-		/* Cinema Hero Styles — exact Protenance copy */
-		.hero { isolation: isolate; }
-		.cinema-image { object-fit: cover; object-position: 58% 50%; opacity: 0; width: 100%; height: 100%; position: absolute; transition: opacity 0.8s cubic-bezier(.2,.8,.2,1); }
-		.cinema-image.is-active { opacity: 1; }
-		.hero-shade { pointer-events: none; }
-		.cinema-pagination button { opacity: .5; transition: opacity 0.3s; }
-		.cinema-pagination button[aria-pressed=true] { opacity: 1; }
-		.cinema-pagination button span { transition: width 0.6s cubic-bezier(.2,.8,.2,1); }
-		.hero-project { backdrop-filter: blur(22px); border-radius: 8px; background: #16161794; border: 1px solid #ffffff4d; flex-direction: column; gap: 9px; padding: 24px 75px 24px 24px; transition: background .4s; display: flex; position: relative; }
+		/* Cinema Hero Styles — exact Protenance copy.
+		   Важно: базовые свойства hero заданы классами (не inline), иначе
+		   медиазапросы не могут их переопределить и вёрстка «выезжает» на мобильных. */
+		.hero {
+			isolation: isolate;
+			color: #fff;
+			background: #363636;
+			height: 100svh;
+			min-height: 750px;
+			max-height: 1200px;
+			position: relative;
+			overflow: hidden;
+		}
+
+		.hero-visual {
+			position: absolute;
+			inset: 0;
+		}
+
+		.cinema-image {
+			object-fit: cover;
+			object-position: 58% 50%;
+			opacity: 0;
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			transition: opacity 0.8s cubic-bezier(.2, .8, .2, 1);
+		}
+
+		.cinema-image.is-active {
+			opacity: 1;
+		}
+
+		.hero-shade {
+			pointer-events: none;
+			position: absolute;
+			inset: 0;
+			background: linear-gradient(90deg, #0f0e0dad, #0f0e0d14 85%), linear-gradient(#0f0e0d2e, #0000 55%, #0f0e0dcc);
+		}
+
+		.hero-content {
+			position: absolute;
+			top: clamp(155px, 22vh, 260px);
+			left: clamp(24px, 4.4vw, 96px);
+			right: clamp(24px, 4.4vw, 96px);
+		}
+
+		.hero-eyebrow {
+			color: #ffffffc7;
+			letter-spacing: .12em;
+			text-transform: uppercase;
+			font-size: 10px;
+			font-weight: 500;
+			line-height: 1.5;
+			display: flex;
+			align-items: center;
+			gap: 12px;
+		}
+
+		.hero h1 {
+			letter-spacing: -.066em;
+			text-wrap: initial;
+			margin-top: 32px;
+			font-size: clamp(56px, 8vw, 130px);
+			font-weight: 450;
+			line-height: .98;
+			font-family: 'DM Sans Variable', Arial, sans-serif;
+		}
+
+		.hero h1>span {
+			display: block;
+		}
+
+		.hero-intro {
+			align-items: end;
+			gap: 85px;
+			margin-top: 40px;
+			display: flex;
+		}
+
+		.hero-intro p {
+			color: #fffc;
+			font-size: 15px;
+			line-height: 1.5;
+		}
+
+		.hero-intro .text-link {
+			border-bottom: 1px solid;
+			align-items: center;
+			gap: 25px;
+			padding-block: 10px;
+			font-size: 11px;
+			line-height: 1.4;
+			display: inline-flex;
+			border-color: #ffffff80;
+		}
+
+		.hero-bottom {
+			grid-template-columns: 1.1fr 1fr auto;
+			align-items: end;
+			gap: 40px;
+			display: grid;
+			position: absolute;
+			bottom: 32px;
+			left: clamp(24px, 4.4vw, 96px);
+			right: clamp(24px, 4.4vw, 96px);
+		}
+
+		.hero-project {
+			backdrop-filter: blur(22px);
+			border-radius: 8px;
+			background: #16161794;
+			border: 1px solid #ffffff4d;
+			flex-direction: column;
+			gap: 9px;
+			padding: 24px 75px 24px 24px;
+			transition: background .4s;
+			display: flex;
+			position: relative;
+		}
+
 		.hero-project:hover { background: #24211ecc; }
-		.hero-project .eyebrow { opacity: .7; font-size: 8px; }
+		.hero-project .eyebrow { opacity: .7; font-size: 8px; gap: 2px; align-items: center; display: flex; }
 		.hero-project strong { letter-spacing: -.02em; font-size: 18px; font-weight: 500; }
 		.hero-project>span[data-cinema-caption] { opacity: .7; font-size: 10px; }
 		.hero-project-arrow { position: absolute; top: 50%; right: 24px; transform: translateY(-50%); }
-		.hero-controls { padding-bottom: 16px; }
+
+		.hero-controls {
+			padding-bottom: 16px;
+			display: flex;
+			flex-direction: column;
+			gap: 16px;
+		}
+
 		.cinema-pagination { align-items: center; gap: 16px; display: flex; }
-		.cinema-pagination button { opacity: .5; align-items: center; gap: 12px; min-height: 44px; font-size: 10px; display: flex; background: none; border: none; color: inherit; cursor: pointer; padding: 0; }
-		.cinema-pagination button span { width: 20px; height: 1px; transition: width .6s cubic-bezier(.2,.8,.2,1); background: #fff; display: block; }
+		.cinema-pagination button { opacity: .5; transition: opacity .3s; align-items: center; gap: 12px; min-height: 44px; font-size: 10px; display: flex; background: none; border: none; color: inherit; cursor: pointer; padding: 0; }
+		.cinema-pagination button span { width: 20px; height: 1px; transition: width .6s cubic-bezier(.2, .8, .2, 1); background: #fff; display: block; }
 		.cinema-pagination button[aria-pressed=true] { opacity: 1; }
 		.cinema-pagination button[aria-pressed=true] span { width: 65px; }
 		.hero-controls>.eyebrow { opacity: .65; font-size: 8px; }
+
 		.hero-cta { color: #1b1c1d; border-radius: 8px; background: #f0efed; align-items: center; gap: 45px; margin-bottom: 15px; padding: 22px 26px; font-size: 12px; transition: background .3s; display: flex; }
 		.hero-cta:hover { background: #fff; }
-		.hero-cta svg { transition: transform .4s cubic-bezier(.2,.8,.2,1); flex-shrink: 0; }
-		.hero-cta:hover svg { transform: translate(2px,-2px); }
+		.hero-cta svg { transition: transform .4s cubic-bezier(.2, .8, .2, 1); flex-shrink: 0; }
+		.hero-cta:hover svg { transform: translate(2px, -2px); }
 
 		@media (width>=1600px) {
 			.hero h1 { font-size: 155px; }
@@ -303,7 +428,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 			.hero-content { top: 190px; }
 			.hero h1 { font-size: 11.7vw; }
 			.hero-intro { gap: 45px; }
-			.hero-controls { grid-column: 1; justify-content: space-between; align-items: center; gap: 15px; padding: 0; display: flex; }
+			.hero-controls { grid-column: 1; justify-content: space-between; align-items: center; gap: 15px; padding: 0; display: flex; flex-direction: row; }
 			.hero-controls>.eyebrow { text-align: right; max-width: 90px; font-size: 7px; }
 			.cinema-pagination { gap: 10px; }
 			.cinema-pagination button { gap: 8px; font-size: 9px; }
@@ -315,22 +440,67 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 			.hero-cta { display: none; }
 		}
 
+		/* Мобильная версия: hero — поток (flex), без абсолютных блоков.
+		   Так контент не наезжает на карточку проекта, не перекрывается
+		   липкой панелью CTA и не «выезжает» на любой высоте экрана. */
 		@media (width<=576px) {
-			.hero { height: 100svh; min-height: 735px; max-height: 1000px; }
-			.hero-content { top: 150px; }
-			.hero-content>.eyebrow { letter-spacing: .06em; max-width: 260px; font-size: 8px; }
-			.hero h1 { margin-top: 26px; font-size: 14vw; line-height: 1.02; }
-			.hero-intro { margin-top: 28px; display: block; }
+			.hero {
+				height: auto;
+				min-height: 100svh;
+				max-height: none;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				padding: calc(var(--fss-header-h, 74px) + 16px) 24px 104px;
+			}
+
+			.hero-content {
+				position: static;
+				top: auto;
+				left: auto;
+				right: auto;
+			}
+
+			.hero-eyebrow { letter-spacing: .06em; max-width: 260px; font-size: 8px; }
+			.hero h1 { margin-top: 22px; font-size: 13vw; line-height: 1.04; }
+			.hero-intro { margin-top: 22px; display: block; }
 			.hero-intro p { font-size: 13px; }
-			.hero-intro .text-link { margin-top: 15px; }
+			.hero-intro .text-link { margin-top: 14px; }
 			.hero-visual .cinema-image { object-position: 62% 50%; }
-			.hero-shade { background: linear-gradient(90deg,#0f0e0d99,#0f0e0d33),linear-gradient(#0000 30%,#0f0e0dcc); }
-			.hero-bottom { grid-template-columns: 1fr; gap: 12px; bottom: 22px; }
-			.hero-project { padding: 18px 65px 18px 18px; }
-			.hero-project strong { font-size: 17px; }
+			.hero-shade { background: linear-gradient(90deg, #0f0e0d99, #0f0e0d33), linear-gradient(#0000 30%, #0f0e0dcc); }
+			.hero-bottom { position: static; bottom: auto; grid-template-columns: 1fr; gap: 14px; margin-top: 26px; }
+			.hero-project { padding: 16px 56px 16px 16px; }
+			.hero-project strong { font-size: 16px; }
+			.hero-controls { flex-direction: row; justify-content: space-between; align-items: center; gap: 12px; padding: 0; }
+			.hero-controls>.eyebrow { text-align: right; max-width: 110px; font-size: 7px; }
+			.cinema-pagination { gap: 10px; }
+			.cinema-pagination button { gap: 8px; font-size: 9px; }
 			.cinema-pagination button[aria-pressed=true] span { width: 40px; }
 			.cinema-pagination button span { width: 15px; }
 			.hero-cta { display: none; }
+		}
+
+		/* Низкие экраны (сериф в один ряд, iPhone SE и т.п.): компактим hero,
+		   чтобы блок проекта не заезжал под липкую панель CTA. */
+		@media (width<=576px) and (height<=720px) {
+			.hero { padding-top: calc(var(--fss-header-h, 74px) + 10px); padding-bottom: 96px; }
+			.hero h1 { margin-top: 16px; font-size: 11.5vw; }
+			.hero-intro { margin-top: 16px; }
+			.hero-bottom { margin-top: 18px; gap: 12px; }
+			.hero-project { padding: 14px 52px 14px 14px; }
+			.hero-project>span[data-cinema-caption] { display: none; }
+		}
+
+		/* Очень низкие экраны (iPhone SE 320×568 и т.п.): дополнительно
+		   уплотняем hero, чтобы блок проекта и пагинация не уходили
+		   под липкую панель CTA уже на первом экране. */
+		@media (width<=576px) and (height<=600px) {
+			.hero { padding-top: calc(var(--fss-header-h, 74px) + 6px); padding-bottom: 92px; }
+			.hero h1 { margin-top: 12px; font-size: 10.5vw; }
+			.hero-intro { margin-top: 12px; }
+			.hero-intro .text-link { margin-top: 8px; padding-block: 6px; }
+			.hero-bottom { margin-top: 14px; gap: 10px; }
+			.hero-project { padding: 12px 48px 12px 12px; }
 		}
 
 		@media (hover: hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
@@ -351,54 +521,48 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 	<?php include_once __DIR__ . '/../components/header.php'; ?>
 
 	<!-- CINEMA HERO — exact Protenance copy -->
-	<section id="hero" class="hero" aria-labelledby="hero-title" data-cinema style="isolation: isolate; color: #fff; background: #363636; height: 100svh; min-height: 750px; max-height: 1200px; position: relative; overflow: hidden;">
-		<div class="hero-visual" data-hero-frame="" style="position: absolute; inset: 0;">
-			<img src="/public/assets/image/Components/banner/hero.jpg.webp" srcset="/public/assets/image/Components/banner/hero.jpg.webp 720w, /public/assets/image/Components/banner/hero.jpg.webp 1200w, /public/assets/image/Components/banner/hero.jpg.webp 1672w" alt="Склад под ключ — Химки" title="Склад под ключ — Химки" sizes="100vw" loading="eager" fetchpriority="high" data-cinema-image="0" decoding="async" width="1672" height="941" class="cinema-image is-active" style="object-fit: cover; object-position: 58% 50%; width: 100%; height: 100%; position: absolute;">
-			<img src="/public/assets/image/swiper/2.jpg.webp" srcset="/public/assets/image/swiper/2.jpg.webp 720w, /public/assets/image/swiper/2.jpg.webp 1200w, /public/assets/image/swiper/2.jpg.webp 1672w" alt="Ангар под ключ — Мытищи" title="Ангар под ключ — Мытищи" sizes="100vw" loading="lazy" fetchpriority="auto" data-cinema-image="1" decoding="async" width="1672" height="941" class="cinema-image" style="object-fit: cover; object-position: 58% 50%; width: 100%; height: 100%; position: absolute;">
-			<img src="/public/assets/image/swiper/3.jpeg.webp" srcset="/public/assets/image/swiper/3.jpeg.webp 720w, /public/assets/image/swiper/3.jpeg.webp 1200w, /public/assets/image/swiper/3.jpeg.webp 1672w" alt="АБК под ключ — Подольск" title="АБК под ключ — Подольск" sizes="100vw" loading="lazy" fetchpriority="auto" data-cinema-image="2" decoding="async" width="1672" height="941" class="cinema-image" style="object-fit: cover; object-position: 58% 50%; width: 100%; height: 100%; position: absolute;">
+	<section id="hero" class="hero" aria-labelledby="hero-title" data-cinema data-nav-hero>
+		<div class="hero-visual" data-hero-frame>
+			<img src="/public/assets/image/Components/banner/hero.jpg.webp" srcset="/public/assets/image/Components/banner/hero.jpg.webp 720w, /public/assets/image/Components/banner/hero.jpg.webp 1200w, /public/assets/image/Components/banner/hero.jpg.webp 1672w" alt="Комплекс общежитий 9 000+ м² в Адлерском районе Сочи" title="Комплекс общежитий 9 000+ м² в Адлерском районе Сочи" sizes="100vw" loading="eager" fetchpriority="high" data-cinema-image="0" decoding="async" width="1672" height="941" class="cinema-image is-active">
+			<img src="/public/assets/image/swiper/2.jpg.webp" srcset="/public/assets/image/swiper/2.jpg.webp 720w, /public/assets/image/swiper/2.jpg.webp 1200w, /public/assets/image/swiper/2.jpg.webp 1672w" alt="Кабинет беспилотных авиационных систем: поставка БПЛА и комплектующих" title="Поставка БПЛА, комплектующих и систем КИТ" sizes="100vw" loading="lazy" fetchpriority="auto" data-cinema-image="1" decoding="async" width="1672" height="941" class="cinema-image">
+			<img src="/public/assets/image/swiper/3.jpeg.webp" srcset="/public/assets/image/swiper/3.jpeg.webp 720w, /public/assets/image/swiper/3.jpeg.webp 1200w, /public/assets/image/swiper/3.jpeg.webp 1672w" alt="Капитальный ремонт школы в Гудермесе с техническим оснащением" title="Капремонт ГБОУ «Центр образования» в Гудермесе" sizes="100vw" loading="lazy" fetchpriority="auto" data-cinema-image="2" decoding="async" width="1672" height="941" class="cinema-image">
 		</div>
-		<div class="hero-shade" aria-hidden="true" style="position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, #0f0e0dad, #0f0e0d14 85%), linear-gradient(#0f0e0d2e, #0000 55%, #0f0e0dcc);"></div>
-		<div class="hero-content" style="position: absolute; top: clamp(155px, 22vh, 260px); left: clamp(24px, 4.4vw, 96px); right: clamp(24px, 4.4vw, 96px);">
-			<p class="eyebrow" style="color: #ffffffc7; letter-spacing: .12em; text-transform: uppercase; font-size: 10px; font-weight: 500; line-height: 1.5; display: flex; align-items: center; gap: 12px;">
-				<span class="live-dot" style="background: currentColor; border-radius: 50%; width: 6px; height: 6px; margin-right: 12px; display: inline-block;" aria-hidden="true"></span>
+		<div class="hero-shade" aria-hidden="true"></div>
+		<div class="hero-content">
+			<p class="eyebrow hero-eyebrow">
+				<span class="live-dot" aria-hidden="true"></span>
 				Строительство · Производство · Монтаж
 			</p>
-			<h1 id="hero-title" style="letter-spacing: -.066em; text-wrap: initial; margin-top: 32px; font-size: clamp(56px, 8vw, 130px); font-weight: 450; line-height: .98; font-family: 'DM Sans Variable', Arial, sans-serif;">
-				<span style="display: block;">Модульные здания</span>
-				<span style="display: block;">нового поколения<span class="accent-dot" style="color: #c7ab94;">.</span></span>
+			<h1 id="hero-title">
+				<span>Модульные здания</span>
+				<span>нового поколения<span class="accent-dot">.</span></span>
 			</h1>
-			<div class="hero-intro" style="align-items: end; gap: 85px; margin-top: 40px; display: flex;">
-				<p style="color: #fffc; font-size: 15px; line-height: 1.5;">От фундамента до сдачи.<br>Сила для каждого нового этапа.</p>
-				<a class="text-link" href="#about" style="border-bottom: 1px solid; align-items: center; gap: 25px; padding-block: 10px; font-size: 11px; line-height: 1.4; display: inline-flex; border-color: #ffffff80; font-size: 11px; line-height: 1.4; display: inline-flex; align-items: center; gap: 25px;">Узнать о ФСС <span>&#8595;</span></a>
+			<div class="hero-intro">
+				<p>От фундамента до сдачи.<br>Сила для каждого нового этапа.</p>
+				<a class="text-link" href="#about" data-goal="hero_about">Узнать о ФСС <span>&#8595;</span></a>
 			</div>
 		</div>
-		<div class="hero-bottom" style="grid-template-columns: 1.1fr 1fr auto; align-items: end; gap: 40px; display: grid; position: absolute; bottom: 32px; left: clamp(24px, 4.4vw, 96px); right: clamp(24px, 4.4vw, 96px);">
-			<a href="/portfolio/sklad-himki" class="hero-project" data-cinema-link style="backdrop-filter: blur(22px); border-radius: 8px; background: #16161794; border: 1px solid #ffffff4d; flex-direction: column; gap: 9px; padding: 24px 75px 24px 24px; transition: background .4s; display: flex; position: relative;">
-				<span class="eyebrow" style="opacity: .7; font-size: 8px; letter-spacing: .12em; text-transform: uppercase; font-weight: 500; line-height: 1.5; display: flex; align-items: center; gap: 2px;">Избранный проект / <span data-cinema-number>01</span></span>
-				<strong data-cinema-name style="letter-spacing: -.02em; font-size: 18px; font-weight: 500;">Склад под ключ — Химки</strong>
-				<span data-cinema-caption style="opacity: .7; font-size: 10px;">Московская область / Логистика</span>
-				<span class="hero-project-arrow" style="position: absolute; top: 50%; right: 24px; transform: translateY(-50%);">
+		<div class="hero-bottom">
+			<a href="/portfolio/obshchegiya-adler-sochi" class="hero-project" data-cinema-link>
+				<span class="eyebrow">Избранный проект / <span data-cinema-number>01</span></span>
+				<strong data-cinema-name>Общежития 9 000+ м² — Сочи</strong>
+				<span data-cinema-caption>Краснодарский край / Общежития</span>
+				<span class="hero-project-arrow">
 					<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 						<path d="M7 7h10v10"></path>
 						<path d="M7 17 17 7"></path>
 					</svg>
 				</span>
 			</a>
-			<div class="hero-controls" style="translate: none; rotate: none; scale: none; opacity: 1; visibility: inherit; transform: translate(0px, 0px); display: flex; flex-direction: column; gap: 16px;">
-				<div class="cinema-pagination" role="group" aria-label="Избранные проекты" style="align-items: center; gap: 16px; display: flex;">
-					<button type="button" data-cinema-select="0" data-name="Склад под ключ — Химки" data-caption="Московская область / Логистика" data-project="sklad-himki" aria-label="Показать склад под ключ в Химках" aria-pressed="true" style="align-items: center; gap: 12px; min-height: 44px; font-size: 10px; display: flex; background: none; border: none; color: inherit; cursor: pointer; padding: 0;">
-						01<span style="height: 1px; transition: width .6s cubic-bezier(.2, .8, .2, 1); background: #fff; display: block;"></span>
-					</button>
-					<button type="button" data-cinema-select="1" data-name="Ангар под ключ — Мытищи" data-caption="Московская область / Производство" data-project="angar-mytishchi" aria-label="Показать ангар под ключ в Мытищах" aria-pressed="false" style="align-items: center; gap: 12px; min-height: 44px; font-size: 10px; display: flex; background: none; border: none; color: inherit; cursor: pointer; padding: 0;">
-						02<span style="height: 1px; transition: width .6s cubic-bezier(.2, .8, .2, 1); background: #fff; display: block;"></span>
-					</button>
-					<button type="button" data-cinema-select="2" data-name="АБК под ключ — Подольск" data-caption="Московская область / Образование" data-project="abk-podolsk" aria-label="Показать АБК под ключ в Подольске" aria-pressed="false" style="align-items: center; gap: 12px; min-height: 44px; font-size: 10px; display: flex; background: none; border: none; color: inherit; cursor: pointer; padding: 0;">
-						03<span style="height: 1px; transition: width .6s cubic-bezier(.2, .8, .2, 1); background: #fff; display: block;"></span>
-					</button>
+			<div class="hero-controls">
+				<div class="cinema-pagination" role="group" aria-label="Избранные проекты">
+					<button type="button" data-cinema-select="0" data-name="Общежития 9 000+ м² — Сочи" data-caption="Краснодарский край / Общежития" data-project="obshchegiya-adler-sochi" aria-label="Показать комплекс общежитий в Сочи" aria-pressed="true">01<span></span></button>
+					<button type="button" data-cinema-select="1" data-name="БПЛА и системы КИТ" data-caption="Поставка оборудования / БПЛА" data-project="bpla-kit" aria-label="Показать поставку БПЛА и комплектующих" aria-pressed="false">02<span></span></button>
+					<button type="button" data-cinema-select="2" data-name="Капремонт школы — Гудермес" data-caption="Чеченская Республика / Капремонт" data-project="kapremont-gudermes" aria-label="Показать капремонт школы в Гудермесе" aria-pressed="false">03<span></span></button>
 				</div>
-				<p class="eyebrow" data-cinema-status aria-live="polite" style="opacity: .65; font-size: 8px; letter-spacing: .12em; text-transform: uppercase; font-weight: 500; line-height: 1.5;">01 / 03 — Склад под ключ — Химки</p>
+				<p class="eyebrow" data-cinema-status aria-live="polite">01 / 03 — Общежития 9 000+ м² — Сочи</p>
 			</div>
-			<a href="/portfolio" class="hero-cta" style="color: #1b1c1d; border-radius: 8px; background: #f0efed; align-items: center; gap: 45px; margin-bottom: 15px; padding: 22px 26px; font-size: 12px; transition: background .3s; display: flex;">
+			<a href="/portfolio" class="hero-cta" data-goal="hero_projects">
 				Изучить проекты
 				<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 					<path d="M7 7h10v10"></path>
@@ -410,7 +574,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 	<!-- ABOUT (ProMaintenance about-section) -->
 	<section id="about" class="about-section section-shell">
 		<div class="section-topline">
-			<p class="eyebrow">01 / Наш опыт</p>
+			<p class="eyebrow"><?= $fssSec('Наш опыт') ?></p>
 			<span class="eyebrow">Москва и область</span>
 		</div>
 		<div class="about-grid">
@@ -422,8 +586,8 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 						<path d="M12 5v14"></path>
 					</svg>
 				</span>
-				<p>Работаем с 2011 года. В основе — 15 лет практики в быстровозводимом строительстве.</p>
-				<p>От фундаментов до реконструкции существующих зданий: мы объединяем производство БВЗ, капитальный ремонт и монтаж инженерных сетей. Три направления, один завод, команда в Москве и области.</p>
+				<p>Работаем с <?= htmlspecialchars((string)seo_config('founded_market')) ?> года. В основе — <?= htmlspecialchars((string)seo_config('market_years')) ?> лет практики в быстровозводимом строительстве.</p>
+				<p>От фундаментов до реконструкции существующих зданий: мы объединяем производство БВЗ, капитальный ремонт и монтаж инженерных сетей. Три направления, единая команда, работаем по всей России.</p>
 				<a href="/uslugi" class="text-link">Смотреть направления
 					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 						<path d="M7 7h10v10"></path>
@@ -435,7 +599,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 		<dl class="about-stats">
 			<div><dd>15</dd><dt>лет на рынке</dt></div>
 			<div><dd>03</dd><dt>основных направления</dt></div>
-			<div><dd>180<span>+</span></dd><dt>сданных объектов</dt></div>
+			<div><dd><?= htmlspecialchars((string)seo_config('objects')) ?></dd><dt>сданных объектов</dt></div>
 		</dl>
 	</section>
 
@@ -450,9 +614,9 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 			<p>От фундамента и основания.<br>Внутри конструкций и на площадке.</p>
 		</div>
 		<div class="division-grid">
-			<a class="division-card" href="/services/bazovoe-stroenie" title="Производство быстровозводимых зданий">
+			<a class="division-card" href="/services/proizvodim_modul" title="Производство быстровозводимых зданий">
 				<div class="division-photo">
-					<img src="/public/assets/image/banner.webp" alt="Производство быстровозводимых зданий — завод ФСС" title="Производство быстровозводимых зданий — завод ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/logo-64.png'">
+					<img src="/public/assets/image/banner.webp" alt="Быстровозводимые здания ФСС — поставка и монтаж" title="Быстровозводимые здания ФСС — поставка и монтаж" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/logo-64.png'">
 				</div>
 				<div class="division-card-label">
 					<span class="eyebrow">01</span>
@@ -462,7 +626,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 					</svg>
 				</div>
 				<h3>Быстровозводимые здания</h3>
-				<p>Собственный завод БВЗ, модульные блоки, ангары, склады, АБК и общежития под ключ.</p>
+				<p>БВЗ, модульные блоки, ангары, склады, АБК и общежития под ключ — от расчёта до сдачи.</p>
 			</a>
 			<a class="division-card" href="/services/kapital" title="Капитальный строительство и ремонт">
 				<div class="division-photo">
@@ -496,7 +660,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 	</section>
 	<section id="projects" class="selected-work section-shell">
 		<div class="section-topline">
-			<p class="eyebrow">02 / Избранные проекты</p>
+			<p class="eyebrow"><?= $fssSec('Избранные проекты') ?></p>
 			<a href="/portfolio" class="text-link">Смотреть все объекты
 				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 					<path d="M7 7h10v10"></path>
@@ -514,7 +678,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 			<article class="project-card" data-emirate="Московская область" data-search="Склад 1 200 м² из сэндвич-панелей Склад 1 200 м² из сэндвич-панелей Логистика Химки Московская область Доковые ворота, тёплый контур, освещение и вентиляция" data-slug="sklad-1200">
 				<a href="/portfolio#obj-1" class="project-card__link" title="Склад 1 200 м² из сэндвич-панелей — объект ФСС">
 					<div class="project-card__image">
-						<img src="/public/assets/image/services/капстроение/10.JPG" srcset="/public/assets/image/services/капстроение/10.JPG 600w, /public/assets/image/services/капстроение/10.JPG 1000w, /public/assets/image/services/капстроение/10.JPG 1600w, /public/assets/image/services/капстроение/10.JPG 1672w" alt="Склад 1 200 м² из сэндвич-панелей — объект ФСС" title="Склад 1 200 м² из сэндвич-панелей — объект ФСС" sizes="92vw" loading="lazy" decoding="async" width="1672" height="941" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/logo-64.png'">
+						<img src="/public/assets/image/services/МТЗ/MNAEHRcw27qk0buSmkKQyg5y30hnigc-zXc68ylPagQIfUWmRJj2PI2ngGCso3cNr1Ar9H_JQ-Nm5IJd7VtriDPb.jpg" srcset="/public/assets/image/services/МТЗ/MNAEHRcw27qk0buSmkKQyg5y30hnigc-zXc68ylPagQIfUWmRJj2PI2ngGCso3cNr1Ar9H_JQ-Nm5IJd7VtriDPb.jpg 600w, /public/assets/image/services/МТЗ/MNAEHRcw27qk0buSmkKQyg5y30hnigc-zXc68ylPagQIfUWmRJj2PI2ngGCso3cNr1Ar9H_JQ-Nm5IJd7VtriDPb.jpg 1000w, /public/assets/image/services/МТЗ/MNAEHRcw27qk0buSmkKQyg5y30hnigc-zXc68ylPagQIfUWmRJj2PI2ngGCso3cNr1Ar9H_JQ-Nm5IJd7VtriDPb.jpg 1280w" alt="Склад 1 200 м² из сэндвич-панелей — объект ФСС" title="Склад 1 200 м² из сэндвич-панелей — объект ФСС" sizes="92vw" loading="lazy" decoding="async" width="1280" height="960" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/logo-64.png'">
 						<span class="project-card__number">01 — Логистика</span>
 						<span class="project-card__arrow">
 							<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
@@ -533,7 +697,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 			<article class="project-card" data-emirate="Московская область" data-search="Модульное общежитие на 120 мест Модульное общежитие на 120 мест Жильё Мытищи Московская область Два этажа, тёплый контур, кондиционеры в каждой комнате" data-slug="obshchiezhie-120">
 				<a href="/portfolio#obj-2" class="project-card__link" title="Модульное общежитие на 120 мест — объект ФСС">
 					<div class="project-card__image">
-						<img src="/public/assets/image/swiper/1.jpeg" srcset="/public/assets/image/swiper/1.jpeg 600w, /public/assets/image/swiper/1.jpeg 1000w, /public/assets/image/swiper/1.jpeg 1600w, /public/assets/image/swiper/1.jpeg 1672w" alt="Модульное общежитие на 120 мест — объект ФСС" title="Модульное общежитие на 120 мест — объект ФСС" sizes="(min-width: 993px) 46vw, 100vw" loading="lazy" decoding="async" width="1672" height="941" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/logo-64.png'">
+						<img src="/public/assets/image/banner.jpeg" srcset="/public/assets/image/banner.jpeg 600w, /public/assets/image/banner.jpeg 1000w, /public/assets/image/banner.jpeg 1280w" alt="Модульное общежитие на 120 мест — объект ФСС" title="Модульное общежитие на 120 мест — объект ФСС" sizes="(min-width: 993px) 46vw, 100vw" loading="lazy" decoding="async" width="1280" height="960" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/logo-64.png'">
 						<span class="project-card__number">02 — Жильё</span>
 						<span class="project-card__arrow">
 							<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
@@ -552,7 +716,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 			<article class="project-card" data-emirate="Московская область" data-search="Капремонт школы под ключ Капремонт школы под ключ Образование Подольск Московская область Полы, потолки, электрика и чистовая отделка классов" data-slug="kapremont-shkoly">
 				<a href="/portfolio#obj-3" class="project-card__link" title="Капремонт школы под ключ — объект ФСС">
 					<div class="project-card__image">
-						<img src="/public/assets/image/swiper/3.jpeg" srcset="/public/assets/image/swiper/3.jpeg 600w, /public/assets/image/swiper/3.jpeg 1000w, /public/assets/image/swiper/3.jpeg 1600w, /public/assets/image/swiper/3.jpeg 1672w" alt="Капремонт школы под ключ — объект ФСС" title="Капремонт школы под ключ — объект ФСС" sizes="(min-width: 993px) 46vw, 100vw" loading="lazy" decoding="async" width="1672" height="941" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/logo-64.png'">
+						<img src="/public/assets/image/services/капстроение/5.JPG" srcset="/public/assets/image/services/капстроение/5.JPG 600w, /public/assets/image/services/капстроение/5.JPG 1000w, /public/assets/image/services/капстроение/5.JPG 1170w" alt="Капремонт школы под ключ — объект ФСС" title="Капремонт школы под ключ — объект ФСС" sizes="(min-width: 993px) 46vw, 100vw" loading="lazy" decoding="async" width="1170" height="778" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/logo-64.png'">
 						<span class="project-card__number">03 — Образование</span>
 						<span class="project-card__arrow">
 							<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
@@ -575,7 +739,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 	<!-- EXPERTISE (ProMaintenance expertise-section) -->
 	<section id="expertise" class="expertise-section section-shell">
 		<div class="section-topline">
-			<p class="eyebrow">02 / Компетенции</p>
+			<p class="eyebrow"><?= $fssSec('Компетенции') ?></p>
 			<span class="eyebrow">Точность снаружи и внутри</span>
 		</div>
 		<div class="expertise-layout">
@@ -584,7 +748,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 				<div class="expertise-image">
 					<img src="/public/assets/image/swiper/1.jpeg" alt="Модульное общежитие из сэндвич-панелей — объект ФСС" title="Модульное общежитие из сэндвич-панелей — объект ФСС" loading="lazy" data-expertise-image="moduli" decoding="async" class="is-active">
 					<img src="/public/assets/image/swiper/2.jpg" alt="Склад из сэндвич-панелей — объект ФСС" title="Склад из сэндвич-панелей — объект ФСС" loading="lazy" data-expertise-image="sklad" decoding="async">
-					<img src="/public/assets/image/banner.webp" alt="Производство модульных зданий — завод ФСС" title="Производство модульных зданий — завод ФСС" loading="lazy" data-expertise-image="proizvodstvo" decoding="async">
+					<img src="/public/assets/image/banner.webp" alt="Модульные здания ФСС — поставка и монтаж" title="Модульные здания ФСС — поставка и монтаж" loading="lazy" data-expertise-image="proizvodstvo" decoding="async">
 					<img src="/public/assets/image/services/капстроение/10.JPG" alt="Капитальный ремонт здания — объект ФСС" title="Капитальный ремонт здания — объект ФСС" loading="lazy" data-expertise-image="kapremont" decoding="async">
 				</div>
 				<p class="eyebrow">Технологическая экспертиза / Структурная надёжность</p>
@@ -602,7 +766,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 					<div class="service-detail-body">
 						<span class="service-tag">Производство</span>
 						<p>Модули из сэндвич-панелей изготавливаем на собственном заводе БВЗ: ангары, склады, АБК, общежития и бытовые городки. Собственное производство — это контроль качества и цена ниже рынка без посредников.</p>
-						<a href="/services/bazovoe-stroenie" class="text-link">Обсудить систему
+						<a href="/services/proizvodim_modul" class="text-link">Обсудить систему
 							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 								<path d="M7 7h10v10"></path>
 								<path d="M7 17 17 7"></path>
@@ -622,7 +786,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 					<div class="service-detail-body">
 						<span class="service-tag">Ёмкость</span>
 						<p>Каркас и обшивка за 45 дней, доковые ворота, тёплый контур, освещение и вентиляция. Считаем несущую способность под ваши нагрузки и подъездные пути — до начала работ.</p>
-						<a href="/services/sklady" class="text-link">Обсудить систему
+						<a href="/services/sclad" class="text-link">Обсудить систему
 							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 								<path d="M7 7h10v10"></path>
 								<path d="M7 17 17 7"></path>
@@ -680,7 +844,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 			<img src="/public/assets/image/banner.webp" alt="Модульные здания — производство ФСС" title="Модульные здания — производство ФСС" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='/public/assets/image/logo/favicon/logo-64.png'">
 		</div>
 		<div class="process-content section-shell">
-			<p class="eyebrow">04 / Как мы работаем</p>
+			<p class="eyebrow"><?= $fssSec('Как мы работаем') ?></p>
 			<h2>Продуманно на каждом этапе.<br><span>Уверенно на каждом шаге.</span></h2>
 			<div class="process-steps">
 				<details data-phase="0" open>
@@ -863,19 +1027,29 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 		</div>
 		<?php include_once __DIR__ . '/../components/enquiry_form.php'; ?>
 	</section>
+</div><!-- /.px-3 sm:px-5 (обёртка секции заявки) -->
 
-	<!-- 6. Отзывы клиентов (ProMaintenance: ревью-сетка + schema.org) -->
+	<!-- 6. Подтверждённые работы: реальные заказчики и объекты (E-E-A-T) -->
+	<?php
+	// Отзывы публикуются только по факту (app/Data/reviews.php). Пока их нет —
+	// показываем проверяемые факты: реальные заказчики и выполненные объекты.
+	$__reviews = seo_reviews();
+	$__projects = file_exists(dirname(__DIR__, 2) . '/app/Data/projects.php')
+		? (array)(require dirname(__DIR__, 2) . '/app/Data/projects.php')
+		: [];
+	?>
 	<section id="reviews" class="reviews-section section-shell view">
 		<div class="section-topline">
-			<p class="eyebrow">05 / Отзывы</p>
+			<p class="eyebrow"><?= $fssSec($__reviews ? 'Отзывы' : 'Подтверждённые работы') ?></p>
 			<span class="eyebrow"><?= seo_config('objects') ?> объектов с <?= seo_config('founded_market') ?> года</span>
 		</div>
 		<div class="head-row">
-			<h2>Говорят<br><span>наши клиенты.</span></h2>
-			<p>Реальные истории с объектов: сроки, бюджеты<br>и результат, который принимают.</p>
+			<h2><?= $__reviews ? 'Говорят<br><span>наши клиенты.</span>' : 'Нам доверяют<br><span>госзаказчики.</span>' ?></h2>
+			<p><?= $__reviews ? 'Реальные истории с объектов: сроки, бюджеты<br>и результат, который принимают.' : 'Работы по 44-ФЗ и 223-ФЗ: заказчик, объект<br>и состав выполненных работ.' ?></p>
 		</div>
+		<?php if ($__reviews): ?>
 		<div class="reviews-grid">
-			<?php foreach (seo_reviews() as $i => $r): ?>
+			<?php foreach ($__reviews as $i => $r): ?>
 				<article class="review-card">
 					<div class="review-card-top">
 						<span class="review-stars" aria-label="Рейтинг <?= (int)$r['star'] ?> из 5">
@@ -894,6 +1068,78 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 				</article>
 			<?php endforeach ?>
 		</div>
+		<?php else: ?>
+		<!-- Лента доверия: с кем работаем -->
+		<ul class="trust-rail" aria-label="Заказчики компании">
+			<li class="trust-rail-label">Работаем с</li>
+			<li>Росгвардия России</li>
+			<li>Минпросвещение РФ</li>
+			<li>Муниципальные бюджетные учреждения</li>
+			<li>Государственные школы и учреждения</li>
+			<li>Силовые структуры</li>
+		</ul>
+
+		<!-- Кейсы: заказчик, объект, состав работ -->
+		<div class="case-grid">
+			<?php
+			$__allSlugs = array_keys($__projects);
+			foreach (array_slice($__projects, 0, 6, true) as $__slug => $__pr):
+				$__photo = !empty($__pr['photos'][0]) ? \App\Models\Image::publicUrl((string)$__pr['photos'][0]) : '';
+				$__alt = !empty($__pr['photo_alts'][0]) ? (string)$__pr['photo_alts'][0] : (string)($__pr['h1'] ?? $__pr['title'] ?? '');
+				$__tags = array_slice((array)($__pr['features'] ?? []), 0, 3);
+				$__url = '/portfolio/' . rawurlencode((string)$__slug);
+				?>
+				<article class="case-card">
+					<?php if ($__photo !== ''): ?>
+						<a class="case-media" href="<?= htmlspecialchars($__url, ENT_QUOTES) ?>" tabindex="-1" aria-hidden="true">
+							<img src="<?= htmlspecialchars($__photo, ENT_QUOTES) ?>" alt="" loading="lazy" decoding="async"<?= seo_img_attrs($__photo) ?>>
+						</a>
+					<?php endif; ?>
+					<div class="case-head">
+						<span class="case-zone"><?= htmlspecialchars((string)($__pr['zone'] ?? ''), ENT_QUOTES) ?></span>
+						<span class="case-index"><?= str_pad((string)((int)array_search($__slug, $__allSlugs, true) + 1), 2, '0', STR_PAD_LEFT) ?></span>
+					</div>
+					<h3 class="case-title"><a href="<?= htmlspecialchars($__url, ENT_QUOTES) ?>"><?= htmlspecialchars((string)($__pr['title'] ?? ''), ENT_QUOTES) ?></a></h3>
+					<p class="case-region"><?= htmlspecialchars((string)($__pr['region'] ?? ''), ENT_QUOTES) ?></p>
+					<?php if ($__tags): ?>
+						<ul class="case-tags">
+							<?php foreach ($__tags as $__t): ?>
+								<li><?= htmlspecialchars((string)$__t, ENT_QUOTES) ?></li>
+							<?php endforeach; ?>
+						</ul>
+					<?php endif; ?>
+					<a class="case-more" href="<?= htmlspecialchars($__url, ENT_QUOTES) ?>">Открыть кейс
+						<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M5 12h14"></path>
+							<path d="m13 6 6 6-6 6"></path>
+						</svg>
+					</a>
+				</article>
+			<?php endforeach; ?>
+		</div>
+
+		<!-- Цифры доверия -->
+		<dl class="trust-stats">
+			<div>
+				<dd><?= htmlspecialchars((string)seo_config('kapremont_objects'), ENT_QUOTES) ?></dd>
+				<dt>объектов капитального ремонта</dt>
+			</div>
+			<div>
+				<dd><?= htmlspecialchars((string)seo_config('schools_equipped'), ENT_QUOTES) ?></dd>
+				<dt>школ оснащено по стандартам Минпросвещения РФ</dt>
+			</div>
+			<div>
+				<dd><?= htmlspecialchars((string)seo_config('sochi_area'), ENT_QUOTES) ?></dd>
+				<dt>общежитий построено в Сочи</dt>
+			</div>
+			<div>
+				<dd><?= htmlspecialchars((string)seo_config('guarantee_years'), ENT_QUOTES) ?> <span class="trust-stats-unit">лет</span></dd>
+				<dt>гарантия на несущие конструкции</dt>
+			</div>
+		</dl>
+
+		<p class="trust-note">Отзывы заказчиков публикуем по факту выполненных работ — без вымышленных имён и оценок. <?= seo_config('objects') ?> объектов в портфолио: <a href="/portfolio">все кейсы</a>.</p>
+		<?php endif; ?>
 	</section>
 
 	<!-- ИЗБРАННЫЕ ПРОЕКТЫ (Protenance selected-work) -->
@@ -904,12 +1150,12 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 	<!-- Почему выбирают: ProMaintenance (плюсы + цифры) -->
 	<section id="pluses" class="pluses-section section-shell view">
 		<div class="section-topline">
-			<p class="eyebrow">06 / Почему мы</p>
+			<p class="eyebrow"><?= $fssSec('Почему мы') ?></p>
 			<span class="eyebrow">Один подрядчик на весь цикл</span>
 		</div>
 		<div class="head-row">
 			<h2>Причины выбрать<br><span>нас.</span></h2>
-			<p>Прозрачные условия, собственное производство<br>и инженер на каждом объекте.</p>
+			<p>Прозрачные условия, поставка и монтаж<br>и инженер на каждом объекте.</p>
 		</div>
 		<div class="pluses-grid">
 			<article class="plus-item">
@@ -924,8 +1170,8 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 			</article>
 			<article class="plus-item">
 				<span class="plus-index">03</span>
-				<h3>Собственный завод БВЗ</h3>
-				<p>Производим сэндвич-панели и блок-контейнеры сами: контроль качества и цена ниже рынка.</p>
+				<h3>БВЗ и модули под ключ</h3>
+				<p>Сэндвич-панели и блок-контейнеры поставляем и монтируем сами: контроль качества на объекте и цена ниже рынка.</p>
 			</article>
 			<article class="plus-item">
 				<span class="plus-index">04</span>
@@ -1030,7 +1276,7 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 	<div id="sticky-cta" class="fixed bottom-0 inset-x-0 z-40 md:hidden bg-white/95 backdrop-blur-md border-t border-gray-200 px-3 py-2 safe-pb">
 		<div class="flex gap-2">
 			<a href="tel:<?= htmlspecialchars(preg_replace("/\D/", "", seo_config("phone"))) ?>" title="Позвонить: +7 938 018-00-06" class="flex-1 inline-flex items-center justify-center gap-2 bg-white border border-gray-200 text-gray-900 rounded-full py-3 font-semibold"><i class="fa-solid fa-phone text-emerald-600"></i> Позвонить</a>
-			<a href="#contact" title="Рассчитать стоимость" class="flex-1 inline-flex items-center justify-center gap-2 bg-emerald-600 text-white rounded-full py-3 font-semibold shadow">Рассчитать <i class="fa-solid fa-arrow-right text-xs"></i></a>
+			<a href="#contact" title="Рассчитать стоимость" data-goal="home_calc_cta" class="flex-1 inline-flex items-center justify-center gap-2 bg-emerald-600 text-white rounded-full py-3 font-semibold shadow">Рассчитать <i class="fa-solid fa-arrow-right text-xs"></i></a>
 		</div>
 		<div class="text-center text-[11px] text-gray-500 mt-1">Отвечаем за 7 минут • Без спама</div>
 	</div>
@@ -1121,10 +1367,10 @@ $seo = Setting\Route\Functions\TheFunction::seo([
 
 
 	<!-- FAQ главной (FAQPage + ответы для AI Overviews) -->
-	<?php include_once 'public/components/home_faq.php'; ?>
+	<?php include_once __DIR__ . '/../components/home_faq.php'; ?>
 
 	<!-- footer content -->
-	<?php include_once 'public/components/footer.php'; ?>
+	<?php include_once __DIR__ . '/../components/footer.php'; ?>
 	<!-- форма обратной связи -->
 
 

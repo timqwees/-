@@ -14,7 +14,7 @@ use Setting\Route\Functions\YmlFeed;
 
 //==================================================================================================//FORMS (POST - единый endpoint для всех форм)
 Routes::post('/send/email', [\Setting\Route\Functions\FormHandler::class, 'sendMail']);
-//==================================================================================================//ПОДСКАЗКИ ПО ЛОКАЦИИ (DaData / Photon)
+//==================================================================================================//ПОДСКАЗКИ ПО ЛОКАЦИИ (DaData / Open-Meteo / Nominatim — ключ DaData только на сервере)
 Routes::post('/api/suggest/location', [SuggestController::class, 'location']);
 //==================================================================================================//MAIN
 Routes::get('/', [PageController::class, 'home']);
@@ -26,8 +26,17 @@ Routes::get('/.dev', function () {
 Routes::get('/uslugi', [PageController::class, 'uslugi']);
 //==================================================================================================//PORTFOLIO + PROJECTS
 Routes::get('/portfolio', [PageController::class, 'portfolio']);
+// Детальные страницы объектов: /portfolio/{slug} (app/Data/projects.php)
+Routes::get('/portfolio/{slug}', function (string $slug) {
+	PageController::project($slug);
+});
 Routes::get('/about', [PageController::class, 'about']);
-Routes::get('/contact', [PageController::class, 'contact']);
+// Отдельная страница контактов: /contacts (телефоны, адрес, реквизиты, заявка)
+Routes::get('/contacts', [PageController::class, 'contacts']);
+// Старый адрес страницы заявки → редирект на актуальную страницу контактов
+Routes::get('/contact', function () {
+	Routes::redirect('/contacts');
+});
 Routes::get('/projects', function () { Routes::redirect('/portfolio'); });
 //==================================================================================================//LEGAL
 Routes::get('/politika', [PageController::class, 'politika']);
@@ -131,6 +140,31 @@ Routes::get('/{key}.txt', function (string $key) {
 	}
 	Routes::error_404('/' . $key . '.txt');
 });
+//==================================================================================================//ИКОНКИ В КОРНЕ (стандартные пути браузеров, поисковиков и краулеров)
+// Без них /favicon.ico, /favicon.svg, /apple-touch-icon.png отдают 404 — это минус в аудитах и
+// в консоли поисковиков. Отдаём те же файлы, что лежат в /public/assets/image/logo/favicon/.
+$rootIcons = [
+	'/favicon.ico' => ['public/assets/image/logo/favicon/favicon.ico', 'image/x-icon'],
+	'/favicon.svg' => ['public/assets/image/logo/favicon/favicon.svg', 'image/svg+xml'],
+	'/apple-touch-icon.png' => ['public/assets/image/logo/favicon/apple-touch-icon.png', 'image/png'],
+	'/favicon-32x32.png' => ['public/assets/image/logo/favicon/favicon-32x32.png', 'image/png'],
+	'/favicon-16x16.png' => ['public/assets/image/logo/favicon/favicon-16x16.png', 'image/png'],
+];
+foreach ($rootIcons as $__iconPath => $__icon) {
+	Routes::get($__iconPath, function () use ($__icon) {
+		[$__file, $__mime] = $__icon;
+		$__abs = dirname(__DIR__, 2) . '/' . $__file;
+		if (!is_file($__abs)) {
+			\App\Models\Router\Routes::error_404('/' . basename($__file));
+			return;
+		}
+		SecurityHeaders::sendStaticCache($__abs);
+		header('Content-Type: ' . $__mime);
+		readfile($__abs);
+	});
+}
+unset($rootIcons, $__iconPath, $__icon);
+
 //==================================================================================================//OPENSEARCH + PWA
 Routes::get('/opensearch.xml', function () {
 	SecurityHeaders::sendSecurity();

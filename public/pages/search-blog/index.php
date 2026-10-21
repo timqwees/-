@@ -5,9 +5,9 @@
  */
 require_once __DIR__ . '/../../../app/bootstrap.php';
 
-$q = trim(mb_substr($_GET['q'] ?? '', 0, 120));
-$tag = trim(mb_substr($_GET['tag'] ?? '', 0, 60));
-$cat = trim(mb_substr($_GET['cat'] ?? '', 0, 60));
+$q = mb_substr(fss_param('q'), 0, 120);
+$tag = mb_substr(fss_param('tag'), 0, 60);
+$cat = mb_substr(fss_param('cat'), 0, 60);
 
 $posts = seo_blog_posts();
 
@@ -51,10 +51,10 @@ $activeFilters = ($q !== '' || $tag !== '' || $cat !== '');
 	<meta name="description" content="Поиск по блогу: статьи о строительстве БВЗ, материалах, ценах и рекомендациях. Найдите нужную информацию быстро.">
 	<meta name="robots" content="noindex, follow">
 	<meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
-	<meta name="theme-color" content="#F97316">
+	<meta name="theme-color" content="#876b55">
 	<link rel="shortcut icon" href="/public/assets/image/logo/favicon/favicon.ico" />
 	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/favicon/apple-touch-icon.png" />
-	<link rel="manifest" href="/public/assets/image/logo/favicon/site.webmanifest" />
+	<link rel="manifest" href="/manifest.json" />
 	<?= seo_canonical_tags() ?>
 	<?= seo_og_tags('Поиск статей — Блог | ' . seo_config('brand'), 'Поиск по блогу ФАВОРИТ-СТРОЙ-СНАБ: статьи о строительстве БВЗ, материалах, ценах и рекомендациях.') ?>
 	<?= seo_verify_tags() ?>
@@ -78,9 +78,9 @@ $activeFilters = ($q !== '' || $tag !== '' || $cat !== '');
 			<svg class="blog-hero-shape" viewBox="0 0 1920 500" preserveAspectRatio="none" aria-hidden="true">
 				<defs>
 					<linearGradient id="searchHeroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-						<stop offset="0%" stop-color="#FFF7EF"/>
-						<stop offset="50%" stop-color="#FFEDD5"/>
-						<stop offset="100%" stop-color="#FDE3C9"/>
+						<stop offset="0%" stop-color="#f8f4ef"/>
+						<stop offset="50%" stop-color="#f0e6da"/>
+						<stop offset="100%" stop-color="#f4eade"/>
 					</linearGradient>
 				</defs>
 				<path d="M0,0 H1920 Q1960,0 1960,40 V440 Q1960,500 1920,500 H0 Q-40,500 -40,460 V0 Q-40,-40 0,0 Z" fill="url(#searchHeroGrad)" opacity="0.6"/>
@@ -219,18 +219,30 @@ $activeFilters = ($q !== '' || $tag !== '' || $cat !== '');
 	<?php include_once __DIR__ . '/../../components/footer.php'; ?>
 	<style>
 		:root {
-			--sun: #F97316;
-			--sun-deep: #EA580C;
-			--sun-light: #FB923C;
-			--cream-2: #FFF1E3;
+			--brand-50: #f8f4ef;
+			--brand-100: #f0e6da;
+			--brand-200: #e3d1bd;
+			--brand-300: #d2b89d;
+			--brand-400: #c7ab94;
+			--brand-500: #b1907a;
+			--brand-600: #9a7c66;
+			--brand-700: #876b55;
+			--brand: #876b55;
+			--brand-800: #6d5744;
+			--brand-900: #554433;
+			--brand-950: #3f3227;
+			--brand-soft: #f0e6da;
+			--brand-tint: #f8f4ef;
+			--brand-tint-2: #f1e9df;
+			--brand-tint-3: #f4eade;
 			--ink: #171310;
 			--ink-soft: #44403C;
 			--border: #efe7da;
 			--white: #fff;
 			--radius-full: 999px;
 			--shadow-sm: 0 2px 8px rgba(23,19,16,.06);
-			--shadow-sun: 0 10px 30px rgba(249,115,22,.25);
-			--shadow-sun-lg: 0 20px 40px rgba(249,115,22,.3);
+			--shadow-brand: 0 10px 30px rgba(135,107,85,.25);
+			--shadow-brand-lg: 0 20px 40px rgba(135,107,85,.3);
 			--transition: .25s cubic-bezier(.4, 0, .2, 1);
 		}
 		/* Search page specific styles */
@@ -238,17 +250,17 @@ $activeFilters = ($q !== '' || $tag !== '' || $cat !== '');
 		.blog-search-hero .blog-hero-content { max-width: 720px; }
 		.blog-search-form--hero { margin-top: 24px; max-width: 640px; margin-inline: auto; }
 		.blog-search-form--hero input { height: 52px; padding: 0 20px; font-size: 16px; border-radius: var(--radius-full); border: 1px solid var(--border); background: var(--white); box-shadow: var(--shadow-sm); transition: all var(--transition); }
-		.blog-search-form--hero input:focus { border-color: var(--sun); box-shadow: 0 0 0 4px rgba(249,115,22,.15); }
-		.blog-search-form--hero button { width: 52px; height: 52px; border-radius: 50%; background: var(--sun); color: #fff; box-shadow: var(--shadow-sun); transition: all var(--transition); }
-		.blog-search-form--hero button:hover { background: var(--sun-deep); transform: scale(1.05); box-shadow: var(--shadow-sun-lg); }
+		.blog-search-form--hero input:focus { border-color: var(--brand); box-shadow: 0 0 0 4px rgba(135,107,85,.15); }
+		.blog-search-form--hero button { width: 52px; height: 52px; border-radius: 50%; background: var(--brand); color: #fff; box-shadow: var(--shadow-brand); transition: all var(--transition); }
+		.blog-search-form--hero button:hover { background: var(--brand-800); transform: scale(1.05); box-shadow: var(--shadow-brand-lg); }
 
 		.blog-search-filters-info { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; margin-top: 20px; }
 		.blog-filter-tag { display: inline-flex; align-items: center; gap: 6px; background: var(--white); border: 1px solid var(--border); padding: 6px 14px; border-radius: var(--radius-full); font-size: 13px; color: var(--ink-soft); box-shadow: var(--shadow-sm); }
 		.blog-filter-tag strong { color: var(--ink); }
-		.blog-filter-tag-remove { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; margin-left: 8px; border-radius: 50%; background: var(--cream-2); color: var(--ink); font-size: 14px; font-weight: 700; line-height: 1; text-decoration: none; transition: all var(--transition); }
-		.blog-filter-tag-remove:hover { background: var(--sun); color: #fff; }
-		.blog-filters-clear { color: var(--sun-deep); font-size: 13px; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; transition: color var(--transition); }
-		.blog-filters-clear:hover { color: var(--sun); }
+		.blog-filter-tag-remove { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; margin-left: 8px; border-radius: 50%; background: var(--brand-tint-2); color: var(--ink); font-size: 14px; font-weight: 700; line-height: 1; text-decoration: none; transition: all var(--transition); }
+		.blog-filter-tag-remove:hover { background: var(--brand); color: #fff; }
+		.blog-filters-clear { color: var(--brand-800); font-size: 13px; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; transition: color var(--transition); }
+		.blog-filters-clear:hover { color: var(--brand); }
 
 		@media (max-width: 640px) {
 			.blog-search-form--hero { flex-direction: column; }

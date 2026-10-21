@@ -24,15 +24,13 @@ class Security
     public static function showAlert(string $type, string $message): void
     {
         $isSuccess = $type === 'success';
-        $bg = $isSuccess ? '#ecfdf5' : '#fef2f2';
-        $border = $isSuccess ? '#10b981' : '#ef4444';
-        $text = $isSuccess ? '#065f46' : '#991b1b';
-        $iconBg = $isSuccess ? '#10b981' : '#ef4444';
+        // Палитра — по дизайн-системе сайта (тёмное стекло, paper/ink, акцент).
+        // Ошибка — штатный «красный» системы (#e08a8a), как в формах; без оранжевых оттенков.
+        $iconBg = $isSuccess ? 'background:#c7ab94; color:#171310;' : 'background:rgba(224,138,138,.16); color:#e08a8a; border:1px solid rgba(224,138,138,.4);';
         $icon = $isSuccess
-            ? '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9.5" stroke="currentColor" stroke-width="1.5"/><path d="M6 10l2.5 2.5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-            : '<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9.5" stroke="currentColor" stroke-width="1.5"/><path d="M7 7l6 6M13 7l-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+            ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>'
+            : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v5"></path><path d="M12 16.5h.01"></path><circle cx="12" cy="12" r="9"></circle></svg>';
         $id = $isSuccess ? 'success-alert' : 'error-alert';
-        $closeColor = $isSuccess ? '#059669' : '#dc2626';
 
         echo '<div id="' . $id . '" role="alert" aria-live="polite" style="
             position: fixed;
@@ -41,39 +39,42 @@ class Security
             z-index: 9999;
             min-width: 300px;
             max-width: 420px;
-            background: ' . $bg . ';
-            border: 1px solid ' . $border . ';
-            border-radius: 14px;
-            box-shadow: 0 12px 32px rgba(0,0,0,0.12), 0 4px 8px rgba(0,0,0,0.06);
-            padding: 16px 48px 16px 16px;
+            background: rgba(15, 15, 17, .94);
+            -webkit-backdrop-filter: blur(28px);
+            backdrop-filter: blur(28px);
+            border: 1px solid rgba(255, 255, 255, .16);
+            border-radius: 8px;
+            box-shadow: 0 18px 48px rgba(0, 0, 0, .42);
+            padding: 18px 18px 18px 18px;
             display: flex;
             align-items: flex-start;
-            gap: 12px;
+            gap: 14px;
             animation: fss-alert-in 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-            font-family: system-ui, -apple-system, Segoe UI, Roboto, Manrope, sans-serif;
+            font-family: DM Sans Variable, Wix Madefor Display, Manrope, system-ui, -apple-system, sans-serif;
+            color: #f0efed;
         ">
-            <div style="flex-shrink:0; width:36px; height:36px; border-radius:10px; background:' . $iconBg . '; display:flex; align-items:center; justify-content:center; color:white; margin-top:1px;">' . $icon . '</div>
+            <div style="flex-shrink:0; width:36px; height:36px; border-radius:6px; display:flex; align-items:center; justify-content:center; margin-top:1px; ' . $iconBg . '">' . $icon . '</div>
             <div style="flex:1; min-width:0;">
-                <div style="font-weight:600; font-size:14px; color:' . $text . '; line-height:1.4;">' . self::sanitizeString($message) . '</div>
+                <div style="font-weight:500; font-size:13px; color:#f0efed; line-height:1.5;">' . self::sanitizeString($message) . '</div>
             </div>
             <button type="button" onclick="document.getElementById(\'' . $id . '\').style.display=\'none\'" aria-label="Закрыть" style="
                 flex-shrink:0;
                 width:28px;
                 height:28px;
-                border-radius:8px;
+                border-radius:50%;
                 background:transparent;
-                border:none;
-                color:' . $closeColor . ';
+                border:1px solid rgba(255,255,255,.16);
+                color:#a6a09a;
                 cursor:pointer;
                 display:flex;
                 align-items:center;
                 justify-content:center;
                 font-size:18px;
                 line-height:1;
-                margin-top:-4px;
-                margin-right:-8px;
-                transition:background 0.15s;
-            " onmouseover="this.style.background=\'rgba(0,0,0,0.06)\'" onmouseout="this.style.background=\'transparent\'">&times;</button>
+                margin-top:-2px;
+                margin-right:-4px;
+                transition:background 0.2s, color 0.2s, border-color 0.2s;
+            " onmouseover="this.style.background=\'rgba(255,255,255,.08)\'; this.style.color=\'#f0efed\'; this.style.borderColor=\'rgba(255,255,255,.34)\'" onmouseout="this.style.background=\'transparent\'; this.style.color=\'#a6a09a\'; this.style.borderColor=\'rgba(255,255,255,.16)\'">&times;</button>
         </div>
         <style>
             @keyframes fss-alert-in {

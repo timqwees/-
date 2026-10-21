@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../../../app/bootstrap.php';
 $posts = seo_blog_posts();
-$slug = $_GET['post'] ?? '';
+$slug = fss_param('post');
 $post = $posts[$slug] ?? null;
 
 if (!$post) {
@@ -13,11 +13,13 @@ $h = function ($s) { return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); }
 $phone = (string)seo_config('phone_display');
 $phone_tel = preg_replace('/\D/', '', (string)seo_config('phone'));
 $service = seo_service($post['service_slug'] ?? '');
-$articleUrl = rtrim(seo_config('base_url'), '/') . '/blog/' . $slug;
+$articleUrl = rtrim((string)seo_config('base_url'), '/') . '/blog/' . $slug;
 $today = date('c', strtotime($post['date']));
 $updated = isset($post['updated']) ? date('c', strtotime($post['updated'])) : $today;
-$base = rtrim(seo_config('base_url'), '/');
-$authorId = $base . '/about#' . strtolower(str_replace(' ', '-', $post['author']['name'] ?? seo_config('ceo')));
+$base = rtrim((string)seo_config('base_url'), '/');
+// Автор статьи — подразделение компании (реальные сотрудники не выдумываются),
+// поэтому ссылка ведёт на страницу «О компании», а не на несуществующий якорь.
+$authorId = $base . '/about';
 
 // Related posts (same category, excluding current)
 $related = [];
@@ -46,21 +48,22 @@ if (count($related) < 4) {
 	<meta name="description" content="<?= $h(seo_clip($post['description'], 130)) ?> ☎ <?= $h($phone) ?>">
 	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 	<meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
-	<meta name="theme-color" content="#F97316">
+	<meta name="theme-color" content="#876b55">
 	<link rel="shortcut icon" href="/public/assets/image/logo/favicon/favicon.ico" />
 	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/favicon/apple-touch-icon.png" />
-	<link rel="manifest" href="/public/assets/image/logo/favicon/site.webmanifest" />
+	<link rel="manifest" href="/manifest.json" />
 	<?= seo_canonical_tags() ?>
 	<?= seo_verify_tags() ?>
 	<?= seo_og_tags($post['title'] . ' — Блог ФАВОРИТ-СТРОЙ-СНАБ', $post['description'], $post['og_image']) ?>
 	<meta property="article:published_time" content="<?= $h($today) ?>">
 	<meta property="article:modified_time" content="<?= $h($updated) ?>">
-	<meta property="article:author" content="<?= $h($base . '/about') ?>">
 	<?php if (!empty($post['author'])): ?>
-	<meta property="article:author" content="<?= $h($authorId) ?>">
+	<meta property="article:author" content="<?= $h($post['author']['name']) ?>">
 	<?php endif; ?>
 	<meta property="article:section" content="<?= $h($post['category_name'] ?? 'Блог') ?>">
-	<meta property="article:tag" content="<?= $h(implode('", "', $post['tags'] ?? [])) ?>">
+	<?php foreach (array_slice((array)($post['tags'] ?? []), 0, 10) as $__tag): ?>
+	<meta property="article:tag" content="<?= $h($__tag) ?>">
+	<?php endforeach; ?>
 	<link rel="preload" href="/public/assets/distCSS/style.css?v=<?= seo_ver() ?>" as="style">
 	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=<?= seo_ver() ?>">
 	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css">
@@ -121,6 +124,7 @@ if (count($related) < 4) {
 						<meta itemprop="dateModified" content="<?= $h($updated) ?>">
 						<?php if (!empty($post['author'])): ?>
 						<meta itemprop="author" content="<?= $h($post['author']['name']) ?>">
+						<meta itemprop="publisher" content="ФАВОРИТ-СТРОЙ-СНАБ">
 						<link itemprop="author" href="<?= $h($authorId) ?>" />
 						<?php else: ?>
 						<meta itemprop="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
@@ -128,7 +132,7 @@ if (count($related) < 4) {
 						<link itemprop="mainEntityOfPage" href="<?= $articleUrl ?>">
 
 						<div class="article-img" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
-							<img src="<?= $post['og_image'] ?>"<?= seo_img_attrs((string)$post['og_image']) ?> alt="<?= $h($post['title']) ?>" itemprop="contentUrl" loading="eager" fetchpriority="high" decoding="async" title="<?= $h($post['title']) ?>">
+							<img src="<?= $h((string)$post['og_image']) ?>"<?= seo_img_attrs((string)$post['og_image']) ?> alt="<?= $h($post['title']) ?>" itemprop="contentUrl" loading="eager" fetchpriority="high" decoding="async" title="<?= $h($post['title']) ?>">
 						</div>
 
 						<nav class="article-toc" id="article-toc" aria-label="Содержание статьи" hidden>
@@ -144,16 +148,16 @@ if (count($related) < 4) {
 
 					<!-- Author Bio / E-E-A-T -->
 					<?php if (!empty($post['author'])): ?>
-					<section class="author-bio" style="margin-top:48px;padding:28px;background:#FFF7EF;border:1px solid #F5E6D3;border-radius:24px">
+					<section class="author-bio" style="margin-top:48px;padding:28px;background:#f8f4ef;border:1px solid #F5E6D3;border-radius:24px">
 						<div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
 							<img src="<?= $h($post['author']['photo']) ?>" alt="<?= $h($post['author']['name']) ?>" title="<?= $h($post['author']['name']) ?> — <?= $h($post['author']['role']) ?>" class="article-author-avatar" loading="lazy" width="64" height="64" style="width:64px;height:64px;border-radius:50%;object-fit:cover">
 							<div>
 								<div style="font-size:18px;font-weight:800;color:#171310"><?= $h($post['author']['name']) ?></div>
-								<div style="font-size:14px;color:#EA580C;font-weight:600"><?= $h($post['author']['role']) ?></div>
-								<div style="font-size:13px;color:#78716C;margin-top:4px"><i class="fa-solid fa-medal" style="color:#F97316;margin-right:6px"></i>Опыт: <?= $h($post['author']['experience']) ?></div>
+								<div style="font-size:14px;color:#6d5744;font-weight:600"><?= $h($post['author']['role']) ?></div>
+								<div style="font-size:13px;color:#78716C;margin-top:4px"><i class="fa-solid fa-medal" style="color:#876b55;margin-right:6px"></i>Опыт: <?= $h($post['author']['experience']) ?></div>
 							</div>
 						</div>
-						<p style="margin:0;font-size:15px;line-height:1.7;color:#44403C">Статья подготовлена экспертом ООО «Фаворит-Строй-Снаб» — компании с 14-летним опытом строительства БВЗ, капремонта школ и поставки оборудования госзаказчикам (Росгвардия, Минпросвещение РФ). 180+ сданных объектов, гарантия 50+ лет, работа по 44-ФЗ/223-ФЗ.</p>
+						<p style="margin:0;font-size:15px;line-height:1.7;color:#44403C">Статья подготовлена экспертом ООО «Фаворит-Строй-Снаб» — компании с <?= htmlspecialchars((string)seo_config('market_years')) ?>-летним опытом строительства БВЗ, капремонта школ и поставки оборудования госзаказчикам (Росгвардия, Минпросвещение РФ). <?= htmlspecialchars((string)seo_config('objects')) ?> сданных объектов, гарантия <?= htmlspecialchars((string)seo_config('guarantee_years')) ?> лет, работа по 44-ФЗ/223-ФЗ.</p>
 					</section>
 					<?php endif; ?>
 
@@ -177,7 +181,7 @@ if (count($related) < 4) {
 					<?php endif ?>
 
 					<div class="article-tags">
-						<?php foreach ($post['tags'] as $tag): ?>
+						<?php foreach ((array)($post['tags'] ?? []) as $tag): ?>
 						<span class="article-tag" itemprop="keywords"><?= $h($tag) ?></span>
 						<?php endforeach ?>
 					</div>
@@ -201,8 +205,8 @@ if (count($related) < 4) {
 						<div class="article-sidebar-header">Читайте также</div>
 						<div class="article-sidebar-body">
 							<?php foreach ($related as [$rSlug, $rPost]): ?>
-							<a class="article-popular-item" title="<?= htmlspecialchars($rPost['title'], ENT_QUOTES) ?>" href="/blog/<?= $rSlug ?>">
-								<div class="article-popular-img" style="background-image:url('<?= $rPost['og_image'] ?>')"></div>
+							<a class="article-popular-item" title="<?= htmlspecialchars($rPost['title'], ENT_QUOTES) ?>" href="/blog/<?= htmlspecialchars((string)$rSlug, ENT_QUOTES) ?>">
+								<div class="article-popular-img" style="background-image:url('<?= htmlspecialchars((string)$rPost['og_image'], ENT_QUOTES) ?>')"></div>
 								<div class="article-popular-body">
 									<span class="article-popular-title"><?= $h($rPost['title']) ?></span>
 									<span class="article-popular-date"><?= date('d.m.Y', strtotime($rPost['date'])) ?></span>

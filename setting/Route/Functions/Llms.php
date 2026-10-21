@@ -40,7 +40,7 @@ final class Llms
 
 	public static function output(): void
 	{
-		$base = rtrim(seo_config('base_url'), '/');
+		$base = rtrim((string)seo_config('base_url'), '/');
 		$brand = (string)seo_config('brand');
 		$phone = (string)seo_config('phone_display');
 		$a = seo_config('address');
@@ -54,7 +54,8 @@ final class Llms
 		$out .= "- [" . $brand . " — главная]({$base}/): БВЗ под ключ от " . seo_config('deadline_days') . " дней\n";
 		$out .= "- [Все услуги]({$base}/uslugi): каталог-хаб, " . count($services) . " направлений\n";
 		$out .= "- [Портфолио]({$base}/portfolio): фото и видео сданных объектов
-- [О компании]({$base}/about)\n\n";
+- [О компании]({$base}/about)
+- [Контакты]({$base}/contacts): телефон {$phone}, почта " . seo_config('email') . ", адрес: {$a['postal']}, {$a['locality']}, {$a['street']}\n\n";
 		$out .= "## Блог\n";
 		$blogPosts = function_exists('seo_blog_posts') ? seo_blog_posts() : [];
 		foreach ($blogPosts as $slug => $p) {
@@ -75,14 +76,40 @@ final class Llms
 				}
 				$names = [];
 				foreach ($geoList as $gk => $gv) {
+					if (!seo_geo_allows((array)$gv, (string)$slug)) {
+						continue;
+					}
 					$names[] = '[' . $gv['name'] . '](' . $base . '/services/' . $slug . '/' . $gk . ')';
+				}
+				if (!$names) {
+					continue;
 				}
 				$out .= '- ' . $services[$slug]['title'] . ': ' . implode(', ', $names) . "\n";
 			}
 		}
-		$out .= "\n## FAQ для AI Overviews\n";		foreach ($services as $s) {
-			foreach ($s['faq'] as $qa) {
+		$out .= "\n## Частые вопросы для AI Overviews\n";
+		foreach ($services as $s) {
+			foreach ((array)($s['faq'] ?? []) as $qa) {
+				if (!is_array($qa) || !isset($qa[0], $qa[1])) {
+					continue;
+				}
 				$out .= "- {$qa[0]} — {$qa[1]}\n";
+			}
+		}
+		$out .= "\n## Реализованные проекты и компетенции\n";
+		$out .= "- Общежития в Сочи (Адлерский район): комплекс 9 000+ м² — проектирование, строительство, инженерное оснащение, меблировка\n";
+		$out .= "- Капитальный ремонт 16 социальных объектов: ГБОУ «Центр образования г. Гудермес», МБОУ «СОШ №2» г. Аргун, МБОУ «Илсхан-Юртовская ОШ», МБОУ «СОШ №1 с. Чечен-Аул», спортзалы МБОУ «СОШ с. Балансу им. Р. Байхаджиева», «СОШ с. Айти-Мохк», «ООШ с. Мескеты», дворец спорта «Шахтёр» (МБУ г. Гуково, спортшкола «Прометей»), МБОУ «СОШ №2 с. Ачхой-Мартан», МБОУ «Старогладовская СОШ», МБОУ «СОШ №1 с.п. Гвардейское», МБОУ «СОШ с.п. Комарова», МБОУ ООШ «с. Нохчи-Келой», МБОУ НОШ с. Ярыш-Марды, МБОУ «СОШ с. Лаха-Варанды Шатойского муниципального района», МБОУ «СОШ №1 г. Шатура»\n";
+		$out .= "- Комплексное оснащение 13 вновь построенных школ по стандартам Минпросвещения РФ: мебель всех типов, оборудование кабинетов, лабораторные комплексы, мультимедийные и инженерные системы\n";
+		$out .= "- Административное здание полного цикла: проект, изготовление конструкций, строительство, инженерные системы, отделка и мебель\n";
+		$out .= "- Навесы для хранения и обслуживания автомобильной техники на 100 машино-мест: изготовление и монтаж металлоконструкций, покрытие, освещение, подъездные пути\n";
+		$out .= "- Поставка БПЛА (беспилотных летательных аппаратов), комплектующих и систем КИТ: только ведущие производители, адаптация под ТЗ заказчика, сопровождение сертификации\n";
+		$out .= "- Сотрудничество с Федеральной службой войск национальной гвардии РФ (Росгвардия); работа по 44-ФЗ и 223-ФЗ, допуск СРО\n";
+		$out .= "- Поставка ноутбуков для ГБОУ «Центр дистанционного обучения»\n";
+		$out .= "\n## Избранные объекты\n";
+		$projectsFile = dirname(__DIR__, 3) . '/app/Data/projects.php';
+		if (is_file($projectsFile)) {
+			foreach ((array)(require $projectsFile) as $pslug => $pr) {
+				$out .= "- [{$pr['title']}]({$base}/portfolio/{$pslug}): {$pr['lead']}\n";
 			}
 		}
 		$out .= "\n## Контакты\n";
@@ -94,7 +121,7 @@ final class Llms
 
 	public static function outputFull(): void
 	{
-		$base = rtrim(seo_config('base_url'), '/');
+		$base = rtrim((string)seo_config('base_url'), '/');
 		$brand = (string)seo_config('brand');
 		$phone = (string)seo_config('phone_display');
 		$a = seo_config('address');
@@ -104,7 +131,8 @@ final class Llms
 		$out .= "# Канон: {$base}/ (IDN " . seo_config('base_idn') . ")\n";
 		$out .= "# Обновлено: " . date('Y-m-d') . ". Источник правды: /sitemap.xml\n\n";
 		$out .= "## Кто мы\n";
-		$out .= "{$brand} — производство и монтаж быстровозводимых зданий (БВЗ) под ключ, капитальное строение и ремонт, грузоперевозки и аренда спецтехники.\n";
+		$out .= "{$brand} — производство и монтаж быстровозводимых зданий (БВЗ) под ключ, капитальное строение и ремонт, комплексное оснащение школ, поставка БПЛА и систем КИТ, грузоперевозки и аренда спецтехники.\n";
+		$out .= "ООО «Фаворит-Строй-Снаб» обеспечивает нужды силовых и государственных структур РФ; в настоящее время сотрудничает с Федеральной службой войск национальной гвардии РФ (Росгвардия).\n";
 		$out .= "На рынке с " . seo_config('founded_market') . " года, ООО — с " . seo_config('founded') . " года (" . seo_config('registered_at') . "), " . seo_config('objects') . " объектов, допуск СРО, гарантия " . seo_config('guarantee_years') . " лет.\n";
 		$out .= "Телефон: {$phone}. Почта: " . seo_config('email') . ". Адрес: {$a['postal']}, {$a['locality']}, {$a['street']}.\n";
 		$out .= "География: Москва и Московская область, работаем по всей России.\n\n";
@@ -113,33 +141,67 @@ final class Llms
 		$out .= "- Смета: за " . seo_config('price_response_minutes') . " минут, цена фиксируется в договоре\n";
 		$out .= "- Экономия к классическому строительству: до 30%\n";
 		$out .= "- Оплата по этапам, без 100% предоплаты, без скрытых платежей\n";
-		$out .= "- Технадзор на каждом этапе, фотоотчёт каждую неделю\n\n";
+		$out .= "- Технадзор на каждом этапе, фотоотчёт каждую неделю\n";
+		$out .= "- Общежития в Сочи (Адлерский район): 9 000+ м² под ключ — проект, строительство, инженерное оснащение, меблировка\n";
+		$out .= "- Комплексное оснащение 13 школ по стандартам Минпросвещения РФ (мебель, оборудование кабинетов, лабораторные комплексы, мультимедиа, инженерные системы)\n";
+		$out .= "- Капитальный ремонт 16 школ, спортивных залов и дворцов спорта (Чеченская Республика, Ростовская область, Московская область)\n";
+		$out .= "- Навес для хранения и обслуживания автомобильной техники на 100 машино-мест (г. Гуково)\n";
+		$out .= "- Поставка ноутбуков для ГБОУ «Центр дистанционного обучения»\n";
+		$out .= "- Поставка БПЛА, комплектующих и систем КИТ с адаптацией под ТЗ и сопровождением сертификации\n";
+		$out .= "- Допуск СРО, работа по 44-ФЗ и 223-ФЗ, сотрудничество с Росгвардией (ФСВНГ РФ)\n\n";
 		$out .= "## Блог (полные статьи)\n";
 		$blogPosts = function_exists('seo_blog_posts') ? seo_blog_posts() : [];
 		foreach ($blogPosts as $slug => $p) {
 			$out .= "### {$p['title']}\n";
 			$out .= "URL: {$base}/blog/{$slug}\n";
-			$out .= "Опубликовано: {$p['date']} | Чтение: {$p['read_minutes']} мин | Категория: {$p['category_name']}\n";
-			$out .= "Теги: " . implode(', ', $p['tags']) . "\n";
+			$out .= "Опубликовано: {$p['date']} | Чтение: " . (int)($p['read_minutes'] ?? 5) . " мин | Категория: {$p['category_name']}\n";
+			$out .= "Теги: " . implode(', ', (array)($p['tags'] ?? [])) . "\n";
 			$out .= "Связанная услуга: {$p['service_slug']}\n\n";
 			$out .= function_exists('seo_blog_post_content') ? seo_blog_post_content($p) : ($p['content'] ?? '');
 			$out .= "\n\n";
 		}
+		$out .= "\n## Выполненные объекты (факт, без домыслов)\n";
+		$projectsFile = dirname(__DIR__, 3) . '/app/Data/projects.php';
+		if (is_file($projectsFile)) {
+			foreach ((array)(require $projectsFile) as $pslug => $pr) {
+				$out .= "### {$pr['title']}\n";
+				$out .= "URL: {$base}/portfolio/{$pslug}\n";
+				$out .= "Тип: {$pr['type']} | Регион: {$pr['region']} | Направление: {$pr['zone']}\n";
+				$out .= "Задача: {$pr['task']}\n";
+				$out .= "Решение: {$pr['solution']}\n";
+				$out .= "Результат: {$pr['result']}\n";
+				if (!empty($pr['features'])) {
+					$out .= "Особенности: " . implode(', ', (array)$pr['features']) . "\n";
+				}
+				if (!empty($pr['faq'])) {
+					foreach ((array)$pr['faq'] as $qa) {
+						$out .= "Q: {$qa[0]}\nA: {$qa[1]}\n";
+					}
+				}
+				$out .= "\n";
+			}
+		}
 		$out .= "## Услуги (кластеры запросов)\n";
 		foreach ($services as $slug => $s) {
 			$out .= "- /services/{$slug} — {$s['title']}. {$s['description']}\n";
-			$out .= "  Запросы: " . implode(', ', $s['queries']) . "\n";
+			$out .= "  Запросы: " . implode(', ', (array)($s['queries'] ?? [])) . "\n";
 		}
 		$out .= "\n## Частые вопросы\n";
 		foreach ($services as $slug => $s) {
-			foreach ($s['faq'] as $qa) {
+			foreach ((array)($s['faq'] ?? []) as $qa) {
+				if (!is_array($qa) || !isset($qa[0], $qa[1])) {
+					continue;
+				}
 				$out .= "Q: {$qa[0]}\nA: {$qa[1]}\n\n";
 			}
 		}
 		$out .= "## Контакты\n";
+		$out .= "Страница контактов: {$base}/contacts (телефон, почта, адрес, реквизиты, форма заявки)\n";
 		$out .= "Телефон: {$phone} (Пн–Пт 09:00–18:00, отвечаем за " . seo_config('callback_minutes') . " минут)\n";
 		$out .= "Telegram: " . seo_config('telegram') . "\nVK: " . seo_config('vk') . "\n";
 		$out .= "Почта: " . seo_config('email') . "\n";
+		$out .= "Адрес: {$a['postal']}, {$a['locality']}, {$a['street']}\n";
+		$out .= "Реквизиты: ООО «ФАВОРИТ-СТРОЙ-СНАБ», ИНН " . seo_config('inn') . ", КПП " . seo_config('kpp') . ", ОГРН " . seo_config('ogrn') . "\n";
 		self::emit($out);
 	}
 }

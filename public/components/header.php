@@ -2,8 +2,10 @@
 // Header — единый компонент для ВСЕХ страниц (стили в CSS, логика в animations.js → initHeader).
 //
 // Контракт шапки:
-//   • прозрачная (поверх hero) — ТОЛЬКО на главной: data-nav-mode="transparent";
-//   • тёмный фон — на всех остальных страницах: data-nav-mode="solid";
+//   • прозрачная (поверх hero) — на страницах с полноэкранным тёмным hero:
+//     data-nav-mode="transparent" (главная, объект /portfolio/{slug}, услуга /services/{slug},
+//     каталог услуг /uslugi, о нас /about);
+//   • тёмный фон — на страницах со светлым фоном: data-nav-mode="solid";
 //   • внутренние цвета заданы локальными переменными --h-*, поэтому шапка
 //     выглядит одинаково на любой странице (не зависит от подключённых CSS).
 $__hasUrl = function_exists('seo_url');
@@ -14,7 +16,13 @@ $__act = function (bool $on): string { return $on ? ' is-active' : ''; };
 $__pf = str_replace('\\', '/', (string)($GLOBALS['fss_page_file'] ?? ''));
 $__isHomeFile = $__pf !== '' && str_ends_with($__pf, '/home.php');
 $__onHome = $__isHomeFile || ($__pf === '' && $__hasUrl && $__n === '/');
-$__navMode = $__onHome ? 'transparent' : 'solid';
+// Режим шапки. Страница с полноэкранным hero переключает его явно —
+// до подключения шапки: $GLOBALS['fss_nav_mode'] = 'transparent'.
+// Главная работает без флага (определяется по файлу страницы).
+$__forced = strtolower(trim((string)($GLOBALS['fss_nav_mode'] ?? '')));
+$__navMode = in_array($__forced, ['transparent', 'solid'], true)
+	? $__forced
+	: ($__onHome ? 'transparent' : 'solid');
 ?>
 <header id="site-header" data-header="" data-nav-mode="<?= $__navMode ?>">
 	<!-- Полоса прогресса скролла (ProMaintenance site-progress) -->
@@ -24,19 +32,20 @@ $__navMode = $__onHome ? 'transparent' : 'solid';
 		<!-- Brand -->
 		<a href="/" class="brand" aria-label="ФАВОРИТ-СТРОЙ-СНАБ — на главную">
 			<img src="/public/assets/image/logo/favicon/logo-64.png" alt="" loading="lazy" decoding="async" width="28" height="34">
-			<span>ФСС</span><span class="brand-plus">+</span>
+			<span>ФСС</span>
 		</a>
 
 		<!-- Desktop Navigation -->
 		<nav aria-label="Primary" class="desktop-nav">
+			<a href="/" class="<?= $__act($__onHome) ?>"<?= $__onHome ? ' aria-current="page"' : '' ?>>Главная</a>
 			<a href="/portfolio" class="<?= $__act(!$__onHome && $__n === '/portfolio') ?>"<?= $__act(!$__onHome && $__n === '/portfolio') ? ' aria-current="page"' : '' ?>>Проекты</a>
 			<a href="/uslugi" class="<?= $__act(!$__onHome && ($__n === '/uslugi' || str_starts_with($__n, '/services/'))) ?>"<?= (!$__onHome && ($__n === '/uslugi' || str_starts_with($__n, '/services/'))) ? ' aria-current="page"' : '' ?>>Услуги</a>
 			<a href="/about" class="<?= $__act(!$__onHome && $__n === '/about') ?>"<?= (!$__onHome && $__n === '/about') ? ' aria-current="page"' : '' ?>>О нас</a>
-			<a href="/#contact" class="<?= $__act(!$__onHome && $__n === '/contact') ?>"<?= (!$__onHome && $__n === '/contact') ? ' aria-current="page"' : '' ?>>Контакты</a>
+			<a href="/contacts" class="<?= $__act(!$__onHome && $__n === '/contacts') ?>"<?= (!$__onHome && $__n === '/contacts') ? ' aria-current="page"' : '' ?>>Контакты</a>
 		</nav>
 
 		<!-- CTA -->
-		<a href="/#contact" class="nav-enquire">Оставить заявку
+		<a href="/#contact" class="nav-enquire" data-goal="header_enquiry">Оставить заявку
 			<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 				<path d="M7 7h10v10"></path>
 				<path d="M7 17 17 7"></path>
@@ -65,10 +74,11 @@ $__navMode = $__onHome ? 'transparent' : 'solid';
 	<!-- Mobile Panel -->
 	<div id="nav-panel" hidden>
 		<nav aria-label="Primary, mobile">
-			<a href="/portfolio"><span>01</span>Проекты<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
-			<a href="/uslugi"><span>02</span>Услуги<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
-			<a href="/about"><span>03</span>О нас<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
-			<a href="/#contact"><span>04</span>Контакты<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
+			<a href="/"><span>01</span>Главная<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
+			<a href="/portfolio"><span>02</span>Проекты<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
+			<a href="/uslugi"><span>03</span>Услуги<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
+			<a href="/about"><span>04</span>О нас<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
+			<a href="/contacts"><span>05</span>Контакты<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
 		</nav>
 		<a href="/#contact" class="button">Оставить заявку <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg></a>
 		<p>Строительство · Производство · Монтаж.<br>Москва и область. Работаем по России.</p>
@@ -134,11 +144,12 @@ $__navMode = $__onHome ? 'transparent' : 'solid';
 		align-items: center;
 		gap: 30px;
 		padding-inline: clamp(24px, 4.4vw, 96px);
-		transition: background .5s, color .4s, border-color .4s;
+		transition: background .3s, color .3s, border-color .3s, backdrop-filter .3s;
 		display: flex;
 	}
 
-	/* Прозрачная шапка — ТОЛЬКО главная (hero просвечивает) */
+	/* Прозрачная шапка — страницы с полноэкранным hero (hero просвечивает).
+	   Режим ставит PHP: data-nav-mode="transparent" (главная, объект, услуга, /uslugi, /about). */
 	#site-header[data-nav-mode="transparent"] .site-navigation,
 	[data-page=home] .site-navigation {
 		background: rgb(23 23 24 / var(--nav-opacity, .02));
@@ -147,11 +158,14 @@ $__navMode = $__onHome ? 'transparent' : 'solid';
 		border-bottom-color: var(--h-line);
 	}
 
-	/* Прокрутили главную — шапка становится тёмной */
-	#site-header[data-nav-mode="transparent"] .site-navigation[data-stuck] {
+	/* Прокрутили главную — шапка «прилипает».
+	   Фон и блюр берутся из тех же переменных (--nav-opacity/--nav-blur),
+   иначе при возврате вверх шапка оставалась серой «плашкой» до самого верха. */
+	#site-header[data-nav-mode="transparent"] .site-navigation[data-stuck],
+	[data-page=home] .site-navigation[data-stuck] {
 		color: #fff;
-		backdrop-filter: blur(24px);
-		background: #171718d1;
+		background: rgb(23 23 24 / var(--nav-opacity, .82));
+		backdrop-filter: blur(var(--nav-blur, 24px));
 		border-bottom-color: var(--h-line);
 	}
 
@@ -174,12 +188,6 @@ $__navMode = $__onHome ? 'transparent' : 'solid';
 		letter-spacing: -.045em;
 		font-size: 24px;
 		font-weight: 600;
-	}
-
-	.brand-plus {
-		vertical-align: super;
-		margin-left: 4px;
-		font-size: 10px;
 	}
 
 	.desktop-nav {
@@ -348,10 +356,6 @@ $__navMode = $__onHome ? 'transparent' : 'solid';
 			height: 25px;
 		}
 
-		.brand-plus {
-			font-size: 8px;
-		}
-
 		.nav-enquire {
 			display: none;
 		}
@@ -375,7 +379,9 @@ $__navMode = $__onHome ? 'transparent' : 'solid';
 <script defer src="/public/assets/vendor/gsap/ScrollTrigger.min.js"></script>
 <script defer src="/public/assets/vendor/gsap/SplitText.min.js"></script>
 <script defer src="/public/assets/distJS/main.js"></script>
-<script defer src="/public/assets/distJS/animations.js"></script>
-<!-- Подсказки по локации (город/район): DaData + Photon через /api/suggest/location -->
+<script defer src="/public/assets/distJS/animations.js?v=<?= seo_ver() ?>"></script>
+<!-- Подсказки по адресу «Где объект» — свой выпадающий список (ProMaintenance).
+     Токен DaData не отдаём в браузер: подсказки запрашивает сервер
+     POST /api/suggest/location, где ключ остаётся на стороне сервера. -->
 <script defer src="/public/assets/distJS/hot-cities.js"></script>
 <script defer src="/public/assets/distJS/location-suggest.js"></script>

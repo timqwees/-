@@ -6,25 +6,16 @@ class TheFunction
 {
     /**
      * Возвращает базовую информацию о сайте (baseUrl, canonical, shareImageUrl и т.д.)
+     *
+     * Важно: baseUrl берётся из app/Config/site.php (seo_config('base_url')) —
+     * это ЕДИНЫЙ источник канона. Раньше здесь домен собирался из HTTP-Host
+     * отдельно от SEO-конфига, из-за чего canonical на одних страницах был
+     * с www, а на других — без (и всегда расходился с .htaccess-редиректом).
      */
     public static function site(): array
     {
-        $rawHost = $_SERVER['HTTP_HOST'] ?? 'xn--h1aafj.xn--p1ai';
-        $rawHost = preg_replace('/:\d+$/', '', (string)$rawHost) ?? '';
-        $isProd = str_ends_with(strtolower($rawHost), 'xn--h1aafj.xn--p1ai') || str_ends_with(strtolower($rawHost), 'фсс.рус');
+        $baseUrl = rtrim((string)seo_config('base_url'), '/');
 
-        if ($isProd) {
-            $scheme = 'https';
-            $host = 'xn--h1aafj.xn--p1ai';
-        } else {
-            $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-            if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
-                $scheme = $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https' ? 'https' : $scheme;
-            }
-            $host = $rawHost ?: 'xn--h1aafj.xn--p1ai';
-        }
-
-        $baseUrl = $scheme . '://' . $host;
         $pathOnly = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
         if (!is_string($pathOnly) || $pathOnly === '') {
             $pathOnly = '/';
@@ -37,7 +28,7 @@ class TheFunction
             'path'          => $pathOnly,
             'canonicalUrl'  => $canonicalUrl,
             'shareImageUrl' => $shareImageUrl,
-            'name'          => 'ФАВОРИТ-СТРОЙ-СНАБ',
+            'name'          => (string)seo_config('brand'),
         ];
     }
 

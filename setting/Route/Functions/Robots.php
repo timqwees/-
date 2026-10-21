@@ -11,7 +11,7 @@ final class Robots
 {
 	public static function output(): void
 	{
-		$base = rtrim(seo_config('base_url'), '/');
+		$base = rtrim((string)seo_config('base_url'), '/');
 		header('Content-Type: text/plain; charset=utf-8');
 		if (SecurityHeaders::isDev()) {
 			SecurityHeaders::sendNoCache();
