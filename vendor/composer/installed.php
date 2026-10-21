@@ -3,7 +3,7 @@
         'name' => 'timqwees/fss',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '6d308b2c10e674285a094bef9de51b751f029f57',
+        'reference' => '2d51bf55ad6cae9897b9e51ed4aadcfb1961fea7',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -67,7 +67,7 @@
         'timqwees/fss' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '6d308b2c10e674285a094bef9de51b751f029f57',
+            'reference' => '2d51bf55ad6cae9897b9e51ed4aadcfb1961fea7',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

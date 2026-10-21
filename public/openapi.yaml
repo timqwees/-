@@ -2,64 +2,99 @@ openapi: 3.0.3
 info:
   title: фсс.рус — каталог услуг (ФАВОРИТ-СТРОЙ-СНАБ)
   description: |
-    Read-only каталог услуг производства и монтажа быстровозводимых зданий (БВЗ),
-    капитального ремонта, грузоперевозок и аренды спецтехники.
+    Read-only каталог услуг ООО «Фаворит-Строй-Снаб»: производство и монтаж быстровозводимых зданий (БВЗ),
+    капитальный ремонт школ и социальных объектов, комплексное оснащение школ по стандартам Минпросвещения РФ,
+    поставка БПЛА и систем КИТ, грузоперевозки и аренда спецтехники.
     Все цены — ориентиры, точная смета по звонку +7 938 018-00-06 и фиксируется в договоре.
-  version: "1.0"
+  version: "1.1"
   contact:
     name: ФАВОРИТ-СТРОЙ-СНАБ
     email: fss@фсс.рус
-    url: https://www.фсс.рус
+    url: https://www.xn--h1aafj.xn--p1ai
 servers:
-  - url: https://www.фсс.рус
+  - url: https://www.xn--h1aafj.xn--p1ai
 paths:
   /uslugi:
     get:
       operationId: servicesHub
       summary: Хаб всех услуг
       responses:
-        '200': { description: HTML-каталог услуг }
+        '200':
+          description: "HTML-каталог услуг "
   /services/{slug}:
     get:
       operationId: service
-      summary: Страница услуги
+      summary: Страница услуги (1 кластер запросов = 1 страница)
       parameters:
         - name: slug
           in: path
           required: true
           schema:
             type: string
-            enum: [proizvodim_modul, kapstroenie, kapital, angar, sclad, administrativnoe, obchegitia, gruzoperevozki, spectehnika, musorbak, naves, generatornae, compressor, compressor_air, montach, modultebel, postavka, proektirovanie]
+            enum: [proizvodim_modul, kapstroenie, kapital, angar, sclad, administrativnoe, obchegitia, gruzoperevozki, spectehnika, musorbak, naves, generatornae, compressor, compressor_air, montach, modultebel, postavka, proektirovanie, osnashchenie, bpla]
       responses:
-        '200': { description: HTML-страница услуги с ценами-ориентирами и FAQ }
+        '200':
+          description: "HTML-страница услуги с ценами-ориентирами и FAQ "
+  /services/{slug}/{geo}:
+    get:
+      operationId: serviceGeo
+      summary: Гео-страница услуги (Москва и Московская область)
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema: { type: string }
+        - name: geo
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [tushino, himki, krasnogorsk, mytishchi, balashiha, podolsk, domodedovo, odincovo, lyubercy, shchelkovo]
+      responses:
+        '200':
+          description: "HTML-страница с локальными условиями, сроками и FAQ "
   /portfolio:
     get:
       operationId: portfolio
       summary: Портфолио реализованных объектов
       responses:
-        '200': { description: OK }
-  /projects:
+        '200':
+          description: "OK "
+  /portfolio/{slug}:
     get:
-      operationId: projects
-      summary: Каталог типовых проектов
+      operationId: project
+      summary: Детальная страница объекта
       parameters:
-        - name: q
-          in: query
-          schema: { type: string }
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [obshchegiya-adler-sochi, kapremont-gudermes, bpla-kit, osnashchenie-shkol, navesy-100-mest]
       responses:
-        '200': { description: OK }
+        '200':
+          description: "OK "
+  /blog:
+    get:
+      operationId: blog
+      summary: "Блог: разборы, нормы, сравнения"
+      responses:
+        '200':
+          description: "OK "
   /llms.txt:
     get:
       operationId: llmsTxt
       summary: AI-резюме сайта
       responses:
-        '200': { description: text/plain, структурированное резюме для LLM }
+        '200':
+          description: "text/plain, структурированное резюме для LLM "
   /llms-full.txt:
     get:
       operationId: llmsFull
       summary: Полный AI-контент сайта
       responses:
-        '200': { description: text/plain, полный контент для LLM }
+        '200':
+          description: "text/plain, полный контент для LLM "
   /search:
     get:
       operationId: siteSearch
@@ -69,22 +104,33 @@ paths:
           in: query
           schema: { type: string }
       responses:
-        '200': { description: HTML-результаты поиска по каталогу }
+        '200':
+          description: "HTML-результаты поиска по каталогу "
   /yml.xml:
     get:
       operationId: ymlFeed
       summary: YML-фид услуг с ценами (Яндекс.Товары)
       responses:
-        '200': { description: application/xml, YML }
+        '200':
+          description: "application/xml, YML "
   /turbo.xml:
     get:
       operationId: turboFeed
       summary: RSS для Яндекс.Турбо
       responses:
-        '200': { description: application/rss+xml }
+        '200':
+          description: "application/rss+xml "
   /rss.xml:
     get:
       operationId: rss
       summary: RSS-лента
       responses:
-        '200': { description: application/rss+xml }
+        '200':
+          description: "application/rss+xml "
+  /sitemap.xml:
+    get:
+      operationId: sitemap
+      summary: Карта сайта
+      responses:
+        '200':
+          description: "application/xml "

@@ -10,8 +10,8 @@
 
   # --- Безопасность: закрываем исходники и служебные файлы ----------------
   RewriteRule "(^|/)\.(?!well-known)" - [F]
-  RewriteRule ^(app|setting|tools|vendor|node_modules)(/|$) - [F,L]
-  RewriteRule ^(composer\.(json|lock)|package(-lock)?\.json|\.env(\..*)?)$ - [F,L]
+  RewriteRule "^(app|setting|tools|vendor)(/|$)" - [F,L]
+  RewriteRule ^(composer\.(json|lock)|\.env(\..*)?)$ - [F,L]
   RewriteRule ^public/(components|pages)(/|$) - [F,L]
 
   # --- Канон: https://www.<host> за один шаг (localhost/IP не трогаем) ----

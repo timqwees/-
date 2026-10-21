@@ -11,9 +11,24 @@ if (defined('FSS_BOOT')) {
 }
 define('FSS_BOOT', microtime(true));
 
+// --- Автозагрузка Composer ---
+// bootstrap.php могут подключать не только index.php, но и отдельные файлы
+// (404-страница, шаблоны услуг). Без автозагрузки падал phpdotenv, а следом
+// «Function 'seo_config' not found» — SEO-функции просто не успевали объявиться.
+if (!class_exists(\Dotenv\Dotenv::class, false)) {
+	$__autoload = dirname(__DIR__) . '/vendor/autoload.php';
+	if (is_file($__autoload)) {
+		require_once $__autoload;
+	}
+	unset($__autoload);
+}
+
+// --- Резолвер путей рантайм-кэша (вне каталога проекта: без var/ и временных файлов) ---
+require_once __DIR__ . '/Models/Cache/Path.php';
+
 // --- Загружаем .env через vlucas/phpdotenv ---
 $__envPath = dirname(__DIR__);
-if (file_exists($__envPath . '/.env')) {
+if (file_exists($__envPath . '/.env') && class_exists(\Dotenv\Dotenv::class)) {
 	$dotenv = Dotenv\Dotenv::createImmutable($__envPath);
 	$dotenv->load();
 }
@@ -33,6 +48,66 @@ unset($__caller, $__real, $__index, $__ctrl);
 
 // --- SEO-библиотека ---
 require_once __DIR__ . '/Seo/seo.php';
+
+// --- Безопасное чтение GET-параметров ---
+// $_GET['q'] может прийти массивом (?q[]=x) — приведение к строке даёт
+// "Array to string conversion", а mb_substr() с массивом — фатальную ошибку 500.
+if (!function_exists('fss_param')) {
+	/**
+	 * Скалярный GET/POST-параметр: массивы и объекты отбрасываются.
+	 */
+	function fss_param(string $key, string $default = ''): string
+	{
+		$value = $_GET[$key] ?? null;
+		if (!is_scalar($value)) {
+			return $default;
+		}
+		$value = trim((string)$value);
+		return $value === '' ? $default : $value;
+	}
+}
+
+// --- Секрет для подписи CSRF-токена ---
+// Хранится вне веб-доступных каталогов и вне var/: в корне проекта в файле
+// .fss-secret (0600, в .gitignore) либо, если корень недоступен на запись,
+// в рантайм-кэше. Приоритет: env FSS_SECRET → файл → новый случайный.
+if (!function_exists('fss_secret')) {
+	function fss_secret(): string
+	{
+		static $secret = null;
+		if ($secret !== null) {
+			return $secret;
+		}
+		$fromEnv = (string)($_ENV['FSS_SECRET'] ?? getenv('FSS_SECRET') ?: '');
+		if ($fromEnv !== '') {
+			return $secret = $fromEnv;
+		}
+		$candidates = [
+			dirname(__DIR__) . '/.fss-secret',
+			\App\Models\Cache\Path::file('secret.key'),
+		];
+		foreach ($candidates as $path) {
+			if ($path === '' || !is_file($path)) {
+				continue;
+			}
+			$raw = trim((string)@file_get_contents($path));
+			if ($raw !== '') {
+				return $secret = $raw;
+			}
+		}
+		$secret = bin2hex(random_bytes(32));
+		foreach ($candidates as $path) {
+			if ($path === '' || !\App\Models\Cache\Path::ensure(dirname($path))) {
+				continue;
+			}
+			if (@file_put_contents($path, $secret, LOCK_EX) !== false) {
+				@chmod($path, 0600);
+				break;
+			}
+		}
+		return $secret;
+	}
+}
 
 // --- Email константы (QweesCore формат) ---
 if (!defined('EMAIL')) {
@@ -62,7 +137,10 @@ if (!empty($_SESSION['fss_form_success'])) {
 		if (!headers_sent()) {
 			$__secure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
 				|| (($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https');
-			setcookie('fss_form_' . $__type . '_success', '1', [
+			// Имя cookie — только [a-z0-9_], иначе 'mini-forma' давал 'fss_form_mini-forma_success',
+			// а фронтенд виджета ждал 'fss_form_mini_success' и экран успеха не показывался.
+			$__cookieType = preg_replace('/[^a-zA-Z0-9_]+/', '_', (string)$__type) ?: 'form';
+			setcookie('fss_form_' . $__cookieType . '_success', '1', [
 				'expires' => time() + 300,
 				'path' => '/',
 				'secure' => $__secure,
@@ -71,6 +149,8 @@ if (!empty($_SESSION['fss_form_success'])) {
 			]);
 		}
 		\App\Mail\Security::pushScript('if(window.dataLayer) dataLayer.push({event:"form_success", form_type:"' . addslashes($__type) . '"});');
+		// Цель в Метрику/GA4: заявка успешно отправлена (конверсия, а не просто submit)
+		\App\Mail\Security::pushScript('try{if(window.fssGoal){window.fssGoal("form_success",{form:"' . addslashes($__type) . '"});}}catch(e){}');
 		\App\Mail\Security::showAlert('success', $__message !== '' ? $__message : 'Вы успешно оставили заявку! Мы свяжемся с вами в ближайшее время.');
 	} else {
 		\App\Mail\Security::showAlert('error', $__message !== '' ? $__message : 'Не удалось отправить заявку. Пожалуйста, позвоните нам +7 938 018-00-06 или попробуйте позже.');
@@ -89,7 +169,43 @@ if (!headers_sent()) {
 // через App\Models\Router\Html::finalize() — так страница не зависит от
 // output-buffer callback, который ломает аварийный рендер (500).
 if (!defined('FSS_ASSET_VER')) {
-	$__mt = @filemtime(dirname(__DIR__) . '/public/assets/distCSS/premium.css') ?: time();
-	define('FSS_ASSET_VER', date('YmdHi', $__mt));
-	unset($__mt);
+	// Версия = самая «свежая» дата среди ассетов (CSS/JS), а не только premium.css:
+	// иначе правка любого файла в distCSS не меняла бы ?v=… и браузер держал бы старый кэш.
+	// Результат кэшируем на 5 минут — иначе каждый запрос опрашивал бы каталог ассетов.
+	$__cacheFile = \App\Models\Cache\Path::file('asset_ver.txt');
+	$__ver = 0;
+	if (is_file($__cacheFile) && (time() - (int)@filemtime($__cacheFile)) < 300) {
+		$__ver = (int)trim((string)@file_get_contents($__cacheFile));
+	}
+	if ($__ver <= 0) {
+		$__newest = 0;
+		foreach (['/public/assets/distCSS', '/public/assets/distJS'] as $__dir) {
+			$__abs = dirname(__DIR__) . $__dir;
+			if (!is_dir($__abs)) {
+				continue;
+			}
+			$__it = new RecursiveIteratorIterator(
+				new RecursiveDirectoryIterator($__abs, FilesystemIterator::SKIP_DOTS)
+			);
+			foreach ($__it as $__f) {
+				if ($__f->isFile()) {
+					$__mt = (int)@filemtime($__f->getPathname());
+					if ($__mt > $__newest) {
+						$__newest = $__mt;
+					}
+				}
+			}
+		}
+		$__ver = $__newest > 0 ? $__newest : time();
+		if ($__cacheFile !== '') {
+			$__cacheDir = dirname($__cacheFile);
+			if (!is_dir($__cacheDir)) {
+				@mkdir($__cacheDir, 0775, true);
+			}
+			@file_put_contents($__cacheFile, (string)$__ver);
+		}
+		unset($__newest, $__dir, $__abs, $__it, $__f, $__mt);
+	}
+	define('FSS_ASSET_VER', date('YmdHi', $__ver));
+	unset($__ver, $__cacheFile);
 }

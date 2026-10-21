@@ -1,7 +1,7 @@
 <?php
 /**
  * Общая форма заявки — структура ProMaintenance (enquiry-panel → enquiry-experience → form).
- * Используется на главной и на странице /contact.
+ * Используется на главной и на странице /contacts.
  * Поля: 01 — проект (услуга, локация, описание), 02 — контакты (имя, компания, email, телефон).
  *
  * После успешной отправки сервер кладёт данные заявки в сессию (fss_enquiry_result) —
@@ -100,10 +100,10 @@ if (!empty($_SESSION['fss_enquiry_result']) && ($_SESSION['fss_enquiry_result'][
 							</select>
 							<p id="error-service" data-error-for="product" hidden></p>
 						</div>
-						<div class="form-field form-field--location" data-location-suggest>
+						<div class="form-field form-field--address form-field--location" data-location-suggest>
 							<label for="field-location">Где объект</label>
-							<input id="field-location" name="location" placeholder="Город или район" maxlength="120" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="field-location-suggestions" aria-describedby="error-location">
-							<div class="location-suggestions" id="field-location-suggestions" data-location-list role="listbox" hidden></div>
+							<input type="text" id="field-location" name="location" placeholder="Город, район или адрес" maxlength="120" autocomplete="off" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="location-suggestions" aria-describedby="error-location">
+							<div class="location-suggestions" id="location-suggestions" data-location-list role="listbox" aria-label="Подсказки по адресу" hidden></div>
 							<p id="error-location" data-error-for="location" hidden></p>
 						</div>
 						<div class="form-field form-field--full">

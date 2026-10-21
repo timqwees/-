@@ -16,11 +16,19 @@ class Network
 
     public function __construct()
     {
-        self::$db = \App\Config\Database::getConnection();
+        // Класс БД в проекте не используется (все данные — в app/Data/*.php).
+        // Обращаемся к нему только если он реально есть, иначе — фатальная ошибка.
+        self::$db = class_exists('\App\Config\Database')
+            ? \App\Config\Database::getConnection()
+            : null;
     }
 
     public static function onTableAllExists()
     {
+        if (!class_exists('\App\Config\Database')) {
+            Message::set('error', 'Модуль базы данных не подключён (App\\Config\\Database не найден)');
+            return;
+        }
         $schemaFile = \App\Config\Database::$schema_name;
         if (!file_exists($schemaFile)) {
             Message::set('error', "Файл схемы не найден: $schemaFile");
@@ -255,39 +263,106 @@ class Network
         });
     }
 
+    /**
+     * Отправка письма через PHPMailer.
+     *
+     * Ключи $data:
+     *   to_email   — получатель (обязательный)
+     *   subject    — тема
+     *   body       — HTML-тело
+     *   alt_body   — plain-text альтернатива (необязательно)
+     *   reply_to   — email для ответа (необязательно)
+     *   reply_name — имя для ответа (необязательно)
+     *   cc / bcc   — дополнительные получатели (необязательно)
+     *
+     * ВАЖНО: PHPMailer 6 по умолчанию НЕ бросает исключения (exceptions = false)
+     * и при ошибке SMTP молча возвращает false. Поэтому:
+     *   1) создаём PHPMailer с exceptions = true,
+     *   2) проверяем результат send().
+     * Без этого ошибка отправки выглядела бы как успех — пользователю
+     * показывали «заявка принята», а письмо не уходило.
+     */
     public static function onPHPMailer(array $data)
     {
         try {
-            $mail = new PHPMailer();
+            $mail = new PHPMailer(true);
             $mail->CharSet = 'UTF-8';
 
             $mail->isSMTP();
             $mail->SMTPAuth = true;
             $mail->SMTPDebug = 0;
 
-            $mail->Host = 'smtp.gmail.com';
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->Host = self::envValue('SMTP_HOST', 'smtp.gmail.com');
+            $secure = self::envValue('SMTP_SECURE', PHPMailer::ENCRYPTION_STARTTLS);
+            // 'none'/'null'/'off' — отключить шифрование (локальные стенды, релеи)
+            $mail->SMTPSecure = in_array(strtolower($secure), ['none', 'null', 'off', ''], true) ? '' : $secure;
 
-            $mail->Port = (int)($_ENV['EMAIL_PORT'] ?? getenv('EMAIL_PORT') ?? 587);
-            $mail->Username = (string)($_ENV['EMAIL'] ?? getenv('EMAIL') ?? '');
-            $mail->Password = (string)($_ENV['EMAIL_PASSWORD'] ?? getenv('EMAIL_PASSWORD') ?? '');
+            $mail->Port = (int)self::envValue('EMAIL_PORT', '587');
+            $mail->Username = self::envValue('EMAIL');
+            $mail->Password = self::envValue('EMAIL_PASSWORD');
             $mail->setFrom(
-                (string)($_ENV['EMAIL'] ?? getenv('EMAIL') ?? ''),
-                (string)($_ENV['EMAIL_NICKNAME'] ?? getenv('EMAIL_NICKNAME') ?? '')
+                self::envValue('EMAIL'),
+                self::envValue('EMAIL_NICKNAME', 'ФСС.РУС')
             );
-            $mail->addAddress(self::asciiEmail((string)($data['to_email'] ?? '')));
+
+            $to = self::asciiEmail((string)($data['to_email'] ?? ''));
+            if ($to === '' || !filter_var($to, FILTER_VALIDATE_EMAIL)) {
+                throw new \RuntimeException('Некорректный email получателя: ' . $to);
+            }
+            $mail->addAddress($to);
+
+            $replyTo = trim((string)($data['reply_to'] ?? ''));
+            if ($replyTo !== '' && filter_var($replyTo, FILTER_VALIDATE_EMAIL)) {
+                $replyName = trim((string)($data['reply_name'] ?? ''));
+                if ($replyName !== '') {
+                    $mail->addReplyTo($replyTo, $replyName);
+                } else {
+                    $mail->addReplyTo($replyTo);
+                }
+            }
+
+            foreach (['cc' => 'addCC', 'bcc' => 'addBCC'] as $key => $method) {
+                $extra = trim((string)($data[$key] ?? ''));
+                if ($extra !== '' && filter_var(self::asciiEmail($extra), FILTER_VALIDATE_EMAIL)) {
+                    $mail->{$method}(self::asciiEmail($extra));
+                }
+            }
+
             $mail->Subject = (string)($data['subject'] ?? '');
 
             $mail->msgHTML((string)($data['body'] ?? ''));
+            $altBody = trim((string)($data['alt_body'] ?? ''));
+            if ($altBody !== '') {
+                $mail->AltBody = $altBody;
+            }
 
-            $mail->send();
+            if (!$mail->send()) {
+                throw new \RuntimeException('PHPMailer вернул false' . ($mail->ErrorInfo !== '' ? ': ' . $mail->ErrorInfo : ''));
+            }
             $mail->clearAddresses();
 
             return true;
-        } catch (\Exception $e) {
-            Message::set('error', 'Ошибка при отправке письма: ' . $e->getMessage());
+        } catch (\Throwable $e) {
+            $error = 'Ошибка при отправке письма: ' . $e->getMessage();
+            Message::set('error', $error);
+            error_log('[mail] ' . $error);
             return false;
         }
+    }
+
+    /**
+     * Значение переменной окружения с fallback.
+     * getenv() возвращает false, а не null — поэтому нужен отдельный разбор:
+     * иначе `getenv('X') ?? 'default'` даёт пустую строку вместо значения по умолчанию.
+     */
+    private static function envValue(string $key, string $default = ''): string
+    {
+        $value = $_ENV[$key] ?? $_SERVER[$key] ?? null;
+        if ($value === null || $value === false || (string)$value === '') {
+            $value = getenv($key);
+        }
+        $value = ($value === false || $value === null) ? '' : (string)$value;
+        return $value !== '' ? $value : $default;
     }
 
     /**
@@ -344,13 +419,13 @@ class Network
                 <div class='bg-black rounded-lg p-4 text-sm font-mono relative mt-4'>
                     <div class='flex gap-1 mb-2'>
                         <span class='w-2 h-2 bg-red-400 rounded-full'></span>
-                        <span class='w-2 h-2 bg-yellow-400 rounded-full'></span>
+                        <span class='w-2 h-2 bg-[#c7ab94] rounded-full'></span>
                         <span class='w-2 h-2 bg-green-400 rounded-full'></span>
                     </div>
                     <div class='text-gray-400 mb-2'>// Вызываеться неизвестный метод при вызове:</div>
                     <div class='text-white'>
-                        <span class='text-blue-400'>Routes</span><span class='text-blue-300'>::</span><span class='text-indigo-400'><?= $request_method ?></span><span class='text-yellow-300'>(</span><span class='text-red-300'>'</span><span class='text-green-300'><?= htmlspecialchars($path) ?></span><span class='text-red-300'>'</span>,
-                        <span class='text-red-300'>'</span><span class='bg-red-400 px-2'><?= htmlspecialchars($callbackName) ?></span><span class='text-red-300'>'</span><span class='text-yellow-300'>)</span>;
+                        <span class='text-blue-400'>Routes</span><span class='text-blue-300'>::</span><span class='text-indigo-400'><?= $request_method ?></span>                        <span class='text-[#d2b89d]'>(</span><span class='text-red-300'>'</span><span class='text-green-300'><?= htmlspecialchars($path) ?></span><span class='text-red-300'>'</span>,
+                        <span class='text-red-300'>'</span><span class='bg-red-400 px-2'><?= htmlspecialchars($callbackName) ?></span><span class='text-red-300'>'</span><span class='text-[#d2b89d]'>)</span>;
                     </div>
                 </div>
             </div>

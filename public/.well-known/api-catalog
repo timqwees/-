@@ -1,3 +1,32 @@
-favorit-stroy-snab api-catalog v1 2026-10-09
-endpoints: /uslugi, /projects, /portfolio, /rss.xml, /llms.txt, /llms-full.txt, /openapi.yaml, /sitemap.xml
-contacts: +7 938 018-00-06, fss@фсс.рус
+{
+  "schema_version": "v1",
+  "id": "https://www.xn--h1aafj.xn--p1ai/.well-known/api-catalog",
+  "name": "ФАВОРИТ-СТРОЙ-СНАБ — каталог сервисов",
+  "description": "Каталог read-only эндпоинтов ФАВОРИТ-СТРОЙ-СНАБ: услуги, проекты, портфолио, AI-выжимки и фиды.",
+  "updated": "2026-10-20",
+  "contact": {
+    "name": "ФАВОРИТ-СТРОЙ-СНАБ",
+    "email": "fss@xn--h1aafj.xn--p1ai",
+    "phone": "+7 938 018-00-06"
+  },
+  "links": [
+    { "rel": "service-desc", "href": "https://www.xn--h1aafj.xn--p1ai/openapi.yaml", "type": "application/yaml" },
+    { "rel": "sitemap", "href": "https://www.xn--h1aafj.xn--p1ai/sitemap.xml", "type": "application/xml" },
+    { "rel": "alternate", "href": "https://www.xn--h1aafj.xn--p1ai/llms.txt", "type": "text/plain" },
+    { "rel": "alternate", "href": "https://www.xn--h1aafj.xn--p1ai/llms-full.txt", "type": "text/plain" },
+    { "rel": "about", "href": "https://www.xn--h1aafj.xn--p1ai/about", "type": "text/html" },
+    { "rel": "describedby", "href": "https://www.xn--h1aafj.xn--p1ai/ai-plugin.json", "type": "application/json" }
+  ],
+  "endpoints": [
+    { "path": "/uslugi", "description": "Хаб всех услуг (20 направлений)" },
+    { "path": "/services/{slug}", "description": "Страница услуги: цены-ориентиры, FAQ, этапы, примеры работ" },
+    { "path": "/services/{slug}/{geo}", "description": "Гео-страница услуги: локальные сроки, маршрут, цены" },
+    { "path": "/portfolio", "description": "Портфолио реализованных объектов" },
+    { "path": "/portfolio/{slug}", "description": "Детальная страница объекта: задача, решение, результат" },
+    { "path": "/blog", "description": "Блог: разборы, нормы, сравнения, цены" },
+    { "path": "/search?q=", "description": "Поиск по каталогу услуг" },
+    { "path": "/rss.xml", "description": "RSS-лента блога" },
+    { "path": "/yml.xml", "description": "YML-фид услуг (Яндекс.Товары)" },
+    { "path": "/sitemap.xml", "description": "Карта сайта" }
+  ]
+}

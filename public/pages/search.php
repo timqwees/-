@@ -5,7 +5,7 @@
  */
 require_once __DIR__ . '/../../app/bootstrap.php';
 
-$q = trim(mb_substr($_GET['q'] ?? '', 0, 120));
+$q = mb_substr(fss_param('q'), 0, 120);
 $all = seo_services();
 $results = [];
 if ($q !== '') {
@@ -37,8 +37,8 @@ if ($q !== '') {
 		}
 	</style>
 
-	<title>Поиск по услугам<?= $q !== '' ? ' — ' . htmlspecialchars($q) : '' ?> | <?= htmlspecialchars(seo_config('brand')) ?></title>
-	<meta name="description" content="Поиск по услугам <?= htmlspecialchars(seo_config('brand')) ?>: склады, ангары, АБК, общежития, капремонт, спецтехника.">
+	<title>Поиск по услугам<?= $q !== '' ? ' — ' . htmlspecialchars($q) : '' ?> | <?= htmlspecialchars((string)seo_config('brand')) ?></title>
+	<meta name="description" content="Поиск по услугам <?= htmlspecialchars((string)seo_config('brand')) ?>: склады, ангары, АБК, общежития, капремонт, спецтехника.">
 	<meta name="robots" content="noindex, follow">
 	<link rel="icon" type="image/png" href="/public/assets/image/logo/favicon/favicon-96x96.png" sizes="96x96" />
 	<link rel="shortcut icon" href="/public/assets/image/logo/favicon/favicon.ico" />
@@ -49,6 +49,7 @@ if ($q !== '') {
 	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css"><noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css"></noscript>
 	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261018">
 	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261018">
+	<?php include_once __DIR__ . '/../components/sheoma.php'; ?>
 </head>
 <body class="font-sans text-gray-800" data-page="inner">
 	<?php include_once __DIR__ . '/../components/header.php'; ?>
@@ -82,7 +83,7 @@ if ($q !== '') {
 					<?php endforeach; ?>
 				</div>
 			<?php else: ?>
-				<p class="sec-sub">Ничего не найдено. Позвоните <a href="tel:<?= htmlspecialchars(preg_replace('/\D/', '', seo_config('phone'))) ?>" title="Позвонить" class="text-[#C2410C] font-semibold"><?= htmlspecialchars(seo_config('phone_display')) ?></a> — подберём решение за <?= htmlspecialchars(seo_config('callback_minutes')) ?> минут.</p>
+				<p class="sec-sub">Ничего не найдено. Позвоните <a href="tel:<?= htmlspecialchars(preg_replace('/\D/', '', (string)seo_config('phone'))) ?>" title="Позвонить" class="text-[#554433] font-semibold"><?= htmlspecialchars((string)seo_config('phone_display')) ?></a> — подберём решение за <?= htmlspecialchars((string)seo_config('callback_minutes')) ?> минут.</p>
 			<?php endif; ?>
 		<?php endif; ?>
 

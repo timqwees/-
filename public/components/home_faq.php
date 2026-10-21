@@ -12,11 +12,19 @@ foreach (seo_services() as $slug => $s) {
 	}
 }
 $__homeFaq = array_slice($__homeFaq, 0, 12);
-$__base = rtrim(seo_config('base_url'), '/');
+$__base = rtrim((string)seo_config('base_url'), '/');
+// Счётчик разделов: задаётся вызывающей страницей (home.php).
+if (!isset($fssSec) || !is_callable($fssSec)) {
+	$fssSec = function (string $label): string {
+		static $n = 0;
+		$n++;
+		return str_pad((string)$n, 2, '0', STR_PAD_LEFT) . ' / ' . $label;
+	};
+}
 ?>
 <section id="faq" class="faq-section section-shell view">
 	<div class="section-topline">
-		<p class="eyebrow">07 / Вопросы</p>
+		<p class="eyebrow"><?= htmlspecialchars($fssSec('Вопросы'), ENT_QUOTES, 'UTF-8') ?></p>
 		<span class="eyebrow">Сроки, цены и гарантии</span>
 	</div>
 	<div class="head-row">

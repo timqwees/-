@@ -17,7 +17,7 @@
 <li><strong>В выходные:</strong> +20% к стоимости</li>
 </ul>
 
-<div data-type="box" data-color="orange">
+<div data-type="box" data-kind="warn">
 <h3>⚠️ Важно</h3>
 <p>Минимальный заказ — 2 часа работы. Если груз занимает меньше времени, оплачивается минимум.</p>
 </div>

@@ -12,18 +12,19 @@ final class YmlFeed
 {
 	public static function output(): void
 	{
-		$base = rtrim(seo_config('base_url'), '/');
+		$base = rtrim((string)seo_config('base_url'), '/');
 		$root = dirname(__DIR__, 3);
 		$services = file_exists($root . '/app/Data/services.php')
 			? (require $root . '/app/Data/services.php')
 			: [];
 
-		$cats = ['БВЗ' => 1, 'Ремонт и монтаж' => 2, 'Перевозки и техника' => 3, 'Оборудование и мебель' => 4];
+		$cats = ['БВЗ' => 1, 'Ремонт и монтаж' => 2, 'Перевозки и техника' => 3, 'Оборудование и мебель' => 4, 'БПЛА и системы КИТ' => 5];
 		$catOf = [
 			'proizvodim_modul' => 1, 'angar' => 1, 'sclad' => 1, 'administrativnoe' => 1, 'obchegitia' => 1,
 			'kapstroenie' => 2, 'kapital' => 2, 'montach' => 2, 'naves' => 2, 'proektirovanie' => 2,
 			'gruzoperevozki' => 3, 'spectehnika' => 3, 'postavka' => 3,
 			'musorbak' => 4, 'modultebel' => 4, 'generatornae' => 4, 'compressor' => 4, 'compressor_air' => 4,
+			'osnashchenie' => 4, 'bpla' => 5,
 		];
 
 		$xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
@@ -53,7 +54,8 @@ final class YmlFeed
 			$xml .= '<currencyId>RUB</currencyId>' . "\n";
 			$xml .= '<categoryId>' . ($catOf[$slug] ?? 1) . '</categoryId>' . "\n";
 			$xml .= '<name>' . htmlspecialchars((string)$s['title']) . '</name>' . "\n";
-			$xml .= '<description><![CDATA[' . $s['description'] . ']]></description>' . "\n";
+			// Без CDATA: строка с "]]>" ломала бы XML-фид. Экранируем спецсимволы.
+			$xml .= '<description>' . htmlspecialchars((string)($s['description'] ?? ''), ENT_XML1 | ENT_QUOTES, 'UTF-8') . '</description>' . "\n";
 			$xml .= "</offer>\n";
 		}
 		$xml .= "</offers>\n</shop>\n</yml_catalog>";

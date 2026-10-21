@@ -10,7 +10,14 @@ declare(strict_types=1);
 // ! Перед продом удалить .dev (иначе кэша не будет и на проде)
 define('FSS_DEV', (getenv('FSS_ENV') ?: '') === 'dev' || is_file(__DIR__ . '/.dev'));
 if (FSS_DEV && function_exists('opcache_reset')) {
-	@opcache_reset();
+	// Полный сброс opcache на КАЖДЫЙ запрос обнулял всю пользу от opcache:
+	// каждый файл компилировался заново (рендер 13 мс вместо 2 мс).
+	// Сброс нужен только когда opcache не умеет сам следить за mtime
+	// (opcache.validate_timestamps=0) — тогда без сброса висял бы старый код.
+	$validate = ini_get('opcache.validate_timestamps');
+	if ($validate === false || $validate === '' || $validate === '0') {
+		@opcache_reset();
+	}
 }
 
 // --- Composer (PSR-4: App\ → app/, Setting\ → setting/) + fallback без него ---
@@ -61,6 +68,18 @@ require_once __DIR__ . '/setting/Route/routes.php';
 use App\Models\Router\Html;
 use App\Models\Router\Routes;
 
+// --- Полностраничный кэш (TTFB) ---
+// Включён в проде; в DEV — только при FSS_CACHE=1. Кэшируются только GET
+// без query-строки и без сессионных cookie (см. App\Models\Cache\HtmlCache).
+$__htmlCacheKey = \App\Models\Cache\HtmlCache::enabled() ? \App\Models\Cache\HtmlCache::key() : null;
+if ($__htmlCacheKey !== null) {
+	$__cached = \App\Models\Cache\HtmlCache::get($__htmlCacheKey);
+	if ($__cached !== null) {
+		\App\Models\Cache\HtmlCache::send($__cached);
+		exit;
+	}
+}
+
 // --- Рендер страницы + финализация HTML ---
 // Буфер без callback: так при аварии ErrorHandler может очистить вывод и отдать
 // чистую страницу 500 (output-buffer callback такую очистку запрещает).
@@ -72,4 +91,13 @@ try {
 	throw $e;
 }
 $html = (string) ob_get_clean();
-echo Html::finalize($html);
+$final = Html::finalize($html);
+echo $final;
+
+if ($__htmlCacheKey !== null) {
+	// Живой рендер, но страницу можно отдавать и внешнему кэшу (CDN) —
+	// иначе первый ответ остался бы с no-store и кэш не наполнялся бы.
+	header('Cache-Control: public, max-age=0, s-maxage=600, stale-while-revalidate=86400', true);
+	header('X-FSS-Cache: MISS', true);
+	\App\Models\Cache\HtmlCache::put($__htmlCacheKey, $final);
+}

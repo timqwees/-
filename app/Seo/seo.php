@@ -43,8 +43,9 @@ if (!function_exists('seo_url_path')) {
 	 * НЕ используем parse_url(): он портит байты кириллицы (например «АБК» → «П_П_П_»),
 	 * из-за чего is_file() не находил реальные файлы с не-ASCII именами.
 	 */
-	function seo_url_path(string $url): string
+	function seo_url_path(?string $url = null): string
 	{
+		$url = (string)$url;
 		if (preg_match('#^https?://#i', $url)) {
 			$url = (string)preg_replace('#^https?://[^/]+#i', '', $url);
 		}
@@ -85,6 +86,7 @@ if (!function_exists('seo_url')) {
 				case 'public/pages/home.php': return $cached = '/';
 				case 'public/pages/uslugi/uslugi.php': return $cached = '/uslugi';
 				case 'public/pages/portfolio.php': return $cached = '/portfolio';
+				case 'public/pages/contacts/index.php': return $cached = '/contacts';
 				case 'public/pages/about.php':
 				case 'public/pages/about/index.php': return $cached = '/about';
 				case 'public/pages/blog/list.php': return $cached = '/blog';
@@ -101,7 +103,7 @@ if (!function_exists('seo_url')) {
 if (!function_exists('seo_canonical')) {
 	function seo_canonical(): string
 	{
-		return rtrim(seo_config('base_url'), '/') . seo_url();
+		return rtrim((string)seo_config('base_url'), '/') . seo_url();
 	}
 }
 
@@ -128,10 +130,13 @@ if (!function_exists('seo_verify_tags')) {
 }
 
 if (!function_exists('seo_og_tags')) {
-	function seo_og_tags(string $title = '', string $desc = '', string $image = ''): string
+	function seo_og_tags(?string $title = null, ?string $desc = null, ?string $image = null): string
 	{
-		$base = rtrim(seo_config('base_url'), '/');
-		$brand = seo_config('brand');
+		$title = (string)$title;
+		$desc = (string)$desc;
+		$image = (string)$image;
+		$base = rtrim((string)seo_config('base_url'), '/');
+		$brand = (string)seo_config('brand');
 		$default = '/public/assets/image/og/og-blog-1200x630.jpg';
 		$img = $image !== '' ? $image : $default;
 		$path = '/' . ltrim(seo_url_path($img), '/');
@@ -166,8 +171,9 @@ if (!function_exists('seo_og_tags')) {
 
 if (!function_exists('seo_clip')) {
 	/** Обрезка текста до лимита meta-описания/заголовка по границе слова. */
-	function seo_clip(string $text, int $max = 158): string
+	function seo_clip(?string $text = null, int $max = 158): string
 	{
+		$text = (string)$text;
 		$text = trim((string)preg_replace('/\s+/u', ' ', $text));
 		if (mb_strlen($text) <= $max) {
 			return $text;
@@ -187,13 +193,12 @@ if (!function_exists('seo_clip')) {
 
 if (!function_exists('seo_img_attrs')) {
 	/** width/height из реального файла (борьба с CLS). Пусто, если размер не определён. */
-	function seo_img_attrs(string $src): string
+	function seo_img_attrs(?string $src = null): string
 	{
-		$file = dirname(__DIR__, 2) . '/' . ltrim(seo_url_path($src), '/');
-		if (!is_file($file)) {
-			return '';
-		}
-		$size = @getimagesize($file);
+		$src = (string)$src;
+		// Размеры берём через Image::dims(): он сначала смотрит рантайм-кэш,
+		// потом читает заголовок файла — без getimagesize() на каждом рендере (TTFB).
+		$size = class_exists('\\App\\Models\\Image') ? \App\Models\Image::dims($src) : null;
 		if (!$size || empty($size[0]) || empty($size[1])) {
 			return '';
 		}
@@ -202,8 +207,9 @@ if (!function_exists('seo_img_attrs')) {
 }
 
 if (!function_exists('seo_jsonld')) {
-	function seo_jsonld(array $nodes): string
+	function seo_jsonld(?array $nodes = null): string
 	{
+		$nodes = (array)$nodes;
 		$graph = ['@context' => 'https://schema.org', '@graph' => array_values($nodes)];
 		return '<script type="application/ld+json">' . "\n"
 			. json_encode($graph, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_LINE_TERMINATORS)
@@ -214,8 +220,8 @@ if (!function_exists('seo_jsonld')) {
 if (!function_exists('seo_organization_jsonld')) {
 	function seo_organization_jsonld(): array
 	{
-		$base = rtrim(seo_config('base_url'), '/');
-		$a = seo_config('address');
+		$base = rtrim((string)seo_config('base_url'), '/');
+		$a = (array)seo_config('address');
 		return [
 			[
 				'@type' => ['Organization', 'LocalBusiness'],
@@ -228,7 +234,7 @@ if (!function_exists('seo_organization_jsonld')) {
 				'ogrn' => seo_config('ogrn'),
 				'logo' => ['@type' => 'ImageObject', 'url' => $base . '/public/assets/image/logo/favicon/favicon.svg', 'width' => 512, 'height' => 512],
 				'image' => ['@type' => 'ImageObject', 'url' => $base . '/public/assets/image/og/og-blog-1200x630.jpg', 'width' => 1200, 'height' => 630],
-				'description' => 'ФАВОРИТ-СТРОЙ-СНАБ — производство и монтаж быстровозводимых зданий (склады, ангары, АБК, общежития), капитальный ремонт, грузоперевозки и аренда спецтехники. Москва и Московская область, работаем по всей России.',
+				'description' => 'ФАВОРИТ-СТРОЙ-СНАБ — производство и монтаж быстровозводимых зданий (склады, ангары, АБК, общежития), капитальный ремонт школ и социальных объектов, комплексное оснащение школ по стандартам Минпросвещения РФ, поставка БПЛА и систем КИТ, грузоперевозки и аренда спецтехники. Выполнено: 16 объектов капитального ремонта, оснащение 13 школ, комплекс общежитий 9 000+ м² в Сочи. Сотрудничество с Росгвардией (ФСВНГ РФ). Москва и Московская область, работаем по всей России.',
 				'foundingDate' => seo_config('founded'),
 				'slogan' => 'Быстровозводимые здания под ключ от 14 дней',
 				'telephone' => seo_config('phone'),
@@ -265,6 +271,23 @@ if (!function_exists('seo_organization_jsonld')) {
 					'быстровозводимые здания', 'модульные здания', 'капитальное строительство', 'капитальный ремонт зданий',
 					'склады из сэндвич-панелей', 'ангары', 'АБК', 'общежития', 'грузоперевозки', 'аренда спецтехники',
 					'дизельные генераторные установки', 'компрессорные станции', 'мусорные баки', 'навесы',
+					'капитальный ремонт школ', 'оснащение школ', 'школьная мебель', 'оборудование учебных кабинетов',
+					'лабораторные комплексы для школ', 'мультимедийное оборудование для школ', 'БПЛА и беспилотные летательные аппараты',
+					'системы КИТ', 'поставка генераторных установок',
+				],
+				'hasCredential' => [
+					[
+						'@type' => 'EducationalOccupationalCredential',
+						'credentialCategory' => 'license',
+						'name' => 'Допуск СРО на проектирование и строительство',
+						'description' => 'Членство в СРО, работа по 44-ФЗ и 223-ФЗ, закрывающие документы по каждому объекту.',
+					],
+					[
+						'@type' => 'EducationalOccupationalCredential',
+						'credentialCategory' => 'accreditation',
+						'name' => 'Оснащение школ по стандартам Минпросвещения РФ',
+						'description' => 'Комплексное оснащение 13 вновь построенных школ с учётом действующих стандартов Минпросвещения РФ и технического задания заказчиков.',
+					],
 				],
 			],
 			[
@@ -289,7 +312,7 @@ if (!function_exists('seo_breadcrumbs_jsonld')) {
 	/** Хлебные крошки из реального файла страницы — не зависят от хардкода. */
 	function seo_breadcrumbs_jsonld(): ?array
 	{
-		$base = rtrim(seo_config('base_url'), '/');
+		$base = rtrim((string)seo_config('base_url'), '/');
 		$url = seo_url();
 		if ($url === '/' || $url === '/404') return null;
 
@@ -297,6 +320,7 @@ if (!function_exists('seo_breadcrumbs_jsonld')) {
 			'/uslugi' => 'Услуги',
 			'/portfolio' => 'Портфолио объектов',
 			'/about' => 'О компании',
+			'/contacts' => 'Контакты',
 			'/blog' => 'Блог',
 			'/politika' => 'Политика конфиденциальности',
 			'/soglasie' => 'Согласие на обработку данных',
@@ -319,6 +343,17 @@ if (!function_exists('seo_breadcrumbs_jsonld')) {
 		}
 		if (preg_match('#^/blog/([^/]+)$#', $url)) {
 			$items[] = ['@type' => 'ListItem', 'position' => 2, 'name' => 'Блог', 'item' => $base . '/blog'];
+		}
+		// Детальная страница объекта: Главная → Портфолио → Объект
+		if (preg_match('#^/portfolio/([^/]+)$#', $url, $mp)) {
+			$projects = [];
+			$projectsFile = dirname(__DIR__, 2) . '/app/Data/projects.php';
+			if (is_file($projectsFile)) {
+				$projects = (array)(require $projectsFile);
+			}
+			$items[] = ['@type' => 'ListItem', 'position' => 2, 'name' => 'Портфолио объектов', 'item' => $base . '/portfolio'];
+			$items[] = ['@type' => 'ListItem', 'position' => 3, 'name' => (string)($projects[$mp[1]]['title'] ?? $mp[1]), 'item' => $base . $url];
+			return ['@type' => 'BreadcrumbList', '@id' => $base . $url . '#breadcrumb', 'itemListElement' => $items];
 		}
 		$name = $map[$url] ?? null;
 		if (!$name && preg_match('#^/services/([^/]+)$#', $url, $m)) {
@@ -350,7 +385,7 @@ if (!function_exists('seo_breadcrumbs_html')) {
 	{
 		$bc = seo_breadcrumbs_jsonld();
 		if (!$bc) return '';
-		$base = rtrim(seo_config('base_url'), '/');
+		$base = rtrim((string)seo_config('base_url'), '/');
 		$items = $bc['itemListElement'];
 		$out = '<nav aria-label="Хлебные крошки" class="fss-breadcrumbs"><ol class="fss-bc-list">';
 		$last = count($items) - 1;
@@ -380,6 +415,24 @@ if (!function_exists('seo_services')) {
 			$all = require dirname(__DIR__, 2) . '/app/Data/services.php';
 		}
 		return $all;
+	}
+}
+
+if (!function_exists('seo_geo_allows')) {
+	/**
+	 * Разрешена ли услуга для гео-направления.
+	 *
+	 * Если в app/Data/geo.php у города задан ключ 'services' — гео-страница
+	 * создаётся только для этих услуг. Это защита от doorway-страниц:
+	 * нельзя генерировать «ангары в Гудермесе», если там нет подтверждённых
+	 * работ по ангарам (есть только капремонт школ).
+	 */
+	function seo_geo_allows(array $geo, string $slug): bool
+	{
+		if (!empty($geo['services']) && is_array($geo['services'])) {
+			return in_array($slug, array_map('strval', $geo['services']), true);
+		}
+		return true;
 	}
 }
 
@@ -417,7 +470,7 @@ if (!function_exists('seo_reviews_jsonld')) {
 		$count = count($reviews);
 		$sum = array_sum(array_column($reviews, 'star'));
 		$avg = round($sum / $count, 1);
-		$base = rtrim(seo_config('base_url'), '/');
+		$base = rtrim((string)seo_config('base_url'), '/');
 		$nodes = [[
 			'@type' => 'AggregateRating',
 			'ratingValue' => $avg,
@@ -485,7 +538,7 @@ if (!function_exists('seo_blog_jsonld')) {
 	/** BlogPosting schema.org для текущего поста или Article для списка */
 	function seo_blog_jsonld(?string $slug = null): ?array
 	{
-		$base = rtrim(seo_config('base_url'), '/');
+		$base = rtrim((string)seo_config('base_url'), '/');
 		$posts = seo_blog_posts();
 		if ($slug && isset($posts[$slug])) {
 			$p = $posts[$slug];
@@ -530,7 +583,7 @@ if (!function_exists('seo_service_jsonld')) {
 	{
 		$s = seo_service($slug);
 		if (!$s) return null;
-		$base = rtrim(seo_config('base_url'), '/');
+		$base = rtrim((string)seo_config('base_url'), '/');
 		$url = $base . '/services/' . $slug;
 		$node = [
 			'@type' => 'Service',

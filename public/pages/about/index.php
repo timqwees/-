@@ -1,13 +1,92 @@
 <?php
 require_once __DIR__ . '/../../../app/bootstrap.php';
+
+/* ============================================================
+   /about — страница «О компании».
+   Оформление — по дизайн-системе главной (ProMaintenance):
+   тёмный герой, paper-секции, тонкие линии, трекированные подписи,
+   крупная типографика, акцент — тёплый песочный (#c7ab94).
+   Оранжевой гаммы в проекте больше нет.
+   ============================================================ */
+
 $inn = (string)seo_config('inn');
 $ogrn = (string)seo_config('ogrn');
+$kpp = (string)seo_config('kpp');
 $ceo = (string)seo_config('ceo');
 $founded = (string)seo_config('founded');
 $foundedMarket = (string)seo_config('founded_market');
 $regDate = (string)seo_config('registered_at');
+$address = (array)seo_config('address');
+$phone = (string)seo_config('phone');
+$phoneDisplay = (string)seo_config('phone_display');
+
 $t = 'О компании — ФАВОРИТ-СТРОЙ-СНАБ';
-$d = 'ООО «ФАВОРИТ-СТРОЙ-СНАБ» (ИНН ' . $inn . ', ОГРН ' . $ogrn . ') — на рынке с ' . $foundedMarket . ' года (ООО с ' . $founded . '), собственное производство БВЗ, фиксированная смета за 15 минут, сроки от 14 дней, гарантия 50+ лет.';
+$d = 'ООО «ФАВОРИТ-СТРОЙ-СНАБ» (ИНН ' . $inn . ', ОГРН ' . $ogrn . ') — на рынке с ' . $foundedMarket . ' года (ООО с ' . $founded . '), поставка и монтаж БВЗ, фиксированная смета за 15 минут, сроки от 14 дней, гарантия 50+ лет.';
+
+/* Почему выбирают — короткие тезисы в стиле дизайн-системы */
+$why = [
+	[
+		'num' => '01',
+		'title' => 'Собственное производство БВЗ',
+		'text' => 'Завод быстровозводимых зданий и монтажная база — очередь и сроки не зависят от подрядчиков.',
+	],
+	[
+		'num' => '02',
+		'title' => 'Один подрядчик на весь цикл',
+		'text' => 'Проектирование, производство, монтаж, инженерные сети и оснащение — по договору с фиксированной сметой.',
+	],
+	[
+		'num' => '03',
+		'title' => 'Работаем с силовыми и государственными структурами',
+		'text' => 'Сотрудничество с Росгвардией, школы по стандартам Минпросвещения РФ, СРО, 44-ФЗ и 223-ФЗ.',
+	],
+];
+
+/* Реализованные проекты и компетенции */
+$projects = [
+	[
+		'num' => '01',
+		'title' => 'Общежития 9 000+ м² в Сочи',
+		'text' => 'Комплекс зданий общежитий в Адлерском районе: проектирование, строительство, инженерное оснащение и меблировка.',
+		'link' => '/services/obchegitia',
+		'link_text' => 'Общежития из модулей',
+	],
+	[
+		'num' => '02',
+		'title' => 'Капремонт 16 социальных объектов',
+		'text' => 'Школы, спортивные залы и дворцы спорта: Гудермес, Аргун, Чечен-Аул, Шатура, Старогладовская, Гвардейское, Балансу и другие.',
+		'link' => '/services/kapital',
+		'link_text' => 'Капитальный ремонт',
+	],
+	[
+		'num' => '03',
+		'title' => 'Оснащение 13 школ',
+		'text' => 'Мебель всех типов, оборудование кабинетов, лабораторные комплексы, мультимедийные и инженерные системы — по стандартам Минпросвещения РФ.',
+		'link' => '/services/osnashchenie',
+		'link_text' => 'Оснащение школ под ключ',
+	],
+	[
+		'num' => '04',
+		'title' => 'БПЛА, КИТ и высокотех оборудование',
+		'text' => 'Поставка беспилотных летательных аппаратов, комплектующих и систем КИТ от ведущих производителей, адаптация под ТЗ.',
+		'link' => '/services/bpla',
+		'link_text' => 'Поставка БПЛА',
+	],
+	[
+		'num' => '05',
+		'title' => 'Мебель и оснащение под заказ',
+		'text' => 'Функциональная, служебная и представительская мебель, индивидуальное проектирование и визуализация, разрешения и лицензии в сжатые сроки.',
+		'link' => '/services/modultebel',
+		'link_text' => 'Модульная мебель',
+	],
+	[
+		'num' => '06',
+		'title' => 'СРО, 44-ФЗ и 223-ФЗ',
+		'text' => 'Допуск СРО на проектирование и строительство, работа по 44-ФЗ и 223-ФЗ, закрывающие пакеты документов по каждому объекту.',
+		'link' => '/services/kapstroenie',
+		'link_text' => 'Капитальное строительство',
+	],
+];
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -17,7 +96,7 @@ $d = 'ООО «ФАВОРИТ-СТРОЙ-СНАБ» (ИНН ' . $inn . ', ОГР
 	<title><?= htmlspecialchars($t) ?></title>
 	<meta name="description" content="<?= htmlspecialchars(seo_clip($d)) ?>">
 	<meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
-	<meta name="theme-color" content="#F97316">
+	<meta name="theme-color" content="#171310">
 	<meta name="format-detection" content="telephone=yes">
 	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 	<meta name="yandex-verification" content="27e0ba9980498150" />
@@ -27,7 +106,7 @@ $d = 'ООО «ФАВОРИТ-СТРОЙ-СНАБ» (ИНН ' . $inn . ', ОГР
 	<link rel="shortcut icon" href="/public/assets/image/logo/favicon/favicon.ico" />
 	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/favicon/apple-touch-icon.png" />
 	<meta name="apple-mobile-web-app-title" content="ФСС" />
-	<link rel="manifest" href="/public/assets/image/logo/favicon/site.webmanifest" />
+	<link rel="manifest" href="/manifest.json" />
 <?= seo_canonical_tags() ?>
 <?= seo_verify_tags() ?>
 <?= seo_og_tags($t, seo_clip($d)) ?>
@@ -44,242 +123,748 @@ $d = 'ООО «ФАВОРИТ-СТРОЙ-СНАБ» (ИНН ' . $inn . ', ОГР
 	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261018">
 	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261018">
 	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261018">
+	<!-- Дизайн-система главной страницы (ProMaintenance) -->
+	<link rel="stylesheet" href="/public/assets/distCSS/promaintenance.css?v=20261023">
 	<?php include_once __DIR__ . '/../../components/sheoma.php'; ?>
 	<?= seo_analytics() ?>
 	<?= seo_utm_script() ?>
 	<?= seo_goals_script() ?>
 	<style>
-		body{background:#fff;color:#171310;font-family: 'DM Sans Variable', Manrope, Inter,Arial,sans-serif;margin:0}
-		/* Отступ под фиксированную шапку (90px / 78px / 74px) — иначе хлебные крошки
-		   и первый экран уезжают под header и остаются невидимыми. */
-		main{padding-top:104px}
-		@media(max-width:992px){main{padding-top:92px}}
-		@media(max-width:576px){main{padding-top:88px}}
-		.xl{max-width:1280px;margin:0 auto;padding:0 24px}
-		.xl-eyebrow{font-size:11px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:#A1A1AA;margin-bottom:20px}
-		.xl-btn{display:inline-flex;align-items:center;gap:10px;background:#171310;color:#fff;border-radius:999px;border:0;padding:13px 24px;font-size:14px;font-weight:600;cursor:pointer;transition:background .25s,transform .25s;text-decoration:none}
-		.xl-btn:hover{background:#F97316;transform:translateY(-2px)}
-		.xl-btn i{font-size:11px}
-		/* HERO */
-		.xl-hero{padding-block:40px 24px}
-		.xl-hero-grid{display:grid;grid-template-columns:1fr .78fr;gap:32px;align-items:center;min-height:480px}
-		.xl-hero h1{font-size:clamp(26px,3.2vw,42px);font-weight:700;line-height:1.12;letter-spacing:-1.2px;margin:0 0 32px;max-width:620px}
-		.xl-scroll{display:flex;gap:10px;align-items:center;margin-top:40px}
-		.xl-scroll.ar{width:30px;height:30px;border:1px solid #E4E4E7;border-radius:50%;display:grid;place-items:center;color:#71717A;font-size:10px}
-		.xl-scroll .t{font-size:11px;color:#A1A1AA;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
-		.xl-auto{margin-top:44px;padding-top:20px;border-top:1px solid #EDEDEF;max-width:320px}
-		.xl-auto .n1{font-size:13px;font-weight:600;color:#171310}
-		.xl-auto .n2{font-size:12px;color:#A1A1AA;margin-top:4px}
-		/* 3D куб (CSS) */
-		.xl3{position:relative;width:100%;max-width:460px;aspect-ratio:1/.92;margin:0 auto}
-		.xl3 .cube{position:absolute;top:46%;left:52%;transform:translate(-50%,-50%) rotateX(-16deg) rotateY(34deg);width:210px;height:210px;transform-style:preserve-3d}
-		.xl3 .fc{position:absolute;width:210px;height:210px;border-radius:26px;background:linear-gradient(135deg,#fff,#f7f7f8);border:1px solid #e2e2e6;box-shadow:inset 0 0 40px rgba(23,19,16,.04),0 18px 40px rgba(23,19,16,.07)}
-		.xl3 .a{transform:translateZ(105px)}
-		.xl3 .b{transform:rotateX(90deg) translateZ(105px);background:linear-gradient(135deg,#f6f6f7,#fff)}
-		.xl3 .c{transform:rotateY(90deg) translateZ(105px);background:linear-gradient(135deg,#fdf4ee,#fbe9da)}
-		.xl3 .sphere{position:absolute;top:16%;right:6%;width:82px;height:82px;border-radius:50%;background:radial-gradient(circle at 34% 28%,#fff 0%,#f0f0f2 45%,#d7d7db 100%);box-shadow:-14px 20px 34px rgba(23,19,16,.14)}
-		.xl3 .sq{position:absolute;top:40%;left:2%;width:54px;height:54px;border-radius:12px;background:radial-gradient(circle at 34% 28%,#fff,#e6e6ea);box-shadow:10px 16px 26px rgba(23,19,16,.1)}
-		.xl3 .dot{position:absolute;border-radius:50%;background:radial-gradient(circle at 34% 28%,#fff,#dcdce0);box-shadow:6px 10px 18px rgba(23,19,16,.08)}
-		.xl3 .d1{width:34px;height:34px;bottom:12%;left:12%}
-		.xl3 .d2{width:22px;height:22px;top:8%;left:34%}
-		/* MARQUEE заголовок */
-		.xl-marq{overflow:hidden;padding:36px 0;white-space:nowrap;margin:24px 0}
-		.xl-marq-in{display:inline-block;animation:xlscroll 26s linear infinite}
-		.xl-marq .big{display:inline-block;font-size:clamp(56px,8vw,116px);font-weight:800;letter-spacing:-3.5px;line-height:1}
-		.xl-marq .dim{color:#EAEAEA}
-		@keyframes xlscroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-		/* ABOUT */
-		.xl-about{padding-block:56px}
-		.xl-about-grid{display:grid;grid-template-columns:auto 1fr;gap:48px;align-items:start}
-		.xl-about-lbl{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#A1A1AA;writing-mode:vertical-rl;transform:rotate(180deg);position:sticky;top:120px}
-		.xl-about h2{font-size:clamp(20px,2.4vw,30px);font-weight:600;line-height:1.3;letter-spacing:-.4px;margin:0 0 28px;max-width:720px}
-		.xl-about h2 .dim{color:#71717A}
-		.xl-about .txt{font-size:14px;line-height:1.7;color:#52525B;margin:0 0 10px}
-		.xl-about .txt a{color:#171310;text-decoration:underline;text-underline-offset:3px;text-decoration-color:#F97316}
-		/* WHY CHOOSE (2 колонки) */
-		.xl-why{padding-block:56px}
-		.xl-why-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:48px;align-items:start}
-		.xl-why-l h2{font-size:clamp(32px,4vw,54px);font-weight:800;line-height:1.05;letter-spacing:-1.6px;margin:0}
-		.xl-why-l h2 .dim{color:#9A9AA2}
-		.xl-why-r .txt{font-size:14px;line-height:1.7;color:#71717A;margin:0 0 28px}
-		.xl-why-tag{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#A1A1AA;margin-bottom:16px}
-		/* FEATURE CARDS */
-		.xl-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
-		.xl-card{background:#FAFAFA;border-radius:32px;padding:24px;min-height:340px;display:flex;flex-direction:column;position:relative;overflow:hidden;transition:transform .3s,box-shadow .3s,background .3s}
-		.xl-card:hover{transform:translateY(-6px);background:#fff;box-shadow:0 28px 56px rgba(23,19,16,.11)}
-		.xl-card .num{width:40px;height:40px;border-radius:50%;background:#fff;border:1px solid #E4E4E7;display:grid;place-items:center;font-size:12px;font-weight:700;color:#71717A;flex-shrink:0;transition:background .3s,border-color .3s,color .3s}
-		.xl-card:hover .num{background:#F97316;border-color:#F97316;color:#fff}
-		.xl-card h3{font-size:clamp(20px,2.2vw,26px);font-weight:700;line-height:1.14;letter-spacing:-.5px;color:#171310;margin:20px 0 0}
-		.xl-card .x3{margin-top:auto;width:100%;aspect-ratio:2/1;position:relative;flex-shrink:0}
-		/* STATS */
-		.xl-stats{padding-block:24px 64px}
-		.xl-stats-h{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#A1A1AA;margin-bottom:28px}
-		.xl-stats-row{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border-top:1px solid #EDEDEF;border-bottom:1px solid #EDEDEF}
-		.xl-stat{padding:28px 20px;border-right:1px solid #EDEDEF}
-		.xl-stat:first-child{padding-left:0}
-		.xl-stat:last-child{border-right:0}
-		.xl-stat .num{font-size:clamp(32px,4vw,52px);font-weight:800;letter-spacing:-2px;line-height:1;color:#171310}
-		.xl-stat .lbl{font-size:12px;color:#71717A;margin-top:10px;line-height:1.4}
-		/* Фоновое изображение */
-		.xl-band{position:relative;height:440px;overflow:hidden;border-radius:32px;margin-bottom:24px}
-		.xl-band img{width:100%;height:100%;object-fit:cover}
-		.xl-band .ov{position:absolute;inset:0;background:linear-gradient(120deg,rgba(23,19,16,.42),rgba(23,19,16,.08))}
-		.xl-band .cap{position:absolute;bottom:36px;left:36px;right:36px;color:#fff}
-		.xl-band .cap .who{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;opacity:.85;margin-bottom:10px}
-		.xl-band .cap .what{font-size:clamp(20px,2.6vw,34px);font-weight:800;letter-spacing:-1px;line-height:1.06}
-		/* 3D фигуры для карточек */
-		.f3{position:absolute;inset:0}
-		.f3 .octa{position:absolute;top:20%;left:50%;transform:translate(-50%,0) rotate(45deg);width:110px;height:110px;background:radial-gradient(circle at 30% 30%,#fff,#e2e2e6);border-radius:16px;box-shadow:18px 24px 40px rgba(23,19,16,.12)}
-		.f3 .gem{position:absolute;bottom:18%;right:18%;width:66px;height:66px;background:conic-gradient(from 30deg,#f6f6f7,#e6e6ea,#f6f6f7);transform:rotate(24deg);clip-path:polygon(50% 0%,100% 38%,82% 100%,18% 100%,0% 38%);box-shadow:10px 14px 24px rgba(23,19,16,.1)}
-		@media(max-width:900px){
-			.xl-hero-grid{grid-template-columns:1fr}
-			.xl3{max-width:320px;margin:24px auto}
-			.xl-auto{text-align:left;margin-left:0}
-			.xl-about-grid{grid-template-columns:1fr}
-			.xl-about-lbl{writing-mode:horizontal-tb;transform:none;position:static}
-			.xl-why-grid{grid-template-columns:1fr;gap:24px}
-			.xl-why-l{order:-1}
-			.xl-why-l h2{font-size:clamp(26px,6vw,44px);letter-spacing:-1px}
-			.xl-cards{grid-template-columns:1fr}
-			.xl-marq .big{font-size:clamp(34px,10vw,44px);letter-spacing:-1.6px}
-			.xl-marq{padding-block:28px}
-			.xl-stats-row{grid-template-columns:repeat(2,1fr)}
-			.xl-stat{border-right:0}
-.xl-band{height:300px;border-radius:24px}
+		/* ============================================================
+		   /about — по дизайн-системе главной (ProMaintenance)
+		   ============================================================ */
+
+		/* ---------- HERO ---------- */
+		.abt-hero {
+			position: relative;
+			background: #171310;
+			color: #fff;
+			overflow: hidden;
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-end;
+			min-height: 620px;
 		}
-  .fss-breadcrumbs { max-width: 1280px; margin: 0 auto 20px; padding: 0 24px; }
-  .fss-bc-list { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; font-size: 13px; color: #6b7078; }
-  .fss-bc-item { display: flex; align-items: center; }
-  .fss-bc-item:not(:last-child)::after { content: "/"; margin-left: 6px; color: #b0b3b8; }
-  .fss-bc-link { color: #6b7078; text-decoration: none; transition: color .2s; }
-  .fss-bc-link:hover { color: #F97316; }
-  .fss-bc-current { color: #17191d; font-weight: 600; }
-</style>
+
+		.abt-hero__bg {
+			position: absolute;
+			inset: 0;
+		}
+
+		.abt-hero__bg img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+
+		.abt-hero__shade {
+			position: absolute;
+			inset: 0;
+			background: linear-gradient(90deg, rgba(15, 14, 13, .93) 0%, rgba(15, 14, 13, .68) 48%, rgba(15, 14, 13, .38) 100%),
+				linear-gradient(180deg, rgba(15, 14, 13, .88) 0%, rgba(15, 14, 13, 0) 42%);
+		}
+
+		.abt-hero__inner {
+			position: relative;
+			z-index: 1;
+			width: 100%;
+			padding-top: calc(var(--fss-header-h, 90px) + 72px);
+			padding-bottom: 56px;
+		}
+
+		.abt-hero__eyebrow {
+			color: rgba(255, 255, 255, .72);
+		}
+
+		.abt-hero h1 {
+			margin: 24px 0 0;
+			font-size: clamp(38px, 5.8vw, 92px);
+			font-weight: 450;
+			line-height: 1.02;
+			letter-spacing: -.055em;
+		}
+
+		.abt-hero h1>span {
+			display: block;
+		}
+
+		.abt-hero h1>span+span {
+			color: rgba(240, 239, 237, .78);
+		}
+
+		.abt-hero h1 .accent-dot {
+			display: inline;
+		}
+
+		.abt-hero__intro {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			gap: 26px 46px;
+			margin-top: 34px;
+		}
+
+		.abt-hero__intro p {
+			margin: 0;
+			max-width: 46ch;
+			color: rgba(240, 239, 237, .74);
+			font-size: 14px;
+			line-height: 1.6;
+		}
+
+		.abt-hero__links {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			gap: 14px 28px;
+		}
+
+		/* Кнопка на тёмном фоне — светлая, как на остальных внутренних страницах */
+		.abt-hero .button {
+			background: #fff;
+			color: var(--ink);
+		}
+
+		.abt-hero .button:hover {
+			background: var(--paper);
+		}
+
+		/* Хлебные крошки на тёмном фоне */
+		.abt-hero .fss-bc-list {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 8px;
+			list-style: none;
+			margin: 0 0 26px;
+			padding: 0;
+			font-size: 10px;
+			letter-spacing: .1em;
+			text-transform: uppercase;
+		}
+
+		.abt-hero .fss-bc-item {
+			display: flex;
+			align-items: center;
+			color: rgba(255, 255, 255, .5);
+		}
+
+		.abt-hero .fss-bc-item:not(:last-child)::after {
+			content: "/";
+			margin-left: 8px;
+			color: rgba(255, 255, 255, .28);
+		}
+
+		.abt-hero .fss-bc-link {
+			color: rgba(255, 255, 255, .5);
+			text-decoration: none;
+			transition: color .25s;
+		}
+
+		.abt-hero .fss-bc-link:hover {
+			color: var(--accent);
+		}
+
+		.abt-hero .fss-bc-current {
+			color: rgba(255, 255, 255, .85);
+		}
+
+		/* ---------- ЦИФРЫ ---------- */
+		.abt-facts {
+			padding-top: clamp(48px, 5vw, 82px);
+			padding-bottom: clamp(48px, 5vw, 82px);
+		}
+
+		.abt-stats {
+			border-top: 1px solid var(--line);
+			display: grid;
+			grid-template-columns: repeat(5, minmax(0, 1fr));
+		}
+
+		.abt-stat {
+			border-right: 1px solid var(--line);
+			padding: 32px 28px 0 0;
+			transition: color .35s;
+		}
+
+		.abt-stat:last-child {
+			border-right: 0;
+		}
+
+		.abt-stat dd {
+			margin: 0;
+			letter-spacing: -.055em;
+			font-weight: 450;
+			font-size: clamp(38px, 4.6vw, 72px);
+			line-height: 1;
+		}
+
+		.abt-stat dd>span {
+			color: var(--accent);
+			vertical-align: top;
+			font-size: .46em;
+			letter-spacing: 0;
+		}
+
+		.abt-stat dt {
+			color: var(--muted);
+			margin-top: 20px;
+			font-size: 11px;
+			letter-spacing: .08em;
+			text-transform: uppercase;
+		}
+
+		.abt-stat:hover dt {
+			color: var(--ink);
+		}
+
+		.abt-facts__note {
+			color: var(--muted);
+			margin-top: 34px;
+			padding-top: 18px;
+			border-top: 1px solid var(--line);
+			font-size: 9px;
+		}
+
+		/* ---------- О КОМПАНИИ ---------- */
+		.abt-about {
+			padding-top: clamp(44px, 4vw, 64px);
+			padding-bottom: clamp(64px, 7vw, 120px);
+		}
+
+		/* ---------- ПОЧЕМУ МЫ ---------- */
+		.abt-why {
+			padding-bottom: clamp(64px, 7vw, 120px);
+		}
+
+		.abt-why-grid {
+			display: grid;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 0 clamp(28px, 3vw, 56px);
+		}
+
+		.abt-why-card {
+			border-top: 1px solid var(--ink);
+			padding-top: 26px;
+		}
+
+		.abt-why-card .num {
+			color: var(--accent);
+			font-size: 10px;
+			letter-spacing: .12em;
+			font-weight: 600;
+		}
+
+		.abt-why-card h3 {
+			margin: 18px 0 0;
+			font-size: clamp(22px, 2.1vw, 32px);
+			font-weight: 500;
+			line-height: 1.12;
+			letter-spacing: -.04em;
+		}
+
+		.abt-why-card p {
+			color: var(--muted);
+			margin-top: 14px;
+			font-size: 14px;
+			line-height: 1.65;
+		}
+
+		/* ---------- ЭКСПЕРТИЗА ---------- */
+		.abt-exp {
+			padding-bottom: clamp(64px, 7vw, 120px);
+		}
+
+		.abt-exp-grid {
+			display: grid;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 0 clamp(28px, 3vw, 56px);
+		}
+
+		.abt-exp-card {
+			border-top: 1px solid var(--line);
+			padding-top: 24px;
+			padding-bottom: 30px;
+		}
+
+		.abt-exp-card .num {
+			color: var(--muted);
+			font-size: 10px;
+			letter-spacing: .12em;
+			font-weight: 600;
+		}
+
+		.abt-exp-card h3 {
+			margin: 16px 0 0;
+			font-size: clamp(19px, 1.7vw, 25px);
+			font-weight: 500;
+			line-height: 1.16;
+			letter-spacing: -.035em;
+		}
+
+		.abt-exp-card p {
+			color: var(--muted);
+			margin-top: 12px;
+			font-size: 14px;
+			line-height: 1.65;
+		}
+
+		.abt-exp-card a {
+			display: inline-flex;
+			align-items: center;
+			gap: 10px;
+			margin-top: 18px;
+			color: var(--ink);
+			font-size: 12px;
+			text-decoration: none;
+			border-bottom: 1px solid var(--accent);
+			padding-bottom: 3px;
+			transition: color .25s, border-color .25s;
+		}
+
+		.abt-exp-card a:hover {
+			color: var(--brand);
+			border-color: var(--brand);
+		}
+
+		.abt-exp-card a svg {
+			transition: transform .35s var(--ease);
+		}
+
+		.abt-exp-card a:hover svg {
+			transform: translate(3px, -3px);
+		}
+
+		/* ---------- ТЁМНЫЙ БЛОК ---------- */
+		.abt-dark {
+			background: #1c1d1f;
+			color: var(--paper);
+			padding-block: clamp(64px, 7vw, 120px);
+		}
+
+		.abt-dark .section-topline {
+			border-color: rgba(255, 255, 255, .2);
+		}
+
+		.abt-dark .section-topline .eyebrow {
+			color: rgba(240, 239, 237, .6);
+		}
+
+		.abt-dark h2 {
+			font-size: clamp(32px, 4.2vw, 64px);
+			font-weight: 450;
+			line-height: 1.06;
+			letter-spacing: -.055em;
+		}
+
+		.abt-dark h2 span {
+			color: #918b85;
+		}
+
+		.abt-dark__grid {
+			display: grid;
+			grid-template-columns: 1.25fr .75fr;
+			gap: clamp(30px, 5vw, 90px);
+			align-items: start;
+		}
+
+		.abt-dark__list {
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+
+		.abt-dark__list li {
+			border-bottom: 1px solid rgba(255, 255, 255, .12);
+			padding: 20px 0;
+			font-size: 14px;
+			line-height: 1.6;
+			color: rgba(240, 239, 237, .8);
+		}
+
+		.abt-dark__list li:first-child {
+			border-top: 1px solid rgba(255, 255, 255, .12);
+		}
+
+		.abt-dark__list b {
+			display: block;
+			color: var(--paper);
+			font-weight: 500;
+			font-size: 15px;
+			margin-bottom: 6px;
+		}
+
+		.abt-dark__side p {
+			color: rgba(240, 239, 237, .62);
+			font-size: 14px;
+			line-height: 1.7;
+		}
+
+		.abt-dark__side .text-link {
+			margin-top: 26px;
+		}
+
+		/* ---------- РЕКВИЗИТЫ ---------- */
+		.abt-requ {
+			padding-block: clamp(64px, 7vw, 120px);
+		}
+
+		.abt-requ-grid {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 0 clamp(32px, 6vw, 110px);
+		}
+
+		.abt-requ-list {
+			margin: 0;
+			border-top: 1px solid var(--line);
+		}
+
+		.abt-requ-list>div {
+			display: grid;
+			grid-template-columns: 180px minmax(0, 1fr);
+			gap: 12px 24px;
+			border-bottom: 1px solid var(--line);
+			padding: 18px 0;
+		}
+
+		.abt-requ-list dt {
+			color: var(--muted);
+			font-size: 11px;
+			letter-spacing: .08em;
+			text-transform: uppercase;
+			padding-top: 3px;
+		}
+
+		.abt-requ-list dd {
+			margin: 0;
+			font-size: 15px;
+			line-height: 1.6;
+		}
+
+		.abt-requ-list dd a {
+			color: var(--ink);
+			text-decoration: none;
+			border-bottom: 1px solid var(--accent);
+			transition: color .25s, border-color .25s;
+		}
+
+		.abt-requ-list dd a:hover {
+			color: var(--brand);
+			border-color: var(--brand);
+		}
+
+		.abt-requ-note {
+			color: var(--muted);
+			margin-top: 24px;
+			font-size: 12px;
+			line-height: 1.6;
+		}
+
+		.abt-requ-note a {
+			color: var(--brand);
+			text-decoration: none;
+			border-bottom: 1px solid var(--accent);
+		}
+
+		.abt-requ-note a:hover {
+			border-color: var(--brand);
+		}
+
+		/* ---------- АДАПТИВ ---------- */
+		@media (max-width: 1100px) {
+			.abt-stats {
+				grid-template-columns: repeat(3, minmax(0, 1fr));
+			}
+
+			.abt-stat:nth-child(3) {
+				border-right: 0;
+			}
+
+			.abt-why-grid,
+			.abt-exp-grid {
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+			}
+		}
+
+		@media (max-width: 900px) {
+			.abt-hero {
+				min-height: 560px;
+			}
+
+			.abt-dark__grid {
+				grid-template-columns: 1fr;
+				gap: 34px;
+			}
+
+			.abt-requ-grid {
+				grid-template-columns: 1fr;
+				gap: 34px;
+			}
+		}
+
+		@media (max-width: 640px) {
+			.abt-hero__inner {
+				padding-top: calc(var(--fss-header-h, 90px) + 44px);
+				padding-bottom: 40px;
+			}
+
+			.abt-stats {
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+			}
+
+			.abt-stat {
+				border-right: 0;
+				padding-right: 0;
+			}
+
+			.abt-why-grid,
+			.abt-exp-grid {
+				grid-template-columns: 1fr;
+			}
+
+			.abt-requ-list>div {
+				grid-template-columns: 1fr;
+				gap: 6px;
+			}
+		}
+	</style>
 </head>
 <body data-page="inner">
-	<?php include_once __DIR__ . '/../../components/header.php'; ?>
+	<?php
+	// Шапка прозрачная в начале: под ней полноэкранный hero «О нас» (как на главной).
+	$GLOBALS['fss_nav_mode'] = 'transparent';
+	include_once __DIR__ . '/../../components/header.php';
+	?>
 	<main>
-	<?= seo_breadcrumbs_html() ?>
-		<!-- HERO -->
-		<section class="xl xl-hero">
-			<div class="xl-eyebrow">Инновации на каждом этапе</div>
-			<div class="xl-hero-grid">
-				<div>
-					<h1>Реализуем успешную стратегию строительства и инновационные решения для любых задач</h1>
-					<a href="/#contact" title="Обсудить проект" class="xl-btn">Обсудить проект <i class="fa-solid fa-arrow-right"></i></a>
-					<div class="xl-scroll">
-						<span class="xl-scroll ar"><i class="fa-solid fa-arrow-down"></i></span>
-						<span class="t">Смотрите дальше</span>
+		<!-- HERO (по дизайну главной) -->
+		<section class="abt-hero" aria-labelledby="abt-title" data-nav-hero>
+			<div class="abt-hero__bg" aria-hidden="true">
+				<img src="/public/assets/image/Components/banner/hero.jpg.webp" alt="" loading="eager" fetchpriority="high" decoding="async" width="1672" height="941">
+			</div>
+			<div class="abt-hero__shade" aria-hidden="true"></div>
+			<div class="abt-hero__inner section-shell">
+				<?= seo_breadcrumbs_html() ?>
+				<p class="eyebrow abt-hero__eyebrow">
+					<span class="live-dot" aria-hidden="true"></span>
+					О компании · на рынке с <?= htmlspecialchars($foundedMarket) ?> года
+				</p>
+				<h1 id="abt-title">
+					<span>Производство, строительство</span>
+					<span>и оснащение БВЗ<span class="accent-dot">.</span></span>
+				</h1>
+				<div class="abt-hero__intro">
+					<p>ООО «ФАВОРИТ-СТРОЙ-СНАБ» — производитель и генеральный подрядчик быстровозводимых зданий. Собственное производство, монтаж, капремонт и оснащение — по договору с фиксированной сметой.</p>
+					<div class="abt-hero__links">
+						<a class="button" href="/#contact" data-goal="about_hero_cta">Обсудить проект
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+								<path d="M7 7h10v10"></path>
+								<path d="M7 17 17 7"></path>
+							</svg>
+						</a>
+						<a class="text-link" href="/portfolio">Смотреть объекты
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+								<path d="M7 7h10v10"></path>
+								<path d="M7 17 17 7"></path>
+							</svg>
+						</a>
 					</div>
-					<div class="xl-auto">
-						<div class="n1">Автоматизация производства</div>
-						<div class="n2">Модули из сэндвич-панелей за считанные дни</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- КОМПАНИЯ В ЦИФРАХ -->
+		<section class="abt-facts section-shell" aria-label="ФСС в цифрах">
+			<div class="section-topline">
+				<p class="eyebrow">01 / Компания в цифрах</p>
+				<span class="eyebrow">Москва, область и вся Россия</span>
+			</div>
+			<dl class="abt-stats">
+				<div class="abt-stat">
+					<dd><?= htmlspecialchars((string)seo_config('market_years')) ?></dd>
+					<dt>лет на рынке</dt>
+				</div>
+				<div class="abt-stat">
+					<dd><?= htmlspecialchars((string)seo_config('objects')) ?></dd>
+					<dt>сданных объектов</dt>
+				</div>
+				<div class="abt-stat">
+					<dd><?= htmlspecialchars((string)seo_config('kapremont_objects')) ?></dd>
+					<dt>объектов капремонта</dt>
+				</div>
+				<div class="abt-stat">
+					<dd><?= htmlspecialchars((string)seo_config('schools_equipped')) ?></dd>
+					<dt>школ оснащено</dt>
+				</div>
+				<div class="abt-stat">
+					<dd><?= htmlspecialchars((string)seo_config('guarantee_years')) ?><span> лет</span></dd>
+					<dt>гарантия на объекты</dt>
+				</div>
+			</dl>
+			<p class="abt-facts__note eyebrow">Собственный завод БВЗ · Сроки от <?= htmlspecialchars((string)seo_config('deadline_days')) ?> дней · Смета за <?= htmlspecialchars((string)seo_config('price_response_minutes')) ?> минут · Работаем по 44-ФЗ и 223-ФЗ</p>
+		</section>
+
+		<!-- О КОМПАНИИ -->
+		<section class="abt-about section-shell" aria-labelledby="abt-about-title">
+			<div class="section-topline">
+				<p class="eyebrow">02 / О компании</p>
+				<span class="eyebrow">С <?= htmlspecialchars($foundedMarket) ?> года</span>
+			</div>
+			<div class="about-grid">
+				<h2 id="abt-about-title">От фундамента<br>до сдачи объекта<br><span>под ключ.</span></h2>
+				<div class="about-copy">
+					<span class="about-symbol" aria-hidden="true">
+						<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+							<path d="M5 12h14"></path>
+							<path d="M12 5v14"></path>
+						</svg>
+					</span>
+					<p>Работаем с <?= htmlspecialchars($foundedMarket) ?> года. В основе — <?= htmlspecialchars((string)seo_config('market_years')) ?> лет практики в быстровозводимом строительстве.</p>
+					<p>Мы ценим, что вы рассматриваете ФАВОРИТ-СТРОЙ-СНАБ как стратегического партнёра. Команда создаёт решения под ваши задачи и сопровождает проект на всех этапах: от проектирования и производства модулей до монтажа, инженерных сетей и оснащения объекта.</p>
+					<a href="/uslugi" class="text-link">Наши услуги
+						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+							<path d="M7 7h10v10"></path>
+							<path d="M7 17 17 7"></path>
+						</svg>
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<!-- ПОЧЕМУ ВЫБИРАЮТ -->
+		<section class="abt-why section-shell" aria-labelledby="abt-why-title">
+			<div class="section-topline">
+				<p class="eyebrow">03 / Почему выбирают</p>
+				<span class="eyebrow">Ваш партнёр на всём цикле</span>
+			</div>
+			<div class="head-row">
+				<h2 id="abt-why-title">Три причины<br>работать с нами.</h2>
+				<p>Мы не перепродаём чужое производство и не отдаём объект «на подрядчика».<br>За объектом стоит своя команда и свои мощности.</p>
+			</div>
+			<div class="abt-why-grid">
+				<?php foreach ($why as $w): ?>
+					<div class="abt-why-card">
+						<div class="num"><?= htmlspecialchars($w['num']) ?></div>
+						<h3><?= htmlspecialchars($w['title']) ?></h3>
+						<p><?= htmlspecialchars($w['text']) ?></p>
 					</div>
-				</div>
-				<div class="xl3" aria-hidden="true">
-					<div class="cube">
-						<div class="fc a"></div>
-						<div class="fc b"></div>
-						<div class="fc c"></div>
+				<?php endforeach; ?>
+			</div>
+		</section>
+
+		<!-- ЭКСПЕРТИЗА И РЕАЛИЗОВАННЫЕ ПРОЕКТЫ -->
+		<section class="abt-exp section-shell" aria-labelledby="abt-exp-title">
+			<div class="section-topline">
+				<p class="eyebrow">04 / Экспертиза</p>
+				<span class="eyebrow">Реализованные объекты</span>
+			</div>
+			<div class="head-row">
+				<h2 id="abt-exp-title">Надёжность для<br>силовых структур<br>и госзаказчиков.</h2>
+				<p>В настоящее время компания сотрудничает с Федеральной службой войск национальной гвардии Российской Федерации.<br>Школы и соцобъекты — по стандартам Минпросвещения РФ.</p>
+			</div>
+			<div class="abt-exp-grid">
+				<?php foreach ($projects as $p): ?>
+					<div class="abt-exp-card">
+						<div class="num"><?= htmlspecialchars($p['num']) ?></div>
+						<h3><?= htmlspecialchars($p['title']) ?></h3>
+						<p><?= htmlspecialchars($p['text']) ?></p>
+						<a href="<?= htmlspecialchars($p['link']) ?>" title="<?= htmlspecialchars($p['link_text']) ?>"><?= htmlspecialchars($p['link_text']) ?>
+							<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+								<path d="M7 7h10v10"></path>
+								<path d="M7 17 17 7"></path>
+							</svg>
+						</a>
 					</div>
-					<span class="sphere"></span>
-					<span class="sq"></span>
-					<span class="dot d1"></span>
-					<span class="dot d2"></span>
-				</div>
+				<?php endforeach; ?>
 			</div>
 		</section>
 
-		<!-- MARQUEE -->
-		<section class="xl-marq" aria-hidden="true">
-			<div class="xl-marq-in">
-				<span class="big">Инновации — на каждом этапе</span>			<span class="big dim">Строим с <?= $foundedMarket ?></span>
-				<span class="big">Инновации — на каждом этапе</span>			<span class="big dim">Строим с <?= $foundedMarket ?></span>
-			</div>
-		</section>
-
-		<!-- ABOUT -->
-		<section class="xl xl-about">
-			<div class="xl-about-grid">
-				<div class="xl-about-lbl">О нас</div>
-				<div>
-					<h2>ФАВОРИТ-СТРОЙ-СНАБ — команда профессионалов на рынке с <?= $foundedMarket ?> года, <span class="dim">сфокусирована на интегрированных, надёжных и экономичных решениях, где 100% удовлетворённость клиента — привилегия.</span></h2>
-					<a href="/uslugi" title="Наши услуги" class="xl-btn">Наши услуги <i class="fa-solid fa-arrow-right"></i></a>
+		<!-- ТЁМНЫЙ БЛОК: ЗАКАЗЧИКИ И ГАРАНТИИ -->
+		<section class="abt-dark" aria-labelledby="abt-partners-title">
+			<div class="section-shell">
+				<div class="section-topline">
+					<p class="eyebrow">05 / Заказчики и гарантии</p>
+					<span class="eyebrow">Москва · Россия</span>
 				</div>
-			</div>
-		</section>
-
-		<!-- WHY CHOOSE -->
-		<section class="xl xl-why">
-			<div class="xl-why-grid">
-				<div class="xl-why-r">
-					<p class="txt">Мы ценим, что вы рассматриваете ФАВОРИТ-СТРОЙ-СНАБ как стратегического партнёра. Наша команда создаёт уникальные решения под ваши задачи и поддерживает на всех этапах реализации. Мы внедряем новые возможности, модернизируем подход и обеспечиваем эффективность ваших объектов.</p>
-					<a href="/#contact" title="Обсудить проект" class="xl-btn">Обсудить проект <i class="fa-solid fa-arrow-right"></i></a>
-				</div>
-				<div class="xl-why-l">
-					<div class="xl-why-tag">Ваш партнёр</div>
-					<h2>Почему <span class="dim">выбирают</span><br>ФАВОРИТ-СТРОЙ-СНАБ?</h2>
-				</div>
-			</div>
-
-			<div class="xl-cards">
-				<div class="xl-card">
-					<div class="num">01</div>
-					<h3>Внутренний контроль качества</h3>
-					<div class="x3 f3" aria-hidden="true"><span class="octa"></span><span class="gem"></span></div>
-				</div>
-				<div class="xl-card">
-					<div class="num">02</div>
-					<h3>Поддержка 24/7 и бесперебойная эксплуатация</h3>
-					<div class="x3 f3" aria-hidden="true"><span class="octa"></span><span class="gem"></span></div>
-				</div>
-				<div class="xl-card">
-					<div class="num">03</div>
-					<h3>Сертифицированный опыт во многих технологиях</h3>
-					<div class="x3 f3" aria-hidden="true"><span class="octa"></span><span class="gem"></span></div>
-				</div>
-			</div>
-		</section>
-
-		<!-- СТАТИСТИКА -->
-		<section class="xl xl-stats">
-			<div class="xl-stats-h">Компания в цифрах</div>
-			<div class="xl-stats-row">
-				<div class="xl-stat"><div class="num"><?= htmlspecialchars((string)seo_config('market_years')) ?></div><div class="lbl">лет на рынке</div></div>
-				<div class="xl-stat"><div class="num"><?= htmlspecialchars((string)seo_config('deadline_days')) ?></div><div class="lbl">дней до сдачи модуля</div></div>
-				<div class="xl-stat"><div class="num"><?= htmlspecialchars((string)seo_config('objects')) ?></div><div class="lbl">проектов сдано</div></div>
-				<div class="xl-stat"><div class="num"><?= htmlspecialchars((string)seo_config('guarantee_years')) ?></div><div class="lbl">лет гарантии</div></div>
-				<div class="xl-stat"><div class="num">100%</div><div class="lbl">фиксированная цена</div></div>
-			</div>
-		</section>
-
-		<!-- ФОНОВОЕ ИЗОБРАЖЕНИЕ -->
-		<section class="xl">
-			<div class="xl-band">
-				<img src="/public/assets/image/banner.webp"<?= seo_img_attrs('/public/assets/image/banner.webp') ?> alt="Модульное строительство — ФСС" loading="lazy" onerror="this.style.display=.none." title="Модульное строительство — ФСС">
-				<div class="ov"></div>
-				<div class="cap">
-					<div class="who">ФАВОРИТ-СТРОЙ-СНАБ</div>
-					<div class="what">Строим быстровозводимые здания по всей России на рынке с <?= $foundedMarket ?> года</div>
+				<div class="abt-dark__grid">
+					<div>
+						<h2 id="abt-partners-title">Работаем там,<br>где важна <span>надёжность.</span></h2>
+						<ul class="abt-dark__list">
+							<li><b>Росгвардия</b>Поставка и монтаж быстровозводимых зданий для объектов Федеральной службы войск национальной гвардии.</li>
+							<li><b>Минпросвещения РФ</b>Оснащение школ по федеральным стандартам: мебель, лабораторные комплексы, мультимедийные и инженерные системы.</li>
+							<li><b>44-ФЗ и 223-ФЗ</b>Участие в государственных и корпоративных закупках, допуск СРО, полный пакет закрывающих документов.</li>
+							<li><b>Гарантия <?= htmlspecialchars((string)seo_config('guarantee_years')) ?> лет</b>На конструкции, инженерные системы и смонтированное оборудование.</li>
+						</ul>
+					</div>
+					<div class="abt-dark__side">
+						<p>Данные подтверждены бухлгалтерской отчётностью ФНС и открытыми реестрами: регистрация с <?= htmlspecialchars($founded) ?> года, выручка 2025 — 521,7 млн руб., 17 контрактов на 815,4 млн руб. в системе госзакупок.</p>
+						<a href="/portfolio#facts" class="text-link">Все показатели компании
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+								<path d="M7 7h10v10"></path>
+								<path d="M7 17 17 7"></path>
+							</svg>
+						</a>
+					</div>
 				</div>
 			</div>
 		</section>
 
 		<!-- РЕКВИЗИТЫ -->
-		<section class="xl">
-			<div class="xl-about">
-				<div class="xl-about-grid">
-					<div class="xl-about-lbl">Реквизиты</div>
+		<section class="abt-requ section-shell" aria-labelledby="abt-requ-title">
+			<div class="section-topline">
+				<p class="eyebrow">06 / Реквизиты</p>
+				<span class="eyebrow">Юридические данные</span>
+			</div>
+			<div class="head-row">
+				<h2 id="abt-requ-title">Юридические реквизиты<br><span>компании.</span></h2>
+				<p>ООО «ФАВОРИТ-СТРОЙ-СНАБ» зарегистрировано <?= htmlspecialchars(date('d.m.Y', strtotime($regDate))) ?> г.<br>Данные актуальны и подтверждены выпиской из ЕГРЮЛ. По любым вопросам — <?= htmlspecialchars($phoneDisplay) ?>.</p>
+			</div>
+			<div class="abt-requ-grid">
+				<dl class="abt-requ-list">
 					<div>
-						<h2>Юридические реквизиты ООО «ФАВОРИТ-СТРОЙ-СНАБ»</h2>
-						<p class="txt">Руководитель: <b><?= htmlspecialchars($ceo) ?></b></p>
-						<p class="txt">ИНН <?= htmlspecialchars($inn) ?> / КПП <?= htmlspecialchars((string)seo_config('kpp')) ?> / ОГРН <?= htmlspecialchars($ogrn) ?></p>
-						<p class="txt">Дата регистрации: <?= htmlspecialchars(date('d.m.Y', strtotime($regDate))) ?> г.</p>
-						<p class="txt">Адрес: <?= htmlspecialchars(seo_config('address')['street']) ?>, <?= htmlspecialchars(seo_config('address')['locality']) ?>, <?= htmlspecialchars(seo_config('address')['postal']) ?></p>
-						<p class="txt">Телефон: <a href="tel:<?= preg_replace('/\D/', '', seo_config('phone')) ?>" title="Позвонить"><?= htmlspecialchars(seo_config('phone_display')) ?></a></p>
-						<p class="txt">Email: <a href="mailto:<?= htmlspecialchars((string)seo_config('email_puny')) ?>" title="Написать на email"><?= htmlspecialchars(seo_config('email')) ?></a></p>
-						<p class="txt" style="font-size:12px;color:#71717A;margin-top:16px">Данные подтверждены выпиской из ЕГРЮЛ / rusprofile.ru (регистрация с <?= $founded ?> года, выручка 2025 — 522 млн руб., участник госзакупок на 829 млн руб.).</p>
+						<dt>Полное наименование</dt>
+						<dd>Общество с ограниченной ответственностью «ФАВОРИТ-СТРОЙ-СНАБ»</dd>
 					</div>
+					<div>
+						<dt>Руководитель</dt>
+						<dd><?= htmlspecialchars($ceo) ?></dd>
+					</div>
+					<div>
+						<dt>ИНН / КПП</dt>
+						<dd><?= htmlspecialchars($inn) ?> / <?= htmlspecialchars($kpp) ?></dd>
+					</div>
+					<div>
+						<dt>ОГРН</dt>
+						<dd><?= htmlspecialchars($ogrn) ?></dd>
+					</div>
+					<div>
+						<dt>Дата регистрации</dt>
+						<dd><?= htmlspecialchars(date('d.m.Y', strtotime($regDate))) ?> г.</dd>
+					</div>
+				</dl>
+				<div>
+					<dl class="abt-requ-list">
+						<div>
+							<dt>Адрес</dt>
+							<dd><?= htmlspecialchars((string)($address['postal'] ?? '')) ?>, <?= htmlspecialchars((string)($address['locality'] ?? '')) ?>, <?= htmlspecialchars((string)($address['street'] ?? '')) ?></dd>
+						</div>
+						<div>
+							<dt>Телефон</dt>
+							<dd><a href="tel:<?= htmlspecialchars(preg_replace('/\D/', '', $phone)) ?>" title="Позвонить"><?= htmlspecialchars($phoneDisplay) ?></a></dd>
+						</div>
+						<div>
+							<dt>Email</dt>
+							<dd><a href="mailto:<?= htmlspecialchars((string)seo_config('email_puny')) ?>" title="Написать на email"><?= htmlspecialchars((string)seo_config('email')) ?></a></dd>
+						</div>
+						<div>
+							<dt>Регионы работы</dt>
+							<dd><?= htmlspecialchars(implode(', ', array_slice((array)seo_config('area_served'), 0, 5))) ?> и вся Россия</dd>
+						</div>
+						<div>
+							<dt>Сайт</dt>
+							<dd><a href="<?= htmlspecialchars((string)seo_config('base_url')) ?>" title="ФАВОРИТ-СТРОЙ-СНАБ">фсс.рус</a></dd>
+						</div>
+					</dl>
+					<p class="abt-requ-note">Все показатели компании — в таблице «Компания в цифрах» в разделе <a href="/portfolio#facts">Портфолио</a>.</p>
 				</div>
 			</div>
 		</section>

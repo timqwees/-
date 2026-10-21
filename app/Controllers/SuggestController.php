@@ -48,6 +48,9 @@ class SuggestController
 	/** @var bool Nominatim пропущен из-за троттлинга — результат неполный */
 	private static bool $partial = false;
 
+	/** @var int TTL для неполных ответов (по умолчанию — как у пустых) */
+	private static int $partialTtl = self::CACHE_NEG_TTL;
+
 	/** @var array<int,array{0:string,1:string}>|null Словарь городов */
 	private static ?array $cities = null;
 
@@ -56,6 +59,12 @@ class SuggestController
 	 */
 	public static function location(): void
 	{
+		// Эндпоинт не должен висеть дольше нескольких секунд: страница ждёт ответ
+		@set_time_limit(10);
+
+		self::$partial = false;
+		self::$partialTtl = self::CACHE_NEG_TTL;
+
 		$query = self::readQuery();
 		if ($query === '') {
 			self::respond(['suggestions' => []]);
@@ -86,9 +95,9 @@ class SuggestController
 		}
 
 		$suggestions = self::fetchAll($query);
-		// Если Nominatim пропустили по троттлингу — список неполный,
+		// Если ответ неполный (пропустили Nominatim или не нашли улицу) —
 		// кэшируем ненадолго, чтобы следующий запрос мог собрать его полнее
-		self::cacheSet($cacheKey, $suggestions, self::$partial ? self::CACHE_NEG_TTL : self::CACHE_TTL);
+		self::cacheSet($cacheKey, $suggestions, self::$partial ? self::$partialTtl : self::CACHE_TTL);
 
 		self::respond(['suggestions' => $suggestions]);
 	}
@@ -175,6 +184,13 @@ class SuggestController
 		$items = array_merge($items, self::itemsOpenMeteo($raw['openmeteo']['json'] ?? null));
 		$items = array_merge($items, self::itemsNominatim($raw['nominatim']['json'] ?? null, $parsed['isAddress']));
 		$items = array_merge($items, self::itemsPhoton($raw['photon']['json'] ?? null));
+
+		// По адресному запросу вернулся только город — ответ неполный,
+		// сохраняем его лишь на минуту, чтобы не «залип» на час
+		if ($parsed['isAddress'] && !self::hasAddressItems($items)) {
+			self::$partial = true;
+			self::$partialTtl = 60;
+		}
 
 		return self::finalize($items);
 	}
@@ -350,11 +366,23 @@ class SuggestController
 			return self::$cities;
 		}
 
+		// Словарь кэшируем в системном tmp: рабочий том проекта иногда подвисает
+		// на чтении (из-за этого запрос падал по таймауту), а /tmp всегда быстрый
+		$tmp = sys_get_temp_dir() . '/fss-suggest-cities.php';
+		if (is_file($tmp)) {
+			$data = require $tmp;
+			if (is_array($data)) {
+				self::$cities = $data;
+				return self::$cities;
+			}
+		}
+
 		$file = dirname(__DIR__, 2) . '/app/Data/suggest_cities.php';
 		if (is_file($file)) {
 			$data = require $file;
 			if (is_array($data)) {
 				self::$cities = $data;
+				@file_put_contents($tmp, '<?php return ' . var_export($data, true) . ';');
 			}
 		}
 		if (self::$cities === null) {
@@ -678,6 +706,21 @@ class SuggestController
 	// ── Утилиты ───────────────────────────────────────────────────────────────
 
 	/**
+	 * Есть ли в списке именно адресные подсказки (улица/дом), а не только город.
+	 *
+	 * @param array<int,array<string,mixed>> $items
+	 */
+	private static function hasAddressItems(array $items): bool
+	{
+		foreach ($items as $item) {
+			if (($item['_rank'] ?? 3) === 1) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Ранг подсказки: сначала города/населённые пункты, потом улицы, потом дома.
 	 */
 	private static function rank(bool $isCity, bool $hasStreet, bool $hasHouse): int
@@ -751,6 +794,10 @@ class SuggestController
 				CURLOPT_RETURNTRANSFER => true,
 				CURLOPT_TIMEOUT_MS => (int)(((float)($spec['timeout'] ?? self::TIMEOUT)) * 1000),
 				CURLOPT_CONNECTTIMEOUT_MS => 2500,
+				// Только IPv4: резолв AAAA-записей у провайдеров иногда подвисает
+				// на десятки секунд и роняет весь запрос
+				CURLOPT_IPRESOLVE => CURL_IPRESOLVE_V4,
+				CURLOPT_NOSIGNAL => true,
 				CURLOPT_HTTPHEADER => $spec['headers'],
 				CURLOPT_USERAGENT => 'fss-site/1.0 (+https://xn--q1aah.xn--p1acf; location suggest)',
 				CURLOPT_FOLLOWLOCATION => false,
@@ -981,17 +1028,21 @@ class SuggestController
 	 */
 	private static function cacheGet(string $key): ?array
 	{
-		$file = self::cacheDir() . $key . '.json';
-		if (!is_file($file)) {
+		$file = self::cacheFile($key);
+		if ($file === '' || !is_file($file)) {
 			return null;
 		}
 		$age = time() - (int)filemtime($file);
+		$raw = @file_get_contents($file);
+		if ($raw === false) {
+			return null;
+		}
 		// Пустой ответ (опечатка) держим недолго, чтобы не спрашивать провайдеров зря
-		$ttl = $age > 0 && self::cacheIsEmpty($file) ? self::CACHE_NEG_TTL : self::CACHE_TTL;
+		$ttl = $age > 0 && trim($raw) === '[]' ? self::CACHE_NEG_TTL : self::CACHE_TTL;
 		if ($age > $ttl) {
 			return null;
 		}
-		$data = json_decode((string)file_get_contents($file), true);
+		$data = json_decode($raw, true);
 		return is_array($data) ? $data : null;
 	}
 
@@ -1002,22 +1053,20 @@ class SuggestController
 	 */
 	private static function cacheGetStale(string $key): ?array
 	{
-		$file = self::cacheDir() . $key . '.json';
-		if (!is_file($file)) {
+		$file = self::cacheFile($key);
+		if ($file === '' || !is_file($file)) {
 			return null;
 		}
 		if ((time() - (int)filemtime($file)) > self::CACHE_STALE_MAX) {
 			@unlink($file);
 			return null;
 		}
-		$data = json_decode((string)file_get_contents($file), true);
+		$raw = @file_get_contents($file);
+		if ($raw === false) {
+			return null;
+		}
+		$data = json_decode($raw, true);
 		return is_array($data) ? $data : null;
-	}
-
-	private static function cacheIsEmpty(string $file): bool
-	{
-		$raw = (string)file_get_contents($file);
-		return trim($raw) === '[]';
 	}
 
 	/**
@@ -1025,11 +1074,10 @@ class SuggestController
 	 */
 	private static function cacheSet(string $key, array $data, int $ttl = self::CACHE_TTL): void
 	{
-		$dir = self::cacheDir();
-		if (!is_dir($dir)) {
-			@mkdir($dir, 0755, true);
+		$file = self::cacheFile($key);
+		if ($file === '') {
+			return;
 		}
-		$file = $dir . $key . '.json';
 		@file_put_contents($file, json_encode($data, JSON_UNESCAPED_UNICODE));
 		// Время жизни храним через mtime: age = now - mtime
 		$age = max(0, self::CACHE_TTL - $ttl);
@@ -1038,9 +1086,30 @@ class SuggestController
 		}
 	}
 
+	/** Путь файла кэша или '' — если кэшировать некуда. */
+	private static function cacheFile(string $key): string
+	{
+		$dir = self::cacheDir();
+		return $dir === '' ? '' : $dir . $key . '.json';
+	}
+
 	private static function cacheDir(): string
 	{
-		return dirname(__DIR__, 2) . '/var/cache/suggest/';
+		// Кэш лежит вне каталога проекта: внутри репозитория никаких var/ и временных файлов.
+		// Приоритет — системный tmp (он всегда локальный и быстрый), затем общий кэш проекта.
+		$dir = rtrim((string)sys_get_temp_dir(), '/') . '/fss-suggest-cache/';
+		if (!is_dir($dir)) {
+			@mkdir($dir, 0755, true);
+		}
+		if (is_dir($dir) && is_writable($dir)) {
+			return $dir;
+		}
+
+		$dir = \App\Models\Cache\Path::file('suggest/');
+		if ($dir !== '' && !is_dir($dir)) {
+			@mkdir($dir, 0755, true);
+		}
+		return $dir;
 	}
 
 	/**

@@ -10,7 +10,9 @@ foreach ($allPosts as $p) {
 	$catCounts[$p['category_name']] = ($catCounts[$p['category_name']] ?? 0) + 1;
 }
 
-$filterCat = isset($_GET['category']) ? trim((string)$_GET['category']) : 'all';
+// GET-параметры читаем только как скаляры: ?category[]=x иначе даёт
+// "Array to string conversion" и ломает фильтр/пагинацию.
+$filterCat = fss_param('category', 'all');
 $isFiltered = ($filterCat !== '' && $filterCat !== 'all' && isset($catCounts[$filterCat]));
 
 $filtered = [];
@@ -26,7 +28,7 @@ if ($featuredSlug !== null) unset($list[$featuredSlug]);
 $perPage = 6;
 $total = count($list);
 $maxPages = max(1, (int)ceil($total / $perPage));
-$page = max(1, min($maxPages, (int)($_GET['page'] ?? 1)));
+$page = max(1, min($maxPages, (int)fss_param('page', '1')));
 $pageItems = array_slice($list, ($page - 1) * $perPage, $perPage, true);
 
 $popular = array_slice($allPosts, 0, 5, true);
@@ -56,10 +58,10 @@ $description = 'Экспертные статьи о строительстве 
 	<meta name="description" content="<?= $description ?> ☎ <?= htmlspecialchars((string)seo_config('phone_display')) ?>">
 	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 	<meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
-	<meta name="theme-color" content="#F97316">
+	<meta name="theme-color" content="#876b55">
 	<link rel="shortcut icon" href="/public/assets/image/logo/favicon/favicon.ico" />
 	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/favicon/apple-touch-icon.png" />
-	<link rel="manifest" href="/public/assets/image/logo/favicon/site.webmanifest" />
+	<link rel="manifest" href="/manifest.json" />
 	<?= seo_canonical_tags() ?>
 	<?= seo_verify_tags() ?>
 	<?= seo_og_tags($title, $description, '/public/assets/image/og/og-blog-1200x630.jpg') ?>
@@ -84,9 +86,9 @@ $description = 'Экспертные статьи о строительстве 
 			<svg class="blog-hero-shape" viewBox="0 0 1920 600" preserveAspectRatio="none" aria-hidden="true">
 				<defs>
 					<linearGradient id="blogHeroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-						<stop offset="0%" stop-color="#FFF7EF"/>
-						<stop offset="50%" stop-color="#FFEDD5"/>
-						<stop offset="100%" stop-color="#FDE3C9"/>
+						<stop offset="0%" stop-color="#f8f4ef"/>
+						<stop offset="50%" stop-color="#f0e6da"/>
+						<stop offset="100%" stop-color="#f4eade"/>
 					</linearGradient>
 				</defs>
 				<path d="M0,0 H1920 Q1960,0 1960,40 V520 Q1960,580 1920,580 H0 Q-40,580 -40,540 V0 Q-40,-40 0,0 Z" fill="url(#blogHeroGrad)" opacity="0.6"/>
@@ -111,7 +113,7 @@ $description = 'Экспертные статьи о строительстве 
 						</div>
 						<div class="blog-stat-divider" aria-hidden="true"></div>
 						<div class="blog-stat">
-							<span class="blog-stat-value">180+</span>
+							<span class="blog-stat-value"><?= htmlspecialchars((string)seo_config('objects')) ?></span>
 							<span class="blog-stat-label">объектов</span>
 						</div>
 					</div>
@@ -291,7 +293,7 @@ $description = 'Экспертные статьи о строительстве 
 							<div class="blog-sidebar-body">
 								<form action="/search/blog" method="get" class="blog-search-form" role="search">
 									<label for="blog-search" class="visually-hidden">Поиск по блогу</label>
-									<input type="search" id="blog-search" name="q" placeholder="Например: цена БВЗ" aria-label="Поиск по блогу" value="<?= htmlspecialchars((string)($_GET['q'] ?? ''), ENT_QUOTES) ?>">
+									<input type="search" id="blog-search" name="q" placeholder="Например: цена БВЗ" aria-label="Поиск по блогу" value="<?= htmlspecialchars(fss_param('q'), ENT_QUOTES) ?>">
 									<button type="submit" aria-label="Найти"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></button>
 								</form>
 							</div>
@@ -305,7 +307,7 @@ $description = 'Экспертные статьи о строительстве 
 							</div>
 							<div class="blog-sidebar-body">
 								<?php foreach ($popular as $slug => $item): ?>
-								<a class="blog-popular-item" title="<?= htmlspecialchars($p['title'], ENT_QUOTES) ?>" href="/blog/<?= htmlspecialchars($slug, ENT_QUOTES) ?>">
+								<a class="blog-popular-item" title="<?= htmlspecialchars($item['title'], ENT_QUOTES) ?>" href="/blog/<?= htmlspecialchars($slug, ENT_QUOTES) ?>">
 									<div class="blog-popular-img" style="background-image:url('<?= htmlspecialchars($cardImg($item['og_image']), ENT_QUOTES) ?>')"></div>
 									<div class="blog-popular-body">
 										<h4 class="blog-popular-title"><?= htmlspecialchars($item['title'], ENT_QUOTES) ?></h4>
@@ -324,7 +326,7 @@ $description = 'Экспертные статьи о строительстве 
 							</div>
 							<div class="blog-sidebar-body">
 								<?php foreach ($sidebarServices as $sslug => [$stitle, $sdesc]): ?>
-								<a class="blog-service-item" title="<?= htmlspecialchars($service['title'] ?? '', ENT_QUOTES) ?>" href="/services/<?= htmlspecialchars($sslug, ENT_QUOTES) ?>">
+								<a class="blog-service-item" title="<?= htmlspecialchars($stitle, ENT_QUOTES) ?>" href="/services/<?= htmlspecialchars($sslug, ENT_QUOTES) ?>">
 									<div class="blog-service-icon">
 										<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M20 7l-8 9-4-4"/></svg>
 									</div>
@@ -346,9 +348,18 @@ $description = 'Экспертные статьи о строительстве 
 							</div>
 							<div class="blog-sidebar-body">
 								<p class="blog-newsletter-desc">Получайте лучшие статьи о строительстве БВЗ раз в две недели. Без спама.</p>
-								<form class="blog-newsletter-form" action="/#contact" method="post">
+								<form class="blog-newsletter-form" action="/send/email" method="post">
+									<input type="hidden" name="subscribe" value="1">
+									<?php
+										$abPath = __DIR__ . '/../../components/antibot_fields.php';
+										if (file_exists($abPath)) include $abPath;
+									?>
 									<label for="nl-email" class="visually-hidden">Email для подписки</label>
 									<input type="email" id="nl-email" name="email" placeholder="Ваш email" required autocomplete="email">
+									<label class="blog-newsletter-consent">
+										<input type="checkbox" name="checkbox" value="on" required>
+										<span>Согласен на <a href="/politika" title="Политика конфиденциальности">обработку персональных данных</a></span>
+									</label>
 									<button type="submit" class="blog-newsletter-btn">Подписаться</button>
 								</form>
 								<p class="blog-newsletter-note">Нажимая кнопку, вы соглашаетесь с <a href="/politika" title="Политика конфиденциальности">политикой конфиденциальности</a></p>
@@ -385,13 +396,22 @@ $description = 'Экспертные статьи о строительстве 
 	<style>
 		/* ===== Blog Design System ===== */
 		:root {
-			--sun: #F97316;
-			--sun-deep: #EA580C;
-			--sun-dark: #C2410C;
-			--sun-light: #FB923C;
-			--cream: #FFF7EF;
-			--cream-2: #FFF1E3;
-			--cream-3: #FDE3C9;
+			--brand-50: #f8f4ef;
+			--brand-100: #f0e6da;
+			--brand-200: #e3d1bd;
+			--brand-300: #d2b89d;
+			--brand-400: #c7ab94;
+			--brand-500: #b1907a;
+			--brand-600: #9a7c66;
+			--brand-700: #876b55;
+			--brand: #876b55;
+			--brand-800: #6d5744;
+			--brand-900: #554433;
+			--brand-950: #3f3227;
+			--brand-soft: #f0e6da;
+			--brand-tint: #f8f4ef;
+			--brand-tint-2: #f1e9df;
+			--brand-tint-3: #f4eade;
 			--ink: #171310;
 			--ink-soft: #44403C;
 			--muted: #78716c;
@@ -405,15 +425,15 @@ $description = 'Экспертные статьи о строительстве 
 			--shadow-sm: 0 2px 8px rgba(23,19,16,.06);
 			--shadow-md: 0 8px 24px rgba(23,19,16,.08);
 			--shadow-lg: 0 20px 40px rgba(23,19,16,.1);
-			--shadow-sun: 0 10px 30px rgba(249,115,22,.25);
-			--shadow-sun-lg: 0 20px 40px rgba(249,115,22,.3);
+			--shadow-brand: 0 10px 30px rgba(135,107,85,.25);
+			--shadow-brand-lg: 0 20px 40px rgba(135,107,85,.3);
 			--transition: .25s cubic-bezier(.4, 0, .2, 1);
 			--font-heading:  'Manrope', system-ui, sans-serif;
 			--font-body: 'Manrope', system-ui, sans-serif;
 			--container: min(100% - 32px, 1180px);
 		}
 
-		.blog-page { background: var(--cream); color: var(--ink); font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
+		.blog-page { background: var(--brand-tint); color: var(--ink); font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
 		.blog-page .container { width: var(--container); max-width: 1180px; margin-inline: auto; }
 
 		/* Visually hidden */
@@ -421,19 +441,19 @@ $description = 'Экспертные статьи о строительстве 
 
 		/* Section Header */
 		.section-header { text-align: center; margin-bottom: 32px; }
-		.section-pill { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, var(--sun-light), var(--sun-deep)); color: #fff; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; padding: 6px 14px; border-radius: var(--radius-full); margin-bottom: 12px; box-shadow: var(--shadow-sun); }
+		.section-pill { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, var(--brand-500), var(--brand-800)); color: #fff; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; padding: 6px 14px; border-radius: var(--radius-full); margin-bottom: 12px; box-shadow: var(--shadow-brand); }
 		.section-title { font-family: var(--font-heading); font-size: clamp(28px, 4vw, 42px); font-weight: 800; line-height: 1.15; letter-spacing: -0.02em; color: var(--ink); margin: 0; }
 		.section-desc { margin-top: 10px; color: var(--muted); font-size: 15px; line-height: 1.6; }
-		.section-desc a { color: var(--sun-deep); text-decoration: underline; text-underline-offset: 2px; }
-		.section-desc a:hover { color: var(--sun); }
+		.section-desc a { color: var(--brand-800); text-decoration: underline; text-underline-offset: 2px; }
+		.section-desc a:hover { color: var(--brand); }
 
 		/* ===== Hero ===== */
 		.blog-hero { position: relative; padding: max(clamp(4rem, 8vw, 6rem), calc(var(--fss-header-h, 90px) + 12px)) 0 clamp(3rem, 6vw, 4rem); overflow: hidden; }
 		.blog-hero-shape { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
 		.blog-hero-content { position: relative; z-index: 1; text-align: center; max-width: 800px; margin: 0 auto; }
-		.blog-hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--white); border: 1px solid var(--border); color: var(--sun-deep); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; padding: 8px 18px; border-radius: var(--radius-full); margin-bottom: 20px; box-shadow: var(--shadow-sm); backdrop-filter: blur(8px); }
+		.blog-hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--white); border: 1px solid var(--border); color: var(--brand-800); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; padding: 8px 18px; border-radius: var(--radius-full); margin-bottom: 20px; box-shadow: var(--shadow-sm); backdrop-filter: blur(8px); }
 		.blog-hero-title { font-family: var(--font-heading); font-size: clamp(36px, 5.5vw, 58px); font-weight: 800; line-height: 1.08; letter-spacing: -0.025em; color: var(--ink); margin: 0 0 16px; }
-		.blog-hero-title .text-brand { color: var(--sun); }
+		.blog-hero-title .text-brand { color: var(--brand); }
 		.blog-hero-desc { font-size: clamp(16px, 2vw, 20px); line-height: 1.65; color: var(--ink-soft); margin: 0 0 32px; max-width: 680px; margin-inline: auto; }
 		.blog-hero-stats { display: flex; align-items: center; justify-content: center; gap: 24px; flex-wrap: wrap; }
 		.blog-stat { display: flex; flex-direction: column; align-items: center; gap: 4px; }
@@ -451,22 +471,22 @@ $description = 'Экспертные статьи о строительстве 
 		.blog-featured-img { position: absolute; inset: 0; background-size: cover; background-position: center; transition: transform .6s var(--transition); }
 		.blog-featured-card:hover .blog-featured-img { transform: scale(1.05); }
 		.blog-featured-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(23,19,16,.6) 100%); pointer-events: none; }
-		.blog-featured-badge { position: absolute; top: 20px; left: 20px; z-index: 1; background: var(--sun); color: #fff; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; padding: 6px 14px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); }
+		.blog-featured-badge { position: absolute; top: 20px; left: 20px; z-index: 1; background: var(--brand); color: #fff; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; padding: 6px 14px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); }
 		.blog-featured-cat { position: absolute; top: 20px; right: 20px; z-index: 1; background: rgba(255,255,255,.9); backdrop-filter: blur(8px); color: var(--ink-soft); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .03em; padding: 6px 14px; border-radius: var(--radius-full); border: 1px solid var(--border); }
-		.blog-featured-body { position: relative; z-index: 1; padding: clamp(24px, 3vw, 40px); display: flex; flex-direction: column; justify-content: flex-end; background: linear-gradient(180deg, var(--white) 0%, var(--cream) 100%); }
+		.blog-featured-body { position: relative; z-index: 1; padding: clamp(24px, 3vw, 40px); display: flex; flex-direction: column; justify-content: flex-end; background: linear-gradient(180deg, var(--white) 0%, var(--brand-tint) 100%); }
 		.blog-featured-title { font-family: var(--font-heading); font-size: clamp(22px, 3vw, 30px); font-weight: 800; line-height: 1.2; color: var(--ink); margin: 0 0 12px; }
 		.blog-featured-text { font-size: 15px; line-height: 1.65; color: var(--ink-soft); margin: 0 0 20px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 		.blog-featured-meta { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--muted); margin-bottom: 16px; }
 		.blog-meta-dot { color: var(--border); }
 		.blog-featured-author { display: flex; align-items: center; gap: 10px; padding-top: 12px; border-top: 1px solid var(--border); margin-bottom: 16px; }
 		.blog-card-author { display: flex; align-items: center; gap: 8px; padding-top: 12px; border-top: 1px solid var(--border); margin-top: 8px; }
-		.blog-author-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; background: var(--cream-2); }
+		.blog-author-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; background: var(--brand-tint-2); }
 		.blog-card-author .blog-author-avatar { width: 28px; height: 28px; }
 		.blog-author-info { display: flex; flex-direction: column; min-width: 0; }
 		.blog-author-name { font-size: 13px; font-weight: 600; color: var(--ink); line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 		.blog-author-role { font-size: 11.5px; color: var(--muted); line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-		.blog-featured-cta { display: inline-flex; align-items: center; gap: 8px; background: var(--sun); color: #fff; font-size: 14px; font-weight: 700; padding: 14px 24px; border-radius: var(--radius-full); align-self: flex-start; transition: background var(--transition), transform var(--transition), box-shadow var(--transition); box-shadow: var(--shadow-sun); }
-		.blog-featured-cta:hover { background: var(--sun-deep); transform: translateX(4px); box-shadow: var(--shadow-sun-lg); }
+		.blog-featured-cta { display: inline-flex; align-items: center; gap: 8px; background: var(--brand); color: #fff; font-size: 14px; font-weight: 700; padding: 14px 24px; border-radius: var(--radius-full); align-self: flex-start; transition: background var(--transition), transform var(--transition), box-shadow var(--transition); box-shadow: var(--shadow-brand); }
+		.blog-featured-cta:hover { background: var(--brand-800); transform: translateX(4px); box-shadow: var(--shadow-brand-lg); }
 		.blog-featured-cta svg { transition: transform var(--transition); }
 		.blog-featured-cta:hover svg { transform: translateX(3px); }
 
@@ -478,8 +498,8 @@ $description = 'Экспертные статьи о строительстве 
 		/* ===== Filters Bar ===== */
 		.blog-filters-bar { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 32px; padding: 16px; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
 		.blog-filter { display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 20px; background: var(--white); color: var(--ink-soft); border: 1px solid var(--border); border-radius: var(--radius-full); font-size: 13px; font-weight: 600; text-decoration: none; transition: all var(--transition); white-space: nowrap; }
-		.blog-filter:hover { border-color: var(--sun); color: var(--sun); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
-		.blog-filter.active { background: linear-gradient(135deg, var(--sun-light), var(--sun-deep)); color: #fff; border-color: transparent; box-shadow: var(--shadow-sun); }
+		.blog-filter:hover { border-color: var(--brand); color: var(--brand); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+		.blog-filter.active { background: linear-gradient(135deg, var(--brand-500), var(--brand-800)); color: #fff; border-color: transparent; box-shadow: var(--shadow-brand); }
 		.blog-filter__count { background: rgba(23,19,16,.08); color: var(--muted); font-size: 11px; font-weight: 700; min-width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; padding: 0 8px; border-radius: var(--radius-full); transition: all var(--transition); }
 		.blog-filter.active .blog-filter__count { background: rgba(255,255,255,.2); color: #fff; }
 
@@ -495,20 +515,20 @@ $description = 'Экспертные статьи о строительстве 
 		.blog-card:nth-child(4) { animation-delay: 180ms; }
 		.blog-card:nth-child(5) { animation-delay: 240ms; }
 		.blog-card:nth-child(6) { animation-delay: 300ms; }
-		.blog-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--sun-light); }
+		.blog-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--brand-500); }
 
 		.blog-card-link { display: block; text-decoration: none; color: inherit; height: 100%; }
 		.blog-card-media { position: relative; aspect-ratio: 16/10; overflow: hidden; }
 		.blog-card-img { position: absolute; inset: 0; background-size: cover; background-position: center; transition: transform .5s var(--transition); }
 		.blog-card:hover .blog-card-img { transform: scale(1.06); }
 		.blog-card-img-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, rgba(23,19,16,.4) 100%); pointer-events: none; }
-		.blog-card-cat { position: absolute; top: 12px; left: 12px; z-index: 1; background: var(--sun); color: #fff; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); }
-		.blog-card-arrow { position: absolute; bottom: 16px; right: 16px; z-index: 1; width: 40px; height: 40px; display: grid; place-items: center; background: var(--white); color: var(--sun); border-radius: 50%; box-shadow: var(--shadow-md); opacity: 0; transform: translateX(10px); transition: opacity var(--transition), transform var(--transition); }
+		.blog-card-cat { position: absolute; top: 12px; left: 12px; z-index: 1; background: var(--brand); color: #fff; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; padding: 4px 10px; border-radius: var(--radius-full); box-shadow: var(--shadow-sm); }
+		.blog-card-arrow { position: absolute; bottom: 16px; right: 16px; z-index: 1; width: 40px; height: 40px; display: grid; place-items: center; background: var(--white); color: var(--brand); border-radius: 50%; box-shadow: var(--shadow-md); opacity: 0; transform: translateX(10px); transition: opacity var(--transition), transform var(--transition); }
 		.blog-card:hover .blog-card-arrow { opacity: 1; transform: translateX(0); }
 
 		.blog-card-content { padding: 20px 20px 24px; display: flex; flex-direction: column; flex: 1; }
 		.blog-card-title { font-family: var(--font-heading); font-size: 17px; font-weight: 700; line-height: 1.35; color: var(--ink); margin: 0 0 10px; transition: color var(--transition); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-		.blog-card:hover .blog-card-title { color: var(--sun-deep); }
+		.blog-card:hover .blog-card-title { color: var(--brand-800); }
 		.blog-card-excerpt { font-size: 14px; line-height: 1.6; color: var(--ink-soft); flex: 1; margin: 0 0 16px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 		.blog-card-meta { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--muted); padding-top: 12px; border-top: 1px solid var(--border); }
 		.blog-card-date { font-weight: 600; }
@@ -519,15 +539,15 @@ $description = 'Экспертные статьи о строительстве 
 		.blog-empty-icon { width: 64px; height: 64px; color: var(--border); margin-bottom: 20px; }
 		.blog-empty-title { font-family: var(--font-heading); font-size: 22px; font-weight: 700; color: var(--ink); margin: 0 0 8px; }
 		.blog-empty-desc { color: var(--muted); margin: 0 0 24px; max-width: 360px; line-height: 1.6; }
-		.blog-empty-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--sun); color: #fff; font-size: 14px; font-weight: 700; padding: 12px 24px; border-radius: var(--radius-full); transition: background var(--transition), transform var(--transition), box-shadow var(--transition); box-shadow: var(--shadow-sun); }
-		.blog-empty-btn:hover { background: var(--sun-deep); transform: translateY(-2px); box-shadow: var(--shadow-sun-lg); }
+		.blog-empty-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--brand); color: #fff; font-size: 14px; font-weight: 700; padding: 12px 24px; border-radius: var(--radius-full); transition: background var(--transition), transform var(--transition), box-shadow var(--transition); box-shadow: var(--shadow-brand); }
+		.blog-empty-btn:hover { background: var(--brand-800); transform: translateY(-2px); box-shadow: var(--shadow-brand-lg); }
 
 		/* ===== Pagination ===== */
 		.blog-pagination { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 48px; flex-wrap: wrap; }
 		.blog-page-numbers { display: flex; align-items: center; gap: 8px; }
 		.blog-page-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 44px; height: 44px; padding: 0 16px; background: var(--white); color: var(--ink-soft); border: 1px solid var(--border); border-radius: var(--radius-md); font-size: 14px; font-weight: 600; text-decoration: none; transition: all var(--transition); }
-		.blog-page-btn:hover { border-color: var(--sun); color: var(--sun); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
-		.blog-page-btn.active { background: var(--sun); color: #fff; border-color: var(--sun); box-shadow: var(--shadow-sun); }
+		.blog-page-btn:hover { border-color: var(--brand); color: var(--brand); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+		.blog-page-btn.active { background: var(--brand); color: #fff; border-color: var(--brand); box-shadow: var(--shadow-brand); }
 		.blog-page-btn--prev, .blog-page-btn--next { padding: 0 20px; }
 		.blog-page-ellipsis { color: var(--muted); padding: 0 4px; }
 		@media (max-width: 480px) { .blog-page-btn--prev span, .blog-page-btn--next span { display: none; } }
@@ -536,25 +556,25 @@ $description = 'Экспертные статьи о строительстве 
 		.blog-sidebar { position: sticky; top: 110px; }
 		.blog-sidebar-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); margin-bottom: 20px; }
 		.blog-sidebar-card:last-child { margin-bottom: 0; }
-		.blog-sidebar-header { display: flex; align-items: center; gap: 10px; padding: 16px 20px; background: var(--cream); border-bottom: 1px solid var(--border); font-size: 14px; font-weight: 700; color: var(--ink); text-transform: uppercase; letter-spacing: .03em; }
-		.blog-sidebar-header svg { color: var(--sun); flex-shrink: 0; }
+		.blog-sidebar-header { display: flex; align-items: center; gap: 10px; padding: 16px 20px; background: var(--brand-tint); border-bottom: 1px solid var(--border); font-size: 14px; font-weight: 700; color: var(--ink); text-transform: uppercase; letter-spacing: .03em; }
+		.blog-sidebar-header svg { color: var(--brand); flex-shrink: 0; }
 		.blog-sidebar-body { padding: 16px 20px; }
 
 		/* Search */
 		.blog-search-form { display: flex; gap: 8px; }
 		.blog-search-form input { flex: 1; min-width: 0; height: 42px; padding: 0 14px; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--white); font-size: 14px; color: var(--ink); font-family: inherit; transition: border-color var(--transition), box-shadow var(--transition); }
-		.blog-search-form input:focus { outline: none; border-color: var(--sun); box-shadow: 0 0 0 3px rgba(249,115,22,.12); }
+		.blog-search-form input:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px rgba(135,107,85,.12); }
 		.blog-search-form input::placeholder { color: var(--muted); }
-		.blog-search-form button { width: 42px; height: 42px; display: grid; place-items: center; background: var(--sun); color: #fff; border: 0; border-radius: var(--radius-md); cursor: pointer; transition: background var(--transition), transform var(--transition); }
-		.blog-search-form button:hover { background: var(--sun-deep); transform: scale(1.05); }
+		.blog-search-form button { width: 42px; height: 42px; display: grid; place-items: center; background: var(--brand); color: #fff; border: 0; border-radius: var(--radius-md); cursor: pointer; transition: background var(--transition), transform var(--transition); }
+		.blog-search-form button:hover { background: var(--brand-800); transform: scale(1.05); }
 
 		/* Popular */
 		.blog-popular-item { display: flex; gap: 12px; text-decoration: none; color: inherit; border-radius: var(--radius-sm); padding: 8px; transition: background var(--transition); }
-		.blog-popular-item:hover { background: var(--cream); }
-		.blog-popular-img { flex: 0 0 64px; width: 64px; height: 48px; border-radius: var(--radius-sm); background-size: cover; background-position: center; background-color: var(--cream-2); }
+		.blog-popular-item:hover { background: var(--brand-tint); }
+		.blog-popular-img { flex: 0 0 64px; width: 64px; height: 48px; border-radius: var(--radius-sm); background-size: cover; background-position: center; background-color: var(--brand-tint-2); }
 		.blog-popular-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
 		.blog-popular-title { font-size: 13.5px; font-weight: 600; line-height: 1.4; color: var(--ink); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; transition: color var(--transition); font-family: var(--font-heading); }
-		.blog-popular-item:hover .blog-popular-title { color: var(--sun-deep); }
+		.blog-popular-item:hover .blog-popular-title { color: var(--brand-800); }
 		.blog-popular-date { font-size: 11px; color: var(--muted); }
 
 		/* Services */
@@ -562,11 +582,11 @@ $description = 'Экспертные статьи о строительстве 
 		.blog-service-item > div:last-child { flex: 1; min-width: 0; }
 		.blog-service-item:last-child { border-bottom: none; padding-bottom: 0; }
 		.blog-service-item:hover { opacity: .7; }
-		.blog-service-icon { flex: 0 0 36px; width: 36px; height: 36px; display: grid; place-items: center; background: var(--cream-2); color: var(--sun); border-radius: var(--radius-sm); }
+		.blog-service-icon { flex: 0 0 36px; width: 36px; height: 36px; display: grid; place-items: center; background: var(--brand-tint-2); color: var(--brand); border-radius: var(--radius-sm); }
 		.blog-service-title { font-size: 13px; font-weight: 600; color: var(--ink); line-height: 1.3; }
 		.blog-service-desc { font-size: 11.5px; color: var(--muted); margin-top: 2px; line-height: 1.3; }
-		.blog-service-all { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 13px; font-weight: 700; color: var(--sun-deep); text-decoration: none; transition: color var(--transition); }
-		.blog-service-all:hover { color: var(--sun); }
+		.blog-service-all { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); font-size: 13px; font-weight: 700; color: var(--brand-800); text-decoration: none; transition: color var(--transition); }
+		.blog-service-all:hover { color: var(--brand); }
 		.blog-service-all svg { transition: transform var(--transition); }
 		.blog-service-all:hover svg { transform: translateX(3px); }
 
@@ -577,26 +597,30 @@ $description = 'Экспертные статьи о строительстве 
 		.blog-sidebar-card--cta a { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 20px; border-radius: var(--radius-md); font-size: 13px; font-weight: 600; text-decoration: none; transition: all var(--transition); }
 		.blog-sidebar-card--cta a:first-child { background: var(--ink); color: #fff; }
 		.blog-sidebar-card--cta a:first-child:hover { background: #1a1a1a; transform: translateY(-1px); box-shadow: var(--shadow-sm); }
-		.blog-sidebar-card--cta a:last-child { background: var(--sun); color: #fff; margin-top: 10px; }
-		.blog-sidebar-card--cta a:last-child:hover { background: var(--sun-deep); transform: translateY(-1px); box-shadow: var(--shadow-sun); }
+		.blog-sidebar-card--cta a:last-child { background: var(--brand); color: #fff; margin-top: 10px; }
+		.blog-sidebar-card--cta a:last-child:hover { background: var(--brand-800); transform: translateY(-1px); box-shadow: var(--shadow-brand); }
 
 /* Newsletter Card */
 		.blog-sidebar-card--newsletter { background: var(--ink); border-color: transparent; }
 		.blog-sidebar-card--newsletter .blog-sidebar-header { background: transparent; border-color: rgba(255,255,255,.15); color: #fff; }
-		.blog-sidebar-card--newsletter .blog-sidebar-header svg { color: var(--sun); }
+		.blog-sidebar-card--newsletter .blog-sidebar-header svg { color: var(--brand); }
 		.blog-newsletter-desc { margin: 0 0 16px; font-size: 13px; color: rgba(255,255,255,.7); line-height: 1.55; }
 		.blog-newsletter-form { display: flex; flex-direction: column; gap: 10px; }
 		.blog-newsletter-form input { height: 42px; padding: 0 14px; border: 1px solid rgba(255,255,255,.2); border-radius: var(--radius-md); background: rgba(255,255,255,.08); color: #fff; font-size: 14px; font-family: inherit; transition: border-color var(--transition), background var(--transition); }
-		.blog-newsletter-form input:focus { outline: none; border-color: var(--sun); background: rgba(255,255,255,.12); }
+		.blog-newsletter-form input:focus { outline: none; border-color: var(--brand); background: rgba(255,255,255,.12); }
 		.blog-newsletter-form input::placeholder { color: rgba(255,255,255,.4); }
+		.blog-newsletter-consent { display: flex; align-items: flex-start; gap: 8px; cursor: pointer; }
+		.blog-newsletter-consent input[type=checkbox] { width: 16px; height: 16px; min-height: 16px; margin: 1px 0 0; padding: 0; accent-color: var(--brand); flex: 0 0 auto; }
+		.blog-newsletter-consent span { font-size: 11px; line-height: 1.45; color: rgba(255,255,255,.5); }
+		.blog-newsletter-consent a { color: var(--brand); text-decoration: underline; text-underline-offset: 2px; }
 		.blog-newsletter-btn { height: 42px; background: var(--ink); color: #fff; border: 1px solid var(--ink); border-radius: var(--radius-lg); font-size: 13px; font-weight: 700; cursor: pointer; transition: all var(--transition); }
 		.blog-newsletter-btn:hover { background: #1a1a1a; border-color: #1a1a1a; transform: translateY(-1px); }
 		.blog-newsletter-note { margin: 12px 0 0; font-size: 11px; color: rgba(255,255,255,.4); text-align: center; }
-		.blog-newsletter-note a { color: var(--sun); text-decoration: underline; text-underline-offset: 2px; }
+		.blog-newsletter-note a { color: var(--brand); text-decoration: underline; text-underline-offset: 2px; }
 
 		/* ===== CTA Section ===== */
 		.blog-cta-section { position: relative; padding: clamp(4rem, 6vw, 5rem) 0; background: var(--ink); overflow: hidden; }
-		.blog-cta-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 20%, rgba(249,115,22,.15) 0%, transparent 60%), radial-gradient(ellipse at 70% 80%, rgba(251,146,60,.1) 0%, transparent 50%); pointer-events: none; }
+		.blog-cta-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 20%, rgba(199,171,148,.15) 0%, transparent 60%), radial-gradient(ellipse at 70% 80%, rgba(177,144,122,.1) 0%, transparent 50%); pointer-events: none; }
 		.blog-cta-card { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: center; background: linear-gradient(135deg, rgba(255,255,255,.03) 0%, transparent 100%); border: 1px solid rgba(255,255,255,.08); border-radius: var(--radius-xl); padding: clamp(32px, 4vw, 48px); backdrop-filter: blur(20px); }
 		@media (max-width: 760px) { .blog-cta-card { grid-template-columns: 1fr; text-align: center; } .blog-cta-actions { justify-content: center; flex-wrap: wrap; } }
 		.blog-cta-title { font-family: var(--font-heading); font-size: clamp(26px, 3.5vw, 36px); font-weight: 800; line-height: 1.2; color: #fff; margin: 0 0 12px; }
@@ -617,7 +641,7 @@ $description = 'Экспертные статьи о строительстве 
 		.fss-bc-item { display: flex; align-items: center; }
 		.fss-bc-item:not(:last-child)::after { content: "/"; margin-left: 6px; color: var(--border); }
 		.fss-bc-link { color: var(--muted); text-decoration: none; transition: color var(--transition); }
-		.fss-bc-link:hover { color: var(--sun); }
+		.fss-bc-link:hover { color: var(--brand); }
 		.fss-bc-current { color: var(--ink); font-weight: 600; }
 
 		/* ===== Responsive ===== */

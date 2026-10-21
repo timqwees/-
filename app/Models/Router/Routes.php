@@ -138,7 +138,9 @@ class Routes
 	{
 		$view = dirname(__DIR__) . '/Router/view/404/404.php';
 		if (!is_file($view)) {
-			$view = dirname(__DIR__, 4) . '/public/404.php';
+			// app/Models/Router → корень проекта = dirname(__DIR__, 3).
+			// (Раньше было 4 — уводило на уровень выше корня, фолбэк не находился.)
+			$view = dirname(__DIR__, 3) . '/public/404.php';
 		}
 		http_response_code(404);
 		SecurityHeaders::sendSecurity('noindex, follow');
