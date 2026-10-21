@@ -46,10 +46,13 @@ if ($q !== '') {
 	<?= seo_canonical_tags() ?>
 	<?= seo_og_tags('Поиск по услугам — ' . seo_config('brand'), 'Поиск по каталогу услуг ФАВОРИТ-СТРОЙ-СНАБ: склады, ангары, АБК, общежития, капремонт, спецтехника.') ?>
 	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261018">
-	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css"><noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css"></noscript>
+	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css?v=20261024"><noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css?v=20261024"></noscript>
 	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261018">
 	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261018">
 	<?php include_once __DIR__ . '/../components/sheoma.php'; ?>
+	<?= seo_analytics() ?>
+	<?= seo_utm_script() ?>
+	<?= seo_goals_script() ?>
 </head>
 <body class="font-sans text-gray-800" data-page="inner">
 	<?php include_once __DIR__ . '/../components/header.php'; ?>

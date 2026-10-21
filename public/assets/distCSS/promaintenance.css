@@ -771,6 +771,39 @@ h3 {
 	display: block;
 }
 
+.enquiry-telegram {
+	color: #c7ab94;
+	margin-top: 18px;
+	font-size: 15px;
+	letter-spacing: -.02em;
+	display: inline-block;
+	border-bottom: 1px solid rgba(199, 171, 148, .4);
+}
+
+.enquiry-telegram-note {
+	color: #aaa49e;
+	margin-top: 8px;
+	font-size: 11px;
+	line-height: 1.55;
+	max-width: 34ch;
+	display: block;
+}
+
+.enquiry-docs {
+	color: #b8b3ae;
+	margin-top: 22px;
+	font-size: 13px;
+	display: inline-block;
+}
+
+.enquiry-docs-note {
+	color: #aaa49e;
+	margin-top: 6px;
+	font-size: 11px;
+	letter-spacing: .04em;
+	display: block;
+}
+
 .enquiry-location {
 	color: #aaa49e;
 	margin-top: 45px;

@@ -62,8 +62,8 @@ $portfolioDesc = 'Портфолио ФАВОРИТ-СТРОЙ-СНАБ: общ�
 	<link rel="manifest" href="/manifest.json" />
 
 	<!-- Swiper CSS -->
-		<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css">
-	<noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css"></noscript>
+		<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css?v=20261024">
+	<noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css?v=20261024"></noscript>
 	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261018">
 	<!-- tailwind built into distCSS -->
 
@@ -123,12 +123,15 @@ $portfolioDesc = 'Портфолио ФАВОРИТ-СТРОЙ-СНАБ: общ�
 		],
 	], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_LINE_TERMINATORS) ?>
 	</script>
+	<?= seo_analytics() ?>
+	<?= seo_utm_script() ?>
+	<?= seo_goals_script() ?>
 	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261018">
 	<!-- tailwind built into distCSS -->
 	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261018">
 	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261018">
 	<!-- Дизайн-система главной страницы (ProMaintenance) -->
-	<link rel="stylesheet" href="/public/assets/distCSS/promaintenance.css?v=20261023">
+	<link rel="stylesheet" href="/public/assets/distCSS/promaintenance.css?v=20261024">
 	<style>
 	.esp-wrap{max-width:1440px;margin:0 auto;padding:0 clamp(16px,3vw,44px);}
 .esp-top{padding-top:104px;}

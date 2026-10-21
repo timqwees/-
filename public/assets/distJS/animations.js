@@ -311,20 +311,26 @@
 
 			if (preset.bg) {
 				var bg = root.querySelector(preset.bg);
-				if (bg) tl.from(bg, { scale: 1.07, duration: 2 }, 0);
+				if (bg) tl.fromTo(bg, { scale: 1.07 }, { scale: 1, duration: 2 }, 0);
 			}
 
 			parts.forEach(function (part) {
 				var targets = root.querySelectorAll(part.sel);
 				if (!targets.length) return;
 
-				var vars = { autoAlpha: 0, duration: part.dur || 0.9, ease: 'power3.out' };
-				if (part.stagger) vars.stagger = part.stagger;
+				/* fromTo, а не from: конечные значения задаются явно. Иначе GSAP
+				   берёт их из текущего состояния элемента, а если у элемента есть
+				   CSS-transition по opacity — получает промежуточное значение и
+				   элемент «замерзает» наполовину прозрачным. */
+				var fromVars = { autoAlpha: 0 };
 				for (var key in part.from) {
-					if (Object.prototype.hasOwnProperty.call(part.from, key)) vars[key] = part.from[key];
+					if (Object.prototype.hasOwnProperty.call(part.from, key)) fromVars[key] = part.from[key];
 				}
 
-				tl.from(targets, vars, part.at || 0);
+				var toVars = { autoAlpha: 1, y: 0, yPercent: 0, duration: part.dur || 0.9, ease: 'power3.out' };
+				if (part.stagger) toVars.stagger = part.stagger;
+
+				tl.fromTo(targets, fromVars, toVars, part.at || 0);
 			});
 		});
 	}
@@ -512,18 +518,21 @@
 				autoSplit: true,
 				onSplit: function (self) {
 					el.setAttribute('aria-label', text);
-					gsap.from(self.lines, {
-						yPercent: 105,
-						opacity: 0,
-						duration: 1,
-						stagger: 0.085,
-						ease: 'power3.out',
-						scrollTrigger: {
-							trigger: el,
-							start: 'top 91%',
-							toggleActions: 'play none none none'
+					gsap.fromTo(self.lines,
+						{ yPercent: 105, opacity: 0 },
+						{
+							yPercent: 0,
+							opacity: 1,
+							duration: 1,
+							stagger: 0.085,
+							ease: 'power3.out',
+							scrollTrigger: {
+								trigger: el,
+								start: 'top 91%',
+								toggleActions: 'play none none none'
+							}
 						}
-					});
+					);
 				}
 			});
 		});
@@ -555,22 +564,26 @@
 			if (!elements.length) return;
 			/* Помечаем — чтобы общий проход не анимировал элемент второй раз */
 			elements.forEach(function (el) { el.setAttribute('data-fss-reveal', ''); });
-			/* gsap.from() применяет from-состояние сразу — элемент ждёт своего
-			   момента в зоне видимости и плавно появляется (как в ProMaintenance).
-			   Если ScrollTrigger не сработает — элемент покажет forceRevealVisible(). */
-			gsap.from(elements, {
-				y: 22,
-				opacity: 0,
-				duration: 0.85,
-				stagger: 0.075,
-				delay: delay || 0,
-				ease: 'power3.out',
-				scrollTrigger: {
-					trigger: trigger,
-					start: 'top 91%',
-					toggleActions: 'play none none none'
+			/* gsap.fromTo() применяет начальное состояние сразу — элемент ждёт
+			   своего момента в зоне видимости и плавно появляется (как в
+			   ProMaintenance). Если ScrollTrigger не сработает — элемент
+			   покажет forceRevealVisible(). */
+			gsap.fromTo(elements,
+				{ y: 22, opacity: 0 },
+				{
+					y: 0,
+					opacity: 1,
+					duration: 0.85,
+					stagger: 0.075,
+					delay: delay || 0,
+					ease: 'power3.out',
+					scrollTrigger: {
+						trigger: trigger,
+						start: 'top 91%',
+						toggleActions: 'play none none none'
+					}
 				}
-			});
+			);
 		};
 
 		var revealIn = function (selector, childSelector, delay) {
@@ -743,18 +756,20 @@
 
 			if (!el.matches('.expertise-image')) {
 				var img = el.querySelector('img');
-				if (img) tl.from(img, { scale: 1.065, duration: 1.35 }, 0);
+				if (img) tl.fromTo(img, { scale: 1.065 }, { scale: 1, duration: 1.35 }, 0);
 			}
 
 			var card = el.closest('.project-card');
 			if (card) {
-				tl.from(card.querySelectorAll('.project-card__meta, h3, p'),
-					{ y: 16, opacity: 0, duration: 0.75, stagger: 0.065 }, 0.15);
+				tl.fromTo(card.querySelectorAll('.project-card__meta, h3, p'),
+					{ y: 16, opacity: 0 },
+					{ y: 0, opacity: 1, duration: 0.75, stagger: 0.065 }, 0.15);
 			}
 
 			if (el.closest('.project-next')) {
-				tl.from(el.querySelectorAll('div > *'),
-					{ y: 18, opacity: 0, duration: 0.8, stagger: 0.075 }, 0.15);
+				tl.fromTo(el.querySelectorAll('div > *'),
+					{ y: 18, opacity: 0 },
+					{ y: 0, opacity: 1, duration: 0.8, stagger: 0.075 }, 0.15);
 			}
 		});
 
@@ -789,18 +804,21 @@
 
 			children.forEach(function (el) { el.setAttribute('data-fss-reveal', ''); });
 
-			gsap.from(children, {
-				y: 20,
-				opacity: 0,
-				duration: 0.8,
-				stagger: 0.07,
-				ease: 'power3.out',
-				scrollTrigger: {
-					trigger: section,
-					start: 'top 91%',
-					toggleActions: 'play none none none'
+			gsap.fromTo(children,
+				{ y: 20, opacity: 0 },
+				{
+					y: 0,
+					opacity: 1,
+					duration: 0.8,
+					stagger: 0.07,
+					ease: 'power3.out',
+					scrollTrigger: {
+						trigger: section,
+						start: 'top 91%',
+						toggleActions: 'play none none none'
+					}
 				}
-			});
+			);
 		});
 	}
 

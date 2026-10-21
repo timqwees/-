@@ -24,6 +24,7 @@ final class Sitemap
 			['/uslugi', '0.9', 'weekly'],
 			['/portfolio', '0.8', 'weekly'],
 			['/about', '0.5', 'monthly'],
+			['/company', '0.6', 'monthly'],
 			['/contacts', '0.6', 'monthly'],
 			// /politika и /soglasie закрыты noindex — в sitemap им не место
 			// (противоречие «noindex, но в карте сайта» сбивает краулер).
@@ -70,6 +71,7 @@ final class Sitemap
 			'/uslugi' => $root . '/public/pages/uslugi/uslugi.php',
 			'/portfolio' => $root . '/public/pages/portfolio.php',
 			'/about' => $root . '/public/pages/about/index.php',
+			'/company' => $root . '/public/pages/company/index.php',
 			'/contacts' => $root . '/public/pages/contacts/index.php',
 		];
 		if (array_key_exists($loc, $map)) {

@@ -64,8 +64,11 @@ $activeFilters = ($q !== '' || $tag !== '' || $cat !== '');
 	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=<?= seo_ver() ?>">
 	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=<?= seo_ver() ?>">
 	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=<?= seo_ver() ?>">
-	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css">
+	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css?v=20261024">
 	<?php include_once __DIR__ . '/../../components/sheoma.php'; ?>
+	<?= seo_analytics() ?>
+	<?= seo_utm_script() ?>
+	<?= seo_goals_script() ?>
 	<script defer src="/public/assets/distJS/main.js?v=<?= seo_ver() ?>"></script>
 </head>
 

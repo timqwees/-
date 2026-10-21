@@ -90,12 +90,15 @@ if (!empty($_SESSION['fss_enquiry_result']) && ($_SESSION['fss_enquiry_result'][
 							<label for="field-service">Какая услуга нужна <span>*</span></label>
 							<select id="field-service" name="product" required aria-describedby="error-service">
 								<option value="">Выберите услугу</option>
-								<option value="Быстровозводимые здания">Быстровозводимые здания</option>
-								<option value="Капитальный ремонт">Капитальный ремонт</option>
-								<option value="Модульные здания">Модульные здания</option>
-								<option value="Общежития">Общежития</option>
-								<option value="Спецтехника">Спецтехника</option>
-								<option value="Грузоперевозки">Грузоперевозки</option>
+								<?php
+								// Список услуг — из каталога (app/Data/services.php):
+								// лид сразу квалифицируется по направлению, а не «Другое».
+								$__services = function_exists('seo_services') ? seo_services() : [];
+								foreach ($__services as $__slug => $__svc) {
+									echo '<option value="' . htmlspecialchars((string)$__svc['title'], ENT_QUOTES, 'UTF-8') . '">'
+										. htmlspecialchars((string)$__svc['title'], ENT_QUOTES, 'UTF-8') . '</option>';
+								}
+								?>
 								<option value="Другое">Другое</option>
 							</select>
 							<p id="error-service" data-error-for="product" hidden></p>

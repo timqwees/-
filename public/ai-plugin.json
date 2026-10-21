@@ -8,5 +8,17 @@
   "api": { "type": "openapi", "url": "https://www.xn--h1aafj.xn--p1ai/openapi.yaml" },
   "logo_url": "https://www.xn--h1aafj.xn--p1ai/public/assets/image/logo/favicon/favicon.svg",
   "contact_email": "fss@xn--h1aafj.xn--p1ai",
-  "legal_info_url": "https://www.xn--h1aafj.xn--p1ai/politika"
+  "legal_info_url": "https://www.xn--h1aafj.xn--p1ai/company",
+  "company_info": {
+    "legal_name": "ООО «Фаворит-Строй-Снаб»",
+    "inn": "9724020865",
+    "kpp": "770901001",
+    "ogrn": "1207700318583",
+    "ceo": "Аюбов Хасин Хамзатович",
+    "address": "101000, Москва, пер. Большой Спасоглинищевский, д. 9/1 стр. 10, помещ. 1/2",
+    "company_page": "https://www.xn--h1aafj.xn--p1ai/company",
+    "llms_txt": "https://www.xn--h1aafj.xn--p1ai/llms.txt",
+    "llms_full_txt": "https://www.xn--h1aafj.xn--p1ai/llms-full.txt",
+    "agents_json": "https://www.xn--h1aafj.xn--p1ai/agents.json"
+  }
 }

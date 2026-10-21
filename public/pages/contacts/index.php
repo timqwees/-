@@ -24,7 +24,7 @@ $phoneHref = preg_replace('/\D/', '', (string)seo_config('phone'));
 $email = (string)seo_config('email');
 $emailHref = (string)seo_config('email_puny');
 $telegram = (string)seo_config('telegram');
-$vk = (string)seo_config('vk');
+$yandexMaps = (string)seo_config('yandex_maps');
 $addrFull = trim((string)($addr['locality'] ?? '') . ', ' . (string)($addr['street'] ?? '') . ', ' . (string)($addr['postal'] ?? ''), ' ,');
 
 // Сквозной номер раздела страницы («01 / Способы связи»).
@@ -90,12 +90,12 @@ $faq = [
 <?= seo_verify_tags() ?>
 	<?= seo_og_tags($seoTitle, $seoDesc, '/public/assets/image/og/og-home-1200x630.jpg') ?>
 	<link rel="preload" href="/public/assets/distCSS/style.css?v=20261018" as="style">
-	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css">
-	<noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css"></noscript>
+	<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css?v=20261024">
+	<noscript><link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css?v=20261024"></noscript>
 	<link rel="stylesheet" href="/public/assets/distCSS/style.css?v=20261018">
 	<link rel="stylesheet" href="/public/assets/distCSS/tailwind.css?v=20261018">
 	<link rel="stylesheet" href="/public/assets/distCSS/premium.css?v=20261018">
-	<link rel="stylesheet" href="/public/assets/distCSS/promaintenance.css?v=20261023">
+	<link rel="stylesheet" href="/public/assets/distCSS/promaintenance.css?v=20261024">
 	<?php include_once __DIR__ . '/../../components/sheoma.php'; ?>
 	<?= seo_analytics() ?>
 	<?= seo_utm_script() ?>
@@ -263,6 +263,13 @@ $faq = [
 
 		.ct-quick__item:last-child {
 			border-right: 0;
+		}
+
+		/* Каждый следующий блок отходит от разделительной полосы */
+		@media (width>920px) {
+			.ct-quick__item + .ct-quick__item {
+				padding-left: 32px;
+			}
 		}
 
 		.ct-quick__label {
@@ -631,28 +638,28 @@ $faq = [
 					<p>Пришлите ТЗ, планировку или просто описание задачи — посчитаем смету и вернёмся с предложением и сроками.</p>
 				</article>
 				<article class="ct-card">
-					<span class="ct-card__ico" aria-hidden="true"><i class="fa-solid fa-paper-plane"></i></span>
+					<span class="ct-card__ico" aria-hidden="true"><i class="fa-brands fa-telegram"></i></span>
 					<h3>Telegram</h3>
 					<p class="ct-card__value"><a href="<?= $h($telegram) ?>" target="_blank" rel="noopener noreferrer" title="Telegram: @fss_rus">@fss_rus</a></p>
 					<p>Самый быстрый канал: фото площадки, чертежи, вопросы по срокам и комплектации.</p>
-				</article>
-				<article class="ct-card">
-					<span class="ct-card__ico" aria-hidden="true"><i class="fa-brands fa-vk"></i></span>
-					<h3>ВКонтакте</h3>
-					<p class="ct-card__value"><a href="<?= $h($vk) ?>" target="_blank" rel="noopener noreferrer" title="ВКонтакте ФСС">ФСС ВКонтакте</a></p>
-					<p>Новости производства, готовые объекты и разборы решений по заказам.</p>
-				</article>
-				<article class="ct-card">
-					<span class="ct-card__ico" aria-hidden="true"><i class="fa-solid fa-clock"></i></span>
-					<h3>Режим работы</h3>
-					<p class="ct-card__value">Пн–Пт 09:00–18:00</p>
-					<p>Заявки, пришедшие в нерабочее время, обрабатываем на следующий рабочий день — о письме-ответе сообщаем заранее.</p>
 				</article>
 				<article class="ct-card">
 					<span class="ct-card__ico" aria-hidden="true"><i class="fa-solid fa-file-signature"></i></span>
 					<h3>Документы и договор</h3>
 					<p class="ct-card__value">Договор · Сметы · КП</p>
 					<p>Работаем по 44-ФЗ и 223-ФЗ, допуск СРО, полный пакет исполнительной и закрывающей документации по каждому объекту.</p>
+				</article>
+				<article class="ct-card">
+					<span class="ct-card__ico" aria-hidden="true"><i class="fa-solid fa-map-marker-alt"></i></span>
+					<h3>Яндекс.Карты</h3>
+					<p class="ct-card__value"><a href="<?= $h($yandexMaps) ?>" target="_blank" rel="noopener noreferrer" title="Открыть адрес в Яндекс.Картах">Офис и производство</a></p>
+					<p>Пер. Большой Спасоглинищевский, д. 9/1 стр. 10 — цех, склад готовой продукции. Приезжайте по договорённости.</p>
+				</article>
+				<article class="ct-card">
+					<span class="ct-card__ico" aria-hidden="true"><i class="fa-solid fa-clock"></i></span>
+					<h3>Режим работы</h3>
+					<p class="ct-card__value">Пн–Пт 09:00–18:00</p>
+					<p>Заявки, пришедшие в нерабочее время, обрабатываем на следующий рабочий день — о письме-ответе сообщаем заранее.</p>
 				</article>
 			</div>
 		</section>
@@ -709,7 +716,7 @@ $faq = [
 			</div>
 			<div class="work-heading">
 				<h2 id="requisites-title">Юридические<br>реквизиты</h2>
-				<p>ООО «ФАВОРИТ-СТРОЙ-СНАБ» зарегистрировано <?= $h(date('d.m.Y', strtotime($regDate))) ?>.<br>Данные подтверждены выпиской из ЕГРЮЛ.</p>
+				<p>ООО «ФАВОРИТ-СТРОЙ-СНАБ» зарегистрировано <?= $h(date('d.m.Y', strtotime($regDate))) ?>.<br>Данные подтверждены выпиской из ЕГРЮЛ. Полный профиль компании — <a href="/company" title="Реквизиты, руководство и выполненные объекты">на странице «О компании»</a>.</p>
 			</div>
 			<dl class="ct-requ">
 				<div class="ct-requ__row">
@@ -810,6 +817,10 @@ $faq = [
 				</p>
 				<h2 id="lead-title">Расскажите<br><span>о задаче.</span></h2>
 				<p>Опишите объект или пришлите ТЗ — инженер перезвонит за <?= $h((string)seo_config('callback_minutes')) ?> минут, посчитает смету за <?= $h((string)seo_config('price_response_minutes')) ?> минут и зафиксирует цену в договоре.</p>
+				<a class="enquiry-telegram" href="<?= $h($telegram) ?>" target="_blank" rel="noopener noreferrer" title="Telegram: @fss_rus">@fss_rus</a>
+				<span class="enquiry-telegram-note">Самый быстрый канал: фото площадки, чертежи, вопросы по срокам и комплектации.</span>
+				<a class="enquiry-docs" href="#ways" title="Договор, сметы и коммерческие предложения">Документы и договор</a>
+				<span class="enquiry-docs-note">Договор · Сметы · КП</span>
 				<span class="enquiry-location" style="color:#aaa49e; margin-top: 32px; font-size: 12px; display: block;">
 					<?= $h($addrFull) ?><br>Работаем по Москве, Московской области и России
 				</span>

@@ -102,7 +102,8 @@ return [
 	'email' => $env('SITE_EMAIL', 'fss@фсс.рус'),
 	'email_puny' => $env('SITE_EMAIL_PUNY', 'fss@' . FSS_PROD_HOST),
 	'telegram' => 'https://t.me/fss_rus',
-	'vk' => 'https://vk.com/fss_rus',
+	// ВКонтакте из контактов убран: вместо него — Яндекс.Карты (площадка, цех, проезд).
+	'yandex_maps' => 'https://yandex.ru/maps/?text=' . rawurlencode('Москва, пер. Большой Спасоглинищевский, д. 9/1 стр. 10, помещ. 1/2, 101000'),
 
 	'address' => [
 		'postal' => '101000',
@@ -149,5 +150,5 @@ return [
 	'indexnow_key' => $env('INDEXNOW_KEY', 'b339c4d027c523c5aa5bed28703c94bd'),
 
 	// Прочее
-	'cache_bust' => '20261018',
+	'cache_bust' => '20261024',
 ];

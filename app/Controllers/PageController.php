@@ -60,6 +60,15 @@ class PageController
 		self::show('about/index.php');
 	}
 
+	/**
+	 * Страница компании (/company) — реквизиты, руководство, направления
+	 * деятельности и выполненные объекты (E-E-A-T, единый источник — app/Data/company.php).
+	 */
+	public static function company(): void
+	{
+		self::show('company/index.php');
+	}
+
 	/** Отдельная страница «Контакты» (/contacts) — телефоны, адрес, реквизиты, заявка. */
 	public static function contacts(): void
 	{
