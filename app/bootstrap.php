@@ -68,9 +68,11 @@ if (!function_exists('fss_param')) {
 }
 
 // --- Секрет для подписи CSRF-токена ---
-// Хранится вне веб-доступных каталогов и вне var/: в корне проекта в файле
-// .fss-secret (0600, в .gitignore) либо, если корень недоступен на запись,
-// в рантайм-кэше. Приоритет: env FSS_SECRET → файл → новый случайный.
+// Настраивать и переносить на сервер не нужно: секрет создаётся автоматически
+// и хранится в рантайм-кэше (вне проекта). Если кэш недоступен на запись —
+// используется детерминированный секрет из пути проекта и composer.lock:
+// он не меняется между запросами, поэтому подписи остаются валидными
+// и формы не отбиваются.
 if (!function_exists('fss_secret')) {
 	function fss_secret(): string
 	{
@@ -78,12 +80,7 @@ if (!function_exists('fss_secret')) {
 		if ($secret !== null) {
 			return $secret;
 		}
-		$fromEnv = (string)($_ENV['FSS_SECRET'] ?? getenv('FSS_SECRET') ?: '');
-		if ($fromEnv !== '') {
-			return $secret = $fromEnv;
-		}
 		$candidates = [
-			dirname(__DIR__) . '/.fss-secret',
 			\App\Models\Cache\Path::file('secret.key'),
 		];
 		foreach ($candidates as $path) {
@@ -96,14 +93,23 @@ if (!function_exists('fss_secret')) {
 			}
 		}
 		$secret = bin2hex(random_bytes(32));
+		$saved = false;
 		foreach ($candidates as $path) {
 			if ($path === '' || !\App\Models\Cache\Path::ensure(dirname($path))) {
 				continue;
 			}
 			if (@file_put_contents($path, $secret, LOCK_EX) !== false) {
 				@chmod($path, 0600);
+				$saved = true;
 				break;
 			}
+		}
+		if (!$saved) {
+			// Хранилища нет — детерминированный секрет: одинаковый во всех
+			// запросах, иначе подпись CSRF не совпала бы при проверке.
+			$lock = dirname(__DIR__) . '/composer.lock';
+			$secret = hash('sha256', __DIR__ . '|' . (is_file($lock) ? (string)md5_file($lock) : 'no-lock'));
+			error_log('[security] Рантайм-кэш недоступен на запись — используется детерминированный CSRF-секрет');
 		}
 		return $secret;
 	}

@@ -9,7 +9,7 @@ use Exception;
 /**
  * Обработчик POST-форм сайта.
  * Маршрут: POST /send/email → self::sendMail()
- * Письмо: MailController::onMail() → Network::onPHPMailer()
+ * Письмо: MailController::onMail() → App\Mail\Transport (SMTP, при ошибке — sendmail)
  *
  * Типы форм (маркер в hidden-поле):
  *   modal        — заявка с главной и /contacts (enquiry_form.php)
@@ -69,6 +69,43 @@ class FormHandler
             return '/';
         }
         return $path;
+    }
+
+    /**
+     * UTM-метки и клик-идентификаторы заявки.
+     *
+     * Берём из полей формы, а если их нет — из query-строки страницы,
+     * с которой пришла заявка (Referer). Так в CRM видно, откуда пришёл
+     * клиент, даже если формы не прошиты UTM-полями.
+     *
+     * @return array<string,string>
+     */
+    private static function collectUtm(): array
+    {
+        $keys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'yclid', 'gclid'];
+        $utm = [];
+
+        $referer = (string)($_SERVER['HTTP_REFERER'] ?? '');
+        $query = '';
+        if ($referer !== '') {
+            $query = (string)(parse_url($referer, PHP_URL_QUERY) ?: '');
+        }
+        $fromReferer = [];
+        if ($query !== '') {
+            parse_str($query, $fromReferer);
+        }
+
+        foreach ($keys as $key) {
+            $value = trim((string)($_POST[$key] ?? ''));
+            if ($value === '') {
+                $value = trim((string)($fromReferer[$key] ?? ''));
+            }
+            if ($value !== '') {
+                $utm[$key] = mb_substr($value, 0, 200);
+            }
+        }
+
+        return $utm;
     }
 
     public static function sendMail(): void
@@ -132,10 +169,13 @@ class FormHandler
         $company = trim(strip_tags($_POST['company'] ?? ''));
         $location = trim(strip_tags($_POST['location'] ?? ''));
         $msg = trim(strip_tags($_POST['message'] ?? ''));
-        $needsContacts = !in_array($type, self::TYPES_WITHOUT_CONTACTS, true);
+        $needsContacts = !\in_array($type, self::TYPES_WITHOUT_CONTACTS, true);
 
         if ($needsContacts) {
-            if (mb_strlen($name, 'UTF-8') < 2 || !preg_match('/^[\p{L}\s\-\.\']+$/u', $name)) {
+            // Имя: буквы, пробелы, дефисы, апострофы, точки и цифры
+            // (цифры нужны для редких имён вроде «Мария 2» — раньше такая
+            // заявка отбивалась как «Некорректное имя»).
+            if (mb_strlen($name, 'UTF-8') < 2 || !preg_match('/^[\p{L}\p{N}\s\-\.\']+$/u', $name)) {
                 self::redirect(false, 'Некорректное имя.', $type);
                 return;
             }
@@ -197,7 +237,18 @@ class FormHandler
         $altBody = self::buildPlainText($name, $phone, $email, $msg, $type, $company, $location);
 
         // === SEND ===
+        // Бюджет времени на всю почтовую часть запроса: пользователь не должен
+        // долго смотреть на «отправляем…». Не уложились — заявка уходит в очередь
+        // и уйдёт автоматически, как только почта заработает.
+        \App\Mail\Transport::startBudget(8);
+
+        // Накопленные заявки клиентов с прошлых неудачных отправок — пробуем
+        // доставить (небольшой бюджет, чтобы не тормозить текущую заявку).
+        // Копии клиенту не трогаем: они не срочные, их отправит cron.
+        \App\Mail\Outbox::flush(3, 'lead');
+
         $success = false;
+        $queued = false;
         try {
             $mailController = new MailController();
             $toEmail = self::envValue('EMAIL_TO', 'order@фсс.рус');
@@ -208,7 +259,24 @@ class FormHandler
                 $options['reply_name'] = $name !== '' ? $name : $company;
             }
             $options['alt_body'] = $altBody;
-            $success = $mailController->onMail($toEmail, $subject, $body, $options);
+            // Структурированные поля заявки — для транспорта Bitrix
+            // (там нужен телефон и имя по полям, а не в тексте письма).
+            $options['lead'] = [
+                'name' => $name,
+                'phone' => $phone,
+                'email' => $email,
+                'company' => $company,
+                'message' => $msg,
+                'product' => (string)($_POST['product'] ?? ''),
+                'location' => $location,
+                'type' => $type,
+                'page' => self::refererPath(),
+                'utm' => self::collectUtm(),
+            ];
+            $result = $mailController->dispatch($toEmail, $subject, $body, $options);
+            // queued — письмо не ушло, но заявка надёжно сохранена и уйдёт позже.
+            $success = $result['status'] === 'sent' || $result['status'] === 'queued';
+            $queued = $result['status'] === 'queued';
         } catch (Exception $e) {
             error_log('Mail Error: ' . $e->getMessage());
         }
@@ -217,7 +285,9 @@ class FormHandler
             $detail = Message::first('error');
             error_log('[form] Отправка не удалась (тип: ' . $type . '): ' . ($detail ?: 'без описания'));
         } elseif ($type === 'modal' && $email !== '') {
-            // Копия клиенту — на экране успеха обещано «Дубли отправили на вашу почту»
+            // Копия клиенту — на экран успеха обещано «Дубли отправили на вашу почту».
+            // Копию кладём в очередь: она не срочная, и так ответ пользователю
+            // не ждёт второго SMTP-рукопожатия.
             self::sendCopyToClient($mailController, $email, [
                 'name' => $name,
                 'company' => $company,
@@ -232,6 +302,12 @@ class FormHandler
         $message = $success
             ? 'Вы успешно оставили заявку! Мы свяжемся с вами в ближайшее время.'
             : 'Не удалось отправить заявку. Пожалуйста, позвоните нам +7 938 018-00-06 или попробуйте позже.';
+        if ($queued) {
+            // Заявка сохранена — пользователю не нужно звонить, но и «успех»
+            // здесь честный: письмо уйдёт автоматически, как только почта
+            // заработает (очередь обрабатывается при следующей заявке и cron).
+            error_log('[form] Заявка типа ' . $type . ' сохранена в очереди и будет доставлена автоматически');
+        }
 
         // Данные для экрана «Заявка принята» (ProMaintenance enquiry-success)
         $result = [];
@@ -284,13 +360,15 @@ class FormHandler
         array $fields
     ): void {
         try {
-            $ok = $mailController->onMail(
+            // queue_only — копия уходит из очереди (вместе с накопленными
+            // заявками), а не блокирует ответ пользователю.
+            $result = $mailController->dispatch(
                 $email,
                 'ФСС.РУС — ваша заявка от ' . date('d.m.Y H:i'),
                 self::buildCopyBody($fields),
-                ['alt_body' => self::buildCopyPlainText($fields)]
+                ['alt_body' => self::buildCopyPlainText($fields), 'queue_only' => true]
             );
-            if (!$ok) {
+            if ($result['status'] === 'lost') {
                 error_log('[form] Копия клиенту не отправлена: ' . (Message::first('error') ?: 'без описания'));
             }
         } catch (Exception $e) {
@@ -404,16 +482,30 @@ class FormHandler
         );
     }
 
+    /**
+     * Rate limit по IP.
+     *
+     * Хранилище — var/ratelimit/ в проекте (а не в общем /tmp хостинга:
+     * на shared-хостинге /tmp общий для всех аккаунтов, и чужой трафик
+     * мог выбить лимит нашим посетителям). Если корень не пишется —
+     * рантайм-кэш.
+     *
+     * Лимит 20 заявок на 10 минут с одного IP: мобильные операторы и офисы
+     * сидят за одним публичным IP (CGNAT), где 8 отправок выглядели бы как
+     * «слишком много заявок» для обычных людей.
+     */
     private static function antiBotRateLimit(): bool
     {
         $ip = self::clientIp();
-        $dir = sys_get_temp_dir() . '/fss-ratelimit/';
-        if (!is_dir($dir)) @mkdir($dir, 0755, true);
+        $dir = self::rateLimitDir();
+        if ($dir === '') {
+            return true; // хранилища нет — не блокируем отправку
+        }
 
-        $file = $dir . md5($ip) . '.json';
+        $file = $dir . '/' . md5($ip) . '.json';
         $now = time();
         $window = 600;      // окно 10 минут
-        $maxRequests = 8;   // максимум 8 заявок в 10 минут с одного IP
+        $maxRequests = 20;  // максимум заявок за окно с одного IP
 
         // Блокировка файла: без неё параллельные запросы перетирали историю
         // друг друга и лимит срабатывал через раз.
@@ -444,6 +536,27 @@ class FormHandler
             @flock($fh, LOCK_UN);
             @fclose($fh);
         }
+    }
+
+    /** Каталог счётчиков rate limit: var/ratelimit/ в проекте, иначе рантайм-кэш. */
+    private static function rateLimitDir(): string
+    {
+        static $dir = null;
+        if ($dir !== null) {
+            return $dir;
+        }
+        $project = dirname(__DIR__, 3) . '/var/ratelimit';
+        if (!is_dir($project)) {
+            @mkdir($project, 0775, true);
+        }
+        if (is_dir($project) && is_writable($project)) {
+            return $dir = $project;
+        }
+        $cache = \App\Models\Cache\Path::file('ratelimit/');
+        if ($cache !== '' && !is_dir($cache)) {
+            @mkdir($cache, 0775, true);
+        }
+        return $dir = ($cache !== '' && is_dir($cache) && is_writable($cache)) ? $cache : '';
     }
 
     private static function antiBotJsToken(): bool

@@ -213,16 +213,36 @@ final class HtmlCache
 	}
 
 	/**
-	 * Актуализировать per-request метку времени (_ts) в закэшированном HTML.
+	 * Актуализировать per-request метку времени (_ts) и подпись (_csrf)
+	 * в закэшированном HTML.
+	 *
 	 * Иначе повторная отправка формы с закэшированной страницы выглядела бы
 	 * как «отправлено мгновенно» (антибот-фильтр).
+	 *
+	 * ВАЖНО: перевыпуск только _ts ломает CSRF-подпись. _csrf — это
+	 * HMAC(secret, 'form|{_ts}'), поэтому вместе с _ts обязана
+	 * перевыпускаться и подпись. Иначе любая форма, отправленная с
+	 * закэшированной страницы (то есть у всех посетителей, кроме первого
+	 * за окно кэша), отбивалась бы проверкой «безопасность не пройдена».
 	 */
 	public static function refreshTimestamp(string $body): string
 	{
 		$now = (string)(int)(microtime(true) * 1000);
-		return (string)preg_replace_callback(
+		$body = (string)preg_replace_callback(
 			'/name="_ts" value="\d+"/',
 			static fn(array $m): string => 'name="_ts" value="' . $now . '"',
+			$body
+		);
+
+		if (!function_exists('fss_secret')) {
+			return $body;
+		}
+
+		$csrf = hash_hmac('sha256', 'form|' . $now, fss_secret());
+
+		return (string)preg_replace_callback(
+			'/(<input[^>]*\bname="_csrf"[^>]*\bvalue=")[^"]*(")/',
+			static fn(array $m): string => $m[1] . $csrf . $m[2],
 			$body
 		);
 	}

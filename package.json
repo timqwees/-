@@ -19,6 +19,8 @@
   "private": true,
   "scripts": {
     "qwees:start": "php -S 0.0.0.0:80",
-    "indexnow": "php tools/indexnow.php"
+    "indexnow": "php tools/indexnow.php",
+    "audit": "php tools/crawler.php",
+    "audit:full": "AUDIT_URL=\"${AUDIT_URL:-https://skillcode.tech/}\"; AUDIT_PAGE=\"${AUDIT_PAGE:-$AUDIT_URL}\"; php tools/crawler.php --self-test; php tools/crawler.php \"$AUDIT_URL\" --depth=\"${AUDIT_DEPTH:-6}\" --limit=\"${AUDIT_LIMIT:-1500}\" --concurrency=\"${AUDIT_CONCURRENCY:-6}\" --pages --clusters --probe --gen-llms --ai=\"${AUDIT_AI:-auto}\" --ai-fix=\"${AUDIT_AI_FIX:-25}\" --page=\"$AUDIT_PAGE\" --competitors=\"${AUDIT_COMPETITORS:-}\" --test-url=\"${AUDIT_TEST_URL:-/admin/}\" --html=tools/audit-report.html"
   }
 }

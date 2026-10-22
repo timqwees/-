@@ -24,11 +24,14 @@ error_log
 # Авто-вынесенный инлайновый CSS (генерируется автоматически)
 public/assets/distCSS/auto/
 
-# Рантайм-кэш (в проекте не используется — вынесен в системный tmp, App\Models\Cache\Path)
+# Рантайм-данные проекта: очередь заявок (App\Mail\Outbox) и счётчики
+# rate limit. В репозиторий не попадают.
 var/
 
 # Кэш исходников Font Awesome для tools/build_fontawesome_subset.py
 tools/.fa-cache/
 
-# Секрет подписи CSRF-токена (основной — FSS_SECRET в .env; файл создаётся автоматически)
-.fss-secret
+# Отчёты SEO-аудита (генерируются npm run audit:full)
+tools/audit-report.html
+tools/audit-report.json
+tools/llms.generated.txt
