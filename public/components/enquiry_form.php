@@ -39,7 +39,7 @@ if (!empty($_SESSION['fss_enquiry_result']) && ($_SESSION['fss_enquiry_result'][
 				</span>
 				<p class="eyebrow">Заявка принята</p>
 				<h3>Всё готово,<br><span data-success-name><?= htmlspecialchars((string)($__result['name'] ?? 'мы')) ?></span>.</h3>
-				<p>Мы получили заявку и перезвоним в течение 15 минут в рабочее время. Дубли отправили на вашу почту.</p>
+				<p>Мы получили заявку и перезвоним в течение 15 минут в рабочее время.<?php if (\App\Mail\Transport::hasMailTransport()): ?> Дубли отправили на вашу почту.<?php endif; ?></p>
 				<dl>
 					<div>
 						<dt>Номер заявки</dt>

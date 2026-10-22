@@ -10,7 +10,9 @@
 
   # --- Безопасность: закрываем исходники и служебные файлы ----------------
   RewriteRule "(^|/)\.(?!well-known)" - [F]
-  RewriteRule "^(app|setting|tools|vendor|docs)(/|$)" - [F,L]
+  # var/ — очередь заявок (App\Mail\Outbox): там лежат ФИО и телефоны клиентов,
+  # наружу отдавать нельзя. Правило для существующих файлов ниже отдаёт их «как есть».
+  RewriteRule "^(app|setting|tools|vendor|docs|var)(/|$)" - [F,L]
   RewriteRule ^(composer\.(json|lock)|package(-lock)?\.json|\.env(\..*)?)$ - [F,L]
   RewriteRule ^public/(components|pages)(/|$) - [F,L]
 

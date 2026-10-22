@@ -2,9 +2,6 @@
 
 namespace App\Models\Network;
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
 class Network
 {
     public static $db;
@@ -264,7 +261,7 @@ class Network
     }
 
     /**
-     * Отправка письма через PHPMailer.
+     * Отправка письма через PHPMailer (SMTP-транспорт).
      *
      * Ключи $data:
      *   to_email   — получатель (обязательный)
@@ -281,73 +278,23 @@ class Network
      *   2) проверяем результат send().
      * Без этого ошибка отправки выглядела бы как успех — пользователю
      * показывали «заявка принята», а письмо не уходило.
+     *
+     * Реализация вынесена в App\Mail\Transport: там же живёт запасной
+     * транспорт sendmail (PHP mail() через локальный MTA хостинга) —
+     * он нужен там, где внешний SMTP закрыт (shared-хостинг, reg.ru).
      */
     public static function onPHPMailer(array $data)
     {
-        try {
-            $mail = new PHPMailer(true);
-            $mail->CharSet = 'UTF-8';
-
-            $mail->isSMTP();
-            $mail->SMTPAuth = true;
-            $mail->SMTPDebug = 0;
-
-            $mail->Host = self::envValue('SMTP_HOST', 'smtp.gmail.com');
-            $secure = self::envValue('SMTP_SECURE', PHPMailer::ENCRYPTION_STARTTLS);
-            // 'none'/'null'/'off' — отключить шифрование (локальные стенды, релеи)
-            $mail->SMTPSecure = in_array(strtolower($secure), ['none', 'null', 'off', ''], true) ? '' : $secure;
-
-            $mail->Port = (int)self::envValue('EMAIL_PORT', '587');
-            $mail->Username = self::envValue('EMAIL');
-            $mail->Password = self::envValue('EMAIL_PASSWORD');
-            $mail->setFrom(
-                self::envValue('EMAIL'),
-                self::envValue('EMAIL_NICKNAME', 'ФСС.РУС')
-            );
-
-            $to = self::asciiEmail((string)($data['to_email'] ?? ''));
-            if ($to === '' || !filter_var($to, FILTER_VALIDATE_EMAIL)) {
-                throw new \RuntimeException('Некорректный email получателя: ' . $to);
-            }
-            $mail->addAddress($to);
-
-            $replyTo = trim((string)($data['reply_to'] ?? ''));
-            if ($replyTo !== '' && filter_var($replyTo, FILTER_VALIDATE_EMAIL)) {
-                $replyName = trim((string)($data['reply_name'] ?? ''));
-                if ($replyName !== '') {
-                    $mail->addReplyTo($replyTo, $replyName);
-                } else {
-                    $mail->addReplyTo($replyTo);
-                }
-            }
-
-            foreach (['cc' => 'addCC', 'bcc' => 'addBCC'] as $key => $method) {
-                $extra = trim((string)($data[$key] ?? ''));
-                if ($extra !== '' && filter_var(self::asciiEmail($extra), FILTER_VALIDATE_EMAIL)) {
-                    $mail->{$method}(self::asciiEmail($extra));
-                }
-            }
-
-            $mail->Subject = (string)($data['subject'] ?? '');
-
-            $mail->msgHTML((string)($data['body'] ?? ''));
-            $altBody = trim((string)($data['alt_body'] ?? ''));
-            if ($altBody !== '') {
-                $mail->AltBody = $altBody;
-            }
-
-            if (!$mail->send()) {
-                throw new \RuntimeException('PHPMailer вернул false' . ($mail->ErrorInfo !== '' ? ': ' . $mail->ErrorInfo : ''));
-            }
-            $mail->clearAddresses();
-
+        $result = \App\Mail\Transport::sendSmtp($data);
+        if ($result['ok']) {
             return true;
-        } catch (\Throwable $e) {
-            $error = 'Ошибка при отправке письма: ' . $e->getMessage();
-            Message::set('error', $error);
-            error_log('[mail] ' . $error);
-            return false;
         }
+
+        $error = 'Ошибка при отправке письма: ' . $result['error'];
+        Message::set('error', $error);
+        error_log('[mail] ' . $error);
+
+        return false;
     }
 
     /**
@@ -363,31 +310,6 @@ class Network
         }
         $value = ($value === false || $value === null) ? '' : (string)$value;
         return $value !== '' ? $value : $default;
-    }
-
-    /**
-     * Конвертирует IDN-домен в punycode — SMTP принимает только ASCII.
-     * order@фсс.рус → order@xn--q1aah.xn--p1acf
-     */
-    private static function asciiEmail(string $email): string
-    {
-        $email = trim($email);
-        $at = strrpos($email, '@');
-        if ($at === false) {
-            return $email;
-        }
-        $domain = substr($email, $at + 1);
-        if (!preg_match('/[^\x00-\x7F]/', $domain)) {
-            return $email; // уже ASCII
-        }
-        if (!function_exists('idn_to_ascii')) {
-            return $email;
-        }
-        $ascii = idn_to_ascii($domain, IDNA_NONTRANSITIONAL_TO_ASCII, INTL_IDNA_VARIANT_UTS46);
-        if ($ascii === false || $ascii === '') {
-            return $email;
-        }
-        return substr($email, 0, $at + 1) . $ascii;
     }
 
     public static function handleInvalidCallback(string $path, $callback): void

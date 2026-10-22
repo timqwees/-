@@ -27,4 +27,4 @@ echo '<input type="hidden" name="_js_token" id="' . $tokenId . '" value="">';
 $__csrf = hash_hmac('sha256', 'form|' . $timeMs, fss_secret());
 echo '<input type="hidden" name="_csrf" id="' . $csrfId . '" value="' . htmlspecialchars($__csrf, ENT_QUOTES) . '">';
 
-echo '<script>(function(){var id=' . json_encode($tokenId, JSON_UNESCAPED_SLASHES) . ';function fill(){var e=document.getElementById(id);if(e&&!e.value)e.value=Date.now().toString();}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",fill);else fill();setTimeout(fill,1500);})();</script>';
+echo '<script>(function(){var id=' . json_encode($tokenId, JSON_UNESCAPED_SLASHES) . ';function fill(){var e=document.getElementById(id);if(e&&!e.value){e.value=Date.now().toString();return true}return false}if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",fill);else fill();setTimeout(fill,1500);document.addEventListener("submit",function(ev){var f=ev.target;if(f&&f.querySelector("input[name=\"_js_token\"][id=\""+id+"\"]"))fill();},true);})();</script>';
