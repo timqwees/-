@@ -1261,28 +1261,55 @@
 		   обновляться строго по текущей позиции скролла — иначе при возврате
 		   вверх шапка «залипает» серой плашкой до следующего движения.
 		   Если hero не найден (страница без заставки или устаревший кэш скрипта) —
-		   ориентируемся на высоту самой шапки: вверху прозрачно, дальше «прилипает». */
+		   ориентируемся на высоту самой шапки: вверху прозрачно, дальше «прилипает».
+
+		   ВАЖНО: в самом верху страницы (scrollY <= 4) шапка ВСЕГДА прозрачна.
+		   Раньше состояние считалось только от scrollY, и при восстановлении
+		   прокрутки браузером (перезагрузка/«назад») шапка оставалась тёмной
+		   там, где должна быть прозрачной. */
 		var update = function () {
-			var progress = !panel.hidden
-				? 1
-				: (heroHeight
-					? Math.min(1, Math.max(0, (window.scrollY - heroHeight * 0.3) / (heroHeight * 0.55)))
-					: (window.scrollY > (bar.offsetHeight || 90) ? 1 : 0));
+			var y = window.scrollY || window.pageYOffset || 0;
+
+			/* Hero мог не найтись при инициализации (ленивая отрисовка) —
+			   ищем ещё раз, пока не нашли. */
+			if (!heroHeight) {
+				var found = document.querySelector('[data-nav-hero]') || document.querySelector('.hero');
+				if (found && found !== hero) {
+					hero = found;
+					heroHeight = hero.offsetHeight;
+					observeHero();
+				}
+			}
+
+			var progress;
+			if (!panel.hidden) {
+				progress = 1;                          // открытое мобильное меню
+			} else if (y <= 4) {
+				progress = 0;                          // верх страницы — прозрачно
+			} else if (heroHeight) {
+				progress = Math.min(1, Math.max(0, (y - heroHeight * 0.3) / (heroHeight * 0.55)));
+			} else {
+				progress = y > (bar.offsetHeight || 90) ? 1 : 0;
+			}
 
 			bar.style.setProperty('--nav-opacity', String(0.02 + 0.8 * progress));
 			bar.style.setProperty('--nav-blur', (1 + 23 * progress) + 'px');
 			bar.toggleAttribute('data-stuck', progress > 0.03);
 		};
 
-		/* Высота hero может измениться после загрузки (картинки, шрифты) —
-		   иначе порог прозрачности считался бы от устаревшего значения. */
-		if (hero && typeof ResizeObserver !== 'undefined') {
-			var heroObserver = new ResizeObserver(function () {
+		var heroObserver = null;
+		var observeHero = function () {
+			if (heroObserver || !hero || typeof ResizeObserver === 'undefined') return;
+			heroObserver = new ResizeObserver(function () {
 				heroHeight = hero.offsetHeight;
 				update();
 			});
 			heroObserver.observe(hero);
-		}
+		};
+
+		/* Высота hero может измениться после загрузки (картинки, шрифты) —
+		   иначе порог прозрачности считался бы от устаревшего значения. */
+		observeHero();
 
 		var setOpen = function (open) {
 			toggle.setAttribute('aria-expanded', String(open));
@@ -1347,6 +1374,12 @@
 		};
 
 		window.addEventListener('scroll', onScroll, { passive: true });
+
+		/* Возврат из bfcache (кнопка «назад») и догрузка: страница может
+		   восстановиться с прокруткой — пересчитываем состояние шапки. */
+		window.addEventListener('pageshow', update);
+		window.addEventListener('load', update);
+
 		update();
 	}
 

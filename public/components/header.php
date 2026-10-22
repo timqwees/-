@@ -149,9 +149,14 @@ $__navMode = in_array($__forced, ['transparent', 'solid'], true)
 	}
 
 	/* Прозрачная шапка — страницы с полноэкранным hero (hero просвечивает).
-	   Режим ставит PHP: data-nav-mode="transparent" (главная, объект, услуга, /uslugi, /about). */
+	   Режим ставит PHP: data-nav-mode="transparent" (главная, объект, услуга, /uslugi, /about).
+	   Значения --nav-opacity/--nav-blur заданы явно: пока скрипт не отработал
+	   (или упал), шапка остаётся прозрачной, а не «тёмной плашкой» из-за
+	   fallback'а .82 в правиле для data-stuck. */
 	#site-header[data-nav-mode="transparent"] .site-navigation,
 	[data-page=home] .site-navigation {
+		--nav-opacity: .02;
+		--nav-blur: 1px;
 		background: rgb(23 23 24 / var(--nav-opacity, .02));
 		color: #fff;
 		backdrop-filter: blur(var(--nav-blur, 1px));
@@ -163,6 +168,8 @@ $__navMode = in_array($__forced, ['transparent', 'solid'], true)
    иначе при возврате вверх шапка оставалась серой «плашкой» до самого верха. */
 	#site-header[data-nav-mode="transparent"] .site-navigation[data-stuck],
 	[data-page=home] .site-navigation[data-stuck] {
+		--nav-opacity: .82;
+		--nav-blur: 24px;
 		color: #fff;
 		background: rgb(23 23 24 / var(--nav-opacity, .82));
 		backdrop-filter: blur(var(--nav-blur, 24px));
