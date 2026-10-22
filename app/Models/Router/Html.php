@@ -41,23 +41,29 @@ final class Html
 	}
 
 	/**
-	 * Вынос инлайнового <style> в отдельный кэшируемый CSS-файл.
+	 * Вынос инлайнового <style> в отдельные кэшируемые CSS-файлы.
 	 *
-	 * Зачем: в шаблонах до 90 KB CSS внутри HTML — он не кэшируется отдельно
+	 * Зачем: в шаблонах десятки KB CSS внутри HTML — он не кэшируется отдельно
 	 * и повторно грузится на каждой странице. После выноса:
-	 *   - HTML уменьшается на десятки килобайт (быстрее TTFB и парсинг);
-	 *   - CSS отдаётся один раз с immutable-кэшем и gzip;
+	 *   - HTML уменьшается (быстрее TTFB и парсинг);
+	 *   - CSS отдаётся отдельным файлом с gzip и долгим кэшем;
 	 *   - стиль применяется до отрисовки (меньше FOUC/CLS).
 	 *
 	 * Файл адресуется хешем содержимого: одинаковый CSS у разных страниц
-	 * шарится одним файлом. Если файловую систему писать нельзя — HTML
-	 * остаётся как есть (безопасно).
+	 * шарится одним файлом. Именно поэтому блоки НЕ склеиваются в один файл
+	 * на страницу: общий CSS (футер, шапка — 60+ KB) иначе копировался бы в
+	 * каждую страницу, и браузер качал бы его заново на каждом переходе.
+	 * Теперь общий блок — один файл на весь сайт, а у страницы свой маленький.
+	 *
+	 * Если файловую систему писать нельзя — HTML остаётся как есть (безопасно).
 	 */
 	public static function extractInlineCss(string $html): string
 	{
 		if ($html === '' || stripos($html, '<style') === false) {
 			return $html;
 		}
+
+		$original = $html;
 		$blocks = [];
 		$html = (string) preg_replace_callback(
 			'#(?is)<style([^>]*)>(.*?)</style>#',
@@ -79,22 +85,64 @@ final class Html
 		if (!$blocks) {
 			return $html;
 		}
-		$css = implode("\n", $blocks);
-		$hash = substr(sha1($css), 0, 16);
+
 		$dir = dirname(__DIR__, 3) . '/public/assets/distCSS/auto';
-		$file = $dir . '/p-' . $hash . '.css';
-		if (!is_file($file)) {
-			if (!is_dir($dir) && !@mkdir($dir, 0755, true) && !is_dir($dir)) {
-				return $html; // ФС недоступна — оставляем инлайн.
+		if (!is_dir($dir) && !@mkdir($dir, 0755, true) && !is_dir($dir)) {
+			return $original; // ФС недоступна — оставляем стили инлайн.
+		}
+
+		$links = [];
+		foreach ($blocks as $css) {
+			$hash = substr(sha1($css), 0, 16);
+			$file = $dir . '/p-' . $hash . '.css';
+			if (!is_file($file)) {
+				if (@file_put_contents($file, $css, LOCK_EX) === false) {
+					return $original; // не записали — лучше инлайн, чем страница без стилей
+				}
 			}
-			@file_put_contents($file, $css, LOCK_EX);
+			// mtime = время последнего использования: по нему чистим неиспользуемые файлы.
+			@touch($file);
+			// ?v= не нужен: имя файла — хеш содержимого, изменился CSS — изменилось имя.
+			$links[] = '<link rel="stylesheet" href="/public/assets/distCSS/auto/p-' . $hash . '.css">';
 		}
-		$ver = defined('FSS_ASSET_VER') ? (string) FSS_ASSET_VER : (string) seo_config('cache_bust');
-		$link = '<link rel="stylesheet" href="/public/assets/distCSS/auto/p-' . $hash . '.css?v=' . $ver . '">';
+
+		self::cleanupAutoCss($dir);
+
 		$pos = stripos($html, '</head>');
+		$head = implode("\n", $links);
 		if ($pos === false) {
-			return $link . $html;
+			return $head . $html;
 		}
-		return substr($html, 0, $pos) . $link . "\n" . substr($html, $pos);
+		return substr($html, 0, $pos) . $head . "\n" . substr($html, $pos);
+	}
+
+	/**
+	 * Уборка неиспользуемых auto-CSS файлов (раз в час).
+	 *
+	 * Файлы иммутабельны (имя = хеш содержимого), но после правки шаблона
+	 * старый файл остаётся навсегда. Чистим те, к которым не обращались
+	 * дольше двух недель: страница при этом не ломается — при следующем
+	 * рендере файл создаётся заново.
+	 */
+	private static function cleanupAutoCss(string $dir): void
+	{
+		$marker = \App\Models\Cache\Path::file('auto-css-cleanup.txt');
+		if ($marker !== '' && is_file($marker) && (time() - (int)@filemtime($marker)) < 3600) {
+			return;
+		}
+		if ($marker !== '') {
+			@touch($marker);
+		}
+
+		$files = glob($dir . '/p-*.css');
+		if (!is_array($files)) {
+			return;
+		}
+		$now = time();
+		foreach ($files as $file) {
+			if (($now - (int)@filemtime($file)) > 86400 * 14) {
+				@unlink($file);
+			}
+		}
 	}
 }
