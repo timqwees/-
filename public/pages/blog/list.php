@@ -62,6 +62,9 @@ $description = 'Экспертные статьи о строительстве 
 	<link rel="shortcut icon" href="/public/assets/image/logo/favicon/favicon.ico" />
 	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/favicon/apple-touch-icon.png" />
 	<link rel="manifest" href="/manifest.json" />
+	<link rel="search" type="application/opensearchdescription+xml" title="ФАВОРИТ-СТРОЙ-СНАБ" href="/opensearch.xml">
+	<link rel="author" href="<?= rtrim((string)seo_config('base_url'), '/') ?>/about">
+	<link rel="publisher" href="<?= rtrim((string)seo_config('base_url'), '/') ?>/company">
 	<?= seo_canonical_tags() ?>
 	<?= seo_verify_tags() ?>
 	<?= seo_og_tags($title, $description, '/public/assets/image/og/og-blog-1200x630.jpg') ?>
@@ -139,7 +142,7 @@ $description = 'Экспертные статьи о строительстве 
 				</header>
 				<article class="blog-featured-card" itemscope itemtype="https://schema.org/BlogPosting">
 					<meta itemprop="inLanguage" content="ru-RU">
-					<a href="/blog/<?= htmlspecialchars($featuredSlug, ENT_QUOTES) ?>" title="<?= htmlspecialchars($f['title'], ENT_QUOTES) ?>" class="blog-featured-link" itemprop="url">
+					<a href="/blog/<?= htmlspecialchars($featuredSlug, ENT_QUOTES) ?>" title="<?= htmlspecialchars($f['title'], ENT_QUOTES) ?>" class="blog-featured-link" itemprop="url" rel="bookmark">
 						<div class="blog-featured-media">
 							<div class="blog-featured-img" style="background-image:url('<?= htmlspecialchars($cardImg($f['og_image']), ENT_QUOTES) ?>')" itemprop="image"></div>
 							<div class="blog-featured-overlay"></div>
@@ -209,7 +212,7 @@ $description = 'Экспертные статьи о строительстве 
 							<?php else: foreach ($pageItems as $slug => $a): ?>
 							<article class="blog-card" itemscope itemtype="https://schema.org/BlogPosting" role="listitem">
 								<meta itemprop="inLanguage" content="ru-RU">
-								<a href="/blog/<?= htmlspecialchars($slug, ENT_QUOTES) ?>" title="<?= htmlspecialchars($a['title'], ENT_QUOTES) ?>" class="blog-card-link" itemprop="url">
+								<a href="/blog/<?= htmlspecialchars($slug, ENT_QUOTES) ?>" title="<?= htmlspecialchars($a['title'], ENT_QUOTES) ?>" class="blog-card-link" itemprop="url" rel="bookmark">
 									<div class="blog-card-media">
 										<div class="blog-card-img" style="background-image:url('<?= htmlspecialchars($cardImg($a['og_image']), ENT_QUOTES) ?>')" itemprop="image"></div>
 										<div class="blog-card-img-overlay"></div>
@@ -249,7 +252,7 @@ $description = 'Экспертные статьи о строительстве 
 								$qp = static fn(int $n): string => '?page=' . $n . $qbase . '#blog-list';
 							?>
 							<?php if ($page > 1): ?>
-							<a href="<?= $qp($page - 1) ?>" title="Предыдущая страница" class="blog-page-btn blog-page-btn--prev" aria-label="Предыдущая страница">
+							<a href="<?= $qp($page - 1) ?>" title="Предыдущая страница" class="blog-page-btn blog-page-btn--prev" aria-label="Предыдущая страница" rel="prev">
 								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg>
 								<span>Назад</span>
 							</a>
@@ -276,7 +279,7 @@ $description = 'Экспертные статьи о строительстве 
 								} ?>
 							</div>
 							<?php if ($page < $maxPages): ?>
-							<a href="<?= $qp($page + 1) ?>" title="Следующая страница" class="blog-page-btn blog-page-btn--next" aria-label="Следующая страница">
+							<a href="<?= $qp($page + 1) ?>" title="Следующая страница" class="blog-page-btn blog-page-btn--next" aria-label="Следующая страница" rel="next">
 								<span>Вперёд</span>
 								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 6l6 6-6 6"/></svg>
 							</a>
@@ -297,7 +300,7 @@ $description = 'Экспертные статьи о строительстве 
 						<ul class="blog-archive__list">
 							<?php foreach ($allPosts as $__slug => $__item): ?>
 								<li>
-									<a class="blog-archive__link" href="/blog/<?= htmlspecialchars((string)$__slug, ENT_QUOTES) ?>" title="<?= htmlspecialchars((string)$__item['title'], ENT_QUOTES) ?>">
+									<a class="blog-archive__link" href="/blog/<?= htmlspecialchars((string)$__slug, ENT_QUOTES) ?>" title="<?= htmlspecialchars((string)$__item['title'], ENT_QUOTES) ?>" rel="bookmark">
 										<time datetime="<?= htmlspecialchars((string)$__item['date'], ENT_QUOTES) ?>"><?= date('d.m.Y', strtotime((string)$__item['date'])) ?></time>
 										<span class="blog-archive__title"><?= htmlspecialchars((string)$__item['title'], ENT_QUOTES) ?></span>
 										<span class="blog-archive__cat"><?= htmlspecialchars((string)($__item['category_name'] ?? ''), ENT_QUOTES) ?></span>
@@ -334,7 +337,7 @@ $description = 'Экспертные статьи о строительстве 
 							</div>
 							<div class="blog-sidebar-body">
 								<?php foreach ($popular as $slug => $item): ?>
-								<a class="blog-popular-item" title="<?= htmlspecialchars($item['title'], ENT_QUOTES) ?>" href="/blog/<?= htmlspecialchars($slug, ENT_QUOTES) ?>">
+								<a class="blog-popular-item" title="<?= htmlspecialchars($item['title'], ENT_QUOTES) ?>" href="/blog/<?= htmlspecialchars($slug, ENT_QUOTES) ?>" rel="bookmark">
 									<div class="blog-popular-img" style="background-image:url('<?= htmlspecialchars($cardImg($item['og_image']), ENT_QUOTES) ?>')"></div>
 									<div class="blog-popular-body">
 										<h4 class="blog-popular-title"><?= htmlspecialchars($item['title'], ENT_QUOTES) ?></h4>

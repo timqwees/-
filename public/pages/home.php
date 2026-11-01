@@ -49,6 +49,9 @@ $fssSec = function (string $label): string {
 	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/favicon/apple-touch-icon.png" />
 	<meta name="apple-mobile-web-app-title" content="ФСС" />
 	<link rel="manifest" href="/manifest.json" />
+	<link rel="author" href="<?= $site['baseUrl'] ?>/about">
+	<link rel="publisher" href="<?= $site['baseUrl'] ?>/company">
+	<link rel="search" type="application/opensearchdescription+xml" title="ФАВОРИТ-СТРОЙ-СНАБ" href="/opensearch.xml">
 	<link rel="mask-icon" href="/public/assets/image/logo/favicon/favicon-96x96.png" color="#876b55">
 	<link rel="preload" as="font" type="font/woff2" href="/public/assets/vendor/fonts/Manrope-latin.woff2" crossorigin><link rel="preload" as="font" type="font/woff2" href="/public/assets/vendor/fonts/Manrope-cyrillic.woff2" crossorigin><link rel="preload" as="font" type="font/woff2" href="/public/assets/fonts/WixMadeforDisplay/WixMadeforDisplay-Variable.woff2" crossorigin><link rel="stylesheet" href="/public/assets/vendor/fonts/fonts.css">
 	<style> body { font-family: 'DM Sans Variable', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
@@ -539,11 +542,11 @@ $fssSec = function (string $label): string {
 			</h1>
 			<div class="hero-intro">
 				<p>От фундамента до сдачи.<br>Сила для каждого нового этапа.</p>
-				<a class="text-link" href="#about" data-goal="hero_about">Узнать о ФСС <span>&#8595;</span></a>
+				<a class="text-link" href="#about" data-goal="hero_about" title="Узнать о ФСС">Узнать о ФСС <span>&#8595;</span></a>
 			</div>
 		</div>
 		<div class="hero-bottom">
-			<a href="/portfolio/obshchegiya-adler-sochi" class="hero-project" data-cinema-link>
+			<a href="/portfolio/obshchegiya-adler-sochi" class="hero-project" data-cinema-link title="Комплекс общежитий 9 000+ м² — Сочи">
 				<span class="eyebrow">Избранный проект / <span data-cinema-number>01</span></span>
 				<strong data-cinema-name>Общежития 9 000+ м² — Сочи</strong>
 				<span data-cinema-caption>Краснодарский край / Общежития</span>
@@ -562,7 +565,7 @@ $fssSec = function (string $label): string {
 				</div>
 				<p class="eyebrow" data-cinema-status aria-live="polite">01 / 03 — Общежития 9 000+ м² — Сочи</p>
 			</div>
-			<a href="/portfolio" class="hero-cta" data-goal="hero_projects">
+			<a href="/portfolio" class="hero-cta" data-goal="hero_projects" title="Смотреть все проекты">
 				Изучить проекты
 				<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 					<path d="M7 7h10v10"></path>
@@ -588,7 +591,7 @@ $fssSec = function (string $label): string {
 				</span>
 				<p>Работаем с <?= htmlspecialchars((string)seo_config('founded_market')) ?> года. В основе — <?= htmlspecialchars((string)seo_config('market_years')) ?> лет практики в быстровозводимом строительстве.</p>
 				<p>От фундаментов до реконструкции существующих зданий: мы объединяем производство БВЗ, капитальный ремонт и монтаж инженерных сетей. Три направления, единая команда, работаем по всей России.</p>
-				<a href="/uslugi" class="text-link">Смотреть направления
+				<a href="/uslugi" class="text-link" title="Смотреть все направления услуг">Смотреть направления
 					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 						<path d="M7 7h10v10"></path>
 						<path d="M7 17 17 7"></path>
@@ -661,7 +664,7 @@ $fssSec = function (string $label): string {
 	<section id="projects" class="selected-work section-shell">
 		<div class="section-topline">
 			<p class="eyebrow"><?= $fssSec('Избранные проекты') ?></p>
-			<a href="/portfolio" class="text-link">Смотреть все объекты
+			<a href="/portfolio" class="text-link" title="Смотреть все объекты">Смотреть все объекты
 				<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
 					<path d="M7 7h10v10"></path>
 					<path d="M7 17 17 7"></path>
@@ -1096,7 +1099,7 @@ $fssSec = function (string $label): string {
 				<article class="case-card">
 					<?php if ($__photo !== ''): ?>
 						<a class="case-media" href="<?= htmlspecialchars($__url, ENT_QUOTES) ?>" tabindex="-1" aria-hidden="true">
-							<img src="<?= htmlspecialchars($__photo, ENT_QUOTES) ?>" alt="" loading="lazy" decoding="async"<?= seo_img_attrs($__photo) ?>>
+							<img src="<?= htmlspecialchars($__photo, ENT_QUOTES) ?>" alt="<?= htmlspecialchars($__alt, ENT_QUOTES) ?>" title="<?= htmlspecialchars($__alt, ENT_QUOTES) ?>" loading="lazy" decoding="async"<?= seo_img_attrs($__photo) ?>>
 						</a>
 					<?php endif; ?>
 					<div class="case-head">

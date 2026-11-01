@@ -12,7 +12,7 @@ $env = fn(string $key, string $default = '') => $_ENV[$key] ?? getenv($key) ?: $
 // Прод-domain сайта (punycode). Используется как fallback и как «доверенный» хост:
 // любой другой Host из HTTP-Host-заголовка не попадает в canonical/OG/sitemap
 // (иначе атакующий подменяет каноникл сайта одним заголовком).
-const FSS_PROD_HOST = 'xn--h1aafj.xn--p1ai';
+const FSS_PROD_HOST = 'xn--e1aacf.xn--p1ai';
 
 // IDN → punycode с фолбэком (intl может быть не установлен).
 $toPuny = static function (string $host): string {

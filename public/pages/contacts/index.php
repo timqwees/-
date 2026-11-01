@@ -86,6 +86,9 @@ $faq = [
 	<link rel="shortcut icon" href="/public/assets/image/logo/favicon/favicon.ico" />
 	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/favicon/apple-touch-icon.png" />
 	<link rel="manifest" href="/manifest.json" />
+	<link rel="search" type="application/opensearchdescription+xml" title="ФАВОРИТ-СТРОЙ-СНАБ" href="/opensearch.xml">
+	<link rel="author" href="<?= rtrim((string)seo_config('base_url'), '/') ?>/about">
+	<link rel="publisher" href="<?= rtrim((string)seo_config('base_url'), '/') ?>/company">
 	<?= seo_canonical_tags() ?>
 <?= seo_verify_tags() ?>
 	<?= seo_og_tags($seoTitle, $seoDesc, '/public/assets/image/og/og-home-1200x630.jpg') ?>

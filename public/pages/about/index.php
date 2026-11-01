@@ -107,10 +107,12 @@ $projects = [
 	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/favicon/apple-touch-icon.png" />
 	<meta name="apple-mobile-web-app-title" content="ФСС" />
 	<link rel="manifest" href="/manifest.json" />
-<?= seo_canonical_tags() ?>
-<?= seo_verify_tags() ?>
-<?= seo_og_tags($t, seo_clip($d)) ?>
+	<?= seo_canonical_tags() ?>
+	<?= seo_verify_tags() ?>
+	<?= seo_og_tags($t, seo_clip($d)) ?>
 	<link rel="search" type="application/opensearchdescription+xml" title="ФАВОРИТ-СТРОЙ-СНАБ" href="/opensearch.xml">
+	<link rel="author" href="<?= rtrim((string)seo_config('base_url'), '/') ?>/about">
+	<link rel="publisher" href="<?= rtrim((string)seo_config('base_url'), '/') ?>/company">
 	<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 	<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">

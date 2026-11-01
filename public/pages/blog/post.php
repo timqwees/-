@@ -17,9 +17,18 @@ $articleUrl = rtrim((string)seo_config('base_url'), '/') . '/blog/' . $slug;
 $today = date('c', strtotime($post['date']));
 $updated = isset($post['updated']) ? date('c', strtotime($post['updated'])) : $today;
 $base = rtrim((string)seo_config('base_url'), '/');
-// Автор статьи — подразделение компании (реальные сотрудники не выдумываются),
-// поэтому ссылка ведёт на страницу «О компании», а не на несуществующий якорь.
-$authorId = $base . '/about';
+// Автор статьи — подразделение компании, теперь со своей страницей для E-E-A-T
+$authorSlugMap = [
+	'Инженерный отдел ФСС' => 'engineering',
+	'Отдел смет и договоров ФСС' => 'estimate',
+	'Проектный отдел ФСС' => 'design',
+	'Юридический отдел ФСС' => 'legal',
+	'Технологический отдел ФСС' => 'tech',
+	'Логистика ФСС' => 'logistics',
+];
+$authorName = $post['author']['name'] ?? '';
+$authorSlug = $authorSlugMap[$authorName] ?? '';
+$authorId = $authorSlug ? $base . '/author/' . $authorSlug : $base . '/about';
 
 // Related posts (same category, excluding current)
 $related = [];
@@ -52,6 +61,9 @@ if (count($related) < 4) {
 	<link rel="shortcut icon" href="/public/assets/image/logo/favicon/favicon.ico" />
 	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/favicon/apple-touch-icon.png" />
 	<link rel="manifest" href="/manifest.json" />
+	<link rel="author" href="<?= rtrim((string)seo_config('base_url'), '/') ?>/about">
+	<link rel="publisher" href="<?= rtrim((string)seo_config('base_url'), '/') ?>/company">
+	<link rel="search" type="application/opensearchdescription+xml" title="ФАВОРИТ-СТРОЙ-СНАБ" href="/opensearch.xml">
 	<?= seo_canonical_tags() ?>
 	<?= seo_verify_tags() ?>
 	<?= seo_og_tags($post['title'] . ' — Блог ФАВОРИТ-СТРОЙ-СНАБ', $post['description'], $post['og_image']) ?>
@@ -132,7 +144,7 @@ if (count($related) < 4) {
 									<div class="article-author-info">
 										<img src="<?= $h($post['author']['photo']) ?>" alt="<?= $h($post['author']['name']) ?>" class="article-author-avatar" loading="lazy" width="36" height="36" title="<?= $h($post['author']['name']) ?> — <?= $h($post['author']['role']) ?>">
 										<div class="article-author-details">
-											<span class="article-author-name"><?= $h($post['author']['name']) ?></span>
+											<span class="article-author-name"><a href="<?= $h($authorId) ?>" rel="author" style="color:inherit;text-decoration:none"><?= $h($post['author']['name']) ?></a></span>
 											<span class="article-author-role"><?= $h($post['author']['role']) ?></span>
 										</div>
 									</div>
@@ -148,6 +160,12 @@ if (count($related) < 4) {
 							</div>
 							<h1 class="article-title" itemprop="headline"><?= $h($post['title']) ?></h1>
 							<p class="article-desc" itemprop="description"><?= $h($post['description']) ?></p>
+							<?php if (!empty($post['tldr'])): ?>
+							<div class="article-tldr" itemprop="abstract" style="margin:24px 0;padding:20px;background:#f8f4ef;border:1px solid #F5E6D3;border-radius:16px;font-size:15px;line-height:1.7;color:#44403C">
+								<strong style="color:#876b55;display:block;margin-bottom:8px;font-size:13px;text-transform:uppercase;letter-spacing:.05em">Краткий ответ (TL;DR)</strong>
+								<?= $h($post['tldr']) ?>
+							</div>
+							<?php endif; ?>
 						</section>
 
 					<article class="article-body" itemprop="articleBody">
@@ -184,7 +202,7 @@ if (count($related) < 4) {
 						<div style="display:flex;align-items:center;gap:16px;margin-bottom:16px">
 							<img src="<?= $h($post['author']['photo']) ?>" alt="<?= $h($post['author']['name']) ?>" title="<?= $h($post['author']['name']) ?> — <?= $h($post['author']['role']) ?>" class="article-author-avatar" loading="lazy" width="64" height="64" style="width:64px;height:64px;border-radius:50%;object-fit:cover">
 							<div>
-								<div style="font-size:18px;font-weight:800;color:#171310"><?= $h($post['author']['name']) ?></div>
+								<div style="font-size:18px;font-weight:800;color:#171310"><a href="<?= $h($authorId) ?>" rel="author" style="color:inherit;text-decoration:none"><?= $h($post['author']['name']) ?></a></div>
 								<div style="font-size:14px;color:#6d5744;font-weight:600"><?= $h($post['author']['role']) ?></div>
 								<div style="font-size:13px;color:#78716C;margin-top:4px"><i class="fa-solid fa-medal" style="color:#876b55;margin-right:6px"></i>Опыт: <?= $h($post['author']['experience']) ?></div>
 							</div>
@@ -214,7 +232,7 @@ if (count($related) < 4) {
 
 					<div class="article-tags">
 						<?php foreach ((array)($post['tags'] ?? []) as $tag): ?>
-						<span class="article-tag" itemprop="keywords"><?= $h($tag) ?></span>
+						<a href="/search/blog?q=<?= urlencode($tag) ?>" class="article-tag" itemprop="keywords" rel="tag"><?= $h($tag) ?></a>
 						<?php endforeach ?>
 					</div>
 
@@ -248,7 +266,7 @@ if (count($related) < 4) {
 						<div class="article-sidebar-header">Читайте также</div>
 						<div class="article-sidebar-body">
 							<?php foreach ($related as [$rSlug, $rPost]): ?>
-							<a class="article-popular-item" title="<?= htmlspecialchars($rPost['title'], ENT_QUOTES) ?>" href="/blog/<?= htmlspecialchars((string)$rSlug, ENT_QUOTES) ?>">
+							<a class="article-popular-item" title="<?= htmlspecialchars($rPost['title'], ENT_QUOTES) ?>" href="/blog/<?= htmlspecialchars((string)$rSlug, ENT_QUOTES) ?>" rel="bookmark">
 								<div class="article-popular-img" style="background-image:url('<?= htmlspecialchars((string)$rPost['og_image'], ENT_QUOTES) ?>')"></div>
 								<div class="article-popular-body">
 									<span class="article-popular-title"><?= $h($rPost['title']) ?></span>

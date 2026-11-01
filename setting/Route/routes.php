@@ -33,6 +33,10 @@ Routes::get('/portfolio/{slug}', function (string $slug) {
 Routes::get('/about', [PageController::class, 'about']);
 // Страница компании: /company (реквизиты, руководство, направления, выполненные объекты)
 Routes::get('/company', [PageController::class, 'company']);
+// Авторы статей блога (E-E-A-T)
+Routes::get('/author/{slug}', function (string $slug) {
+	require_once __DIR__ . '/../../public/pages/author.php';
+});
 // Отдельная страница контактов: /contacts (телефоны, адрес, реквизиты, заявка)
 Routes::get('/contacts', [PageController::class, 'contacts']);
 // Старый адрес страницы заявки → редирект на актуальную страницу контактов

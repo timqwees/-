@@ -89,7 +89,12 @@ $isSupply = $supply !== [];
 $pn = count($pool);
 $off = abs(crc32($slug)) % $pn;
 $pick = function ($k) use ($pool, $pn, $off) { return '/public/assets/image/services/' . $pool[($off + $k) % $pn]; };
-$heroImg = $isSupply ? '/public/assets/image/og/og-home-1200x630.jpg' : $pick(0);
+// Титульное фото можно закрепить вручную (app/Data/services.php → 'hero').
+// Без него работает прежний автоподбор, но конкретная услуга получает нужный кадр.
+$heroPinned = trim((string)($svc['hero'] ?? ''));
+$heroImg = $isSupply
+	? '/public/assets/image/og/og-home-1200x630.jpg'
+	: ($heroPinned !== '' ? $heroPinned : $pick(0));
 
 // --- заголовок с акцентом: часть после «—» оранжевая ---
 $title = (string)$svc['title'];
@@ -148,17 +153,28 @@ $fssSec = function (string $label): string {
 $titleSuffix = ' | ФАВОРИТ-СТРОЙ-СНАБ';
 // seo_title в app/Data/services.php — точная формулировка заголовка вкладки
 // (для длинных названий, которые иначе обрезаются многоточием).
-$seoTitle = !empty($svc['seo_title'])
-	? (string)$svc['seo_title']
-	: seo_clip($h1a, 60 - mb_strlen($titleSuffix)) . $titleSuffix;
+if (!empty($svc['seo_title'])) {
+	$seoTitle = (string)$svc['seo_title'];
+} elseif ($basePrice > 0 && $areaBased) {
+	// Добавляем цену в title для конверсии: «Ангары под ключ — от 31 000 ₽/м² | ФСС»
+	$pricePart = 'от ' . number_format($basePrice, 0, ',', ' ') . ' ₽/м²';
+	$seoTitle = seo_clip($h1a . ' — ' . $pricePart, 60 - mb_strlen($titleSuffix)) . $titleSuffix;
+} else {
+	$seoTitle = seo_clip($h1a, 60 - mb_strlen($titleSuffix)) . $titleSuffix;
+}
 $seoDesc = (string)$svc['description'];
 if ($geo) {
-	$h1b = 'в ' . $geoIn;
+	$h1b = ' в ' . $geoIn;
 	// Гео-посадочная: полное название услуги + город; бренд добавляем, только если укладываемся в 60 символов.
 	$geoBase = !empty($svc['seo_title'])
 		? trim((string)preg_replace('/\s*\|\s*ФАВОРИТ-СТРОЙ-СНАБ$/u', '', (string)$svc['seo_title']))
 		: $h1a;
-	$seoTitle = seo_clip($geoBase . ' в ' . $geoIn, 60);
+	if ($basePrice > 0 && $areaBased) {
+		$pricePart = 'от ' . number_format($basePrice, 0, ',', ' ') . ' ₽/м²';
+		$seoTitle = seo_clip($geoBase . ' в ' . $geoIn . ' — ' . $pricePart, 60);
+	} else {
+		$seoTitle = seo_clip($geoBase . ' в ' . $geoIn, 60);
+	}
 	if (mb_strlen($seoTitle) + mb_strlen($titleSuffix) <= 60) {
 		$seoTitle .= $titleSuffix;
 	}
@@ -210,6 +226,102 @@ $specIcon = $specIcons[$slug] ?? 'fa-helmet-safety';
 $wn = min($pn, 8);
 $works = [];
 for ($k = 0; $k < $wn; $k++) { $works[] = $pool[($off + 5 + $k) % $pn]; }
+
+// --- Калькуляторы по типам услуг ---
+$calcConfig = [
+	'angar' => [
+		'title' => 'Рассчитайте стоимость ангара',
+		'basePrice' => 31000,
+		'fields' => [
+			['name' => 'area', 'label' => 'Площадь, м²', 'type' => 'number', 'min' => 100, 'max' => 50000, 'step' => 100, 'value' => 500, 'required' => true],
+			['name' => 'type', 'label' => 'Тип ангара', 'type' => 'select', 'options' => [
+				'cold' => 'Холодный (без утепления) — от 25 000 ₽/м²',
+				'warm' => 'Тёплый (сендвич-панели 100-150 мм) — от 31 000 ₽/м²',
+				'freezer' => 'Морозильная камера — от 45 000 ₽/м²',
+			], 'required' => true],
+			['name' => 'height', 'label' => 'Высота, м', 'type' => 'number', 'min' => 4, 'max' => 18, 'step' => 1, 'value' => 6, 'required' => true],
+			['name' => 'crane', 'label' => 'Кран-балка', 'type' => 'select', 'options' => [
+				'none' => 'Нет',
+				'3_2t' => '3.2 т',
+				'5t' => '5 т',
+				'10t' => '10 т',
+				'custom' => 'Другая (указать в заявке)',
+			], 'required' => false],
+		],
+		'multipliers' => [
+			'cold' => 0.8,
+			'warm' => 1.0,
+			'freezer' => 1.45,
+			'height' => [4 => 0.95, 6 => 1.0, 8 => 1.05, 10 => 1.12, 12 => 1.2, 14 => 1.28, 16 => 1.35, 18 => 1.42],
+			'crane' => ['none' => 0, '3_2t' => 150000, '5t' => 280000, '10t' => 550000, 'custom' => 0],
+		],
+		'description' => 'Базовая цена — тёплый ангар стандартной высоты 6 м без кран-балки. Фундамент, доставка и монтаж считаются отдельно.',
+	],
+	'sclad' => [
+		'title' => 'Рассчитайте стоимость склада',
+		'basePrice' => 35000,
+		'fields' => [
+			['name' => 'area', 'label' => 'Площадь, м²', 'type' => 'number', 'min' => 200, 'max' => 100000, 'step' => 100, 'value' => 1200, 'required' => true],
+			['name' => 'class', 'label' => 'Класс склада', 'type' => 'select', 'options' => [
+				'cold' => 'Холодный (класс D) — от 28 000 ₽/м²',
+				'warm' => 'Тёплый (класс B+/A) — от 35 000 ₽/м²',
+				'pharma' => 'Фарма/пища (класс A+) — от 55 000 ₽/м²',
+			], 'required' => true],
+			['name' => 'doors', 'label' => 'Доковые ворота', 'type' => 'number', 'min' => 0, 'max' => 50, 'step' => 1, 'value' => 2, 'required' => false],
+			['name' => 'floor', 'label' => 'Пол', 'type' => 'select', 'options' => [
+				'concrete' => 'Бетон + топильный настил — в цене',
+				'epoxy' => 'Эпоксидное покрытие — +2 500 ₽/м²',
+				'polyurethane' => 'Полиуретановое — +4 000 ₽/м²',
+			], 'required' => false],
+		],
+		'multipliers' => [
+			'cold' => 0.8,
+			'warm' => 1.0,
+			'pharma' => 1.57,
+			'doors' => 180000,
+			'floor' => ['concrete' => 0, 'epoxy' => 2500, 'polyurethane' => 4000],
+		],
+		'description' => 'В базовую цену входит: каркас, сэндвич-панели 100-150 мм, бетонный пол, базовое освещение. Документы, проектирование, фундамент — отдельно.',
+	],
+	'proizvodim_modul' => [
+		'title' => 'Рассчитайте стоимость модульного здания',
+		'basePrice' => 42000,
+		'fields' => [
+			['name' => 'area', 'label' => 'Площадь, м²', 'type' => 'number', 'min' => 50, 'max' => 10000, 'step' => 10, 'value' => 300, 'required' => true],
+			['name' => 'floors', 'label' => 'Этажность', 'type' => 'select', 'options' => [
+				'1' => '1 этаж — от 42 000 ₽/м²',
+				'2' => '2 этажа — от 48 000 ₽/м²',
+				'3' => '3 этажа — от 55 000 ₽/м²',
+			], 'required' => true],
+			['name' => 'purpose', 'label' => 'Назначение', 'type' => 'select', 'options' => [
+				'admin' => 'АБК / офисы — от 42 000 ₽/м²',
+				'barracks' => 'Общежития / вахты — от 45 000 ₽/м²',
+				'medical' => 'Медицинские пункты — от 58 000 ₽/м²',
+				'school' => 'Школы / детсады — от 62 000 ₽/м²',
+			], 'required' => true],
+			['name' => 'finish', 'label' => 'Отделка', 'type' => 'select', 'options' => [
+				'box' => 'Коробка (без отделки) — -15%',
+				'standard' => 'Стандарт (под ключ) — в цене',
+				'premium' => 'Премиум — +25%',
+			], 'required' => false],
+		],
+		'multipliers' => [
+			'1' => 1.0,
+			'2' => 1.14,
+			'3' => 1.31,
+			'admin' => 1.0,
+			'barracks' => 1.07,
+			'medical' => 1.38,
+			'school' => 1.48,
+			'box' => 0.85,
+			'standard' => 1.0,
+			'premium' => 1.25,
+		],
+		'description' => 'Цена «под ключ» включает: модули, доставку, монтаж, ИЖС, чистовую отделку. Фундамент и проектирование — отдельно. Срок изготовления 14-45 дней.',
+	],
+];
+$hasCalc = isset($calcConfig[$slug]);
+$calc = $hasCalc ? $calcConfig[$slug] : null;
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -225,11 +337,13 @@ for ($k = 0; $k < $wn; $k++) { $works[] = $pool[($off + 5 + $k) % $pn]; }
 	<link rel="icon" type="image/png" href="/public/assets/image/logo/favicon/favicon-96x96.png" sizes="96x96" />
 	<link rel="shortcut icon" href="/public/assets/image/logo/favicon/favicon.ico" />
 	<link rel="apple-touch-icon" sizes="180x180" href="/public/assets/image/logo/favicon/apple-touch-icon.png" />
-	<meta name="apple-mobile-web-app-title" content="ФСС" />
+<meta name="apple-mobile-web-app-title" content="ФСС" />
 	<link rel="manifest" href="/public/assets/image/logo/favicon/site.webmanifest" />
-<?= seo_canonical_tags() ?>
+	<link rel="author" href="<?= rtrim((string)seo_config('base_url'), '/') ?>/about">
+	<link rel="publisher" href="<?= rtrim((string)seo_config('base_url'), '/') ?>/company">
+	<?= seo_canonical_tags() ?>
 <?= seo_verify_tags() ?>
-<?= seo_og_tags($seoTitle, $seoDesc, $pick(0)) ?>
+<?= seo_og_tags($seoTitle, $seoDesc, $heroImg) ?>
 <link rel="search" type="application/opensearchdescription+xml" title="ФАВОРИТ-СТРОЙ-СНАБ" href="/opensearch.xml">
 <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -1487,6 +1601,105 @@ main img {
 	}
 }
 
+/* ---------- КАЛЬКУЛЯТОР СТОИМОСТИ ---------- */
+.svc-calc {
+	background: #f8f4ef;
+	border: 1px solid var(--line);
+	border-radius: var(--radius-surface);
+	padding: clamp(20px, 3vw, 32px);
+	margin-top: 24px;
+}
+.svc-calc__title {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin: 0 0 8px;
+	font-size: clamp(18px, 2.5vw, 22px);
+	font-weight: 700;
+	color: var(--fg);
+}
+.svc-calc__title i { color: var(--accent); font-size: 1.1em; }
+.svc-calc__desc {
+	margin: 0 0 20px;
+	color: var(--muted);
+	font-size: 14px;
+	line-height: 1.6;
+}
+.svc-calc__fields {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 16px;
+	margin-bottom: 20px;
+}
+.svc-calc__field {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+.svc-calc__field label {
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--fg);
+	letter-spacing: .02em;
+}
+.svc-calc__field input,
+.svc-calc__field select {
+	padding: 12px 14px;
+	border: 1px solid var(--line);
+	border-radius: var(--radius-control);
+	font-size: 15px;
+	font-family: inherit;
+	color: var(--fg);
+	background: #fff;
+	transition: border-color .2s, box-shadow .2s;
+}
+.svc-calc__field input:focus,
+.svc-calc__field select:focus {
+	outline: none;
+	border-color: var(--accent);
+	box-shadow: 0 0 0 3px rgba(135, 107, 85, .15);
+}
+.svc-calc__field input::placeholder { color: #c8b8a8; }
+.svc-calc__result {
+	padding: 18px 20px;
+	background: #fff;
+	border: 1px solid var(--line);
+	border-radius: var(--radius-control);
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+.svc-calc__price {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 16px;
+	flex-wrap: wrap;
+}
+.svc-calc__label {
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--muted);
+}
+.svc-calc__amount {
+	font-size: clamp(24px, 4vw, 34px);
+	font-weight: 800;
+	color: var(--fg);
+	font-variant-numeric: tabular-nums;
+	letter-spacing: -.02em;
+}
+.svc-calc__unit { font-size: 0.7em; font-weight: 600; color: var(--muted); }
+.svc-calc__note {
+	margin: 0;
+	font-size: 12px;
+	color: var(--muted);
+	line-height: 1.5;
+}
+@media (max-width: 640px) {
+	.svc-calc__fields { grid-template-columns: 1fr; }
+	.svc-calc__price { flex-direction: column; align-items: flex-start; gap: 4px; }
+}
+
 /* ---------- ПОЛЕЗНЫЕ СТАТЬИ (связка услуга → блог) ---------- */
 .svc-articles {
 	padding-block: clamp(60px, 7vw, 110px);
@@ -1804,6 +2017,42 @@ main img {
 						<li>Полный пакет закрывающих документов и гарантия <?= $h($guarantee) ?> лет</li>
 					</ul>
 				</div>
+
+				<?php if ($hasCalc): ?>
+				<!-- КАЛЬКУЛЯТОР СТОИМОСТИ -->
+				<div class="svc-calc" id="calc-<?= $h($slug) ?>" data-base="<?= $calc['basePrice'] ?>">
+					<h4 class="svc-calc__title"><i class="fa-solid fa-calculator" aria-hidden="true"></i> <?= $h($calc['title']) ?></h4>
+					<p class="svc-calc__desc"><?= $h($calc['description']) ?></p>
+					<div class="svc-calc__fields">
+						<?php foreach ($calc['fields'] as $field): ?>
+							<?php if ($field['type'] === 'select'): ?>
+								<div class="svc-calc__field">
+									<label for="calc-<?= $h($slug) ?>-<?= $h($field['name']) ?>"><?= $h($field['label']) ?></label>
+									<select id="calc-<?= $h($slug) ?>-<?= $h($field['name']) ?>" name="<?= $h($field['name']) ?>"<?= $field['required'] ? ' required' : '' ?> data-base="<?= $calc['basePrice'] ?>">
+										<?php foreach ($field['options'] as $val => $label): ?>
+											<option value="<?= $h($val) ?>" data-mult="<?= isset($calc['multipliers'][$val]) ? $calc['multipliers'][$val] : '' ?>"><?= $h($label) ?></option>
+										<?php endforeach; ?>
+									</select>
+								</div>
+							<?php else: ?>
+								<div class="svc-calc__field">
+									<label for="calc-<?= $h($slug) ?>-<?= $h($field['name']) ?>"><?= $h($field['label']) ?></label>
+									<input type="<?= $h($field['type']) ?>" id="calc-<?= $h($slug) ?>-<?= $h($field['name']) ?>" name="<?= $h($field['name']) ?>" min="<?= $field['min'] ?? '' ?>" max="<?= $field['max'] ?? '' ?>" step="<?= $field['step'] ?? '' ?>" value="<?= $field['value'] ?? '' ?>"<?= $field['required'] ? ' required' : '' ?>>
+								</div>
+							<?php endif; ?>
+						<?php endforeach; ?>
+					</div>
+					<div class="svc-calc__result">
+						<div class="svc-calc__price">
+							<span class="svc-calc__label">Ориентировочная стоимость:</span>
+							<span class="svc-calc__amount" data-value="<?= $calc['basePrice'] ?>"><?= htmlspecialchars(number_format($calc['basePrice'] * ($calc['fields'][0]['value'] ?? 1), 0, ',', ' '), ENT_QUOTES) ?> <span class="svc-calc__unit">₽</span></span>
+						</div>
+						<p class="svc-calc__note">* Финальная цена в смете. Включает производство, доставку и монтаж. Фундамент и проектирование — отдельно.</p>
+					</div>
+					<input type="hidden" name="calc_data" id="calc-data-<?= $h($slug) ?>" value="">
+				</div>
+				<?php endif; ?>
+
 				<form class="svc-form js-svcalc" method="POST" action="/send/email" data-goal="lead_<?= $h($slug) ?>" novalidate>
 					<input type="hidden" name="content_form">
 					<input type="hidden" name="product" value="<?= $h($svc['title']) ?>">
@@ -1847,10 +2096,73 @@ main img {
 							var add = '';
 							if (a && a.value.trim()) add += ' Площадь: ' + a.value.trim() + ' м².';
 							if (o && o.value) add += ' Нужно: ' + o.value + '.';
+							// Добавляем данные калькулятора если есть
+							var slug = frm.dataset.goal ? frm.dataset.goal.replace('lead_', '') : '';
+							if (slug) {
+								var calcData = frm.querySelector('#calc-data-' + slug);
+								if (calcData && calcData.value) add += ' Калькулятор: ' + calcData.value + '.';
+							}
 							if (add && m) m.value += add;
 						});
 					});
 				})();
+				<?php if ($hasCalc): ?>
+				(function () {
+					var slug = '<?= $h($slug) ?>';
+					var calc = document.getElementById('calc-' + slug);
+					if (!calc) return;
+					var base = parseFloat(calc.dataset.base) || 0;
+					var fields = calc.querySelectorAll('.svc-calc__field input, .svc-calc__field select');
+					var amountEl = calc.querySelector('.svc-calc__amount');
+					var hiddenEl = document.getElementById('calc-data-' + slug);
+					var multipliers = <?= json_encode($calc['multipliers']) ?>;
+
+					function formatNum(n) {
+						return new Intl.NumberFormat('ru-RU').format(Math.round(n));
+					}
+
+					function recalc() {
+						var area = 0;
+						var mult = 1;
+						var addons = 0;
+						var parts = [];
+
+						fields.forEach(function (f) {
+							if (f.tagName === 'INPUT' && f.type === 'number') {
+								var v = parseFloat(f.value);
+								if (!isNaN(v) && v > 0) {
+									if (f.name === 'area') {
+										area = v;
+									} else {
+										addons += v;
+									}
+									parts.push(f.name + ': ' + v);
+								}
+							} else if (f.tagName === 'SELECT') {
+								var v = f.value;
+								var opt = f.options[f.selectedIndex];
+								var m = opt ? parseFloat(opt.dataset.mult) : null;
+								if (v && multipliers[v] !== undefined) {
+									mult *= multipliers[v];
+									parts.push(f.name + ': ' + v);
+								}
+							}
+						});
+
+						var total = base;
+						if (area > 0) total = total * area * mult + addons;
+
+						if (amountEl) amountEl.textContent = formatNum(total) + ' ₽';
+						if (hiddenEl) hiddenEl.value = JSON.stringify({base: base, area: area, multiplier: mult, addons: addons, total: Math.round(total)});
+					}
+
+					fields.forEach(function (f) {
+						f.addEventListener('input', recalc);
+						f.addEventListener('change', recalc);
+					});
+					recalc();
+				})();
+				<?php endif; ?>
 			</script>
 		</section>
 
