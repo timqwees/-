@@ -102,10 +102,11 @@ final class Sitemap
 		$f = self::fileOf($loc);
 		if ($f && is_file($f)) {
 			$mtime = (int)filemtime($f);
-			// Guard against future timestamps (e.g. CI clocks, Docker layers)
-			$now = time();
-			if ($mtime > $now) {
-				$mtime = $now;
+			// Guard against future timestamps (CI clocks, Docker layers, timezone issues)
+			$today = date('Y-m-d');
+			$mtimeDate = date('Y-m-d', $mtime);
+			if ($mtimeDate > $today) {
+				$mtime = strtotime($today);
 			}
 			return date('Y-m-d', $mtime);
 		}

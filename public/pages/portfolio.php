@@ -270,7 +270,7 @@ $portfolioDesc = 'Портфолио ФАВОРИТ-СТРОЙ-СНАБ: общ�
 	<?= seo_breadcrumbs_html() ?>
 		<div class="esp-top">
 			<p class="esp-over">Наши реализованные объекты</p>
-			<h1 class="esp-h1">Проекты <span class="it">что вдохновляют</span></h1>
+			<h1 class="esp-h1">Портфолио: БВЗ, ангары, склады, капремонт школ <span class="it">реализованные объекты</span></h1>
 		</div>
 		<div class="esp-filters" role="group" aria-label="Фильтр объектов">
 			<button class="esp-fbtn active" type="button" data-f="all" aria-pressed="true">Смотреть все</button>

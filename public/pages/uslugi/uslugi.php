@@ -866,7 +866,7 @@ $photos = [
 		<!-- HERO (по дизайну главной) -->
 		<section class="usl-hero" aria-labelledby="usl-title" data-nav-hero>
 			<div class="usl-hero__bg" aria-hidden="true">
-				<img src="/public/assets/image/Components/banner/hero.jpg.webp" alt="" loading="eager" fetchpriority="high" decoding="async" width="1672" height="941">
+				<img src="/public/assets/image/Components/banner/hero.jpg.webp" alt="Каталог услуг ФСС: БВЗ, ангары, склады, АБК, капремонт" loading="eager" fetchpriority="high" decoding="async" width="1672" height="941">
 			</div>
 			<div class="usl-hero__shade" aria-hidden="true"></div>
 			<div class="usl-hero__inner section-shell">
@@ -1066,7 +1066,7 @@ $photos = [
 		<!-- CTA -->
 		<section class="usl-cta" aria-labelledby="usl-cta-title">
 			<div class="usl-cta__bg" aria-hidden="true">
-				<img src="/public/assets/image/banner.webp" alt="" loading="lazy" decoding="async">
+				<img src="/public/assets/image/banner.webp" alt="Рассчитать стоимость проекта: БВЗ, ангары, склады, АБК, капремонт" loading="lazy" decoding="async">
 			</div>
 			<div class="usl-cta__in">
 				<p class="eyebrow">

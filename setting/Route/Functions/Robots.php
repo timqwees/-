@@ -57,7 +57,6 @@ final class Robots
 			$out .= "\n";
 		}
 		$out .= "Sitemap: {$base}/sitemap.xml\n";
-		$out .= "Sitemap: {$base}/sitemap-index.xml\n";
 		echo $out;
 	}
 }
