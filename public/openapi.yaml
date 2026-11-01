@@ -67,7 +67,7 @@ paths:
           required: true
           schema:
             type: string
-            enum: [tushino, himki, krasnogorsk, mytishchi, balashiha, podolsk, domodedovo, odincovo, lyubercy, shchelkovo, sochi, guukovo, gudermes, argun, chechen-aul, achhoy-martan, shatura]
+            enum: [tushino, himki, krasnogorsk, mytishchi, balashiha, podolsk, domodedovo, odincovo, lyubercy, shchelkovo, sochi, gukovo, gudermes, argun, chechen-aul, achhoy-martan, shatura]
       responses:
         '200':
           description: "HTML-страница с локальными условиями, сроками и FAQ "

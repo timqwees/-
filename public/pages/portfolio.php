@@ -63,6 +63,8 @@ $portfolioDesc = 'Портфолио ФАВОРИТ-СТРОЙ-СНАБ: общ�
 	<link rel="search" type="application/opensearchdescription+xml" title="ФАВОРИТ-СТРОЙ-СНАБ" href="/opensearch.xml">
 	<link rel="author" href="<?= rtrim((string)seo_config('base_url'), '/') ?>/about">
 	<link rel="publisher" href="<?= rtrim((string)seo_config('base_url'), '/') ?>/company">
+	<link rel="alternate" hreflang="ru" href="<?= $base . '/portfolio' ?>" />
+	<link rel="alternate" hreflang="x-default" href="<?= $base . '/portfolio' ?>" />
 
 	<!-- Swiper CSS -->
 		<link rel="stylesheet" href="/public/assets/vendor/fontawesome/all.min.css?v=20261024">

@@ -97,14 +97,28 @@ final class Sitemap
 		SecurityHeaders::emitCached($body, 'application/xml; charset=utf-8');
 	}
 
+	private static function fileMtime(string $loc): string
+	{
+		$f = self::fileOf($loc);
+		if ($f && is_file($f)) {
+			$mtime = (int)filemtime($f);
+			// Guard against future timestamps (e.g. CI clocks, Docker layers)
+			$now = time();
+			if ($mtime > $now) {
+				$mtime = $now;
+			}
+			return date('Y-m-d', $mtime);
+		}
+		return date('Y-m-d');
+	}
+
 	public static function output(): void
 	{
 		$base = rtrim((string)seo_config('base_url'), '/');
 		$out = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
 		$out .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
 		foreach (self::pages() as [$loc, $priority, $freq]) {
-			$f = self::fileOf($loc);
-			$lm = ($f && is_file($f)) ? date('Y-m-d', (int)filemtime($f)) : date('Y-m-d');
+			$lm = self::fileMtime($loc);
 			$out .= "  <url><loc>{$base}{$loc}</loc><lastmod>{$lm}</lastmod><changefreq>{$freq}</changefreq><priority>{$priority}</priority></url>\n";
 		}
 		$out .= '</urlset>';
@@ -113,11 +127,12 @@ final class Sitemap
 
 	public static function outputIndex(): void
 	{
-		$base = rtrim((string)seo_config('base_url'), '/');
-		$out = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-		$out .= '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
-		$out .= '  <sitemap><loc>' . $base . '/sitemap.xml</loc><lastmod>' . date('Y-m-d') . '</lastmod></sitemap>' . "\n";
-		$out .= '</sitemapindex>';
-		self::emit($out);
+		// Single sitemap — index not needed. Return 404 to avoid self-reference duplicate.
+		http_response_code(404);
+		echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+		echo '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+		echo '  <sitemap><loc>' . rtrim((string)seo_config('base_url'), '/') . '/sitemap.xml</loc><lastmod>' . date('Y-m-d') . '</lastmod></sitemap>' . "\n";
+		echo '</sitemapindex>';
+		self::emit('');
 	}
 }

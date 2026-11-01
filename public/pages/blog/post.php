@@ -64,6 +64,8 @@ if (count($related) < 4) {
 	<link rel="author" href="<?= rtrim((string)seo_config('base_url'), '/') ?>/about">
 	<link rel="publisher" href="<?= rtrim((string)seo_config('base_url'), '/') ?>/company">
 	<link rel="search" type="application/opensearchdescription+xml" title="ФАВОРИТ-СТРОЙ-СНАБ" href="/opensearch.xml">
+	<link rel="alternate" hreflang="ru" href="<?= $base . '/blog/' . $slug ?>" />
+	<link rel="alternate" hreflang="x-default" href="<?= $base . '/blog/' . $slug ?>" />
 	<?= seo_canonical_tags() ?>
 	<?= seo_verify_tags() ?>
 	<?= seo_og_tags($post['title'] . ' — Блог ФАВОРИТ-СТРОЙ-СНАБ', $post['description'], $post['og_image']) ?>

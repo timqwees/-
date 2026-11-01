@@ -75,6 +75,9 @@ Routes::get('/pages/portfolio.php', function () { Routes::redirect('/portfolio')
 Routes::get('/pages/projects.php', function () { Routes::redirect('/portfolio'); });
 Routes::get('/pages/politic/index.php', function () { Routes::redirect('/politika'); });
 Routes::get('/pages/agree/index.php', function () { Routes::redirect('/soglasie'); });
+// guukovo → gukovo typo fix
+Routes::get('/services/{slug}/guukovo', function (string $slug) { Routes::redirect('/services/' . $slug . '/gukovo'); });
+Routes::get('/pages/services/{slug}/guukovo', function (string $slug) { Routes::redirect('/services/' . $slug . '/gukovo'); });
 Routes::get('/pages/services/{slug}/index.php', function (string $slug) {
 	Routes::redirect('/services/' . $slug);
 });

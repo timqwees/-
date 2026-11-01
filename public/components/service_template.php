@@ -86,6 +86,7 @@ $pool = $POOL[$slug] ?? $KAP;
 // вместо неё блок «Что входит в поставку»: так фото не врут и страница отвечает на интент.
 $supply = array_values((array)($svc['supply'] ?? []));
 $isSupply = $supply !== [];
+$loc = '/services/' . $slug;
 $pn = count($pool);
 $off = abs(crc32($slug)) % $pn;
 $pick = function ($k) use ($pool, $pn, $off) { return '/public/assets/image/services/' . $pool[($off + $k) % $pn]; };
@@ -331,8 +332,10 @@ $calc = $hasCalc ? $calcConfig[$slug] : null;
 <title><?= $h($seoTitle) ?></title>
 <meta name="description" content="<?= $h(seo_clip($seoDesc, 135)) ?> ☎ <?= $h($phone) ?>">
 	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-<meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
-<meta name="theme-color" content="#876b55">
+	<meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
+	<meta name="theme-color" content="#876b55">
+	<link rel="alternate" hreflang="ru" href="<?= $base . '/' . ltrim($loc, '/') ?>" />
+	<link rel="alternate" hreflang="x-default" href="<?= $base . '/' . ltrim($loc, '/') ?>" />
 	<!-- Favicon unified -->
 	<link rel="icon" type="image/png" href="/public/assets/image/logo/favicon/favicon-96x96.png" sizes="96x96" />
 	<link rel="shortcut icon" href="/public/assets/image/logo/favicon/favicon.ico" />
