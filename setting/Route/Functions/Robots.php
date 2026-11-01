@@ -56,7 +56,6 @@ final class Robots
 			}
 			$out .= "\n";
 		}
-		$out .= "Host: " . seo_config('base_host') . "\n";
 		$out .= "Sitemap: {$base}/sitemap.xml\n";
 		$out .= "Sitemap: {$base}/sitemap-index.xml\n";
 		echo $out;

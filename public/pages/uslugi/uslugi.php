@@ -123,8 +123,8 @@ $photos = [
 	<link rel="preload" as="font" type="font/woff2" href="/public/assets/vendor/fonts/Manrope-latin.woff2" crossorigin><link rel="preload" as="font" type="font/woff2" href="/public/assets/vendor/fonts/Manrope-cyrillic.woff2" crossorigin><link rel="preload" as="font" type="font/woff2" href="/public/assets/fonts/WixMadeforDisplay/WixMadeforDisplay-Variable.woff2" crossorigin><link rel="stylesheet" href="/public/assets/vendor/fonts/fonts.css">
 	<style> body { font-family: 'DM Sans Variable', Manrope, Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; } </style>
 
-	<title>Услуги — Производство, ремонт, доставка | ФАВОРИТ-СТРОЙ-СНАБ</title>
-	<meta name="description" content="Все услуги ФАВОРИТ-СТРОЙ-СНАБ: БВЗ под ключ, капитальный ремонт, грузоперевозки, спецтехника, мебель, склады, навесы.">
+	<title>Услуги ФСС — Быстровозводимые здания, ангары, склады, АБК, капремонт | ФАВОРИТ-СТРОЙ-СНАБ</title>
+	<meta name="description" content="Услуги ФАВОРИТ-СТРОЙ-СНАБ: быстровозводимые здания (БВЗ) под ключ, ангары, склады, АБК, общежития, капитальный ремонт школ, грузоперевозки, спецтехника, оснащение школ. Смета за 15 мин, гарантия 50 лет. Работаем по Москве, МО и всей России.">
 	<meta name="author" content="ФАВОРИТ-СТРОЙ-СНАБ">
 	<meta name="theme-color" content="#876b55">
 	<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
@@ -146,9 +146,11 @@ $photos = [
 
 	<!-- canonical -->
 	<?= seo_canonical_tags() ?>
+	<link rel="alternate" hreflang="ru" href="<?= rtrim((string)seo_config('base_url'), '/') ?>/uslugi" />
+	<link rel="alternate" hreflang="x-default" href="<?= rtrim((string)seo_config('base_url'), '/') ?>/uslugi" />
 	<?= seo_verify_tags() ?>
 
-	<?= seo_og_tags('Услуги — Производство, ремонт, доставка | ФАВОРИТ-СТРОЙ-СНАБ', 'Все услуги ФАВОРИТ-СТРОЙ-СНАБ: БВЗ под ключ, капитальный ремонт, грузоперевозки, спецтехника, мебель, склады, навесы.', '/public/assets/image/og/og-uslugi-1200x630.jpg') ?>
+	<?= seo_og_tags('Услуги ФСС — Быстровозводимые здания, ангары, склады, АБК, капремонт | ФАВОРИТ-СТРОЙ-СНАБ', 'Услуги ФАВОРИТ-СТРОЙ-СНАБ: быстровозводимые здания (БВЗ) под ключ, ангары, склады, АБК, общежития, капремонт школ, грузоперевозки, спецтехника, оснащение школ. Смета за 15 мин, гарантия 50 лет. Работаем по Москве, МО и всей России.', '/public/assets/image/og/og-uslugi-1200x630.jpg') ?>
 
 	<?php include_once __DIR__ . '/../../components/sheoma.php'; ?>
 

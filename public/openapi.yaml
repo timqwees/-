@@ -9,10 +9,10 @@ info:
   version: "1.2"
   contact:
     name: ФАВОРИТ-СТРОЙ-СНАБ
-    email: fss@фсс.рус
-    url: https://www.xn--h1aafj.xn--p1ai
+    email: fss@xn--q1aah.xn--p1acf
+    url: https://www.xn--q1aah.xn--p1acf
 servers:
-  - url: https://www.xn--h1aafj.xn--p1ai
+  - url: https://www.xn--q1aah.xn--p1acf
 paths:
   /uslugi:
     get:

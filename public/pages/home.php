@@ -36,6 +36,8 @@ $fssSec = function (string $label): string {
 	<meta name="format-detection" content="telephone=yes">
 	<?= seo_verify_tags() ?>
 	<?= seo_canonical_tags() ?>
+	<link rel="alternate" hreflang="ru" href="<?= $site['baseUrl'] ?>/" />
+	<link rel="alternate" hreflang="x-default" href="<?= $site['baseUrl'] ?>/" />
 
 	<?= seo_og_tags($seo['title'], $seo['description'], $seo['og']['image']) ?>
 
@@ -537,8 +539,8 @@ $fssSec = function (string $label): string {
 				Строительство · Производство · Монтаж
 			</p>
 			<h1 id="hero-title">
-				<span>Модульные здания</span>
-				<span>нового поколения<span class="accent-dot">.</span></span>
+				<span>Быстровозводимые здания</span>
+				<span>под ключ в Москве<span class="accent-dot">.</span></span>
 			</h1>
 			<div class="hero-intro">
 				<p>От фундамента до сдачи.<br>Сила для каждого нового этапа.</p>

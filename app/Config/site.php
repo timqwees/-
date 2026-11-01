@@ -12,7 +12,7 @@ $env = fn(string $key, string $default = '') => $_ENV[$key] ?? getenv($key) ?: $
 // Прод-domain сайта (punycode). Используется как fallback и как «доверенный» хост:
 // любой другой Host из HTTP-Host-заголовка не попадает в canonical/OG/sitemap
 // (иначе атакующий подменяет каноникл сайта одним заголовком).
-const FSS_PROD_HOST = 'xn--e1aacf.xn--p1ai';
+const FSS_PROD_HOST = 'xn--q1aah.xn--p1acf';
 
 // IDN → punycode с фолбэком (intl может быть не установлен).
 $toPuny = static function (string $host): string {
@@ -99,7 +99,7 @@ return [
 	'phone_display' => '+7 938 018-00-06',
 	// Номера 8-800 вынесены: в конфиге был плейсхолдер «8 800 000 00 00» —
 	// несуществующий номер, который при публикации вводил бы клиентов в заблуждение.
-	'email' => $env('SITE_EMAIL', 'fss@фсс.рус'),
+	'email' => $env('SITE_EMAIL', 'fss@' . FSS_PROD_HOST),
 	'email_puny' => $env('SITE_EMAIL_PUNY', 'fss@' . FSS_PROD_HOST),
 	'telegram' => 'https://t.me/fss_rus',
 	// ВКонтакте из контактов убран: вместо него — Яндекс.Карты (площадка, цех, проезд).
@@ -114,7 +114,7 @@ return [
 		'lon' => 37.6460,
 	],
 
-	'founded' => '2020',
+	'founded' => '2011',
 	'registered_at' => '2020-09-01',
 	'founded_market' => '2011',
 	// Лет на рынке считаем от founded_market автоматически — цифра не устаревает.
